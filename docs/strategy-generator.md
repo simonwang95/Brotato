@@ -2,6 +2,8 @@
 
 目标：用户选择一个角色，并选择是否无尽模式，程序生成一份可执行攻略。
 
+当前实现状态：v0.2 已接入页面，覆盖默认 5 个角色和 Engineer。数据模块在 `src/strategyData.js`，生成逻辑在 `src/strategyGenerator.js`。
+
 ## 输入
 
 - 角色：例如 大壮、游侠、法师、工程师等。
@@ -110,31 +112,73 @@ const characterGuide = {
 
 两者共享同一套数据：角色、武器、道具、属性和解锁条件。
 
+## 场景模型
+
+v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战斗环境。
+
+当前场景数据在 `src/scenarioData.js`：
+
+- `boss`：Boss / 精英单体。
+- `normalWave`：普通清怪。
+- `swarm`：高密度怪潮 / 无尽。
+
+当前计算逻辑在 `src/scenarioCalculator.js`：
+
+- 穿透：受 `averageLineTargets` 限制。
+- 弹射：受 `averageTargetsInRange` 限制。
+- 爆炸额外目标：受 `averageTargetsInRange` 限制。
+- 拾取触发道具：受 `pickupRatePerSecond`、触发概率和幸运缩放影响。
+
+当前特殊道具先支持：
+
+- `Cyberball（赛博球）`
+- `Baby Elephant（象宝宝）`
+- `Baby with a Beard（长胡子的婴儿）`
+
+仍待加入：
+
+- 燃烧持续时间、刷新和传播。
+- 诅咒对敌人和奖励的双向影响。
+- 结构物和工程流独立公式。
+- 敌人护甲、溢出伤害和实际走位导致的命中损失。
+
 ## 实现步骤
 
 1. 建立静态资料库
-   - `data/characters.json`
-   - `data/weapons.json`
-   - `data/items.json`
-   - `data/unlocks.json`
-   - `data/guides.json`
+   - 当前先用 `src/strategyData.js` 作为可直接 import 的数据包。
+   - 全量稳定后再拆成 `data/characters.json`、`data/weapons.json`、`data/items.json`、`data/unlocks.json`、`data/guides.json`。
 
 2. 补攻略规则
-   - 按角色读取默认路线。
-   - 按普通 20 关 / 无尽模式切换权重。
-   - 用计算器给武器和属性收益提供数值依据。
+   - 已完成：按角色读取默认路线。
+   - 已完成：按普通 20 关 / 无尽模式切换权重。
+   - 待完成：用计算器给武器和属性收益提供数值依据。
 
 3. 做攻略页面
-   - 角色选择。
-   - 模式选择。
-   - 输出攻略卡片、目标面板和关键道具表。
+   - 已完成：角色选择。
+   - 已完成：模式选择。
+   - 已完成：输出攻略卡片、目标面板和关键道具表。
 
 4. 加校验
-   - 道具引用必须存在。
-   - 武器引用必须存在。
-   - 解锁条件不能为空。
-   - 目标面板区间必须是数字范围。
+   - 已完成：道具引用必须存在。
+   - 已完成：武器引用必须存在。
+   - 已完成：目标面板区间必须是数字范围。
+   - 待完成：解锁条件逐条来源校验。
 
 ## 数据校验原则
 
 关键道具和解锁条件不能靠记忆随手填。正式录入前应该逐条对照游戏内或可信资料源；如果 Brotato 更新或 DLC 内容不同，需要给数据加版本字段。
+
+## 本机安装包校验
+
+当前项目可以用本机 Steam 安装包校验官方简中名称：
+
+```bash
+npm run verify:names
+```
+
+默认扫描：
+
+- `Brotato.app/Contents/Resources/Brotato.pck`
+- `BrotatoAbyssalTerrors.pck`
+
+如果安装路径不同，设置 `BROTATO_INSTALL_DIR`。该命令只读游戏包，不写入安装目录。

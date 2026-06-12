@@ -13,6 +13,7 @@ export const DEFAULT_STATS = {
   rangedDamage: 0,
   elementalDamage: 0,
   engineering: 0,
+  luck: 0,
 };
 
 export const DEFAULT_WEAPON = {
@@ -21,6 +22,12 @@ export const DEFAULT_WEAPON = {
   baseDamage: 20,
   cooldown: 1,
   hitsPerAttack: 1,
+  piercing: 0,
+  piercingDamageMultiplier: 0.5,
+  bounces: 0,
+  bounceDamageMultiplier: 0.5,
+  explosionTargets: 0,
+  explosionDamageMultiplier: 1,
   critChance: 0,
   critMultiplier: 2,
   scaling: {
@@ -39,6 +46,7 @@ export const DEFAULT_ITEM_DELTA = {
   rangedDamage: 0,
   elementalDamage: 0,
   engineering: 0,
+  luck: 0,
 };
 
 export function toNumber(value, fallback = 0) {
@@ -85,6 +93,21 @@ export function normalizeWeapon(weapon = {}) {
     baseDamage: toNumber(merged.baseDamage),
     cooldown: Math.max(0.05, toNumber(merged.cooldown, 1)),
     hitsPerAttack: Math.max(0, toNumber(merged.hitsPerAttack, 1)),
+    piercing: Math.max(0, toNumber(merged.piercing)),
+    piercingDamageMultiplier: Math.max(
+      0,
+      toNumber(merged.piercingDamageMultiplier, 0.5),
+    ),
+    bounces: Math.max(0, toNumber(merged.bounces)),
+    bounceDamageMultiplier: Math.max(
+      0,
+      toNumber(merged.bounceDamageMultiplier, 0.5),
+    ),
+    explosionTargets: Math.max(0, toNumber(merged.explosionTargets)),
+    explosionDamageMultiplier: Math.max(
+      0,
+      toNumber(merged.explosionDamageMultiplier, 1),
+    ),
     critChance: toNumber(merged.critChance),
     critMultiplier: Math.max(1, toNumber(merged.critMultiplier, 2)),
     scaling: Object.fromEntries(
