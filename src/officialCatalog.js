@@ -22,7 +22,7 @@ function rangeLabel(values, format = (value) => String(value)) {
 
 function sourceLabel(sourcePackage) {
   if (sourcePackage === "base") return "原版";
-  if (sourcePackage === "abyssalTerrors") return "深渊惊魂";
+  if (sourcePackage === "abyssalTerrors") return "深海魔怪";
   return sourcePackage;
 }
 

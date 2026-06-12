@@ -139,6 +139,19 @@ button.secondary {
   padding: 14px 18px 18px;
 }
 
+.context-fields {
+  grid-column: 1 / -1;
+  padding: 0;
+}
+
+.field-group-title {
+  grid-column: 1 / -1;
+  margin: 4px 0 -4px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .field {
   display: grid;
   gap: 6px;

@@ -6,6 +6,11 @@ export const DAMAGE_TYPES = [
 ];
 
 export const DEFAULT_STATS = {
+  maxHp: 0,
+  hpRegen: 0,
+  lifeSteal: 0,
+  armor: 0,
+  dodge: 0,
   damagePercent: 0,
   attackSpeed: 0,
   critChance: 0,
@@ -13,6 +18,8 @@ export const DEFAULT_STATS = {
   rangedDamage: 0,
   elementalDamage: 0,
   engineering: 0,
+  speed: 0,
+  harvesting: 0,
   luck: 0,
 };
 
@@ -39,6 +46,11 @@ export const DEFAULT_WEAPON = {
 };
 
 export const DEFAULT_ITEM_DELTA = {
+  maxHp: 0,
+  hpRegen: 0,
+  lifeSteal: 0,
+  armor: 0,
+  dodge: 0,
   damagePercent: 0,
   attackSpeed: 0,
   critChance: 0,
@@ -46,6 +58,8 @@ export const DEFAULT_ITEM_DELTA = {
   rangedDamage: 0,
   elementalDamage: 0,
   engineering: 0,
+  speed: 0,
+  harvesting: 0,
   luck: 0,
 };
 

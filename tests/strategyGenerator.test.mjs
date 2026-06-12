@@ -94,7 +94,7 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
   assert.ok(
     guide.recommendedWeapons.some(
       ({ weapon, official }) =>
-        weapon.name === "Lute" && official.sourceLabel === "深渊惊魂" && official.tierLabel === "T1-T4",
+        weapon.name === "Lute" && official.sourceLabel === "深海魔怪" && official.tierLabel === "T1-T4",
     ),
     "lucky lute recommendation should include official DLC catalog metadata",
   );

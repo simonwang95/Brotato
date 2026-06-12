@@ -7,6 +7,7 @@ import {
 } from "./calculator.js";
 import { calculateScenarioDps } from "./scenarioCalculator.js";
 import {
+  DEFAULT_COMBAT_CONTEXT,
   getAvailableItemEffects,
   getAvailableScenarios,
 } from "./scenarioData.js";
@@ -17,6 +18,11 @@ import {
 } from "./strategyGenerator.js";
 
 const statLabels = {
+  maxHp: "最大生命",
+  hpRegen: "生命再生",
+  lifeSteal: "生命窃取 %",
+  armor: "护甲",
+  dodge: "闪避 %",
   damagePercent: "总伤害 %",
   attackSpeed: "攻速 %",
   critChance: "暴击率 %",
@@ -24,7 +30,34 @@ const statLabels = {
   rangedDamage: "远程伤害",
   elementalDamage: "元素伤害",
   engineering: "工程学",
+  speed: "移速 %",
+  harvesting: "收获",
   luck: "幸运",
+};
+
+const combatContextLabels = {
+  enemyArmor: "敌人护甲",
+  averageEnemyHp: "平均敌人血量（0 用场景默认）",
+  positioningHitLoss: "走位命中损失 %",
+  burnBaseDamage: "燃烧基础每跳伤害",
+  burnElementalScaling: "燃烧元素缩放 %",
+  burnApplicationChance: "燃烧施加概率 %",
+  burnDuration: "燃烧持续 秒",
+  burnTickRate: "燃烧每秒跳数",
+  burnSpreadChance: "燃烧传播概率 %",
+  burnSpreadTargets: "传播额外目标",
+  curseIntensity: "诅咒强度",
+  curseEnemyPowerPerPoint: "每点诅咒敌人增强 %",
+  curseRewardPerPoint: "每点诅咒奖励增强 %",
+  structureCount: "结构物数量",
+  structureBaseDamage: "结构物基础伤害",
+  structureCooldown: "结构物冷却 秒",
+  structureEngineeringScaling: "结构物工程缩放 %",
+  structureUptime: "结构物有效时间 %",
+  structureHitChance: "结构物命中率 %",
+  structureTargets: "结构物目标数",
+  speedAvoidancePerPoint: "每点移速规避 %",
+  speedAvoidanceCap: "移速规避上限 %",
 };
 
 const scalingLabels = {
@@ -57,6 +90,7 @@ const state = {
   roundingMode: "none",
   scenarioId: "normalWave",
   itemEffectId: "none",
+  combatContext: { ...DEFAULT_COMBAT_CONTEXT },
   strategyCharacter: "ranger",
   strategyMode: "normal20",
   officialCatalog: null,
@@ -236,7 +270,28 @@ function renderScenarioFields() {
   });
   itemEffectField.append(itemEffectLabel, itemEffectSelect);
 
-  root.append(scenarioField, itemEffectField);
+  const contextTitle = document.createElement("div");
+  contextTitle.className = "field-group-title";
+  contextTitle.textContent = "高级场景参数";
+
+  const contextFields = document.createElement("div");
+  contextFields.className = "fields context-fields";
+
+  Object.entries(combatContextLabels).forEach(([key, label]) => {
+    contextFields.append(
+      createNumberField({
+        label,
+        value: state.combatContext[key],
+        step: key.includes("Cooldown") || key.includes("Duration") || key.includes("Rate") ? "0.1" : "1",
+        onInput: (value) => {
+          state.combatContext[key] = value;
+          renderResults();
+        },
+      }),
+    );
+  });
+
+  root.append(scenarioField, itemEffectField, contextTitle, contextFields);
 }
 
 function renderItemFields() {
@@ -328,7 +383,7 @@ function renderStrategyGuide() {
   const output = $("#strategy-output");
   const catalogNote =
     state.catalogLoadState === "loaded" && state.officialCatalog
-      ? `官方目录已载入：${state.officialCatalog.summary.total} 条记录，原版 ${state.officialCatalog.summary.byPackage.base} 条，深渊惊魂 ${state.officialCatalog.summary.byPackage.abyssalTerrors} 条。`
+      ? `官方目录已载入：${state.officialCatalog.summary.total} 条记录，原版 ${state.officialCatalog.summary.byPackage.base} 条，深海魔怪 ${state.officialCatalog.summary.byPackage.abyssalTerrors} 条。`
       : "官方目录未载入时，攻略仍使用手写数据；启动本地服务后会自动补全官方元数据。";
 
   output.innerHTML = `
@@ -451,23 +506,49 @@ function breakdownRows(result) {
     .join("");
 }
 
+function formatScenarioCell(value, kind = "number") {
+  if (typeof value !== "number") return escapeHtml(value);
+  if (kind === "percent") return `${formatNumber(value * 100)}%`;
+  if (kind === "multiplier") return `${formatNumber(value)}x`;
+  return formatNumber(value);
+}
+
 function scenarioRows(result) {
+  const burning = result.burning ?? { dps: 0, uptime: 0 };
+  const structures = result.structures ?? { dps: 0 };
+  const curse = result.curse ?? { enemyPowerMultiplier: 1, rewardMultiplier: 1 };
+  const survival = result.survival ?? {
+    effectiveAvoidance: 0,
+    incomingDamageMultiplier: 1,
+  };
   const rows = [
     ["场景", result.scenario.name],
-    ["基础武器 DPS", result.baseHitDps],
+    ["原始武器 DPS", result.rawScenarioWeaponDps ?? result.scenarioWeaponDps],
+    ["护甲后倍率", result.enemyArmorMultiplier ?? 1, "multiplier"],
+    ["溢出伤害损失", result.overflowLoss ?? 0, "percent"],
+    ["走位命中损失", result.positioningHitLoss ?? 0, "percent"],
+    ["有效武器 DPS", result.scenarioWeaponDps],
     ["穿透贡献", result.piercingDps],
     ["弹射贡献", result.bounceDps],
     ["爆炸贡献", result.explosionDps],
+    ["燃烧贡献", burning.dps],
+    ["燃烧覆盖率", burning.uptime, "percent"],
+    ["结构物贡献", structures.dps],
     [`${result.itemEffect.itemEffect.name} 贡献`, result.itemEffect.dps],
+    ["诅咒敌人强度", curse.enemyPowerMultiplier, "multiplier"],
+    ["诅咒奖励倍率", curse.rewardMultiplier, "multiplier"],
+    ["有效规避率", survival.effectiveAvoidance, "percent"],
+    ["承伤倍率", survival.incomingDamageMultiplier, "multiplier"],
     ["场景总 DPS", result.totalDps],
+    ["奖励修正清场评分", result.effectiveClearScore ?? result.totalDps],
   ];
 
   return rows
     .map(
-      ([label, value]) => `
+      ([label, value, kind]) => `
         <tr>
           <th>${escapeHtml(label)}</th>
-          <td>${typeof value === "number" ? formatNumber(value) : escapeHtml(value)}</td>
+          <td>${formatScenarioCell(value, kind)}</td>
         </tr>
       `,
     )
@@ -484,14 +565,20 @@ function renderResults() {
     state.weapon,
     state.scenarioId,
     state.itemEffectId,
-    { roundingMode: state.roundingMode },
+    {
+      roundingMode: state.roundingMode,
+      combatContext: state.combatContext,
+    },
   );
   const scenarioAfter = calculateScenarioDps(
     comparison.afterStats,
     state.weapon,
     state.scenarioId,
     state.itemEffectId,
-    { roundingMode: state.roundingMode },
+    {
+      roundingMode: state.roundingMode,
+      combatContext: state.combatContext,
+    },
   );
   const scenarioDelta = scenarioAfter.totalDps - scenarioBefore.totalDps;
   const scenarioDeltaPercent =
@@ -582,6 +669,11 @@ function bindControls() {
 
   $("#load-example").addEventListener("click", () => {
     state.stats = {
+      maxHp: 65,
+      hpRegen: 0,
+      lifeSteal: 8,
+      armor: 8,
+      dodge: 15,
       damagePercent: 40,
       attackSpeed: 60,
       critChance: 15,
@@ -589,6 +681,8 @@ function bindControls() {
       rangedDamage: 45,
       elementalDamage: 0,
       engineering: 0,
+      speed: 18,
+      harvesting: 80,
       luck: 180,
     };
     state.weapon = {
@@ -613,6 +707,11 @@ function bindControls() {
       },
     };
     state.itemDelta = {
+      maxHp: 0,
+      hpRegen: 0,
+      lifeSteal: 0,
+      armor: 0,
+      dodge: 0,
       damagePercent: 0,
       attackSpeed: 0,
       critChance: 0,
@@ -620,7 +719,16 @@ function bindControls() {
       rangedDamage: 0,
       elementalDamage: 0,
       engineering: 0,
+      speed: 0,
+      harvesting: 0,
       luck: 50,
+    };
+    state.combatContext = {
+      ...DEFAULT_COMBAT_CONTEXT,
+      averageEnemyHp: 120,
+      positioningHitLoss: 12,
+      burnApplicationChance: 0,
+      curseIntensity: 20,
     };
     state.scenarioId = "swarm";
     state.itemEffectId = "babyWithABeard";

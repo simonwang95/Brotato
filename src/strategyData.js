@@ -189,7 +189,7 @@ export const WEAPONS = {
     name: "Lute",
     cnName: "琉特琴",
     type: "幸运乐器",
-    unlock: "深渊惊魂 DLC 武器；官方目录显示默认解锁、可掉落。",
+    unlock: "深海魔怪 DLC 武器；官方目录显示默认解锁、可掉落。",
     tags: ["Musical", "Luck"],
   },
 };
