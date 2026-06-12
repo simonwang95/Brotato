@@ -182,3 +182,24 @@ npm run verify:names
 - `BrotatoAbyssalTerrors.pck`
 
 如果安装路径不同，设置 `BROTATO_INSTALL_DIR`。该命令只读游戏包，不写入安装目录。
+
+也可以从安装包提取武器/道具目录：
+
+```bash
+npm run extract:catalog
+```
+
+当前提取字段：
+
+- `id`
+- `kind`
+- `sourcePackage`
+- `nameKey`
+- `tier`
+- `value`
+- `unlockedByDefault`
+- `canBeLooted`
+- `setPaths`
+- `effectPaths`
+
+生成文件 `data/official-catalog.json` 是后续批量补全武器、道具和解锁信息的基础。

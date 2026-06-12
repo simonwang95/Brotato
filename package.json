@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/calculator.test.mjs && node tests/strategyGenerator.test.mjs && node tests/scenarioCalculator.test.mjs",
+    "test": "node tests/calculator.test.mjs && node tests/strategyGenerator.test.mjs && node tests/scenarioCalculator.test.mjs && node tests/officialCatalog.test.mjs",
+    "extract:catalog": "node scripts/extract-official-catalog.mjs --write",
     "verify:names": "node scripts/verify-official-names.mjs",
     "start": "python3 -m http.server 5174"
   }
