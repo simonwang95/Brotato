@@ -100,6 +100,7 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 二期攻略生成器已经接入第一批数据，当前覆盖默认 5 个角色和 Engineer。下一步会继续补齐全角色、DLC 差异、道具解锁校验和更多武器数据。
 
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
+推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。
 
 ## 资料来源状态
 

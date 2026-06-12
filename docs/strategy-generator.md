@@ -3,6 +3,7 @@
 目标：用户选择一个角色，并选择是否无尽模式，程序生成一份可执行攻略。
 
 当前实现状态：v0.4 已接入页面，覆盖默认 5 个角色、Engineer 和 Lucky。数据模块在 `src/strategyData.js`，生成逻辑在 `src/strategyGenerator.js`。
+推荐规则的维护说明见 [recommendation-logic.md](recommendation-logic.md)。
 
 ## 输入
 

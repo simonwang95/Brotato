@@ -137,8 +137,20 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     "lucky guide should include Baby with a Beard",
   );
   assert.ok(
-    guide.wave20Targets.some(({ label, value }) => label === "幸运" && value === "180 - 320"),
-    "lucky endless guide should expose high luck targets",
+    guide.keyItems.some(({ item }) => item.name === "Baby Gecko" && item.cnName === "壁虎宝宝"),
+    "lucky guide should include Baby Gecko",
+  );
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Sifd's Relic" && item.cnName === "圣物"),
+    "lucky guide should include Sifd's Relic",
+  );
+  assert.ok(
+    guide.statPriority.early.includes("总伤害 %"),
+    "lucky guide should prioritize damage percent for item-trigger damage",
+  );
+  assert.ok(
+    guide.wave20Targets.some(({ label, value }) => label === "幸运" && value === "300 - 550"),
+    "lucky endless guide should expose higher luck targets",
   );
 }
 

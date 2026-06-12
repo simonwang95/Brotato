@@ -162,7 +162,9 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
       normalizedStats.luck * itemEffect.luckScaling +
       statScalingDamage,
   );
-  const rawDps = triggerRate * chance * expectedDamage;
+  const damageMultiplier = Math.max(0, 1 + normalizedStats.damagePercent / 100);
+  const modifiedExpectedDamage = expectedDamage * damageMultiplier;
+  const rawDps = triggerRate * chance * modifiedExpectedDamage;
   const dps = rawDps * enemyArmorMultiplier;
 
   return {
@@ -170,6 +172,8 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     scenario,
     triggerRate,
     expectedDamage,
+    damageMultiplier,
+    modifiedExpectedDamage,
     rawDps,
     dps,
   };

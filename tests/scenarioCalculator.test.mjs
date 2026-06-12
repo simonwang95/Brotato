@@ -89,6 +89,21 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const cyberball = calculateItemEffectDps(
+    {
+      ...baseStats,
+      damagePercent: 100,
+      luck: 20,
+    },
+    "swarm",
+    "cyberball",
+  );
+
+  closeTo(cyberball.modifiedExpectedDamage, 42, "item-trigger damage uses damage percent");
+  closeTo(cyberball.dps, 15.75, "damage percent increases cyberball dps");
+}
+
+{
   const beardedBaby = calculateItemEffectDps(
     {
       ...baseStats,
