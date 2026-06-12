@@ -1,4 +1,14 @@
-import { CHARACTER_GUIDES, ITEMS, MODES, STAT_LABELS, WEAPONS } from "./strategyData.js";
+import {
+  CHARACTER_GUIDES,
+  DANGER_LEVELS,
+  DLC_OPTIONS,
+  ITEMS,
+  MODES,
+  PREFERENCES,
+  STAT_LABELS,
+  UNLOCK_OPTIONS,
+  WEAPONS,
+} from "./strategyData.js";
 import { summarizeOfficialRecords } from "./officialCatalog.js";
 
 export function getAvailableCharacters() {
@@ -12,6 +22,22 @@ export function getAvailableCharacters() {
 
 export function getAvailableModes() {
   return Object.values(MODES);
+}
+
+export function getAvailableDangerLevels() {
+  return Object.values(DANGER_LEVELS);
+}
+
+export function getAvailableDlcOptions() {
+  return Object.values(DLC_OPTIONS);
+}
+
+export function getAvailableUnlockOptions() {
+  return Object.values(UNLOCK_OPTIONS);
+}
+
+export function getAvailablePreferences() {
+  return Object.values(PREFERENCES).map(({ id, label }) => ({ id, label }));
 }
 
 function resolveWeapon(entry, officialCatalog) {
@@ -38,6 +64,81 @@ function resolveItem(entry, officialCatalog) {
     item,
     official: summarizeOfficialRecords(officialCatalog, "item", item),
   };
+}
+
+function resolveOptions(options) {
+  const danger = DANGER_LEVELS[options.dangerLevelId] ?? DANGER_LEVELS.danger0;
+  const dlc = DLC_OPTIONS[options.dlcOptionId] ?? DLC_OPTIONS.allowDlc;
+  const unlock = UNLOCK_OPTIONS[options.unlockOptionId] ?? UNLOCK_OPTIONS.allowUnlocks;
+  const preference = PREFERENCES[options.preferenceId] ?? PREFERENCES.stable;
+
+  return {
+    danger,
+    dlc,
+    unlock,
+    preference,
+  };
+}
+
+function entryAllowedByOptions(entry, options) {
+  const { official } = entry;
+  if (!official?.found) return true;
+
+  if (!options.dlc.allowDlc && official.sources?.some((source) => source !== "base")) {
+    return false;
+  }
+
+  if (
+    !options.unlock.allowRareUnlocks &&
+    official.records.some((record) => record.unlockedByDefault === false)
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+function preferenceScore(entry, preference) {
+  const target = entry.weapon ?? entry.item;
+  const haystack = [
+    target.type,
+    target.role,
+    target.cnName,
+    entry.priority,
+    entry.reason,
+    ...(target.tags ?? []),
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  const keywordScore = preference.keywords.reduce(
+    (score, keyword) => score + (haystack.includes(keyword.toLowerCase()) ? 2 : 0),
+    0,
+  );
+  const tagScore = preference.tags.reduce(
+    (score, tag) =>
+      score + ((target.tags ?? []).some((entryTag) => entryTag.toLowerCase() === tag.toLowerCase()) ? 3 : 0),
+    0,
+  );
+  return keywordScore + tagScore;
+}
+
+function sortByPreference(entries, preference) {
+  return entries
+    .map((entry, index) => ({
+      entry,
+      index,
+      score: preferenceScore(entry, preference),
+    }))
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .map(({ entry }) => entry);
+}
+
+function filterAndSort(entries, options) {
+  return sortByPreference(
+    entries.filter((entry) => entryAllowedByOptions(entry, options)),
+    options.preference,
+  );
 }
 
 export function formatStatTarget(statId, range) {
@@ -67,7 +168,19 @@ function formatStatPriorities(statPriority) {
   );
 }
 
+function adjustWave20Targets(targets, danger) {
+  const survivalStats = new Set(["maxHp", "armor", "dodge", "hpRegen", "lifeSteal", "speed"]);
+  return Object.entries(targets).map(([statId, range]) => {
+    const adjustedRange =
+      Array.isArray(range) && survivalStats.has(statId)
+        ? range.map((value) => Math.round(value * danger.survivabilityMultiplier))
+        : range;
+    return formatStatTarget(statId, adjustedRange);
+  });
+}
+
 export function generateStrategyGuide(characterId, modeId = "normal20", options = {}) {
+  const resolvedOptions = resolveOptions(options);
   const character = CHARACTER_GUIDES[characterId];
   if (!character) {
     throw new Error(`Unknown character id: ${characterId}`);
@@ -83,19 +196,31 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
     throw new Error(`Missing ${modeId} plan for ${character.name}`);
   }
 
+  const recommendedWeapons = filterAndSort(
+    plan.recommendedWeapons.map((entry) => resolveWeapon(entry, options.officialCatalog)),
+    resolvedOptions,
+  );
+  const keyItems = filterAndSort(
+    plan.keyItems.map((entry) => resolveItem(entry, options.officialCatalog)),
+    resolvedOptions,
+  );
+
   return {
     character,
     mode,
+    options: resolvedOptions,
+    optionNotes: [
+      resolvedOptions.danger.note,
+      resolvedOptions.dlc.note,
+      resolvedOptions.unlock.note,
+      `偏好：${resolvedOptions.preference.label}。推荐顺序会优先贴合该路线。`,
+    ],
     stance: plan.stance,
-    recommendedWeapons: plan.recommendedWeapons.map((entry) =>
-      resolveWeapon(entry, options.officialCatalog),
-    ),
+    recommendedWeapons,
     avoid: plan.avoid,
-    keyItems: plan.keyItems.map((entry) => resolveItem(entry, options.officialCatalog)),
+    keyItems,
     statPriority: formatStatPriorities(plan.statPriority),
-    wave20Targets: Object.entries(plan.wave20Targets).map(([statId, range]) =>
-      formatStatTarget(statId, range),
-    ),
+    wave20Targets: adjustWave20Targets(plan.wave20Targets, resolvedOptions.danger),
     rhythm: plan.rhythm,
     sourceNotes: character.sourceNotes,
   };

@@ -4,7 +4,11 @@ import {
   formatStatPriority,
   generateStrategyGuide,
   getAvailableCharacters,
+  getAvailableDangerLevels,
+  getAvailableDlcOptions,
   getAvailableModes,
+  getAvailablePreferences,
+  getAvailableUnlockOptions,
   validateStrategyData,
 } from "../src/strategyGenerator.js";
 
@@ -46,6 +50,25 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
 }
 
 {
+  assert.ok(
+    getAvailableDangerLevels().some((danger) => danger.id === "danger5"),
+    "danger level input should include danger 5",
+  );
+  assert.ok(
+    getAvailableDlcOptions().some((dlc) => dlc.id === "baseOnly"),
+    "DLC input should support base-only filtering",
+  );
+  assert.ok(
+    getAvailableUnlockOptions().some((unlock) => unlock.id === "defaultOnly"),
+    "unlock input should support default-pool filtering",
+  );
+  assert.ok(
+    getAvailablePreferences().some((preference) => preference.id === "engineering"),
+    "preference input should include engineering route",
+  );
+}
+
+{
   const guide = generateStrategyGuide("ranger", "endless");
   assert.equal(guide.character.name, "Ranger");
   assert.equal(guide.mode.id, "endless");
@@ -83,6 +106,11 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
 {
   const guide = generateStrategyGuide("lucky", "endless", { officialCatalog });
   assert.equal(guide.character.name, "Lucky");
+  assert.equal(
+    guide.recommendedWeapons[0].weapon.name,
+    "Lute",
+    "lucky endless guide should surface Lute first when DLC is allowed",
+  );
   assert.ok(
     guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Slingshot"),
     "lucky endless guide should recommend Slingshot",
@@ -112,6 +140,36 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     guide.wave20Targets.some(({ label, value }) => label === "幸运" && value === "180 - 320"),
     "lucky endless guide should expose high luck targets",
   );
+}
+
+{
+  const guide = generateStrategyGuide("lucky", "endless", {
+    officialCatalog,
+    dlcOptionId: "baseOnly",
+  });
+  assert.ok(
+    !guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Lute"),
+    "base-only DLC input should hide Lute",
+  );
+  assert.ok(
+    guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Slingshot"),
+    "base-only Lucky guide should keep base-game alternatives",
+  );
+}
+
+{
+  const normal = generateStrategyGuide("lucky", "endless", {
+    officialCatalog,
+    dangerLevelId: "danger0",
+  });
+  const danger5 = generateStrategyGuide("lucky", "endless", {
+    officialCatalog,
+    dangerLevelId: "danger5",
+  });
+  const normalArmor = normal.wave20Targets.find(({ label }) => label === "护甲");
+  const dangerArmor = danger5.wave20Targets.find(({ label }) => label === "护甲");
+  assert.equal(normalArmor.value, "9 - 15");
+  assert.equal(dangerArmor.value, "11 - 19");
 }
 
 {

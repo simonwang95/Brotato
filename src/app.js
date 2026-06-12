@@ -14,7 +14,11 @@ import {
 import {
   generateStrategyGuide,
   getAvailableCharacters,
+  getAvailableDangerLevels,
+  getAvailableDlcOptions,
   getAvailableModes,
+  getAvailablePreferences,
+  getAvailableUnlockOptions,
 } from "./strategyGenerator.js";
 
 const statLabels = {
@@ -93,6 +97,10 @@ const state = {
   combatContext: { ...DEFAULT_COMBAT_CONTEXT },
   strategyCharacter: "ranger",
   strategyMode: "normal20",
+  strategyDanger: "danger0",
+  strategyDlc: "allowDlc",
+  strategyUnlock: "allowUnlocks",
+  strategyPreference: "stable",
   officialCatalog: null,
   catalogLoadState: "loading",
 };
@@ -354,6 +362,10 @@ function renderOfficialMeta(official) {
 function renderStrategyControls() {
   const characterSelect = $("#strategy-character");
   const modeSelect = $("#strategy-mode");
+  const dangerSelect = $("#strategy-danger");
+  const dlcSelect = $("#strategy-dlc");
+  const unlockSelect = $("#strategy-unlock");
+  const preferenceSelect = $("#strategy-preference");
 
   characterSelect.replaceChildren(
     ...getAvailableCharacters().map((character) => {
@@ -374,11 +386,55 @@ function renderStrategyControls() {
     }),
   );
   modeSelect.value = state.strategyMode;
+
+  dangerSelect.replaceChildren(
+    ...getAvailableDangerLevels().map((danger) => {
+      const option = document.createElement("option");
+      option.value = danger.id;
+      option.textContent = danger.label;
+      return option;
+    }),
+  );
+  dangerSelect.value = state.strategyDanger;
+
+  dlcSelect.replaceChildren(
+    ...getAvailableDlcOptions().map((dlc) => {
+      const option = document.createElement("option");
+      option.value = dlc.id;
+      option.textContent = dlc.label;
+      return option;
+    }),
+  );
+  dlcSelect.value = state.strategyDlc;
+
+  unlockSelect.replaceChildren(
+    ...getAvailableUnlockOptions().map((unlock) => {
+      const option = document.createElement("option");
+      option.value = unlock.id;
+      option.textContent = unlock.label;
+      return option;
+    }),
+  );
+  unlockSelect.value = state.strategyUnlock;
+
+  preferenceSelect.replaceChildren(
+    ...getAvailablePreferences().map((preference) => {
+      const option = document.createElement("option");
+      option.value = preference.id;
+      option.textContent = preference.label;
+      return option;
+    }),
+  );
+  preferenceSelect.value = state.strategyPreference;
 }
 
 function renderStrategyGuide() {
   const guide = generateStrategyGuide(state.strategyCharacter, state.strategyMode, {
     officialCatalog: state.officialCatalog,
+    dangerLevelId: state.strategyDanger,
+    dlcOptionId: state.strategyDlc,
+    unlockOptionId: state.strategyUnlock,
+    preferenceId: state.strategyPreference,
   });
   const output = $("#strategy-output");
   const catalogNote =
@@ -476,7 +532,7 @@ function renderStrategyGuide() {
 
     <section class="source-section">
       <h3>资料状态</h3>
-      ${renderList([...guide.sourceNotes, catalogNote].map((item) => escapeHtml(item)))}
+      ${renderList([...guide.optionNotes, ...guide.sourceNotes, catalogNote].map((item) => escapeHtml(item)))}
     </section>
   `;
 }
@@ -656,6 +712,26 @@ function bindControls() {
     renderStrategyGuide();
   });
 
+  $("#strategy-danger").addEventListener("change", (event) => {
+    state.strategyDanger = event.target.value;
+    renderStrategyGuide();
+  });
+
+  $("#strategy-dlc").addEventListener("change", (event) => {
+    state.strategyDlc = event.target.value;
+    renderStrategyGuide();
+  });
+
+  $("#strategy-unlock").addEventListener("change", (event) => {
+    state.strategyUnlock = event.target.value;
+    renderStrategyGuide();
+  });
+
+  $("#strategy-preference").addEventListener("change", (event) => {
+    state.strategyPreference = event.target.value;
+    renderStrategyGuide();
+  });
+
   $("#rounding-mode").addEventListener("change", (event) => {
     state.roundingMode = event.target.value;
     renderResults();
@@ -734,6 +810,10 @@ function bindControls() {
     state.itemEffectId = "babyWithABeard";
     state.strategyCharacter = "lucky";
     state.strategyMode = "endless";
+    state.strategyDanger = "danger5";
+    state.strategyDlc = "allowDlc";
+    state.strategyUnlock = "allowUnlocks";
+    state.strategyPreference = "ranged";
     render();
   });
 }

@@ -11,6 +11,96 @@ export const MODES = {
   },
 };
 
+export const DANGER_LEVELS = {
+  danger0: {
+    id: "danger0",
+    label: "危险 0",
+    survivabilityMultiplier: 1,
+    note: "标准难度，按基础目标面板执行。",
+  },
+  danger3: {
+    id: "danger3",
+    label: "危险 3",
+    survivabilityMultiplier: 1.12,
+    note: "中高危险，建议提前补护甲、生命和移速。",
+  },
+  danger5: {
+    id: "danger5",
+    label: "危险 5",
+    survivabilityMultiplier: 1.25,
+    note: "最高危险，生存阈值要更早到位，少拿纯贪经济项。",
+  },
+};
+
+export const DLC_OPTIONS = {
+  allowDlc: {
+    id: "allowDlc",
+    label: "允许 DLC",
+    allowDlc: true,
+    note: "允许推荐深海魔怪等 DLC 内容。",
+  },
+  baseOnly: {
+    id: "baseOnly",
+    label: "仅原版",
+    allowDlc: false,
+    note: "隐藏官方目录中来自 DLC 的武器和道具。",
+  },
+};
+
+export const UNLOCK_OPTIONS = {
+  allowUnlocks: {
+    id: "allowUnlocks",
+    label: "允许解锁物",
+    allowRareUnlocks: true,
+    note: "可推荐需要角色通关或挑战解锁的武器/道具。",
+  },
+  defaultOnly: {
+    id: "defaultOnly",
+    label: "只看默认池",
+    allowRareUnlocks: false,
+    note: "隐藏官方目录标记为非默认解锁的条目。",
+  },
+};
+
+export const PREFERENCES = {
+  stable: {
+    id: "stable",
+    label: "稳健通关",
+    keywords: [],
+    tags: [],
+  },
+  damage: {
+    id: "damage",
+    label: "极限输出",
+    keywords: ["输出", "伤害", "暴击", "攻速"],
+    tags: ["Gun", "Precise"],
+  },
+  engineering: {
+    id: "engineering",
+    label: "工程流",
+    keywords: ["工程", "结构", "炮塔", "地雷"],
+    tags: ["Engineering", "Tool"],
+  },
+  elemental: {
+    id: "elemental",
+    label: "元素流",
+    keywords: ["元素", "燃烧", "点燃"],
+    tags: ["Elemental"],
+  },
+  ranged: {
+    id: "ranged",
+    label: "远程流",
+    keywords: ["远程", "弹射", "枪械"],
+    tags: ["Ranged", "Gun"],
+  },
+  melee: {
+    id: "melee",
+    label: "近战流",
+    keywords: ["近战", "徒手"],
+    tags: ["Melee", "Unarmed"],
+  },
+};
+
 export const STAT_LABELS = {
   maxHp: "最大生命",
   hpRegen: "生命再生",
