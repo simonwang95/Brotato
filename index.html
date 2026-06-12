@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brotato 数值实验台</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Brotato Number Lab v0.1</p>
+          <h1>土豆兄弟数值实验台</h1>
+          <p class="subtitle">
+            第一版先回答一个具体问题：当前面板和武器下，一个候选道具会让单种武器的期望 DPS 改变多少。
+          </p>
+        </div>
+        <div class="toolbar">
+          <button id="load-example" type="button">载入示例</button>
+          <button id="reset-item" class="secondary" type="button">清空道具变化</button>
+        </div>
+      </header>
+
+      <section class="layout">
+        <div>
+          <section class="panel">
+            <div class="panel-header">
+              <h2>角色面板</h2>
+              <p>输入当前局内已经显示的属性。百分比属性直接填数字，例如 25% 填 25。</p>
+            </div>
+            <div id="stats-fields" class="fields"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>当前武器</h2>
+              <p>先按单种武器建模，同类武器用“武器数量”乘起来。</p>
+            </div>
+            <div id="weapon-fields" class="fields"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>候选道具变化</h2>
+              <p>只填这个道具带来的增减量，例如 +5% 总伤害填 5，-3% 攻速填 -3。</p>
+            </div>
+            <div id="item-fields" class="fields"></div>
+            <div class="options">
+              <label class="field">
+                <span>伤害取整</span>
+                <select id="rounding-mode">
+                  <option value="none">不取整，用连续值</option>
+                  <option value="floor">向下取整</option>
+                  <option value="round">四舍五入</option>
+                  <option value="ceil">向上取整</option>
+                </select>
+              </label>
+            </div>
+          </section>
+        </div>
+
+        <aside class="panel">
+          <div class="panel-header">
+            <h2>计算结果</h2>
+            <p>这是普通命中的期望模型，适合先比较“这个属性值不值得买”。</p>
+          </div>
+          <div id="summary" class="summary-grid"></div>
+          <div id="details" class="details"></div>
+        </aside>
+      </section>
+
+      <p class="note">
+        当前版本暂不计算弹射、穿透、燃烧、爆炸范围命中、结构物、敌人密度、溢出伤害和实际走位导致的命中损失。
+        这些会作为后续“场景模型”加入。
+      </p>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
