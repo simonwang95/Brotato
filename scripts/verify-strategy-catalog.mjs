@@ -1,17 +1,9 @@
 import { readFileSync } from "node:fs";
+import { findOfficialRecords, getOfficialNameKey } from "../src/officialCatalog.js";
 import { ITEMS, WEAPONS } from "../src/strategyData.js";
 
 const catalogPath = process.env.BROTATO_CATALOG_PATH || "data/official-catalog.json";
 const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
-
-function toNameKey(prefix, name) {
-  return `${prefix}_${name
-    .replace(/’/g, "")
-    .replace(/'/g, "")
-    .replace(/[^A-Za-z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "")
-    .toUpperCase()}`;
-}
 
 function summarizeRecord(record) {
   return {
@@ -23,12 +15,10 @@ function summarizeRecord(record) {
   };
 }
 
-function verifyGroup(kind, entries, prefix) {
+function verifyGroup(kind, entries) {
   return Object.values(entries).map((entry) => {
-    const nameKey = entry.officialNameKey ?? toNameKey(prefix, entry.name);
-    const matches = catalog.records.filter(
-      (record) => record.kind === kind && record.nameKey === nameKey,
-    );
+    const nameKey = getOfficialNameKey(kind, entry);
+    const matches = findOfficialRecords(catalog, kind, entry);
 
     return {
       id: entry.id,
@@ -40,8 +30,8 @@ function verifyGroup(kind, entries, prefix) {
   });
 }
 
-const weaponResults = verifyGroup("weapon", WEAPONS, "WEAPON");
-const itemResults = verifyGroup("item", ITEMS, "ITEM");
+const weaponResults = verifyGroup("weapon", WEAPONS);
+const itemResults = verifyGroup("item", ITEMS);
 const allResults = [...weaponResults, ...itemResults];
 const missing = allResults.filter((result) => result.matches.length === 0);
 const found = allResults.filter((result) => result.matches.length > 0);

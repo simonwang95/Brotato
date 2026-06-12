@@ -59,6 +59,8 @@ const state = {
   itemEffectId: "none",
   strategyCharacter: "ranger",
   strategyMode: "normal20",
+  officialCatalog: null,
+  catalogLoadState: "loading",
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -282,6 +284,18 @@ function renderPriorityList(title, items) {
   `;
 }
 
+function renderOfficialMeta(official) {
+  if (state.catalogLoadState === "loading") {
+    return `<small class="official-meta">官方目录：加载中</small>`;
+  }
+
+  if (state.catalogLoadState === "error") {
+    return `<small class="official-meta">官方目录：未载入，本地静态文件可继续使用手写资料</small>`;
+  }
+
+  return `<small class="official-meta">官方目录：${escapeHtml(official.display)}</small>`;
+}
+
 function renderStrategyControls() {
   const characterSelect = $("#strategy-character");
   const modeSelect = $("#strategy-mode");
@@ -308,8 +322,14 @@ function renderStrategyControls() {
 }
 
 function renderStrategyGuide() {
-  const guide = generateStrategyGuide(state.strategyCharacter, state.strategyMode);
+  const guide = generateStrategyGuide(state.strategyCharacter, state.strategyMode, {
+    officialCatalog: state.officialCatalog,
+  });
   const output = $("#strategy-output");
+  const catalogNote =
+    state.catalogLoadState === "loaded" && state.officialCatalog
+      ? `官方目录已载入：${state.officialCatalog.summary.total} 条记录，原版 ${state.officialCatalog.summary.byPackage.base} 条，深渊惊魂 ${state.officialCatalog.summary.byPackage.abyssalTerrors} 条。`
+      : "官方目录未载入时，攻略仍使用手写数据；启动本地服务后会自动补全官方元数据。";
 
   output.innerHTML = `
     <section class="guide-hero">
@@ -330,7 +350,7 @@ function renderStrategyGuide() {
         <div class="card-list">
           ${guide.recommendedWeapons
             .map(
-              ({ priority, reason, weapon }) => `
+              ({ priority, reason, weapon, official }) => `
                 <article class="guide-card">
                   <div>
                     <span>${escapeHtml(priority)}</span>
@@ -338,6 +358,7 @@ function renderStrategyGuide() {
                   </div>
                   <p>${escapeHtml(reason)}</p>
                   <small>解锁：${escapeHtml(weapon.unlock)}</small>
+                  ${renderOfficialMeta(official)}
                 </article>
               `,
             )
@@ -351,7 +372,7 @@ function renderStrategyGuide() {
         <div class="card-list">
           ${guide.keyItems
             .map(
-              ({ priority, reason, item }) => `
+              ({ priority, reason, item, official }) => `
                 <article class="guide-card">
                   <div>
                     <span>${escapeHtml(priority)}</span>
@@ -359,6 +380,7 @@ function renderStrategyGuide() {
                   </div>
                   <p>${escapeHtml(reason)}</p>
                   <small>解锁：${escapeHtml(item.unlock)}</small>
+                  ${renderOfficialMeta(official)}
                 </article>
               `,
             )
@@ -399,7 +421,7 @@ function renderStrategyGuide() {
 
     <section class="source-section">
       <h3>资料状态</h3>
-      ${renderList(guide.sourceNotes.map((item) => escapeHtml(item)))}
+      ${renderList([...guide.sourceNotes, catalogNote].map((item) => escapeHtml(item)))}
     </section>
   `;
 }
@@ -618,5 +640,21 @@ function render() {
   renderResults();
 }
 
+async function loadOfficialCatalog() {
+  try {
+    const response = await fetch("./data/official-catalog.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    state.officialCatalog = await response.json();
+    state.catalogLoadState = "loaded";
+  } catch (error) {
+    console.warn("Failed to load official catalog", error);
+    state.officialCatalog = null;
+    state.catalogLoadState = "error";
+  }
+
+  renderStrategyGuide();
+}
+
 bindControls();
 render();
+loadOfficialCatalog();

@@ -189,7 +189,7 @@ export const WEAPONS = {
     name: "Lute",
     cnName: "琉特琴",
     type: "幸运乐器",
-    unlock: "待校验：请以当前游戏版本或 Wiki 为准。",
+    unlock: "深渊惊魂 DLC 武器；官方目录显示默认解锁、可掉落。",
     tags: ["Musical", "Luck"],
   },
 };
@@ -311,7 +311,7 @@ export const ITEMS = {
     id: "babyWithABeard",
     name: "Baby with a Beard",
     cnName: "长胡子的婴儿",
-    unlock: "待校验：请以当前游戏版本或 Wiki 为准。",
+    unlock: "官方目录显示默认解锁、可掉落。",
     role: "击杀连锁弹体",
   },
 };

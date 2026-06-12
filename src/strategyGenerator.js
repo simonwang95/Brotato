@@ -1,4 +1,5 @@
 import { CHARACTER_GUIDES, ITEMS, MODES, STAT_LABELS, WEAPONS } from "./strategyData.js";
+import { summarizeOfficialRecords } from "./officialCatalog.js";
 
 export function getAvailableCharacters() {
   return Object.values(CHARACTER_GUIDES).map(({ id, name, cnHint, unlock }) => ({
@@ -13,7 +14,7 @@ export function getAvailableModes() {
   return Object.values(MODES);
 }
 
-function resolveWeapon(entry) {
+function resolveWeapon(entry, officialCatalog) {
   const weapon = WEAPONS[entry.weaponId];
   if (!weapon) {
     throw new Error(`Unknown weapon id: ${entry.weaponId}`);
@@ -22,10 +23,11 @@ function resolveWeapon(entry) {
   return {
     ...entry,
     weapon,
+    official: summarizeOfficialRecords(officialCatalog, "weapon", weapon),
   };
 }
 
-function resolveItem(entry) {
+function resolveItem(entry, officialCatalog) {
   const item = ITEMS[entry.itemId];
   if (!item) {
     throw new Error(`Unknown item id: ${entry.itemId}`);
@@ -34,6 +36,7 @@ function resolveItem(entry) {
   return {
     ...entry,
     item,
+    official: summarizeOfficialRecords(officialCatalog, "item", item),
   };
 }
 
@@ -64,7 +67,7 @@ function formatStatPriorities(statPriority) {
   );
 }
 
-export function generateStrategyGuide(characterId, modeId = "normal20") {
+export function generateStrategyGuide(characterId, modeId = "normal20", options = {}) {
   const character = CHARACTER_GUIDES[characterId];
   if (!character) {
     throw new Error(`Unknown character id: ${characterId}`);
@@ -84,9 +87,11 @@ export function generateStrategyGuide(characterId, modeId = "normal20") {
     character,
     mode,
     stance: plan.stance,
-    recommendedWeapons: plan.recommendedWeapons.map(resolveWeapon),
+    recommendedWeapons: plan.recommendedWeapons.map((entry) =>
+      resolveWeapon(entry, options.officialCatalog),
+    ),
     avoid: plan.avoid,
-    keyItems: plan.keyItems.map(resolveItem),
+    keyItems: plan.keyItems.map((entry) => resolveItem(entry, options.officialCatalog)),
     statPriority: formatStatPriorities(plan.statPriority),
     wave20Targets: Object.entries(plan.wave20Targets).map(([statId, range]) =>
       formatStatTarget(statId, range),

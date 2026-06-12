@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   formatStatPriority,
   generateStrategyGuide,
@@ -6,6 +7,8 @@ import {
   getAvailableModes,
   validateStrategyData,
 } from "../src/strategyGenerator.js";
+
+const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "utf8"));
 
 {
   const errors = validateStrategyData();
@@ -78,7 +81,7 @@ import {
 }
 
 {
-  const guide = generateStrategyGuide("lucky", "endless");
+  const guide = generateStrategyGuide("lucky", "endless", { officialCatalog });
   assert.equal(guide.character.name, "Lucky");
   assert.ok(
     guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Slingshot"),
@@ -87,6 +90,13 @@ import {
   assert.ok(
     guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Lute" && weapon.cnName === "琉特琴"),
     "lucky endless guide should recommend Lute",
+  );
+  assert.ok(
+    guide.recommendedWeapons.some(
+      ({ weapon, official }) =>
+        weapon.name === "Lute" && official.sourceLabel === "深渊惊魂" && official.tierLabel === "T1-T4",
+    ),
+    "lucky lute recommendation should include official DLC catalog metadata",
   );
   assert.ok(
     guide.keyItems.some(({ item }) => item.name === "Cyberball" && item.cnName === "赛博球"),

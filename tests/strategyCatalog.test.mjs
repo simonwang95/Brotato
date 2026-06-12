@@ -1,30 +1,19 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { findOfficialRecords, getOfficialNameKey } from "../src/officialCatalog.js";
 import { ITEMS, WEAPONS } from "../src/strategyData.js";
 
 const catalog = JSON.parse(readFileSync("data/official-catalog.json", "utf8"));
 
-function toNameKey(prefix, name) {
-  return `${prefix}_${name
-    .replace(/’/g, "")
-    .replace(/'/g, "")
-    .replace(/[^A-Za-z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "")
-    .toUpperCase()}`;
-}
-
-function expectCatalogEntries(kind, entries, prefix) {
+function expectCatalogEntries(kind, entries) {
   Object.values(entries).forEach((entry) => {
-    const nameKey = toNameKey(prefix, entry.name);
-    const expectedNameKey = entry.officialNameKey ?? nameKey;
-    const matches = catalog.records.filter(
-      (record) => record.kind === kind && record.nameKey === expectedNameKey,
-    );
+    const expectedNameKey = getOfficialNameKey(kind, entry);
+    const matches = findOfficialRecords(catalog, kind, entry);
     assert.ok(matches.length > 0, `${entry.name} should map to ${expectedNameKey}`);
   });
 }
 
-expectCatalogEntries("weapon", WEAPONS, "WEAPON");
-expectCatalogEntries("item", ITEMS, "ITEM");
+expectCatalogEntries("weapon", WEAPONS);
+expectCatalogEntries("item", ITEMS);
 
 console.log("strategy catalog tests passed");

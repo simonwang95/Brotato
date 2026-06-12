@@ -86,6 +86,8 @@ npm run extract:catalog
 npm run verify:catalog
 ```
 
+页面启动时会读取 `data/official-catalog.json`，在推荐武器和关键道具下方补充官方来源、阶数、价格、解锁和掉落池状态。
+
 ## 后续目标
 
 二期攻略生成器已经接入第一批数据，当前覆盖默认 5 个角色和 Engineer。下一步会继续补齐全角色、DLC 差异、道具解锁校验和更多武器数据。
