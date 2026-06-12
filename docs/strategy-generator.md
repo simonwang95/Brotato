@@ -203,3 +203,11 @@ npm run extract:catalog
 - `effectPaths`
 
 生成文件 `data/official-catalog.json` 是后续批量补全武器、道具和解锁信息的基础。
+
+攻略资料和官方目录的引用校验：
+
+```bash
+npm run verify:catalog
+```
+
+这会把 `src/strategyData.js` 里的武器和道具名称转换为官方 `nameKey`，并检查是否能在 `data/official-catalog.json` 找到对应记录。

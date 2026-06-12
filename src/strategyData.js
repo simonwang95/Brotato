@@ -106,6 +106,7 @@ export const WEAPONS = {
   thiefDagger: {
     id: "thiefDagger",
     name: "Thief Dagger",
+    officialNameKey: "WEAPON_DAGGER",
     cnName: "盗贼匕首",
     type: "近战经济",
     unlock: "默认可用。",

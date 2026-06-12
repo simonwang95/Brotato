@@ -80,6 +80,12 @@ npm run extract:catalog
 
 生成文件在 `data/official-catalog.json`，包含资源 ID、翻译 key、稀有度、价格、默认解锁状态和 DLC 来源。
 
+校验攻略资料中的武器/道具是否能映射到官方目录：
+
+```bash
+npm run verify:catalog
+```
+
 ## 后续目标
 
 二期攻略生成器已经接入第一批数据，当前覆盖默认 5 个角色和 Engineer。下一步会继续补齐全角色、DLC 差异、道具解锁校验和更多武器数据。
