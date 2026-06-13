@@ -468,6 +468,7 @@ function renderStrategyGuide() {
                     <h4>${escapeHtml(weapon.name)} <small>（${escapeHtml(weapon.cnName)}，${escapeHtml(weapon.type)}）</small></h4>
                   </div>
                   <p>${escapeHtml(reason)}</p>
+                  <small>属性：${escapeHtml(weapon.statNote)}</small>
                   <small>解锁：${escapeHtml(weapon.unlock)}</small>
                   ${renderOfficialMeta(official)}
                 </article>
@@ -490,6 +491,7 @@ function renderStrategyGuide() {
                     <h4>${escapeHtml(item.name)} <small>（${escapeHtml(item.cnName)}，${escapeHtml(item.role)}）</small></h4>
                   </div>
                   <p>${escapeHtml(reason)}</p>
+                  <small>属性：${escapeHtml(item.statNote)}</small>
                   <small>解锁：${escapeHtml(item.unlock)}</small>
                   ${renderOfficialMeta(official)}
                 </article>

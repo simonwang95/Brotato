@@ -21,7 +21,7 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
 
 {
   const characters = getAvailableCharacters();
-  assert.ok(characters.length >= 6, "seed guide pack should include starter roles plus engineer");
+  assert.ok(characters.length >= 44, "guide pack should include the original character roster");
   assert.ok(
     characters.some((character) => character.id === "ranger"),
     "ranger guide should be present",
@@ -41,6 +41,10 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
   assert.ok(
     characters.some((character) => character.id === "chunky" && character.cnHint === "大壮，生命坦克"),
     "chunky should expose Chinese name and archetype",
+  );
+  assert.ok(
+    characters.some((character) => character.id === "demon" && character.cnHint === "恶魔，生命经济"),
+    "demon should expose Chinese name and archetype",
   );
 }
 
@@ -87,6 +91,10 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     "recommended weapons should expose Chinese translations",
   );
   assert.ok(
+    guide.recommendedWeapons.every(({ weapon }) => weapon.statNote),
+    "recommended weapons should expose stat notes",
+  );
+  assert.ok(
     guide.keyItems.some(({ item }) => item.name === "Night Goggles"),
     "ranger guide should include its character unlock item",
   );
@@ -95,6 +103,10 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
       ({ item }) => item.name === "Night Goggles" && item.cnName === "夜视镜",
     ),
     "key items should expose Chinese translations",
+  );
+  assert.ok(
+    guide.keyItems.every(({ item }) => item.statNote),
+    "key items should expose stat notes",
   );
   assert.ok(
     guide.statPriority.early.includes("远程伤害"),

@@ -48,7 +48,10 @@ function resolveWeapon(entry, officialCatalog) {
 
   return {
     ...entry,
-    weapon,
+    weapon: {
+      ...weapon,
+      statNote: weapon.statNote ?? inferWeaponStatNote(weapon),
+    },
     official: summarizeOfficialRecords(officialCatalog, "weapon", weapon),
   };
 }
@@ -61,9 +64,41 @@ function resolveItem(entry, officialCatalog) {
 
   return {
     ...entry,
-    item,
+    item: {
+      ...item,
+      statNote: item.statNote ?? inferItemStatNote(item),
+    },
     official: summarizeOfficialRecords(officialCatalog, "item", item),
   };
+}
+
+function inferWeaponStatNote(weapon) {
+  const tags = new Set(weapon.tags ?? []);
+  const parts = [];
+
+  if (tags.has("Engineering")) parts.push("工程学");
+  if (tags.has("Elemental")) parts.push("元素伤害");
+  if (tags.has("Ranged") || tags.has("Gun")) parts.push("远程伤害");
+  if (tags.has("Melee") || tags.has("Unarmed")) parts.push("近战伤害");
+  if (tags.has("Precise")) parts.push("暴击率");
+  if (tags.has("Luck")) parts.push("幸运");
+  if (weapon.id === "slingshot") parts.push("弹射收益");
+  if (weapon.id === "pruner") parts.push("收获和续航");
+
+  if (!parts.length) parts.push(weapon.type);
+  return `主要看 ${parts.join(" / ")}；攻速、总伤害和生存阈值仍需按角色补齐。`;
+}
+
+function inferItemStatNote(item) {
+  const role = item.role ?? "";
+  if (/幸运|拾取/.test(role)) return "重点影响幸运、拾取频率或触发类伤害。";
+  if (/工程|结构/.test(role)) return "重点影响工程学、结构物密度或结构物输出。";
+  if (/暴击/.test(role)) return "重点影响暴击率、暴击收益或暴击经济。";
+  if (/移速/.test(role)) return "重点影响移速、走位空间和生存容错。";
+  if (/经济|折扣|收获/.test(role)) return "重点影响经济、商店效率或收获成长。";
+  if (/回复|续航|消耗品/.test(role)) return "重点影响回复、续航或容错。";
+  if (/燃烧|点燃/.test(role)) return "重点影响元素伤害、燃烧覆盖和传播。";
+  return `定位：${role || "通用补强"}。`;
 }
 
 function resolveOptions(options) {
