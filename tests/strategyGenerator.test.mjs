@@ -46,6 +46,10 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     characters.some((character) => character.id === "demon" && character.cnHint === "恶魔，生命经济"),
     "demon should expose Chinese name and archetype",
   );
+  assert.ok(
+    characters.some((character) => character.id === "sailor" && character.cnHint.startsWith("水手")),
+    "DLC sailor guide should be present with Chinese name",
+  );
 }
 
 {
@@ -291,6 +295,82 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
   const dangerArmor = danger5.wave20Targets.find(({ label }) => label === "护甲");
   assert.equal(normalArmor.value, "9 - 15");
   assert.equal(dangerArmor.value, "11 - 19");
+}
+
+{
+  const guide = generateStrategyGuide("sailor", "normal20", { officialCatalog });
+  assert.equal(guide.character.name, "Sailor");
+  assert.equal(guide.recommendedWeapons[0].weapon.name, "Anchor");
+  assert.equal(guide.recommendedWeapons[0].weapon.cnName, "锚");
+  assert.ok(
+    guide.recommendedWeapons[0].weapon.setNote.includes("海军"),
+    "sailor anchor recommendation should expose naval set effect",
+  );
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Coral" && item.cnName === "珊瑚"),
+    "sailor should include Coral as a DLC route item",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("captain", "normal20", {
+    officialCatalog,
+    unlockOptionId: "defaultOnly",
+  });
+  assert.ok(
+    !guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Captain's Sword"),
+    "default-only input should hide Captain's Sword because official catalog marks it locked",
+  );
+  assert.ok(
+    guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Sword"),
+    "captain guide should keep base-game sword fallback when unlocks are hidden",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("builder", "normal20", {
+    officialCatalog,
+    preferenceId: "engineering",
+  });
+  assert.equal(guide.character.name, "Builder");
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Robot Arm"),
+    "builder should include Robot Arm for engineering scaling",
+  );
+  assert.ok(
+    guide.recommendedWeapons.every(({ routeTags }) => routeTags?.includes("Engineering")),
+    "builder recommendations should carry route tags for preference scoring",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("chef", "normal20", {
+    officialCatalog,
+    preferenceId: "elemental",
+  });
+  assert.ok(
+    ["Torch", "Wand"].includes(guide.recommendedWeapons[0].weapon.name),
+    "elemental preference should surface elemental chef weapons",
+  );
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Cauldron" && item.cnName === "大锅"),
+    "chef should include Cauldron for consumable scaling",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("diver", "normal20", {
+    officialCatalog,
+    dlcOptionId: "baseOnly",
+  });
+  assert.ok(
+    !guide.recommendedWeapons.some(({ official }) => official.sources?.includes("abyssalTerrors")),
+    "base-only DLC input should hide DLC weapons even for a DLC character",
+  );
+  assert.ok(
+    guide.recommendedWeapons.some(({ weapon }) => weapon.name === "SMG"),
+    "diver should retain base-game ranged fallback when DLC weapons are hidden",
+  );
 }
 
 {

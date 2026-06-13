@@ -151,6 +151,8 @@ function inferItemStatNote(item) {
   const role = item.role ?? "";
   if (/幸运|拾取/.test(role)) return "重点影响幸运、拾取频率或触发类伤害。";
   if (/工程|结构/.test(role)) return "重点影响工程学、结构物密度或结构物输出。";
+  if (/诅咒/.test(role)) return "重点影响诅咒敌人、诅咒道具或以风险换取奖励的收益。";
+  if (/海军/.test(role)) return "重点影响海军路线的套装集中度、材料节奏或输出质量。";
   if (/弹射/.test(role)) return "重点影响弹射次数、怪群覆盖和远程弹体的二次命中。";
   if (/贯通/.test(role)) return "重点影响贯通、穿透怪群后的实际命中数和远程覆盖。";
   if (/范围/.test(role)) return "重点影响范围、先手输出距离和走位安全窗口。";
@@ -198,13 +200,14 @@ function entryAllowedByOptions(entry, options) {
 
 function preferenceScore(entry, preference) {
   const target = entry.weapon ?? entry.item;
+  const candidateTags = [...(target.tags ?? []), ...(entry.routeTags ?? [])];
   const haystack = [
     target.type,
     target.role,
     target.cnName,
     entry.priority,
     entry.reason,
-    ...(target.tags ?? []),
+    ...candidateTags,
   ]
     .join(" ")
     .toLowerCase();
@@ -215,7 +218,8 @@ function preferenceScore(entry, preference) {
   );
   const tagScore = preference.tags.reduce(
     (score, tag) =>
-      score + ((target.tags ?? []).some((entryTag) => entryTag.toLowerCase() === tag.toLowerCase()) ? 3 : 0),
+      score +
+      (candidateTags.some((entryTag) => entryTag.toLowerCase() === tag.toLowerCase()) ? 3 : 0),
     0,
   );
   return keywordScore + tagScore;

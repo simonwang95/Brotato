@@ -98,7 +98,7 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 
 ## 后续目标
 
-二期攻略生成器已经接入原版 44 个角色。下一步会继续补深海魔怪 DLC 角色、角色解锁条件校验和更多武器数据。
+二期攻略生成器已经接入原版 44 个角色，并开始接入深海魔怪 DLC 角色；当前首批包含 Sailor（水手）、Captain（船长）、Builder（建造者）、Chef（厨师）、Diver（潜水员）、Curious（好奇之人）。下一步会继续补剩余 DLC 角色、角色解锁条件校验和更多武器数据。
 
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。
