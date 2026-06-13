@@ -469,6 +469,7 @@ function renderStrategyGuide() {
                   </div>
                   <p>${escapeHtml(reason)}</p>
                   <small>属性：${escapeHtml(weapon.statNote)}</small>
+                  ${weapon.setNote ? `<small>套装：${escapeHtml(weapon.setNote)}</small>` : ""}
                   <small>解锁：${escapeHtml(weapon.unlock)}</small>
                   ${renderOfficialMeta(official)}
                 </article>

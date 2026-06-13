@@ -11,6 +11,26 @@ import {
 } from "./strategyData.js";
 import { summarizeOfficialRecords } from "./officialCatalog.js";
 
+const WEAPON_SET_LABELS = {
+  blade: "剑类",
+  blunt: "钝器",
+  ethereal: "幽魂",
+  explosive: "爆炸",
+  fire: "火焰",
+  gun: "枪械",
+  heavy: "重型",
+  legendary: "传奇",
+  medical: "医疗",
+  medieval: "中世纪",
+  musical: "乐器",
+  naval: "海军",
+  precise: "精准",
+  primitive: "原始",
+  support: "辅助",
+  tool: "工具",
+  unarmed: "徒手",
+};
+
 export function getAvailableCharacters() {
   return Object.values(CHARACTER_GUIDES).map(({ id, name, cnHint, unlock }) => ({
     id,
@@ -45,14 +65,16 @@ function resolveWeapon(entry, officialCatalog) {
   if (!weapon) {
     throw new Error(`Unknown weapon id: ${entry.weaponId}`);
   }
+  const official = summarizeOfficialRecords(officialCatalog, "weapon", weapon);
 
   return {
     ...entry,
     weapon: {
       ...weapon,
       statNote: weapon.statNote ?? inferWeaponStatNote(weapon),
+      setNote: weapon.setNote ?? inferWeaponSetNote(weapon, official),
     },
-    official: summarizeOfficialRecords(officialCatalog, "weapon", weapon),
+    official,
   };
 }
 
@@ -87,6 +109,42 @@ function inferWeaponStatNote(weapon) {
 
   if (!parts.length) parts.push(weapon.type);
   return `主要看 ${parts.join(" / ")}；攻速、总伤害和生存阈值仍需按角色补齐。`;
+}
+
+function setIdFromPath(path) {
+  return path?.match(/sets\/([^/]+)\/\1_set_data\.tres$/)?.[1] ?? null;
+}
+
+function weaponTagSets(weapon) {
+  return (weapon.tags ?? [])
+    .map((tag) => tag.toLowerCase())
+    .filter((tag) => WEAPON_SET_LABELS[tag]);
+}
+
+function inferWeaponSetIds(weapon, official) {
+  const officialSetIds =
+    official?.records
+      ?.flatMap((record) => record.setPaths ?? [])
+      .map(setIdFromPath)
+      .filter(Boolean) ?? [];
+
+  return [...new Set([...officialSetIds, ...weaponTagSets(weapon)])];
+}
+
+function inferWeaponSetNote(weapon, official) {
+  const setIds = inferWeaponSetIds(weapon, official);
+  if (!setIds.length) return "";
+
+  const labels = setIds.map((setId) => WEAPON_SET_LABELS[setId] ?? setId);
+  const joinedLabels = labels.join(" / ");
+
+  if (setIds.includes("ethereal")) {
+    return `${joinedLabels}套装；幽魂系列偏击杀成长，适合闪避和后期属性滚雪球路线。`;
+  }
+  if (setIds.includes("blade") && setIds.includes("medieval")) {
+    return `${joinedLabels}套装；同时吃剑类和中世纪套装，适合骑士等护甲近战路线。`;
+  }
+  return `${joinedLabels}套装；同套装武器越集中，前期成型和属性收益越稳定。`;
 }
 
 function inferItemStatNote(item) {

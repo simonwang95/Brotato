@@ -129,6 +129,37 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
 }
 
 {
+  const guide = generateStrategyGuide("knight", "normal20", { officialCatalog });
+  assert.equal(
+    guide.recommendedWeapons[0].weapon.name,
+    "Sword",
+    "knight should prefer Sword as the armor melee route",
+  );
+  assert.equal(guide.recommendedWeapons[0].weapon.cnName, "剑");
+  assert.ok(
+    guide.recommendedWeapons[0].weapon.setNote.includes("剑类"),
+    "Sword recommendation should expose its weapon set effect",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("ghost", "normal20", { officialCatalog });
+  assert.deepEqual(
+    guide.recommendedWeapons.map(({ weapon }) => weapon.name),
+    ["Ghost Axe", "Ghost Flint", "Ghost Scepter"],
+    "ghost should recommend the ethereal weapon line",
+  );
+  assert.ok(
+    guide.recommendedWeapons.every(({ weapon }) => weapon.setNote.includes("幽魂")),
+    "ghost weapons should expose ethereal set notes",
+  );
+  assert.ok(
+    guide.recommendedWeapons.some(({ weapon }) => weapon.cnName === "幽魂节杖"),
+    "ghost scepter should use the official Chinese name",
+  );
+}
+
+{
   assert.equal(formatStatPriority("lifeSteal 或 hpRegen"), "生命窃取 % 或 生命再生");
 }
 

@@ -153,6 +153,15 @@ export const WEAPONS = {
     unlock: "默认可用。",
     tags: ["Medieval", "Melee"],
   },
+  sword: {
+    id: "sword",
+    name: "Sword",
+    cnName: "剑",
+    type: "近战",
+    unlock: "默认可用。",
+    tags: ["Blade", "Medieval", "Melee"],
+    statNote: "主要看近战伤害、护甲收益、攻速和范围；骑士路线能同时吃到剑类和中世纪套装。",
+  },
   stick: {
     id: "stick",
     name: "Stick",
@@ -201,6 +210,36 @@ export const WEAPONS = {
     type: "近战经济",
     unlock: "默认可用。",
     tags: ["Precise", "Melee"],
+  },
+  ghostAxe: {
+    id: "ghostAxe",
+    name: "Ghost Axe",
+    officialNameKey: "WEAPON_GHOST_AXE",
+    cnName: "幽魂斧",
+    type: "近战成长",
+    unlock: "默认可用。",
+    tags: ["Ethereal", "Melee"],
+    statNote: "击杀成长总伤害百分比；适合幽灵这类高闪避、低容错但能滚输出的路线。",
+  },
+  ghostFlint: {
+    id: "ghostFlint",
+    name: "Ghost Flint",
+    officialNameKey: "WEAPON_GHOST_FLINT",
+    cnName: "幽魂燧石",
+    type: "近战成长",
+    unlock: "默认可用。",
+    tags: ["Ethereal", "Melee"],
+    statNote: "击杀成长攻速；幽魂套装成型后能把闪避路线转成更高击杀频率。",
+  },
+  ghostScepter: {
+    id: "ghostScepter",
+    name: "Ghost Scepter",
+    officialNameKey: "WEAPON_GHOST_SCEPTER",
+    cnName: "幽魂节杖",
+    type: "远程成长",
+    unlock: "默认可用。",
+    tags: ["Ethereal", "Ranged"],
+    statNote: "击杀成长最大生命；给幽灵补失败闪避后的血量缓冲，但仍要补移速和清怪。",
   },
   wand: {
     id: "wand",
@@ -1811,11 +1850,11 @@ export const CHARACTER_GUIDES = {
     cnHint: "幽灵，闪避玻璃炮",
     unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
     summary:
-      "幽灵适合高闪避和幽灵武器思路，但容错很薄。这里先用 Knife/Spear 近战模板，重点是闪避上限和别被一击带走。",
+      "幽灵适合高闪避和幽魂武器成长路线，但容错很薄。重点是尽快拉满闪避，并用幽魂套装把击杀转成永久属性。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
-      normalStance: "用 Knife 或 Spear 快速形成近战输出，同时尽早把闪避和移速补到舒服区间。",
-      weapons: ["knife", "spear", "fist"],
+      normalStance: "优先凑幽魂系列武器，幽魂斧拿总伤害、幽魂燧石拿攻速、幽魂节杖补最大生命。",
+      weapons: ["ghostAxe", "ghostFlint", "ghostScepter"],
       avoid: "不要拿太多降低护甲容错的道具；幽灵已经很怕连续失误。",
       items: ["wings", "coffee", "whetstone"],
       statPriority: {
@@ -2685,8 +2724,8 @@ export const CHARACTER_GUIDES = {
     summary: "骑士适合护甲和近战路线，防御属性能转化为稳定贴脸输出。攻速和范围仍需要补。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
-      normalStance: "用 Spear、Rock 或 Knife 走近战路线，护甲和近战伤害一起堆。",
-      weapons: ["spear", "rock", "knife"],
+      normalStance: "优先用 Sword 走护甲近战路线，剑同时吃剑类和中世纪套装，护甲和近战伤害一起堆。",
+      weapons: ["sword", "spear", "rock"],
       avoid: "不要转远程或工程；骑士优势在护甲近战。",
       items: ["whetstone", "wings", "coffee"],
       statPriority: {
