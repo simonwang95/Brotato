@@ -11,8 +11,8 @@
   ],
   "summary": {
     "total": 323,
-    "localized": 228,
-    "missing": 95,
+    "localized": 284,
+    "missing": 39,
     "byKind": {
       "weapon": {
         "total": 79,
@@ -20,13 +20,13 @@
       },
       "item": {
         "total": 244,
-        "localized": 150
+        "localized": 206
       }
     },
     "bySource": {
-      "translation-join": 189,
-      "missing": 95,
-      "manual-override": 39
+      "translation-join": 183,
+      "manual-override": 101,
+      "missing": 39
     }
   },
   "entries": {
@@ -42,8 +42,8 @@
     "ITEM_ADRENALINE": {
       "kind": "item",
       "enName": "Adrenaline",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "肾上腺素",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -51,8 +51,8 @@
     "ITEM_ALIEN_BABY": {
       "kind": "item",
       "enName": "Alien Baby",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "幼年异形",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -60,8 +60,8 @@
     "ITEM_ALIEN_EYES": {
       "kind": "item",
       "enName": "Alien Eyes",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "异形眼球",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -69,8 +69,8 @@
     "ITEM_ALIEN_MAGIC": {
       "kind": "item",
       "enName": "Alien Magic",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "外星魔法",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -78,8 +78,8 @@
     "ITEM_ALIEN_TONGUE": {
       "kind": "item",
       "enName": "Alien Tongue",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "异形之舌",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -87,8 +87,8 @@
     "ITEM_ALIEN_WORM": {
       "kind": "item",
       "enName": "Alien Worm",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "异形虫",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -186,8 +186,8 @@
     "ITEM_BALL_AND_CHAIN": {
       "kind": "item",
       "enName": "Ball And Chain",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "链球",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -195,8 +195,8 @@
     "ITEM_BANDANA": {
       "kind": "item",
       "enName": "Bandana",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "头巾",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -222,8 +222,8 @@
     "ITEM_BARRICADE": {
       "kind": "item",
       "enName": "Barricade",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "路障",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -240,8 +240,8 @@
     "ITEM_BEAN_TEACHER": {
       "kind": "item",
       "enName": "Bean Teacher",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "豆老师",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -294,8 +294,8 @@
     "ITEM_BLINDFOLD": {
       "kind": "item",
       "enName": "Blindfold",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "眼罩",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -303,8 +303,8 @@
     "ITEM_BLOOD_DONATION": {
       "kind": "item",
       "enName": "Blood Donation",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "献血",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -330,8 +330,8 @@
     "ITEM_BOILING_WATER": {
       "kind": "item",
       "enName": "Boiling Water",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "沸水",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -429,8 +429,8 @@
     "ITEM_BUTTERFLY": {
       "kind": "item",
       "enName": "Butterfly",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "蝴蝶",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -456,8 +456,8 @@
     "ITEM_CANDLE": {
       "kind": "item",
       "enName": "Candle",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "蜡烛",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -510,8 +510,8 @@
     "ITEM_CHAMELEON": {
       "kind": "item",
       "enName": "Chameleon",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "变色龙",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -519,8 +519,8 @@
     "ITEM_CHARCOAL": {
       "kind": "item",
       "enName": "Charcoal",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "木炭",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -582,8 +582,8 @@
     "ITEM_COMMUNITY_SUPPORT": {
       "kind": "item",
       "enName": "Community Support",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "社区支持",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -591,8 +591,8 @@
     "ITEM_COMPASS": {
       "kind": "item",
       "enName": "Compass",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "指南针",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -672,8 +672,8 @@
     "ITEM_DANGEROUS_BUNNY": {
       "kind": "item",
       "enName": "Dangerous Bunny",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "危险的兔子",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -690,8 +690,8 @@
     "ITEM_DEFECTIVE_STEROIDS": {
       "kind": "item",
       "enName": "Defective Steroids",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "有缺陷的增强剂",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -735,8 +735,8 @@
     "ITEM_ENERGY_BRACELET": {
       "kind": "item",
       "enName": "Energy Bracelet",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "能量手环",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -825,8 +825,8 @@
     "ITEM_FERTILIZER": {
       "kind": "item",
       "enName": "Fertilizer",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "肥料",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -924,8 +924,8 @@
     "ITEM_GENTLE_ALIEN": {
       "kind": "item",
       "enName": "Gentle Alien",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "外星绅士",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -933,8 +933,8 @@
     "ITEM_GHOST_OUTFIT": {
       "kind": "item",
       "enName": "Ghost Outfit",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "幽灵服",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -951,8 +951,8 @@
     "ITEM_GLASS_CANNON": {
       "kind": "item",
       "enName": "Glass Cannon",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "玻璃大炮",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -960,8 +960,8 @@
     "ITEM_GLASSES": {
       "kind": "item",
       "enName": "Glasses",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "眼镜",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1023,8 +1023,8 @@
     "ITEM_GRINDS_MAGICAL_LEAF": {
       "kind": "item",
       "enName": "Grind’s Magical Leaf",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "Grind的魔法绿叶",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1068,8 +1068,8 @@
     "ITEM_HEDGEHOG": {
       "kind": "item",
       "enName": "Hedgehog",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "刺猬",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1123,7 +1123,7 @@
       "kind": "item",
       "enName": "Improved Tools",
       "cnName": "改进工具",
-      "source": "translation-join",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1176,8 +1176,8 @@
     "ITEM_JETPACK": {
       "kind": "item",
       "enName": "Jetpack",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "喷气背包",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1203,8 +1203,8 @@
     "ITEM_LANDMINES": {
       "kind": "item",
       "enName": "Landmines",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "地雷",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1221,8 +1221,8 @@
     "ITEM_LEATHER_VEST": {
       "kind": "item",
       "enName": "Leather Vest",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "皮革背心",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1266,8 +1266,8 @@
     "ITEM_LITTLE_MUSCLEY_DUDE": {
       "kind": "item",
       "enName": "Little Muscley Dude",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "肌肉小子",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1303,7 +1303,7 @@
       "kind": "item",
       "enName": "Lucky Coin",
       "cnName": "幸运硬币",
-      "source": "translation-join",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1312,7 +1312,7 @@
       "kind": "item",
       "enName": "Lumberjack Shirt",
       "cnName": "伐木工人衬衫",
-      "source": "translation-join",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1365,8 +1365,8 @@
     "ITEM_METAL_DETECTOR": {
       "kind": "item",
       "enName": "Metal Detector",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "金属探测器",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1374,8 +1374,8 @@
     "ITEM_METAL_PLATE": {
       "kind": "item",
       "enName": "Metal Plate",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "金属板",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1392,8 +1392,8 @@
     "ITEM_MISSILE": {
       "kind": "item",
       "enName": "Missile",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "导弹",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1410,8 +1410,8 @@
     "ITEM_MUSHROOM": {
       "kind": "item",
       "enName": "Mushroom",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "蘑菇",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1419,8 +1419,8 @@
     "ITEM_MUTATION": {
       "kind": "item",
       "enName": "Mutation",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "异变",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1483,7 +1483,7 @@
       "kind": "item",
       "enName": "Peacock",
       "cnName": "孔雀",
-      "source": "translation-join",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1545,8 +1545,8 @@
     "ITEM_PLASTIC_EXPLOSIVE": {
       "kind": "item",
       "enName": "Plastic Explosive",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "塑性炸药",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1626,8 +1626,8 @@
     "ITEM_RECYCLING_MACHINE": {
       "kind": "item",
       "enName": "Recycling Machine",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "回收装置",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1644,8 +1644,8 @@
     "ITEM_RETROMATIONS_HOODIE": {
       "kind": "item",
       "enName": "Retromation’s Hoodie",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "Retromation的连帽衫",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1672,7 +1672,7 @@
       "kind": "item",
       "enName": "Riposte",
       "cnName": "反击",
-      "source": "translation-join",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1815,8 +1815,8 @@
     "ITEM_SILVER_BULLET": {
       "kind": "item",
       "enName": "Silver Bullet",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "银质子弹",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1860,8 +1860,8 @@
     "ITEM_SNOWBALL": {
       "kind": "item",
       "enName": "Snowball",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "雪球",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1950,8 +1950,8 @@
     "ITEM_TARDIGRADE": {
       "kind": "item",
       "enName": "Tardigrade",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "水熊虫",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1959,8 +1959,8 @@
     "ITEM_TENTACLE": {
       "kind": "item",
       "enName": "Tentacle",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "触手",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1968,8 +1968,8 @@
     "ITEM_TERRIFIED_ONION": {
       "kind": "item",
       "enName": "Terrified Onion",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "惊恐的洋葱",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2031,8 +2031,8 @@
     "ITEM_TRIANGLE_OF_POWER": {
       "kind": "item",
       "enName": "Triangle Of Power",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "三角之力",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2049,8 +2049,8 @@
     "ITEM_TURRET_FLAME": {
       "kind": "item",
       "enName": "Turret Flame",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "燃烧炮塔",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2058,8 +2058,8 @@
     "ITEM_TURRET_HEALING": {
       "kind": "item",
       "enName": "Turret Healing",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "医疗炮塔",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2067,8 +2067,8 @@
     "ITEM_TURRET_LASER": {
       "kind": "item",
       "enName": "Turret Laser",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "激光炮塔",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2076,8 +2076,8 @@
     "ITEM_TURRET_ROCKET": {
       "kind": "item",
       "enName": "Turret Rocket",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "爆炸炮塔",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2095,7 +2095,7 @@
       "kind": "item",
       "enName": "Ugly Tooth",
       "cnName": "丑牙",
-      "source": "translation-join",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2103,8 +2103,8 @@
     "ITEM_VIGILANTE_RING": {
       "kind": "item",
       "enName": "Vigilante Ring",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "义警戒指",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2112,8 +2112,8 @@
     "ITEM_WANDERING_BOT": {
       "kind": "item",
       "enName": "Wandering Bot",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "流浪机器人",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2121,8 +2121,8 @@
     "ITEM_WARRIOR_HELMET": {
       "kind": "item",
       "enName": "Warrior Helmet",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "士兵头盔",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2157,8 +2157,8 @@
     "ITEM_WHEELBARROW": {
       "kind": "item",
       "enName": "Wheelbarrow",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "独轮车",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2193,8 +2193,8 @@
     "ITEM_WILL_O_THE_WISP": {
       "kind": "item",
       "enName": "Will O The Wisp",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "鬼火",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]

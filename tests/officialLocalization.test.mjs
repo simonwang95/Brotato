@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 const localization = JSON.parse(readFileSync("data/official-localization.json", "utf8"));
 
 assert.ok(
-  localization.summary.localized >= 220,
+  localization.summary.localized >= 280,
   "official localization should cover the majority of catalog names",
 );
 assert.equal(

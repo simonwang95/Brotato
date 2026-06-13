@@ -99,6 +99,14 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     "ranger guide should include its character unlock item",
   );
   assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Ricochet"),
+    "ranger endless guide should include Ricochet for ranged coverage",
+  );
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Bandana"),
+    "ranger endless guide should include Bandana for pierce coverage",
+  );
+  assert.ok(
     guide.keyItems.some(
       ({ item }) => item.name === "Night Goggles" && item.cnName === "夜视镜",
     ),
@@ -156,6 +164,22 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
   assert.ok(
     guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Sniper Gun"),
     "hunter should include Sniper Gun as an unlock route",
+  );
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Scope" && item.cnName === "瞄准镜"),
+    "hunter should include Scope for range and ranged damage",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("renegade", "normal20", { officialCatalog });
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Ricochet" && item.cnName === "跳弹"),
+    "renegade should include Ricochet for multi-projectile coverage",
+  );
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Bandana" && item.cnName === "头巾"),
+    "renegade should include Bandana for pierce coverage",
   );
 }
 

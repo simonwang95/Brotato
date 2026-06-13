@@ -151,7 +151,12 @@ function inferItemStatNote(item) {
   const role = item.role ?? "";
   if (/幸运|拾取/.test(role)) return "重点影响幸运、拾取频率或触发类伤害。";
   if (/工程|结构/.test(role)) return "重点影响工程学、结构物密度或结构物输出。";
+  if (/弹射/.test(role)) return "重点影响弹射次数、怪群覆盖和远程弹体的二次命中。";
+  if (/贯通/.test(role)) return "重点影响贯通、穿透怪群后的实际命中数和远程覆盖。";
+  if (/范围/.test(role)) return "重点影响范围、先手输出距离和走位安全窗口。";
+  if (/远程/.test(role)) return "重点影响远程伤害、命中窗口和枪械路线输出质量。";
   if (/暴击/.test(role)) return "重点影响暴击率、暴击收益或暴击经济。";
+  if (/总伤害|输出/.test(role)) return "重点影响伤害百分比、击杀速度和精英/Boss 输出压力。";
   if (/移速/.test(role)) return "重点影响移速、走位空间和生存容错。";
   if (/经济|折扣|收获/.test(role)) return "重点影响经济、商店效率或收获成长。";
   if (/回复|续航|消耗品/.test(role)) return "重点影响回复、续航或容错。";
