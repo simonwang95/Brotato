@@ -97,7 +97,7 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 
 ## 后续目标
 
-二期攻略生成器已经接入第一批数据，当前覆盖默认 5 个角色和 Engineer。下一步会继续补齐全角色、DLC 差异、道具解锁校验和更多武器数据。
+二期攻略生成器已经接入第一批数据，当前覆盖默认 5 个角色、Engineer、Lucky，以及大壮、老叟、大嗓门、多面手、野人、和平主义者、角斗士、节俭者、病人、农夫、幽灵。下一步会继续补齐剩余原版角色、DLC 角色、角色解锁条件校验和更多武器数据。
 
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。

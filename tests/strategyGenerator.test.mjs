@@ -38,6 +38,10 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     ),
     "lucky should expose Chinese name and archetype",
   );
+  assert.ok(
+    characters.some((character) => character.id === "chunky" && character.cnHint === "大壮，生命坦克"),
+    "chunky should expose Chinese name and archetype",
+  );
 }
 
 {
@@ -97,6 +101,19 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     "stat priorities should be formatted as Chinese labels",
   );
   assert.ok(guide.wave20Targets.length > 5, "guide should expose wave 20 stat targets");
+}
+
+{
+  const guide = generateStrategyGuide("chunky", "normal20");
+  assert.equal(guide.character.name, "Chunky");
+  assert.ok(
+    guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Rock"),
+    "chunky guide should recommend Rock",
+  );
+  assert.ok(
+    guide.wave20Targets.some(({ label, value }) => label === "最大生命" && value === "90 - 130"),
+    "chunky guide should expose high hp targets",
+  );
 }
 
 {

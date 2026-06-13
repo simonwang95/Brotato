@@ -426,6 +426,87 @@ const defaultSourceNotes = [
   "Brotato Wiki: Endless Mode 页确认无尽模式 20 波后的规则变化。",
 ];
 
+function weaponPlan(weaponIds) {
+  return weaponIds.map((weaponId, index) => ({
+    weaponId,
+    priority: index === 0 ? "主推荐" : index === 1 ? "替代" : "补充",
+    reason:
+      index === 0
+        ? "最贴合这个角色的成长方向，优先凑满同类武器。"
+        : "当主路线商店不顺时使用，避免前期武器数量断档。",
+  }));
+}
+
+function itemPlan(itemIds) {
+  return itemIds.map((itemId, index) => ({
+    itemId,
+    priority: index === 0 ? "核心" : index === 1 ? "高" : "补充",
+    reason:
+      index === 0
+        ? "最贴合该角色的主要节奏，看到时优先考虑。"
+        : "用于补足输出、生存或经济短板。",
+  }));
+}
+
+function scaleTargets(targets, multipliers) {
+  return Object.fromEntries(
+    Object.entries(targets).map(([statId, range]) => [
+      statId,
+      multipliers[statId] ? range.map((value) => Math.round(value * multipliers[statId])) : range,
+    ]),
+  );
+}
+
+function makeSeedPlans(config) {
+  const endlessTargets = scaleTargets(config.targets, {
+    maxHp: 1.25,
+    armor: 1.25,
+    dodge: 1.35,
+    hpRegen: 1.35,
+    lifeSteal: 1.3,
+    damagePercent: 1.35,
+    attackSpeed: 1.35,
+    critChance: 1.25,
+    meleeDamage: 1.25,
+    rangedDamage: 1.25,
+    elementalDamage: 1.25,
+    engineering: 1.25,
+    speed: 1.35,
+    harvesting: 1.6,
+    luck: 1.5,
+    range: 1.25,
+  });
+
+  return {
+    normal20: {
+      stance: config.normalStance,
+      recommendedWeapons: weaponPlan(config.weapons),
+      avoid: config.avoid,
+      keyItems: itemPlan(config.items),
+      statPriority: config.statPriority,
+      wave20Targets: config.targets,
+      rhythm: config.rhythm,
+    },
+    endless: {
+      stance: config.endlessStance ?? `${config.normalStance} 无尽中更重视经济成长、范围覆盖和后期生存。`,
+      recommendedWeapons: weaponPlan(config.endlessWeapons ?? config.weapons),
+      avoid: config.endlessAvoid ?? config.avoid,
+      keyItems: itemPlan(config.endlessItems ?? config.items),
+      statPriority: config.endlessStatPriority ?? {
+        early: config.statPriority.early,
+        mid: ["harvesting", "luck", ...config.statPriority.mid].slice(0, 5),
+        late: ["damagePercent", "dodge", "speed", ...config.statPriority.late].slice(0, 5),
+      },
+      wave20Targets: endlessTargets,
+      rhythm: config.endlessRhythm ?? [
+        "第 20 波前先保证当前路线能稳定清怪。",
+        "无尽开始前把经济优势换成真实战斗属性，不要只囤成长。",
+        "后期优先维持移速、护甲、闪避和范围，避免输出够但活不下来。",
+      ],
+    },
+  };
+}
+
 export const CHARACTER_GUIDES = {
   wellRounded: {
     id: "wellRounded",
@@ -1359,5 +1440,405 @@ export const CHARACTER_GUIDES = {
         ],
       },
     },
+  },
+  chunky: {
+    id: "chunky",
+    name: "Chunky",
+    cnHint: "大壮，生命坦克",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "大壮适合把最大生命和生存转化成容错，用偏稳定的近战或弹射路线通关。伤害不能断档，否则只肉不清怪。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "先用 Rock 或 Spear 建立稳定清怪，再用最大生命、护甲和回复撑容错。",
+      weapons: ["rock", "spear", "stick"],
+      avoid: "不要只堆最大生命；没有足够攻速和伤害时会被后期怪潮拖死。",
+      items: ["wings", "whetstone", "potato"],
+      statPriority: {
+        early: ["maxHp", "meleeDamage", "attackSpeed"],
+        mid: ["armor", "hpRegen", "damagePercent", "speed"],
+        late: ["dodge", "luck", "range"],
+      },
+      targets: {
+        maxHp: [90, 130],
+        armor: [8, 14],
+        dodge: [10, 35],
+        hpRegen: [10, 20],
+        damagePercent: [35, 80],
+        attackSpeed: [25, 70],
+        meleeDamage: [30, 60],
+        speed: [0, 12],
+        luck: [20, 70],
+      },
+      rhythm: [
+        "前 5 波不要过度贪血量，先把同类武器数量补齐。",
+        "中期血量足够后补护甲和回复，避免高血量被连续消耗。",
+        "第 15 波后补移速和清怪，防止被高密度怪潮卡住。",
+      ],
+    }),
+  },
+  old: {
+    id: "old",
+    name: "Old",
+    cnHint: "老叟，低速高经验",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "老叟地图小、节奏紧，适合近距离覆盖和高效率清怪。移速短板明显，需要更早补走位属性。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "用 SMG 或 Slingshot 处理小地图密度，优先让武器数量和攻速成型。",
+      weapons: ["smg", "slingshot", "wand"],
+      avoid: "不要选择需要大范围拉扯的慢速武器；老叟更怕走位空间不足。",
+      items: ["coffee", "wings", "coupon"],
+      statPriority: {
+        early: ["attackSpeed", "damagePercent", "rangedDamage"],
+        mid: ["speed", "armor", "maxHp", "lifeSteal"],
+        late: ["range", "dodge", "luck"],
+      },
+      targets: {
+        maxHp: [55, 80],
+        armor: [7, 12],
+        dodge: [15, 45],
+        lifeSteal: [6, 14],
+        damagePercent: [45, 90],
+        attackSpeed: [60, 120],
+        rangedDamage: [25, 55],
+        range: [60, 140],
+        speed: [10, 22],
+      },
+      rhythm: [
+        "前期小地图收益高，先把清怪节奏拉起来。",
+        "第 8 波后优先补移速和生存，避免被小地图包围。",
+        "后期范围和攻速继续提高，减少怪贴脸时间。",
+      ],
+    }),
+  },
+  loud: {
+    id: "loud",
+    name: "Loud",
+    cnHint: "大嗓门，高密度清怪",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "大嗓门面对更多敌人，收益来自高密度清怪和击杀经济。武器要能覆盖多个目标，单体慢武器压力很大。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "用 Slingshot、SMG 或 Spear 吃高密度收益，先解决清怪覆盖。",
+      weapons: ["slingshot", "smg", "spear"],
+      avoid: "不要过早拿只提升单体爆发的路线；大嗓门先看清场效率。",
+      items: ["babyWithABeard", "coupon", "coffee"],
+      statPriority: {
+        early: ["attackSpeed", "damagePercent", "rangedDamage"],
+        mid: ["armor", "maxHp", "lifeSteal", "speed"],
+        late: ["range", "critChance", "luck"],
+      },
+      targets: {
+        maxHp: [60, 85],
+        armor: [8, 13],
+        dodge: [10, 35],
+        lifeSteal: [8, 16],
+        damagePercent: [55, 105],
+        attackSpeed: [60, 130],
+        rangedDamage: [30, 65],
+        meleeDamage: [20, 50],
+        range: [70, 160],
+        speed: [8, 18],
+      },
+      rhythm: [
+        "前 5 波以武器数量和攻速为核心。",
+        "中期优先补吸血或回复，因为敌人多意味着失误频率更高。",
+        "后期范围、穿透、弹射类收益优先级提高。",
+      ],
+    }),
+  },
+  multitasker: {
+    id: "multitasker",
+    name: "Multitasker",
+    cnHint: "多面手，多武器数量",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "多面手能带更多武器，最怕路线散。应选择便宜、同类、能被数量放大的武器，把规模优势转成稳定 DPS。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "优先 Stick 或 SMG 这类容易复制的武器，靠数量堆出基础火力。",
+      weapons: ["stick", "smg", "screwdriver"],
+      avoid: "不要混太多缩放类型；武器多不等于路线可以乱。",
+      items: ["coffee", "coupon", "potato"],
+      statPriority: {
+        early: ["attackSpeed", "damagePercent", "主伤害属性"],
+        mid: ["armor", "maxHp", "lifeSteal 或 hpRegen", "harvesting"],
+        late: ["critChance", "range", "luck"],
+      },
+      targets: {
+        maxHp: [60, 85],
+        armor: [7, 12],
+        dodge: [10, 35],
+        lifeSteal: [6, 14],
+        hpRegen: [6, 14],
+        damagePercent: [45, 95],
+        attackSpeed: [50, 110],
+        rangedDamage: [25, 55],
+        meleeDamage: [25, 55],
+        harvesting: [40, 100],
+      },
+      rhythm: [
+        "前期尽量只买同类武器，不要被便宜杂牌分散缩放。",
+        "武器格子变多后，升级和合成节奏要更克制。",
+        "第 12 波后把数量优势转成生存和范围覆盖。",
+      ],
+    }),
+  },
+  wildling: {
+    id: "wildling",
+    name: "Wildling",
+    cnHint: "野人，原始武器",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "野人适合 Primitive 武器，前期便宜且容易成型。中后期要补伤害倍率，否则基础武器会掉队。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "用 Stick、Slingshot 或 Rock 快速凑满原始武器，先拿前期经济和数量优势。",
+      weapons: ["stick", "slingshot", "rock"],
+      avoid: "不要在前期转去高价稀有武器，野人强在低成本成型。",
+      items: ["coffee", "whetstone", "babyGecko"],
+      statPriority: {
+        early: ["attackSpeed", "meleeDamage", "rangedDamage"],
+        mid: ["damagePercent", "armor", "maxHp", "speed"],
+        late: ["critChance", "dodge", "luck"],
+      },
+      targets: {
+        maxHp: [60, 85],
+        armor: [7, 12],
+        dodge: [15, 45],
+        damagePercent: [45, 90],
+        attackSpeed: [50, 110],
+        meleeDamage: [30, 65],
+        rangedDamage: [25, 55],
+        speed: [8, 18],
+        luck: [40, 100],
+      },
+      rhythm: [
+        "前 5 波把原始武器数量铺起来。",
+        "中期开始补总伤害和生存，别停留在前期便宜优势。",
+        "后期看当前主武器决定近战或远程缩放，避免双线都不够。",
+      ],
+    }),
+  },
+  pacifist: {
+    id: "pacifist",
+    name: "Pacifist",
+    cnHint: "和平主义者，生存经济",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "和平主义者不靠击杀收益，重点是活着、拾取和收获。输出只需要够推开压力，生存和经济是主线。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "用 Hand 或 Pruner 建立经济和续航，优先把生存阈值堆到安全。",
+      weapons: ["hand", "pruner", "taser"],
+      avoid: "不要用纯输出思路硬追击杀；和平主义者更需要稳定绕场和资源回收。",
+      items: ["wings", "babyGecko", "coupon"],
+      statPriority: {
+        early: ["harvesting", "speed", "maxHp"],
+        mid: ["armor", "dodge", "hpRegen", "luck"],
+        late: ["range", "damagePercent", "attackSpeed"],
+      },
+      targets: {
+        maxHp: [70, 100],
+        armor: [9, 15],
+        dodge: [35, 60],
+        hpRegen: [12, 24],
+        damagePercent: [10, 45],
+        attackSpeed: [20, 60],
+        speed: [15, 30],
+        harvesting: [100, 200],
+        luck: [60, 140],
+      },
+      rhythm: [
+        "前期优先经济和移速，目标是稳稳活到奖励结算。",
+        "中期把护甲、闪避和回复补到位，避免被精英波打穿。",
+        "后期输出只补够控场，不要牺牲核心生存。",
+      ],
+    }),
+  },
+  gladiator: {
+    id: "gladiator",
+    name: "Gladiator",
+    cnHint: "角斗士，多近战武器",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "角斗士适合多种近战武器并行，但缩放仍要集中在近战伤害、攻速和生存。贴脸风险高，护甲不能落后。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "用 Knife、Spear、Fist 等近战组合建立清怪覆盖，靠近战伤害和攻速放大。",
+      weapons: ["knife", "spear", "fist"],
+      avoid: "不要转远程或工程；角色优势在近战武器池。",
+      items: ["whetstone", "coffee", "wings"],
+      statPriority: {
+        early: ["meleeDamage", "attackSpeed", "critChance"],
+        mid: ["armor", "maxHp", "lifeSteal", "speed"],
+        late: ["damagePercent", "dodge", "range"],
+      },
+      targets: {
+        maxHp: [65, 95],
+        armor: [8, 14],
+        dodge: [20, 50],
+        lifeSteal: [8, 16],
+        damagePercent: [40, 85],
+        attackSpeed: [55, 120],
+        critChance: [25, 60],
+        meleeDamage: [40, 80],
+        range: [20, 80],
+        speed: [10, 22],
+      },
+      rhythm: [
+        "前期只拿近战武器，保持角色优势。",
+        "中期补护甲和吸血，确保贴脸输出不暴毙。",
+        "后期暴击和范围能显著提升近战清怪手感。",
+      ],
+    }),
+  },
+  saver: {
+    id: "saver",
+    name: "Saver",
+    cnHint: "节俭者，存钱成长",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "节俭者需要在存钱收益和战斗阈值之间平衡。前期不能太贪，清怪稳定后再让经济滚起来。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "用便宜稳定的 SMG 或 Stick 成型，少刷新，把钱留给关键阈值。",
+      weapons: ["smg", "stick", "slingshot"],
+      avoid: "不要每波把钱花光；但也不能为了存钱导致武器数量落后。",
+      items: ["coupon", "coffee", "potato"],
+      statPriority: {
+        early: ["harvesting", "attackSpeed", "主伤害属性"],
+        mid: ["damagePercent", "armor", "maxHp", "speed"],
+        late: ["critChance", "dodge", "luck"],
+      },
+      targets: {
+        maxHp: [55, 80],
+        armor: [7, 12],
+        dodge: [10, 35],
+        damagePercent: [45, 90],
+        attackSpeed: [45, 100],
+        rangedDamage: [25, 55],
+        meleeDamage: [25, 55],
+        speed: [5, 16],
+        harvesting: [60, 130],
+        luck: [30, 90],
+      },
+      rhythm: [
+        "前 5 波仍要买武器，别为了存钱放弃清怪。",
+        "中期只买能跨过阈值的道具，少做小额无效消费。",
+        "后期把存钱收益换成护甲、闪避和核心输出。",
+      ],
+    }),
+  },
+  sick: {
+    id: "sick",
+    name: "Sick",
+    cnHint: "病人，生命窃取",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "病人适合高攻速和生命窃取路线。持续掉血要求武器尽快形成高频命中，回复和清怪都不能断。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "用 SMG 或 Fist 提供高频命中，让生命窃取稳定覆盖持续掉血。",
+      weapons: ["smg", "fist", "knife"],
+      avoid: "不要用低频慢武器开局；命中少会让生命窃取不稳定。",
+      items: ["coffee", "whetstone", "wings"],
+      statPriority: {
+        early: ["attackSpeed", "lifeSteal", "damagePercent"],
+        mid: ["maxHp", "armor", "rangedDamage", "meleeDamage"],
+        late: ["dodge", "critChance", "speed"],
+      },
+      targets: {
+        maxHp: [65, 95],
+        armor: [8, 14],
+        dodge: [15, 45],
+        lifeSteal: [15, 25],
+        damagePercent: [45, 95],
+        attackSpeed: [70, 140],
+        rangedDamage: [25, 60],
+        meleeDamage: [25, 60],
+        speed: [8, 18],
+      },
+      rhythm: [
+        "前期优先生命窃取和攻速，先覆盖持续掉血压力。",
+        "中期补最大生命和护甲，提高失误容错。",
+        "后期输出和回复一起补，不要只看纸面 DPS。",
+      ],
+    }),
+  },
+  farmer: {
+    id: "farmer",
+    name: "Farmer",
+    cnHint: "农夫，收获经济",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "农夫依赖收获和经济滚雪球。前中期可以更重视收获，但清怪底线必须守住。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "用 Pruner 或 Slingshot 兼顾经济和清怪，先把收获滚起来。",
+      weapons: ["pruner", "slingshot", "taser"],
+      avoid: "不要为了收获完全放弃输出；第 12 波后清怪不足会很快崩盘。",
+      items: ["coupon", "babyGecko", "sifdsRelic"],
+      statPriority: {
+        early: ["harvesting", "luck", "attackSpeed"],
+        mid: ["damagePercent", "armor", "maxHp", "speed"],
+        late: ["rangedDamage", "dodge", "range"],
+      },
+      targets: {
+        maxHp: [55, 80],
+        armor: [7, 12],
+        dodge: [10, 35],
+        damagePercent: [35, 80],
+        attackSpeed: [35, 90],
+        rangedDamage: [20, 50],
+        speed: [8, 18],
+        harvesting: [140, 260],
+        luck: [70, 160],
+      },
+      rhythm: [
+        "前期看到收获和经济道具可以更积极，但至少保持武器数量。",
+        "中期开始把经济换成伤害和护甲。",
+        "后期收获边际下降，优先买能直接提高清怪和生存的东西。",
+      ],
+    }),
+  },
+  ghost: {
+    id: "ghost",
+    name: "Ghost",
+    cnHint: "幽灵，闪避玻璃炮",
+    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    summary:
+      "幽灵适合高闪避和幽灵武器思路，但容错很薄。这里先用 Knife/Spear 近战模板，重点是闪避上限和别被一击带走。",
+    sourceNotes: defaultSourceNotes,
+    plans: makeSeedPlans({
+      normalStance: "用 Knife 或 Spear 快速形成近战输出，同时尽早把闪避和移速补到舒服区间。",
+      weapons: ["knife", "spear", "fist"],
+      avoid: "不要拿太多降低护甲容错的道具；幽灵已经很怕连续失误。",
+      items: ["wings", "coffee", "whetstone"],
+      statPriority: {
+        early: ["dodge", "attackSpeed", "meleeDamage"],
+        mid: ["damagePercent", "maxHp", "speed", "lifeSteal"],
+        late: ["critChance", "range", "luck"],
+      },
+      targets: {
+        maxHp: [45, 70],
+        armor: [0, 5],
+        dodge: [55, 60],
+        lifeSteal: [6, 14],
+        damagePercent: [55, 105],
+        attackSpeed: [60, 130],
+        critChance: [30, 70],
+        meleeDamage: [35, 75],
+        speed: [15, 30],
+      },
+      rhythm: [
+        "前期优先闪避和武器数量，尽快减少被蹭死的概率。",
+        "中期补最大生命，避免闪避失败时被秒。",
+        "后期把暴击和攻速拉高，用更短战斗时间降低风险。",
+      ],
+    }),
   },
 };
