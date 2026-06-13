@@ -1,9 +1,10 @@
 import { readFileSync } from "node:fs";
-import { getOfficialNameKey } from "../src/officialCatalog.js";
-import { ITEMS, WEAPONS } from "../src/strategyData.js";
 
 const catalogPath = process.env.BROTATO_CATALOG_PATH || "data/official-catalog.json";
+const localizationPath =
+  process.env.BROTATO_LOCALIZATION_PATH || "data/official-localization.json";
 const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
+const localization = JSON.parse(readFileSync(localizationPath, "utf8"));
 
 function uniqueCatalogEntries(kind) {
   const byKey = new Map();
@@ -29,33 +30,20 @@ function uniqueCatalogEntries(kind) {
   }));
 }
 
-function maintainedEntries(kind, entries) {
-  return new Map(
-    Object.values(entries).map((entry) => [
-      getOfficialNameKey(kind, entry),
-      {
-        id: entry.id,
-        name: entry.name,
-        cnName: entry.cnName,
-      },
-    ]),
-  );
-}
-
-function coverageRows(kind, catalogEntries, maintained) {
+function coverageRows(kind, catalogEntries) {
   return catalogEntries.map((entry) => ({
     ...entry,
-    maintained: maintained.has(entry.nameKey),
-    maintainedEntry: maintained.get(entry.nameKey) ?? null,
+    localized: Boolean(localization.entries?.[entry.nameKey]?.cnName),
+    localizationEntry: localization.entries?.[entry.nameKey] ?? null,
   }));
 }
 
 function printCoverage(kind, rows) {
-  const covered = rows.filter((row) => row.maintained);
-  const missing = rows.filter((row) => !row.maintained);
+  const covered = rows.filter((row) => row.localized);
+  const missing = rows.filter((row) => !row.localized);
 
   console.log(`\n${kind} localization coverage`);
-  console.log(`- maintained: ${covered.length}/${rows.length}`);
+  console.log(`- localized: ${covered.length}/${rows.length}`);
 
   if (missing.length) {
     console.log("- missing official name keys:");
@@ -68,15 +56,14 @@ function printCoverage(kind, rows) {
 const weaponRows = coverageRows(
   "weapon",
   uniqueCatalogEntries("weapon"),
-  maintainedEntries("weapon", WEAPONS),
 );
 const itemRows = coverageRows(
   "item",
   uniqueCatalogEntries("item"),
-  maintainedEntries("item", ITEMS),
 );
 
 console.log("Brotato localization maintenance coverage");
 console.log(`Catalog: ${catalogPath}`);
+console.log(`Localization: ${localizationPath}`);
 printCoverage("weapon", weaponRows);
 printCoverage("item", itemRows);

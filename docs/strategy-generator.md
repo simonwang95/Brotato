@@ -210,6 +210,14 @@ npm run extract:catalog
 
 生成文件 `data/official-catalog.json` 是后续批量补全武器、道具和解锁信息的基础。
 
+从安装包提取官方中文名称：
+
+```bash
+npm run extract:localization
+```
+
+该命令会读取原版和深海魔怪 DLC 的 `PHashTranslation` 资源，把英文/中文 translation 按哈希合并，生成 `data/official-localization.json`。如果英文 translation 中某些条目不是明文，脚本会使用已从中文资源确认过的 `manual-override`。
+
 攻略资料和官方目录的引用校验：
 
 ```bash
@@ -231,4 +239,4 @@ npm run verify:catalog
 npm run localization:coverage
 ```
 
-该命令会把官方目录中的唯一武器/道具 `nameKey` 与当前 `src/strategyData.js` 维护的中英文名对齐，列出尚未本地化维护的图鉴条目。后续完整本地化时，应把官方中文翻译抽成独立映射表，再让策略推荐、截图识别和最优解评分共用同一份名称数据。
+该命令会把官方目录中的唯一武器/道具 `nameKey` 与 `data/official-localization.json` 对齐，列出尚未本地化维护的图鉴条目。后续推荐、截图识别和最优解评分都应共用这份名称数据。

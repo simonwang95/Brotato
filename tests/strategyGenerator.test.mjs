@@ -140,6 +140,31 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     guide.recommendedWeapons[0].weapon.setNote.includes("剑类"),
     "Sword recommendation should expose its weapon set effect",
   );
+  assert.ok(
+    guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Spiky Shield"),
+    "knight should include Spiky Shield as an armor-scaling weapon",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("hunter", "normal20", { officialCatalog });
+  assert.equal(
+    guide.recommendedWeapons[0].weapon.name,
+    "Crossbow",
+    "hunter should prefer Crossbow as its range/crit route",
+  );
+  assert.ok(
+    guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Sniper Gun"),
+    "hunter should include Sniper Gun as an unlock route",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("crazy", "normal20", { officialCatalog });
+  assert.ok(
+    guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Shuriken"),
+    "crazy should include Shuriken as a precise ranged branch",
+  );
 }
 
 {

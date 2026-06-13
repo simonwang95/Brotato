@@ -26,9 +26,11 @@
 全图鉴本地化是后续“最优解评分”的基础。当前维护节奏：
 
 - `data/official-catalog.json` 先提供完整武器/道具 `nameKey`、来源包、阶数、价格、套装和效果路径。
-- `src/strategyData.js` 只维护当前策略会引用到的官方中文名。
+- `data/official-localization.json` 维护 `nameKey -> 官方中文名`，由本机安装包的英文/中文 translation 资源合并生成。
+- `src/strategyData.js` 只维护当前策略会引用到的类型、定位、解锁说明和推荐理由。
 - `npm run localization:coverage` 用来检查官方图鉴里还有哪些武器/道具没有进入本地化维护表。
-- 后续应把安装包中的官方中文翻译抽成独立映射，例如 `WEAPON_GHOST_SCEPTER -> 幽魂节杖`，再由策略数据引用同一份映射。
+- `npm run extract:localization` 可以重新从本机安装包生成本地化表。部分英文 translation 条目不是明文，脚本里用 `manual-override` 对已从中文包确认的关键名称做校准。
+- 当前本地化表已覆盖绝大多数武器；未确认的条目要继续留在覆盖率报告中，不要凭直觉填入。
 
 ## 推荐流程
 
@@ -48,6 +50,12 @@
 - 套装说明由 `setNote` 暴露到页面，用于解释为什么推荐某条武器路线。
 - 例如 `Sword（剑）` 同时属于剑类和中世纪套装，适合 `Knight（骑士）` 的护甲近战路线。
 - `Ghost Axe（幽魂斧）`、`Ghost Flint（幽魂燧石）`、`Ghost Scepter（幽魂节杖）` 属于幽魂套装，适合 `Ghost（幽灵）` 的闪避和击杀成长路线。
+
+本轮推荐修正还加入了更贴合角色机制的武器：
+
+- `Hunter（猎人）` 优先 `Crossbow（十字弓）`，解锁后关注 `Sniper Gun（狙击手枪）`。
+- `Crazy（狂战士）` 除近战小刀/盗贼匕首外，加入 `Shuriken（手里剑）` 作为精准暴击的远程分支。
+- `Knight（骑士）` 除 `Sword（剑）` 外，加入 `Spiky Shield（尖刺盾）` 作为护甲转输出的替代路线。
 
 ## Lucky（幸运星）规则
 

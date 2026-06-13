@@ -145,6 +145,24 @@ export const WEAPONS = {
     unlock: "默认可用。",
     tags: ["Gun", "Ranged"],
   },
+  crossbow: {
+    id: "crossbow",
+    name: "Crossbow",
+    cnName: "十字弓",
+    type: "远程暴击",
+    unlock: "默认可用。",
+    tags: ["Precise", "Ranged"],
+    statNote: "主要看范围、远程伤害和暴击率；猎人能把射程优势转成伤害和安全距离。",
+  },
+  sniperGun: {
+    id: "sniperGun",
+    name: "Sniper Gun",
+    cnName: "狙击手枪",
+    type: "远程暴击",
+    unlock: "官方目录显示需解锁、可掉落；适合 Hunter 后续路线。",
+    tags: ["Gun", "Precise", "Ranged"],
+    statNote: "主要看范围、远程伤害、暴击率和总伤害；偏精英和 Boss 单体输出。",
+  },
   spear: {
     id: "spear",
     name: "Spear",
@@ -210,6 +228,15 @@ export const WEAPONS = {
     type: "近战经济",
     unlock: "默认可用。",
     tags: ["Precise", "Melee"],
+  },
+  shuriken: {
+    id: "shuriken",
+    name: "Shuriken",
+    cnName: "手里剑",
+    type: "远程暴击",
+    unlock: "默认可用。",
+    tags: ["Precise", "Ranged"],
+    statNote: "主要看暴击率、远程伤害和弹射覆盖；适合 Crazy 等精准/暴击路线的远程分支。",
   },
   ghostAxe: {
     id: "ghostAxe",
@@ -304,6 +331,15 @@ export const WEAPONS = {
     type: "近战生存",
     unlock: "默认可用；Lucky 可作为起始武器。",
     tags: ["Primitive", "Melee"],
+  },
+  spikyShield: {
+    id: "spikyShield",
+    name: "Spiky Shield",
+    cnName: "尖刺盾",
+    type: "近战护甲",
+    unlock: "官方目录显示需解锁、可掉落；适合护甲近战路线。",
+    tags: ["Blunt", "Melee"],
+    statNote: "主要看护甲、近战伤害和攻速；护甲越高，骑士这类路线越能把防御转成输出。",
   },
   pruner: {
     id: "pruner",
@@ -827,6 +863,11 @@ export const CHARACTER_GUIDES = {
             priority: "经济替代",
             reason: "如果前期刷到多把，可以用额外材料滚动商店。",
           },
+          {
+            weaponId: "shuriken",
+            priority: "远程分支",
+            reason: "同样吃精准和暴击，远程弹射覆盖比纯近战更安全。",
+          },
         ],
         avoid: "不要太晚补生存；Crazy 的输出会骗人，让你误以为还能贪一波。",
         keyItems: [
@@ -881,6 +922,11 @@ export const CHARACTER_GUIDES = {
             weaponId: "knife",
             priority: "输出替代",
             reason: "当经济道具不足时，直接提高击杀能力。",
+          },
+          {
+            weaponId: "shuriken",
+            priority: "覆盖替代",
+            reason: "暴击和弹射能提高无尽清怪覆盖，但要补远程伤害。",
           },
         ],
         avoid: "不要只追 100% 暴击而忽略护甲和血量；无尽后期容错会快速下降。",
@@ -2098,8 +2144,8 @@ export const CHARACTER_GUIDES = {
     summary: "猎人适合远程、范围和暴击路线。射程优势要转化为安全输出，而不是忽略近身防御。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
-      normalStance: "用 Pistol、Revolver 或 SMG 打远程暴击，优先范围和远程伤害。",
-      weapons: ["pistol", "revolver", "smg"],
+      normalStance: "优先用 Crossbow 把范围和暴击转成安全输出，解锁后 Sniper Gun 负责精英和 Boss。",
+      weapons: ["crossbow", "sniperGun", "revolver"],
       avoid: "不要转近战；范围和远程属性才是猎人的主要收益。",
       items: ["nightGoggles", "coffee", "wings"],
       statPriority: {
@@ -2724,8 +2770,8 @@ export const CHARACTER_GUIDES = {
     summary: "骑士适合护甲和近战路线，防御属性能转化为稳定贴脸输出。攻速和范围仍需要补。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
-      normalStance: "优先用 Sword 走护甲近战路线，剑同时吃剑类和中世纪套装，护甲和近战伤害一起堆。",
-      weapons: ["sword", "spear", "rock"],
+      normalStance: "优先用 Sword 走护甲近战路线，尖刺盾可把护甲继续转成近战输出。",
+      weapons: ["sword", "spikyShield", "spear"],
       avoid: "不要转远程或工程；骑士优势在护甲近战。",
       items: ["whetstone", "wings", "coffee"],
       statPriority: {

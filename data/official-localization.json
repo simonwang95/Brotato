@@ -1,0 +1,2941 @@
+{
+  "packages": [
+    {
+      "id": "base",
+      "file": "Brotato.pck"
+    },
+    {
+      "id": "abyssalTerrors",
+      "file": "BrotatoAbyssalTerrors.pck"
+    }
+  ],
+  "summary": {
+    "total": 323,
+    "localized": 228,
+    "missing": 95,
+    "byKind": {
+      "weapon": {
+        "total": 79,
+        "localized": 78
+      },
+      "item": {
+        "total": 244,
+        "localized": 150
+      }
+    },
+    "bySource": {
+      "translation-join": 189,
+      "missing": 95,
+      "manual-override": 39
+    }
+  },
+  "entries": {
+    "ITEM_ACID": {
+      "kind": "item",
+      "enName": "Acid",
+      "cnName": "酸液",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ADRENALINE": {
+      "kind": "item",
+      "enName": "Adrenaline",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ALIEN_BABY": {
+      "kind": "item",
+      "enName": "Alien Baby",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ALIEN_EYES": {
+      "kind": "item",
+      "enName": "Alien Eyes",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ALIEN_MAGIC": {
+      "kind": "item",
+      "enName": "Alien Magic",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ALIEN_TONGUE": {
+      "kind": "item",
+      "enName": "Alien Tongue",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ALIEN_WORM": {
+      "kind": "item",
+      "enName": "Alien Worm",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ALLOY": {
+      "kind": "item",
+      "enName": "Alloy",
+      "cnName": "合金",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ANVIL": {
+      "kind": "item",
+      "enName": "Anvil",
+      "cnName": "铁砧",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ASHES": {
+      "kind": "item",
+      "enName": "Ashes",
+      "cnName": "灰烬",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_AXOLOTL": {
+      "kind": "item",
+      "enName": "Axolotl",
+      "cnName": "蝾螈",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_BABY_ELEPHANT": {
+      "kind": "item",
+      "enName": "Baby Elephant",
+      "cnName": "象宝宝",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BABY_GECKO": {
+      "kind": "item",
+      "enName": "Baby Gecko",
+      "cnName": "壁虎宝宝",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BABY_SQUID": {
+      "kind": "item",
+      "enName": "Baby Squid",
+      "cnName": "鱿鱼宝宝",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_BABY_WITH_A_BEARD": {
+      "kind": "item",
+      "enName": "Baby With A Beard",
+      "cnName": "长胡子的婴儿",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BAG": {
+      "kind": "item",
+      "enName": "Bag",
+      "cnName": "背包",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BAIT": {
+      "kind": "item",
+      "enName": "Bait",
+      "cnName": "诱饵",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BALL_AND_CHAIN": {
+      "kind": "item",
+      "enName": "Ball And Chain",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BANDANA": {
+      "kind": "item",
+      "enName": "Bandana",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BANNER": {
+      "kind": "item",
+      "enName": "Banner",
+      "cnName": "旗帜",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BARNACLE": {
+      "kind": "item",
+      "enName": "Barnacle",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_BARRICADE": {
+      "kind": "item",
+      "enName": "Barricade",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BAT": {
+      "kind": "item",
+      "enName": "Bat",
+      "cnName": "蝙蝠",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BEAN_TEACHER": {
+      "kind": "item",
+      "enName": "Bean Teacher",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BEANIE": {
+      "kind": "item",
+      "enName": "Beanie",
+      "cnName": "无檐小便帽",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BIG_ARMS": {
+      "kind": "item",
+      "enName": "Big Arms",
+      "cnName": "巨臂",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BLACK_BELT": {
+      "kind": "item",
+      "enName": "Black Belt",
+      "cnName": "黑带",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BLACK_FLAG": {
+      "kind": "item",
+      "enName": "Black Flag",
+      "cnName": "黑旗",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_BLAZEMANDER": {
+      "kind": "item",
+      "enName": "Blazemander",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BLINDFOLD": {
+      "kind": "item",
+      "enName": "Blindfold",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BLOOD_DONATION": {
+      "kind": "item",
+      "enName": "Blood Donation",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BLOOD_LEECH": {
+      "kind": "item",
+      "enName": "Blood Leech",
+      "cnName": "血蛭",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BLOODY_HAND": {
+      "kind": "item",
+      "enName": "Bloody Hand",
+      "cnName": "血淋淋的手",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BOILING_WATER": {
+      "kind": "item",
+      "enName": "Boiling Water",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BONE_DICE": {
+      "kind": "item",
+      "enName": "Bone Dice",
+      "cnName": "骨骰",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_BONK_DOG": {
+      "kind": "item",
+      "enName": "Bonk Dog",
+      "cnName": "Bonk狗",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BOOK": {
+      "kind": "item",
+      "enName": "Book",
+      "cnName": "书本",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BOT_O_MINE": {
+      "kind": "item",
+      "enName": "Bot O Mine",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BOWLER_HAT": {
+      "kind": "item",
+      "enName": "Bowler Hat",
+      "cnName": "圆顶礼帽",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BOXING_GLOVE": {
+      "kind": "item",
+      "enName": "Boxing Glove",
+      "cnName": "拳击手套",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BROKEN_HOURGLASS": {
+      "kind": "item",
+      "enName": "Broken Hourglass",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BROKEN_MIRROR": {
+      "kind": "item",
+      "enName": "Broken Mirror",
+      "cnName": "破碎的镜子",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_BROKEN_MOUTH": {
+      "kind": "item",
+      "enName": "Broken Mouth",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_BUILDER_TURRET": {
+      "kind": "item",
+      "enName": "Builder Turret",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_BUTTERFLY": {
+      "kind": "item",
+      "enName": "Butterfly",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CAKE": {
+      "kind": "item",
+      "enName": "Cake",
+      "cnName": "蛋糕",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CAMPFIRE": {
+      "kind": "item",
+      "enName": "Campfire",
+      "cnName": "篝火",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CANDLE": {
+      "kind": "item",
+      "enName": "Candle",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CANDY_BAG": {
+      "kind": "item",
+      "enName": "Candy Bag",
+      "cnName": "糖果袋",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CAPE": {
+      "kind": "item",
+      "enName": "Cape",
+      "cnName": "斗篷",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CATLING_GUN": {
+      "kind": "item",
+      "enName": "Catling Gun",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CAULDRON": {
+      "kind": "item",
+      "enName": "Cauldron",
+      "cnName": "大锅",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_CELERY_TEA": {
+      "kind": "item",
+      "enName": "Celery Tea",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CHAMELEON": {
+      "kind": "item",
+      "enName": "Chameleon",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CHARCOAL": {
+      "kind": "item",
+      "enName": "Charcoal",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CLAW_TREE": {
+      "kind": "item",
+      "enName": "Claw Tree",
+      "cnName": "利爪树",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CLOCKWORK_WASP": {
+      "kind": "item",
+      "enName": "Clockwork Wasp",
+      "cnName": "机械黄蜂",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CLOVER": {
+      "kind": "item",
+      "enName": "Clover",
+      "cnName": "三叶草",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_COFFEE": {
+      "kind": "item",
+      "enName": "Coffee",
+      "cnName": "咖啡",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_COG": {
+      "kind": "item",
+      "enName": "Cog",
+      "cnName": "齿轮",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_COIL": {
+      "kind": "item",
+      "enName": "Coil",
+      "cnName": "线圈",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_COMMUNITY_SUPPORT": {
+      "kind": "item",
+      "enName": "Community Support",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_COMPASS": {
+      "kind": "item",
+      "enName": "Compass",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CORAL": {
+      "kind": "item",
+      "enName": "Coral",
+      "cnName": "珊瑚",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_CORRUPTED_SHARD": {
+      "kind": "item",
+      "enName": "Corrupted Shard",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_COUPON": {
+      "kind": "item",
+      "enName": "Coupon",
+      "cnName": "优惠券",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CROWN": {
+      "kind": "item",
+      "enName": "Crown",
+      "cnName": "王冠",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CRYSTAL": {
+      "kind": "item",
+      "enName": "Crystal",
+      "cnName": "水晶",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_CUTE_MONKEY": {
+      "kind": "item",
+      "enName": "Cute Monkey",
+      "cnName": "萌萌猴",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CYBERBALL": {
+      "kind": "item",
+      "enName": "Cyberball",
+      "cnName": "赛博球",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_CYCLOPS_WORM": {
+      "kind": "item",
+      "enName": "Cyclops Worm",
+      "cnName": "独眼虫",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_DANGEROUS_BUNNY": {
+      "kind": "item",
+      "enName": "Dangerous Bunny",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_DECOMPOSING_FLESH": {
+      "kind": "item",
+      "enName": "Decomposing Flesh",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_DEFECTIVE_STEROIDS": {
+      "kind": "item",
+      "enName": "Defective Steroids",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_DIPLOMA": {
+      "kind": "item",
+      "enName": "Diploma",
+      "cnName": "执照",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_DOC_MOTH": {
+      "kind": "item",
+      "enName": "Doc Moth",
+      "cnName": "蛾医生",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_DUCT_TAPE": {
+      "kind": "item",
+      "enName": "Duct Tape",
+      "cnName": "胶带",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_DYNAMITE": {
+      "kind": "item",
+      "enName": "Dynamite",
+      "cnName": "炸药",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ENERGY_BRACELET": {
+      "kind": "item",
+      "enName": "Energy Bracelet",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ESTYS_COUCH": {
+      "kind": "item",
+      "enName": "Esty’s Couch",
+      "cnName": "Esty的沙发",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_EVIL_HAT": {
+      "kind": "item",
+      "enName": "Evil Hat",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_EXOSKELETON": {
+      "kind": "item",
+      "enName": "Exoskeleton",
+      "cnName": "外骨骼",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_EXPLOSIVE_SHELLS": {
+      "kind": "item",
+      "enName": "Explosive Shells",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_EXTRA_STOMACH": {
+      "kind": "item",
+      "enName": "Extra Stomach",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_EYEPATCH": {
+      "kind": "item",
+      "enName": "Eyepatch",
+      "cnName": "海盗眼罩 ",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_EYES_SURGERY": {
+      "kind": "item",
+      "enName": "Eyes Surgery",
+      "cnName": "眼部手术",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_FAIRY": {
+      "kind": "item",
+      "enName": "Fairy",
+      "cnName": "小精灵",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_FEATHER": {
+      "kind": "item",
+      "enName": "Feather",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_FERTILIZER": {
+      "kind": "item",
+      "enName": "Fertilizer",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_FIN": {
+      "kind": "item",
+      "enName": "Fin",
+      "cnName": "鳍",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_FISH_HOOK": {
+      "kind": "item",
+      "enName": "Fish Hook",
+      "cnName": "鱼钩",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_FOCUS": {
+      "kind": "item",
+      "enName": "Focus",
+      "cnName": "焦点",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_FRESH_MEAT": {
+      "kind": "item",
+      "enName": "Fresh Meat",
+      "cnName": "鲜肉",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_FRIED_RICE": {
+      "kind": "item",
+      "enName": "Fried Rice",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_FROZEN_HEART": {
+      "kind": "item",
+      "enName": "Frozen Heart",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_FRUIT_BASKET": {
+      "kind": "item",
+      "enName": "Fruit Basket",
+      "cnName": "果篮",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_FUEL_TANK": {
+      "kind": "item",
+      "enName": "Fuel Tank",
+      "cnName": "燃料箱",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GAMBLING_TOKEN": {
+      "kind": "item",
+      "enName": "Gambling Token",
+      "cnName": "赌博筹码",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GARDEN": {
+      "kind": "item",
+      "enName": "Garden",
+      "cnName": "花园",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GENTLE_ALIEN": {
+      "kind": "item",
+      "enName": "Gentle Alien",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GHOST_OUTFIT": {
+      "kind": "item",
+      "enName": "Ghost Outfit",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GIANT_BELT": {
+      "kind": "item",
+      "enName": "Giant Belt",
+      "cnName": "巨型带",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GLASS_CANNON": {
+      "kind": "item",
+      "enName": "Glass Cannon",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GLASSES": {
+      "kind": "item",
+      "enName": "Glasses",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GNOME": {
+      "kind": "item",
+      "enName": "Gnome",
+      "cnName": "地精",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GOAT_SKULL": {
+      "kind": "item",
+      "enName": "Goat Skull",
+      "cnName": "山羊头骨",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GOBLET": {
+      "kind": "item",
+      "enName": "Goblet",
+      "cnName": "高脚杯",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_GOLDFISH": {
+      "kind": "item",
+      "enName": "Goldfish",
+      "cnName": "金鱼",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_GOLDFISH_USED": {
+      "kind": "item",
+      "enName": "Goldfish Used",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_GREEK_FIRE": {
+      "kind": "item",
+      "enName": "Greek Fire",
+      "cnName": "希腊火",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GRINDS_MAGICAL_LEAF": {
+      "kind": "item",
+      "enName": "Grind’s Magical Leaf",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_GUMMY_BERSERKER": {
+      "kind": "item",
+      "enName": "Gummy Berserker",
+      "cnName": "软糖狂战士",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_HANDCUFFS": {
+      "kind": "item",
+      "enName": "Handcuffs",
+      "cnName": "手铐",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_HEAD_INJURY": {
+      "kind": "item",
+      "enName": "Head Injury",
+      "cnName": "头部创伤",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_HEAVY_BULLETS": {
+      "kind": "item",
+      "enName": "Heavy Bullets",
+      "cnName": "重型子弹",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_HEDGEHOG": {
+      "kind": "item",
+      "enName": "Hedgehog",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_HELMET": {
+      "kind": "item",
+      "enName": "Helmet",
+      "cnName": "头盔",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_HONEY": {
+      "kind": "item",
+      "enName": "Honey",
+      "cnName": "蜂蜜",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_HOURGLASS": {
+      "kind": "item",
+      "enName": "Hourglass",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_HUNTING_TROPHY": {
+      "kind": "item",
+      "enName": "Hunting Trophy",
+      "cnName": "狩猎战利品",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ICE_CUBE": {
+      "kind": "item",
+      "enName": "Ice Cube",
+      "cnName": "冰块",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_IMPROVED_TOOLS": {
+      "kind": "item",
+      "enName": "Improved Tools",
+      "cnName": "改进工具",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_INJECTION": {
+      "kind": "item",
+      "enName": "Injection",
+      "cnName": "注射剂",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_INSANITY": {
+      "kind": "item",
+      "enName": "Insanity",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_JELLY": {
+      "kind": "item",
+      "enName": "Jelly",
+      "cnName": "果冻",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_JELLYSHIELD": {
+      "kind": "item",
+      "enName": "Jellyshield",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_JERKY": {
+      "kind": "item",
+      "enName": "Jerky",
+      "cnName": "干肉条",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_JETPACK": {
+      "kind": "item",
+      "enName": "Jetpack",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_KNOT": {
+      "kind": "item",
+      "enName": "Knot",
+      "cnName": "结",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_KRAKENS_EYE": {
+      "kind": "item",
+      "enName": "Kraken’s Eye",
+      "cnName": "克拉肯的眼睛",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_LANDMINES": {
+      "kind": "item",
+      "enName": "Landmines",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LANTERN": {
+      "kind": "item",
+      "enName": "Lantern",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_LEATHER_VEST": {
+      "kind": "item",
+      "enName": "Leather Vest",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LEMONADE": {
+      "kind": "item",
+      "enName": "Lemonade",
+      "cnName": "柠檬水",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LENS": {
+      "kind": "item",
+      "enName": "Lens",
+      "cnName": "镜片",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LIGHTHOUSE": {
+      "kind": "item",
+      "enName": "Lighthouse",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_LITTLE_FROG": {
+      "kind": "item",
+      "enName": "Little Frog",
+      "cnName": "小青蛙",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LITTLE_MUSCLEY_DUDE": {
+      "kind": "item",
+      "enName": "Little Muscley Dude",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LOOTWORM": {
+      "kind": "item",
+      "enName": "Lootworm",
+      "cnName": "搜刮虫虫",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LOST_DUCK": {
+      "kind": "item",
+      "enName": "Lost Duck",
+      "cnName": "失落鸭鸭",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LUCKY_CHARM": {
+      "kind": "item",
+      "enName": "Lucky Charm",
+      "cnName": "护身符",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LUCKY_COIN": {
+      "kind": "item",
+      "enName": "Lucky Coin",
+      "cnName": "幸运硬币",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LUMBERJACK_SHIRT": {
+      "kind": "item",
+      "enName": "Lumberjack Shirt",
+      "cnName": "伐木工人衬衫",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_LURE": {
+      "kind": "item",
+      "enName": "Lure",
+      "cnName": "鱼饵 ",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_MAMMOTH": {
+      "kind": "item",
+      "enName": "Mammoth",
+      "cnName": "猛犸",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_MASTERY": {
+      "kind": "item",
+      "enName": "Mastery",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_MEDAL": {
+      "kind": "item",
+      "enName": "Medal",
+      "cnName": "勋章",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_MEDIKIT": {
+      "kind": "item",
+      "enName": "Medikit",
+      "cnName": "急救包",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_METAL_DETECTOR": {
+      "kind": "item",
+      "enName": "Metal Detector",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_METAL_PLATE": {
+      "kind": "item",
+      "enName": "Metal Plate",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_MIRROR": {
+      "kind": "item",
+      "enName": "Mirror",
+      "cnName": "镜子",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_MISSILE": {
+      "kind": "item",
+      "enName": "Missile",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_MOUSE": {
+      "kind": "item",
+      "enName": "Mouse",
+      "cnName": "老鼠",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_MUSHROOM": {
+      "kind": "item",
+      "enName": "Mushroom",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_MUTATION": {
+      "kind": "item",
+      "enName": "Mutation",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_NAIL": {
+      "kind": "item",
+      "enName": "Nail",
+      "cnName": "钉子",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_NIGHT_GOGGLES": {
+      "kind": "item",
+      "enName": "Night Goggles",
+      "cnName": "夜视镜",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_OCTOPUS": {
+      "kind": "item",
+      "enName": "Octopus",
+      "cnName": "章鱼",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PADDING": {
+      "kind": "item",
+      "enName": "Padding",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PANDA": {
+      "kind": "item",
+      "enName": "Panda",
+      "cnName": "熊猫",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PEACEFUL_BEE": {
+      "kind": "item",
+      "enName": "Peaceful Bee",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PEACOCK": {
+      "kind": "item",
+      "enName": "Peacock",
+      "cnName": "孔雀",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PEARL": {
+      "kind": "item",
+      "enName": "Pearl",
+      "cnName": "珍珠",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_PENCIL": {
+      "kind": "item",
+      "enName": "Pencil",
+      "cnName": "铅笔",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PENGUIN": {
+      "kind": "item",
+      "enName": "Penguin",
+      "cnName": "企鹅",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_PIGGY_BANK": {
+      "kind": "item",
+      "enName": "Piggy Bank",
+      "cnName": "猪猪存钱罐",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PILE_OF_BOOKS": {
+      "kind": "item",
+      "enName": "Pile Of Books",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PLANT": {
+      "kind": "item",
+      "enName": "Plant",
+      "cnName": "植物",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PLASTIC_EXPLOSIVE": {
+      "kind": "item",
+      "enName": "Plastic Explosive",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_POCKET_FACTORY": {
+      "kind": "item",
+      "enName": "Pocket Factory",
+      "cnName": "口袋工厂",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_POISONOUS_TONIC": {
+      "kind": "item",
+      "enName": "Poisonous Tonic",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_POTATO": {
+      "kind": "item",
+      "enName": "Potato",
+      "cnName": "土豆",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_POTION": {
+      "kind": "item",
+      "enName": "Potion",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_POWER_GENERATOR": {
+      "kind": "item",
+      "enName": "Power Generator",
+      "cnName": "发电机",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PROPELLER_HAT": {
+      "kind": "item",
+      "enName": "Propeller Hat",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_PUMPKIN": {
+      "kind": "item",
+      "enName": "Pumpkin",
+      "cnName": "南瓜",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_RATZILLA": {
+      "kind": "item",
+      "enName": "Ratzilla",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_RECYCLING_MACHINE": {
+      "kind": "item",
+      "enName": "Recycling Machine",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_REINFORCED_STEEL": {
+      "kind": "item",
+      "enName": "Reinforced Steel",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_RETROMATIONS_HOODIE": {
+      "kind": "item",
+      "enName": "Retromation’s Hoodie",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_RICOCHET": {
+      "kind": "item",
+      "enName": "Ricochet",
+      "cnName": "跳弹",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_RIP_AND_TEAR": {
+      "kind": "item",
+      "enName": "Rip And Tear",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_RIPOSTE": {
+      "kind": "item",
+      "enName": "Riposte",
+      "cnName": "反击",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_RITUAL": {
+      "kind": "item",
+      "enName": "Ritual",
+      "cnName": "仪式",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_ROBOT_ARM": {
+      "kind": "item",
+      "enName": "Robot Arm",
+      "cnName": "机械臂",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SAD_TOMATO": {
+      "kind": "item",
+      "enName": "Sad Tomato",
+      "cnName": "悲伤的番茄",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SALTWATER": {
+      "kind": "item",
+      "enName": "Saltwater",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_SCAPEGOAT": {
+      "kind": "item",
+      "enName": "Scapegoat",
+      "cnName": "替罪羔羊",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SCAR": {
+      "kind": "item",
+      "enName": "Scar",
+      "cnName": "疤痕",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SCARED_SAUSAGE": {
+      "kind": "item",
+      "enName": "Scared Sausage",
+      "cnName": "害怕的香肠",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SCARF": {
+      "kind": "item",
+      "enName": "Scarf",
+      "cnName": "围巾",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_SCOPE": {
+      "kind": "item",
+      "enName": "Scope",
+      "cnName": "瞄准镜",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SEASHELL": {
+      "kind": "item",
+      "enName": "Seashell",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_SHACKLES": {
+      "kind": "item",
+      "enName": "Shackles",
+      "cnName": "镣铐",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SHADY_POTION": {
+      "kind": "item",
+      "enName": "Shady Potion",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SHARP_BULLET": {
+      "kind": "item",
+      "enName": "Sharp Bullet",
+      "cnName": "尖头子弹",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SHMOOP": {
+      "kind": "item",
+      "enName": "Shmoop",
+      "cnName": "休穆糖",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SIFDS_RELIC": {
+      "kind": "item",
+      "enName": "Sifd’s Relic",
+      "cnName": "Sifd的圣物",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SILVER_BULLET": {
+      "kind": "item",
+      "enName": "Silver Bullet",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SMALL_FISH": {
+      "kind": "item",
+      "enName": "Small Fish",
+      "cnName": "小鱼",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_SMALL_MAGAZINE": {
+      "kind": "item",
+      "enName": "Small Magazine",
+      "cnName": "小型弹匣",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SNAIL": {
+      "kind": "item",
+      "enName": "Snail",
+      "cnName": "蜗牛",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SNAKE": {
+      "kind": "item",
+      "enName": "Snake",
+      "cnName": "蛇",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SNOWBALL": {
+      "kind": "item",
+      "enName": "Snowball",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SPICY_SAUCE": {
+      "kind": "item",
+      "enName": "Spicy Sauce",
+      "cnName": "辣酱",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SPIDER": {
+      "kind": "item",
+      "enName": "Spider",
+      "cnName": "蜘蛛",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SPYGLASS": {
+      "kind": "item",
+      "enName": "Spyglass",
+      "cnName": "望远镜",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_STARFISH": {
+      "kind": "item",
+      "enName": "Starfish",
+      "cnName": "海星",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_STATUE": {
+      "kind": "item",
+      "enName": "Statue",
+      "cnName": "雕像",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_STONE_SKIN": {
+      "kind": "item",
+      "enName": "Stone Skin",
+      "cnName": "石头皮肤",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_STRANGE_BOOK": {
+      "kind": "item",
+      "enName": "Strange Book",
+      "cnName": "奇怪之书",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SUNGLASSES": {
+      "kind": "item",
+      "enName": "Sunglasses",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_SUNKEN_BELL": {
+      "kind": "item",
+      "enName": "Sunken Bell",
+      "cnName": "沉钟",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_TARDIGRADE": {
+      "kind": "item",
+      "enName": "Tardigrade",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TENTACLE": {
+      "kind": "item",
+      "enName": "Tentacle",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TERRIFIED_ONION": {
+      "kind": "item",
+      "enName": "Terrified Onion",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TOOLBOX": {
+      "kind": "item",
+      "enName": "Toolbox",
+      "cnName": "工具箱",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TORTURE": {
+      "kind": "item",
+      "enName": "Torture",
+      "cnName": "拷问",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TOXIC_SLUDGE": {
+      "kind": "item",
+      "enName": "Toxic Sludge",
+      "cnName": "毒污泥",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TRACTOR": {
+      "kind": "item",
+      "enName": "Tractor",
+      "cnName": "拖拉机",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TREASURE_MAP": {
+      "kind": "item",
+      "enName": "Treasure Map",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_TREE": {
+      "kind": "item",
+      "enName": "Tree",
+      "cnName": "树木",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TRIANGLE_OF_POWER": {
+      "kind": "item",
+      "enName": "Triangle Of Power",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TURRET": {
+      "kind": "item",
+      "enName": "Turret",
+      "cnName": "炮塔",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TURRET_FLAME": {
+      "kind": "item",
+      "enName": "Turret Flame",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TURRET_HEALING": {
+      "kind": "item",
+      "enName": "Turret Healing",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TURRET_LASER": {
+      "kind": "item",
+      "enName": "Turret Laser",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TURRET_ROCKET": {
+      "kind": "item",
+      "enName": "Turret Rocket",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_TYLER": {
+      "kind": "item",
+      "enName": "Tyler",
+      "cnName": "泰勒",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_UGLY_TOOTH": {
+      "kind": "item",
+      "enName": "Ugly Tooth",
+      "cnName": "丑牙",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_VIGILANTE_RING": {
+      "kind": "item",
+      "enName": "Vigilante Ring",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WANDERING_BOT": {
+      "kind": "item",
+      "enName": "Wandering Bot",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WARRIOR_HELMET": {
+      "kind": "item",
+      "enName": "Warrior Helmet",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WEIRD_FOOD": {
+      "kind": "item",
+      "enName": "Weird Food",
+      "cnName": "奇怪的食物",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WEIRD_GHOST": {
+      "kind": "item",
+      "enName": "Weird Ghost",
+      "cnName": "奇怪的幽灵",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WHEAT": {
+      "kind": "item",
+      "enName": "Wheat",
+      "cnName": "小麦",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WHEELBARROW": {
+      "kind": "item",
+      "enName": "Wheelbarrow",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WHETSTONE": {
+      "kind": "item",
+      "enName": "Whetstone",
+      "cnName": "磨刀石",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WHISTLE": {
+      "kind": "item",
+      "enName": "Whistle",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "ITEM_WHITE_FLAG": {
+      "kind": "item",
+      "enName": "White Flag",
+      "cnName": "白旗",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WILL_O_THE_WISP": {
+      "kind": "item",
+      "enName": "Will O The Wisp",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WINGS": {
+      "kind": "item",
+      "enName": "Wings",
+      "cnName": "翅膀",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WISDOM": {
+      "kind": "item",
+      "enName": "Wisdom",
+      "cnName": "智慧",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "ITEM_WOLF_HELMET": {
+      "kind": "item",
+      "enName": "Wolf Helmet",
+      "cnName": "野狼头盔",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_ANCHOR": {
+      "kind": "weapon",
+      "enName": "Anchor",
+      "cnName": "锚",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_BLUNDERBUSS": {
+      "kind": "weapon",
+      "enName": "Blunderbuss",
+      "cnName": "喇叭枪",
+      "source": "manual-override",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_BRICK": {
+      "kind": "weapon",
+      "enName": "Brick",
+      "cnName": "砖块",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_CACTI_CLUB": {
+      "kind": "weapon",
+      "enName": "Cacti Club",
+      "cnName": "刺棍",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_CAPTAINS_SWORD": {
+      "kind": "weapon",
+      "enName": "Captain’s Sword",
+      "cnName": "船长的剑",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_CHAIN_GUN": {
+      "kind": "weapon",
+      "enName": "Chain Gun",
+      "cnName": "链枪",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_CHAINSAW": {
+      "kind": "weapon",
+      "enName": "Chainsaw",
+      "cnName": "电锯",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_CHOPPER": {
+      "kind": "weapon",
+      "enName": "Chopper",
+      "cnName": "砍刀",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_CIRCULAR_SAW": {
+      "kind": "weapon",
+      "enName": "Circular Saw",
+      "cnName": "圆锯",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_CLAW": {
+      "kind": "weapon",
+      "enName": "Claw",
+      "cnName": "利爪",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_CROSSBOW": {
+      "kind": "weapon",
+      "enName": "Crossbow",
+      "cnName": "十字弓",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_DAGGER": {
+      "kind": "weapon",
+      "enName": "Thief Dagger",
+      "cnName": "盗贼匕首",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_DEXTROYER": {
+      "kind": "weapon",
+      "enName": "Dextroyer",
+      "cnName": "DEX终结者",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_DOUBLE_BARREL_SHOTGUN": {
+      "kind": "weapon",
+      "enName": "Double Barrel Shotgun",
+      "cnName": "双管霰弹枪",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_DRILL": {
+      "kind": "weapon",
+      "enName": "Drill",
+      "cnName": "钻机",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_EXCALIBUR": {
+      "kind": "weapon",
+      "enName": "Excalibur",
+      "cnName": "王者之剑",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_FIGHTING_STICK": {
+      "kind": "weapon",
+      "enName": "Fighting Stick",
+      "cnName": "短木棍",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_FIREBALL": {
+      "kind": "weapon",
+      "enName": "Fireball",
+      "cnName": "火球",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_FIST": {
+      "kind": "weapon",
+      "enName": "Fist",
+      "cnName": "拳",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_FLAMETHROWER": {
+      "kind": "weapon",
+      "enName": "Flamethrower",
+      "cnName": "喷火器",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_FLAMING_BRASS_KNUCKLES": {
+      "kind": "weapon",
+      "enName": "Flaming Brass Knuckles",
+      "cnName": "烈焰黄铜指虎",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_FLUTE": {
+      "kind": "weapon",
+      "enName": "Flute",
+      "cnName": "长笛",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_GATLING_LASER": {
+      "kind": "weapon",
+      "enName": "Gatling Laser",
+      "cnName": "加特林激光",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_GHOST_AXE": {
+      "kind": "weapon",
+      "enName": "Ghost Axe",
+      "cnName": "幽魂斧",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_GHOST_FLINT": {
+      "kind": "weapon",
+      "enName": "Ghost Flint",
+      "cnName": "幽魂燧石",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_GHOST_SCEPTER": {
+      "kind": "weapon",
+      "enName": "Ghost Scepter",
+      "cnName": "幽魂节杖",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_GRENADE_LAUNCHER": {
+      "kind": "weapon",
+      "enName": "Grenade Launcher",
+      "cnName": "榴弹发射器",
+      "source": "manual-override",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_HAMMER": {
+      "kind": "weapon",
+      "enName": "Hammer",
+      "cnName": "铁锤",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_HAND": {
+      "kind": "weapon",
+      "enName": "Hand",
+      "cnName": "掌",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_HARPOON_GUN": {
+      "kind": "weapon",
+      "enName": "Harpoon Gun",
+      "cnName": "鱼叉枪",
+      "source": "manual-override",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_HATCHET": {
+      "kind": "weapon",
+      "enName": "Hatchet",
+      "cnName": "短斧",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_HIKING_STICK": {
+      "kind": "weapon",
+      "enName": "Hiking Stick",
+      "cnName": "登山杖",
+      "source": "manual-override",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_ICICLE": {
+      "kind": "weapon",
+      "enName": "Icicle",
+      "cnName": "冰锥",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_JAVELIN": {
+      "kind": "weapon",
+      "enName": "Javelin",
+      "cnName": "标枪",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_JOUSTING_LANCE": {
+      "kind": "weapon",
+      "enName": "Jousting Lance",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_KNIFE": {
+      "kind": "weapon",
+      "enName": "Knife",
+      "cnName": "小刀",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_BRASS_KNUCKLES": {
+      "kind": "weapon",
+      "enName": "Brass Knuckles",
+      "cnName": "黄铜指虎",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_LASER_GUN": {
+      "kind": "weapon",
+      "enName": "Laser Gun",
+      "cnName": "激光枪",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_LIGHTNING_SHIV": {
+      "kind": "weapon",
+      "enName": "Lightning Shiv",
+      "cnName": "雷光刀",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_LUTE": {
+      "kind": "weapon",
+      "enName": "Lute",
+      "cnName": "琉特琴",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_MACE": {
+      "kind": "weapon",
+      "enName": "Mace",
+      "cnName": "狼牙棒",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_MEDICAL_GUN": {
+      "kind": "weapon",
+      "enName": "Medical Gun",
+      "cnName": "医疗枪",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_MINIGUN": {
+      "kind": "weapon",
+      "enName": "Minigun",
+      "cnName": "加特林机枪",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_NUCLEAR_LAUNCHER": {
+      "kind": "weapon",
+      "enName": "Nuclear Launcher",
+      "cnName": "核弹发射器",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_OBLITERATOR": {
+      "kind": "weapon",
+      "enName": "Obliterator",
+      "cnName": "毁灭者",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_PARTICLE_ACCELERATOR": {
+      "kind": "weapon",
+      "enName": "Particle Accelerator",
+      "cnName": "粒子加速器",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_PISTOL": {
+      "kind": "weapon",
+      "enName": "Pistol",
+      "cnName": "手枪",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_PLANK": {
+      "kind": "weapon",
+      "enName": "Plank",
+      "cnName": "木板",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_PLASMA_SLEDGEHAMMER": {
+      "kind": "weapon",
+      "enName": "Plasma Sledgehammer",
+      "cnName": "等离子大锤",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_POTATO_THROWER": {
+      "kind": "weapon",
+      "enName": "Potato Thrower",
+      "cnName": "土豆发射器",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_POWER_FIST": {
+      "kind": "weapon",
+      "enName": "Power Fist",
+      "cnName": "强拳",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_PRUNER": {
+      "kind": "weapon",
+      "enName": "Pruner",
+      "cnName": "修枝剪刀",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_RAIL_GUN": {
+      "kind": "weapon",
+      "enName": "Rail Gun",
+      "cnName": "磁轨炮",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_REVOLVER": {
+      "kind": "weapon",
+      "enName": "Revolver",
+      "cnName": "左轮手枪",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_ROCK": {
+      "kind": "weapon",
+      "enName": "Rock",
+      "cnName": "石头",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_ROCKET_LAUNCHER": {
+      "kind": "weapon",
+      "enName": "Rocket Launcher",
+      "cnName": "火箭筒",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SCISSORS": {
+      "kind": "weapon",
+      "enName": "Scissors",
+      "cnName": "剪刀",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SCREWDRIVER": {
+      "kind": "weapon",
+      "enName": "Screwdriver",
+      "cnName": "螺丝刀",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SCYTHE": {
+      "kind": "weapon",
+      "enName": "Scythe",
+      "cnName": "大镰",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SHARP_TOOTH": {
+      "kind": "weapon",
+      "enName": "Sharp Tooth",
+      "cnName": "尖牙",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SHREDDER": {
+      "kind": "weapon",
+      "enName": "Shredder",
+      "cnName": "粉碎者",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SHURIKEN": {
+      "kind": "weapon",
+      "enName": "Shuriken",
+      "cnName": "手里剑",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SICKLE": {
+      "kind": "weapon",
+      "enName": "Sickle",
+      "cnName": "镰刀",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_SLINGSHOT": {
+      "kind": "weapon",
+      "enName": "Slingshot",
+      "cnName": "弹弓",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SMG": {
+      "kind": "weapon",
+      "enName": "SMG",
+      "cnName": "冲锋枪",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SNIPER_GUN": {
+      "kind": "weapon",
+      "enName": "Sniper Gun",
+      "cnName": "狙击手枪",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SPEAR": {
+      "kind": "weapon",
+      "enName": "Spear",
+      "cnName": "矛",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SPIKY_SHIELD": {
+      "kind": "weapon",
+      "enName": "Spiky Shield",
+      "cnName": "尖刺盾",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SPOON": {
+      "kind": "weapon",
+      "enName": "Spoon",
+      "cnName": "勺子",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_STICK": {
+      "kind": "weapon",
+      "enName": "Stick",
+      "cnName": "树枝",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_SWORD": {
+      "kind": "weapon",
+      "enName": "Sword",
+      "cnName": "剑",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_TASER": {
+      "kind": "weapon",
+      "enName": "Taser",
+      "cnName": "电击枪",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_THUNDER_SWORD": {
+      "kind": "weapon",
+      "enName": "Thunder Sword",
+      "cnName": "雷剑",
+      "source": "manual-override",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_TORCH": {
+      "kind": "weapon",
+      "enName": "Torch",
+      "cnName": "火把",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_TRIDENT": {
+      "kind": "weapon",
+      "enName": "Trident",
+      "cnName": "三叉戟",
+      "source": "manual-override",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_VORPAL_SWORD": {
+      "kind": "weapon",
+      "enName": "Vorpal Sword",
+      "cnName": "斩首剑",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_WAND": {
+      "kind": "weapon",
+      "enName": "Wand",
+      "cnName": "魔杖",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "WEAPON_WAR_HAMMER": {
+      "kind": "weapon",
+      "enName": "War Hammer",
+      "cnName": "战锤",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "WEAPON_WRENCH": {
+      "kind": "weapon",
+      "enName": "Wrench",
+      "cnName": "扳手",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    }
+  }
+}
