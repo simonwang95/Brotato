@@ -461,6 +461,15 @@ tr:last-child td {
   line-height: 1.5;
 }
 
+.compact-list {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+  line-height: 1.35;
+}
+
 .target-section,
 .source-section {
   margin-top: 14px;

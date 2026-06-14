@@ -19,6 +19,14 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
   assert.equal(lute?.valueLabel, "15-122");
   assert.ok(lute?.setLabels.includes("乐器"), "Lute should expose the musical set");
   assert.ok(lute?.setLabels.includes("支援"), "Lute should expose the support set");
+  assert.ok(
+    lute?.detailedAttributes.some((line) => line.includes("缩放：T1 50% 近战伤害，10% 幸运")),
+    "Lute should expose tiered scaling stats",
+  );
+  assert.ok(
+    lute?.detailedAttributes.some((line) => line.includes("伤害：T1 4 / T2 8")),
+    "Lute should expose tiered damage stats",
+  );
 }
 
 {
@@ -27,6 +35,20 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
   assert.equal(cyberball?.valueLabel, "30");
   assert.equal(cyberball?.unlockLabel, "默认解锁");
   assert.match(cyberball?.strategyStatNote ?? "", /幸运拾取伤害/);
+  assert.ok(
+    cyberball?.detailedAttributes.includes("T2 击杀敌人时：25% 概率，造成 25% 幸运 的伤害"),
+    "Cyberball should expose parsed trigger chance and luck scaling",
+  );
+}
+
+{
+  const slingshot = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_SLINGSHOT");
+  assert.ok(
+    slingshot?.detailedAttributes.some((line) =>
+      line.includes("弹射：T1 1，伤害保留 100% / T2 2"),
+    ),
+    "Slingshot should expose parsed bounce stats",
+  );
 }
 
 {

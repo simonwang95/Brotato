@@ -401,6 +401,7 @@ function matchesCompendiumSearch(row, query) {
     row.strategyUnlock,
     row.strategyStatNote,
     row.strategyType,
+    ...(row.detailedAttributes ?? []),
     ...(row.strategyTags ?? []),
     ...(row.setLabels ?? []),
   ]
@@ -447,7 +448,8 @@ function renderCatalogCompendiumCard(entry, kindLabel) {
       <dl class="compendium-meta">
         <div><dt>官方状态</dt><dd>${escapeHtml(`${entry.unlockLabel}，${entry.lootLabel}`)}</dd></div>
         <div><dt>策略解锁</dt><dd>${escapeHtml(entry.strategyUnlock)}</dd></div>
-        <div><dt>属性说明</dt><dd>${escapeHtml(entry.strategyStatNote || "待从效果资源解析具体数值")}</dd></div>
+        <div><dt>详细属性</dt><dd>${renderList(entry.detailedAttributes.map((line) => escapeHtml(line)), "compact-list")}</dd></div>
+        <div><dt>功能说明</dt><dd>${escapeHtml(entry.strategyStatNote || "待补策略说明")}</dd></div>
         <div><dt>套装</dt><dd class="pill-list">${renderPills(entry.setLabels)}</dd></div>
         <div><dt>标签</dt><dd class="pill-list">${renderPills(tags)}</dd></div>
       </dl>

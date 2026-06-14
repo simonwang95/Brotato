@@ -12,6 +12,12 @@ assert.ok(catalog.summary.byKind.weapon > 200, "catalog should include weapon re
   assert.equal(lute?.sourcePackage, "abyssalTerrors");
   assert.equal(lute?.nameKey, "WEAPON_LUTE");
   assert.equal(lute?.unlockedByDefault, true);
+  assert.equal(lute?.stats?.damage, 4);
+  assert.equal(lute?.stats?.cooldown, 45);
+  assert.deepEqual(lute?.stats?.scalingStats, [
+    { stat: "stat_melee_damage", value: 0.5 },
+    { stat: "stat_luck", value: 0.1 },
+  ]);
 }
 
 {
@@ -27,6 +33,13 @@ assert.ok(catalog.summary.byKind.weapon > 200, "catalog should include weapon re
   const luckyCharm = catalog.records.find((record) => record.id === "item_lucky_charm");
   assert.equal(luckyCharm?.unlockedByDefault, false);
   assert.equal(luckyCharm?.value, 75);
+}
+
+{
+  const cyberball = catalog.records.find((record) => record.id === "item_cyberball");
+  assert.equal(cyberball?.effects?.[0]?.key, "stat_luck");
+  assert.equal(cyberball?.effects?.[0]?.chance, 25);
+  assert.equal(cyberball?.effects?.[0]?.value, 25);
 }
 
 console.log("official catalog tests passed");

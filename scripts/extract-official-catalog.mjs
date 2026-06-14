@@ -18,10 +18,41 @@ const packageInputs = [
   },
 ];
 
-function readPackageText(path) {
+function readPackage(path) {
   if (!existsSync(path)) return null;
+  const bytes = readFileSync(path);
   const decoder = new TextDecoder("utf-8", { fatal: false });
-  return decoder.decode(readFileSync(path));
+  const text = decoder.decode(bytes);
+
+  if (bytes.slice(0, 4).toString("ascii") !== "GDPC") {
+    return { text, resources: new Map() };
+  }
+
+  const fileCount = bytes.readUInt32LE(84);
+  let position = 88;
+  const resources = new Map();
+
+  for (let index = 0; index < fileCount; index += 1) {
+    const pathLength = bytes.readUInt32LE(position);
+    position += 4;
+    const resourcePath = bytes
+      .slice(position, position + pathLength)
+      .toString("utf8")
+      .replace(/\0+$/, "");
+    position += pathLength;
+
+    const offset = Number(bytes.readBigUInt64LE(position));
+    position += 8;
+    const size = Number(bytes.readBigUInt64LE(position));
+    position += 8;
+    position += 16;
+
+    if (resourcePath.endsWith(".tres") || resourcePath.endsWith(".tscn")) {
+      resources.set(resourcePath, decoder.decode(bytes.slice(offset, offset + size)));
+    }
+  }
+
+  return { text, resources };
 }
 
 function asBool(value) {
@@ -45,6 +76,16 @@ function getBoolean(block, key) {
   return match ? asBool(match[1]) : null;
 }
 
+function getLineValue(block, key) {
+  const match = block.match(new RegExp(`^${key} = (.+)$`, "m"));
+  return match?.[1]?.trim() ?? null;
+}
+
+function getResourceRef(block, key) {
+  const match = block.match(new RegExp(`${key} = ExtResource\\(\\s*(\\d+)\\s*\\)`));
+  return match ? Number(match[1]) : null;
+}
+
 function getArrayRefs(block, key) {
   const match = block.match(new RegExp(`${key} = \\[([^\\]]*)\\]`));
   if (!match) return [];
@@ -61,10 +102,85 @@ function collectExtResources(block) {
   );
 }
 
-function normalizeRecord(kind, block, sourcePackage) {
+function parseScalingStats(block) {
+  const raw = getLineValue(block, "scaling_stats");
+  if (!raw) return [];
+
+  return [...raw.matchAll(/\[\s*"([^"]+)"\s*,\s*(-?\d+(?:\.\d+)?)\s*\]/g)].map(
+    ([, stat, value]) => ({
+      stat,
+      value: Number(value),
+    }),
+  );
+}
+
+function parseNumberFields(block, keys) {
+  return Object.fromEntries(
+    keys.map((key) => [key, getNumber(block, key)]).filter(([, value]) => value !== null),
+  );
+}
+
+function parseWeaponStats(path, block) {
+  if (!path || !block) return null;
+  const extResources = collectExtResources(block);
+  const scriptRef = getResourceRef(block, "script");
+
+  return {
+    path,
+    scriptPath: extResources[scriptRef]?.path ?? null,
+    ...parseNumberFields(block, [
+      "damage",
+      "cooldown",
+      "accuracy",
+      "crit_chance",
+      "crit_damage",
+      "min_range",
+      "max_range",
+      "knockback",
+      "knockback_piercing",
+      "effect_scale",
+      "lifesteal",
+      "recoil",
+      "recoil_duration",
+      "speed_percent_modifier",
+      "nb_projectiles",
+      "projectile_spread",
+      "piercing",
+      "piercing_dmg_reduction",
+      "bounce",
+      "bounce_dmg_reduction",
+      "projectile_speed",
+      "attack_type",
+    ]),
+    scalingStats: parseScalingStats(block),
+  };
+}
+
+function parseEffectDetail(path, block) {
+  if (!path || !block) return null;
+  const extResources = collectExtResources(block);
+  const scriptRef = getResourceRef(block, "script");
+
+  return {
+    path,
+    scriptPath: extResources[scriptRef]?.path ?? null,
+    key: getString(block, "key"),
+    textKey: getString(block, "text_key"),
+    value: getNumber(block, "value"),
+    customKey: getString(block, "custom_key"),
+    storageMethod: getNumber(block, "storage_method"),
+    effectSign: getNumber(block, "effect_sign"),
+    chance: getNumber(block, "chance"),
+    trackingText: getString(block, "tracking_text"),
+    customArgs: getLineValue(block, "custom_args"),
+  };
+}
+
+function normalizeRecord(kind, block, sourcePackage, resources = new Map()) {
   const extResources = collectExtResources(block);
   const setRefs = getArrayRefs(block, "sets");
   const effectRefs = getArrayRefs(block, "effects");
+  const effectPaths = effectRefs.map((id) => extResources[id]?.path).filter(Boolean);
 
   const record = {
     id: getString(block, "my_id"),
@@ -78,31 +194,39 @@ function normalizeRecord(kind, block, sourcePackage) {
     isCursed: getBoolean(block, "is_cursed"),
     curseFactor: getNumber(block, "curse_factor"),
     setPaths: setRefs.map((id) => extResources[id]?.path).filter(Boolean),
-    effectPaths: effectRefs.map((id) => extResources[id]?.path).filter(Boolean),
+    effectPaths,
+    effects: effectPaths
+      .map((effectPath) => parseEffectDetail(effectPath, resources.get(effectPath)))
+      .filter(Boolean),
   };
 
   if (kind === "weapon") {
+    const statsRef = getResourceRef(block, "stats");
+    const statsPath = extResources[statsRef]?.path ?? null;
     record.weaponId = getString(block, "weapon_id");
     record.weaponType = getNumber(block, "type");
     record.upgradesInto = getString(block, "upgrades_into");
+    record.statsPath = statsPath;
+    record.stats = parseWeaponStats(statsPath, resources.get(statsPath));
   }
 
   return record;
 }
 
-function parsePackage(text, sourcePackage) {
+function parsePackage(pkg, sourcePackage) {
   const records = [];
-  const blocks = text.split("[gd_resource");
+  const resourceBlocks = pkg.resources.size
+    ? [...pkg.resources.values()]
+    : pkg.text.split("[gd_resource").map((partialBlock) => `[gd_resource${partialBlock}`);
 
-  blocks.forEach((partialBlock) => {
-    const block = `[gd_resource${partialBlock}`;
+  resourceBlocks.forEach((block) => {
     const itemId = getString(block, "my_id");
     if (!itemId) return;
 
     if (itemId.startsWith("item_")) {
-      records.push(normalizeRecord("item", block, sourcePackage));
+      records.push(normalizeRecord("item", block, sourcePackage, pkg.resources));
     } else if (itemId.startsWith("weapon_")) {
-      records.push(normalizeRecord("weapon", block, sourcePackage));
+      records.push(normalizeRecord("weapon", block, sourcePackage, pkg.resources));
     }
   });
 
@@ -130,10 +254,10 @@ const loadedPackages = [];
 const records = [];
 
 packageInputs.forEach((input) => {
-  const text = readPackageText(input.path);
-  if (!text) return;
+  const pkg = readPackage(input.path);
+  if (!pkg) return;
   loadedPackages.push(input);
-  records.push(...parsePackage(text, input.id));
+  records.push(...parsePackage(pkg, input.id));
 });
 
 if (!loadedPackages.length) {
