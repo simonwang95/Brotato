@@ -67,10 +67,14 @@
             <button class="tab-button" type="button" data-compendium-tab="weapons">武器</button>
             <button class="tab-button" type="button" data-compendium-tab="items">物品</button>
           </div>
-          <label class="field compendium-search">
-            <span>搜索</span>
-            <input id="compendium-search" type="search" placeholder="输入中文名、英文名、套装或标签" />
-          </label>
+          <div class="compendium-search-group">
+            <label class="field compendium-search">
+              <span>搜索</span>
+              <input id="compendium-search" type="search" placeholder="输入中文名、英文名、套装或标签" />
+            </label>
+            <button id="compendium-search-button" type="button">搜索</button>
+            <button id="compendium-clear-search" class="secondary" type="button">清空</button>
+          </div>
         </div>
         <div id="compendium-output" class="compendium-output"></div>
       </section>

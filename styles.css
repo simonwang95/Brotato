@@ -496,7 +496,7 @@ tr:last-child td {
 
 .compendium-controls {
   display: grid;
-  grid-template-columns: auto minmax(260px, 420px);
+  grid-template-columns: auto minmax(360px, 560px);
   gap: 14px;
   align-items: end;
   padding: 14px 18px 18px;
@@ -519,6 +519,17 @@ tr:last-child td {
 }
 
 .compendium-search input {
+  min-height: 43px;
+}
+
+.compendium-search-group {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.compendium-search-group button {
   min-height: 43px;
 }
 
@@ -678,6 +689,7 @@ tr:last-child td {
   .guide-hero,
   .guide-grid,
   .compendium-controls,
+  .compendium-search-group,
   .compendium-grid,
   .strategy-controls {
     grid-template-columns: 1fr;

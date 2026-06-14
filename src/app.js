@@ -108,6 +108,7 @@ const state = {
   localizationLoadState: "loading",
   compendiumTab: "characters",
   compendiumSearch: "",
+  compendiumSearchDraft: "",
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -438,8 +439,15 @@ function renderCatalogCompendiumCard(entry, kindLabel) {
 
 function renderCompendiumTabs() {
   document.querySelectorAll("[data-compendium-tab]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.compendiumTab === state.compendiumTab);
+    const isActive = button.dataset.compendiumTab === state.compendiumTab;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
   });
+}
+
+function applyCompendiumSearch() {
+  state.compendiumSearch = state.compendiumSearchDraft.trim();
+  renderCompendium();
 }
 
 function renderCompendium() {
@@ -872,16 +880,36 @@ function bindControls() {
     renderStrategyGuide();
   });
 
-  document.querySelectorAll("[data-compendium-tab]").forEach((button) => {
-    button.addEventListener("click", () => {
-      state.compendiumTab = button.dataset.compendiumTab;
+  $(".compendium-panel").addEventListener("click", (event) => {
+    const tabButton = event.target.closest("[data-compendium-tab]");
+    if (tabButton) {
+      state.compendiumTab = tabButton.dataset.compendiumTab;
       renderCompendium();
-    });
+      return;
+    }
+
+    if (event.target.closest("#compendium-search-button")) {
+      applyCompendiumSearch();
+      return;
+    }
+
+    if (event.target.closest("#compendium-clear-search")) {
+      state.compendiumSearch = "";
+      state.compendiumSearchDraft = "";
+      $("#compendium-search").value = "";
+      renderCompendium();
+    }
   });
 
   $("#compendium-search").addEventListener("input", (event) => {
-    state.compendiumSearch = event.target.value;
-    renderCompendium();
+    state.compendiumSearchDraft = event.target.value;
+  });
+
+  $("#compendium-search").addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      applyCompendiumSearch();
+    }
   });
 
   $("#rounding-mode").addEventListener("change", (event) => {
