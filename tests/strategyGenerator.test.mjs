@@ -123,6 +123,14 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     "recommended weapons should expose stat notes",
   );
   assert.ok(
+    guide.recommendedWeapons.every(({ recommendationScore }) => Number.isFinite(recommendationScore)),
+    "recommended weapons should expose recommendation scores",
+  );
+  assert.ok(
+    guide.recommendedWeapons.every(({ recommendationReasons }) => Array.isArray(recommendationReasons)),
+    "recommended weapons should expose recommendation reasons",
+  );
+  assert.ok(
     guide.keyItems.some(({ item }) => item.name === "Night Goggles"),
     "ranger guide should include its character unlock item",
   );
@@ -143,6 +151,10 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
   assert.ok(
     guide.keyItems.every(({ item }) => item.statNote),
     "key items should expose stat notes",
+  );
+  assert.ok(
+    guide.keyItems.every(({ recommendationScore }) => Number.isFinite(recommendationScore)),
+    "key items should expose recommendation scores",
   );
   assert.ok(
     guide.statPriority.early.includes("远程伤害"),
@@ -357,6 +369,11 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     preferenceId: "engineering",
   });
   assert.equal(guide.character.name, "Builder");
+  assert.equal(
+    guide.keyItems[0].item.name,
+    "Robot Arm",
+    "builder should keep its core scaling item ahead of generic engineering keywords",
+  );
   assert.ok(
     guide.keyItems.some(({ item }) => item.name === "Robot Arm"),
     "builder should include Robot Arm for engineering scaling",
@@ -375,6 +392,12 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
   assert.ok(
     ["Torch", "Wand"].includes(guide.recommendedWeapons[0].weapon.name),
     "elemental preference should surface elemental chef weapons",
+  );
+  assert.ok(
+    guide.recommendedWeapons[0].recommendationReasons.some((reason) =>
+      reason.includes("候选标签贴合偏好"),
+    ),
+    "preference scoring should explain why an elemental weapon was surfaced",
   );
   assert.ok(
     guide.keyItems.some(({ item }) => item.name === "Cauldron" && item.cnName === "大锅"),

@@ -198,46 +198,98 @@ function entryAllowedByOptions(entry, options) {
   return true;
 }
 
-function preferenceScore(entry, preference) {
-  const target = entry.weapon ?? entry.item;
-  const candidateTags = [...(target.tags ?? []), ...(entry.routeTags ?? [])];
-  const haystack = [
+function normalizeTag(tag) {
+  return String(tag).toLowerCase();
+}
+
+function entryText(entry, target) {
+  return [
+    target.name,
+    target.cnName,
     target.type,
     target.role,
-    target.cnName,
     entry.priority,
     entry.reason,
-    ...candidateTags,
   ]
     .join(" ")
     .toLowerCase();
-
-  const keywordScore = preference.keywords.reduce(
-    (score, keyword) => score + (haystack.includes(keyword.toLowerCase()) ? 2 : 0),
-    0,
-  );
-  const tagScore = preference.tags.reduce(
-    (score, tag) =>
-      score +
-      (candidateTags.some((entryTag) => entryTag.toLowerCase() === tag.toLowerCase()) ? 3 : 0),
-    0,
-  );
-  return keywordScore + tagScore;
 }
 
-function sortByPreference(entries, preference) {
+function priorityScore(priority) {
+  if (/主推荐|核心/.test(priority)) return 5;
+  if (/替代|高|条件核心/.test(priority)) return 3;
+  if (/补充|中/.test(priority)) return 1;
+  return 0;
+}
+
+function officialAvailabilityScore(official) {
+  if (!official?.found) return 0;
+
+  const defaultUnlocked = official.records.some((record) => record.unlockedByDefault === true);
+  const canBeLooted = official.records.some((record) => record.canBeLooted === true);
+  return (defaultUnlocked ? 1 : 0) + (canBeLooted ? 1 : 0);
+}
+
+function scoreRecommendation(entry, preference) {
+  const target = entry.weapon ?? entry.item;
+  const targetTags = (target.tags ?? []).map(normalizeTag);
+  const routeTags = (entry.routeTags ?? []).map(normalizeTag);
+  const targetRouteMatches = targetTags.filter((tag) => routeTags.includes(tag));
+  const text = entryText(entry, target);
+  const reasons = [];
+
+  const keywordScore = preference.keywords.reduce(
+    (score, keyword) => {
+      if (!text.includes(keyword.toLowerCase())) return score;
+      reasons.push(`匹配偏好关键词：${keyword}`);
+      return score + 3;
+    },
+    0,
+  );
+  const targetTagScore = preference.tags.reduce((score, tag) => {
+    if (!targetTags.includes(normalizeTag(tag))) return score;
+    reasons.push(`候选标签贴合偏好：${tag}`);
+    return score + 5;
+  }, 0);
+  const routeTagScore = preference.tags.reduce((score, tag) => {
+    if (!routeTags.includes(normalizeTag(tag))) return score;
+    reasons.push(`路线标签贴合偏好：${tag}`);
+    return score + 2;
+  }, 0);
+  const routeFitScore = targetRouteMatches.length * 2;
+  if (targetRouteMatches.length) {
+    reasons.push(`候选自身贴合路线：${targetRouteMatches.join(" / ")}`);
+  }
+
+  const planScore = priorityScore(entry.priority);
+  if (planScore) reasons.push(`手写优先级：${entry.priority}`);
+
+  const availabilityScore = officialAvailabilityScore(entry.official);
+  if (availabilityScore) reasons.push("官方目录显示可稳定获取");
+
+  return {
+    score: keywordScore + targetTagScore + routeTagScore + routeFitScore + planScore + availabilityScore,
+    reasons,
+  };
+}
+
+function sortByRecommendationScore(entries, preference) {
   return entries
     .map((entry, index) => ({
       entry,
       index,
-      score: preferenceScore(entry, preference),
+      scoring: scoreRecommendation(entry, preference),
     }))
-    .sort((a, b) => b.score - a.score || a.index - b.index)
-    .map(({ entry }) => entry);
+    .sort((a, b) => b.scoring.score - a.scoring.score || a.index - b.index)
+    .map(({ entry, scoring }) => ({
+      ...entry,
+      recommendationScore: scoring.score,
+      recommendationReasons: scoring.reasons.slice(0, 4),
+    }));
 }
 
 function filterAndSort(entries, options) {
-  return sortByPreference(
+  return sortByRecommendationScore(
     entries.filter((entry) => entryAllowedByOptions(entry, options)),
     options.preference,
   );

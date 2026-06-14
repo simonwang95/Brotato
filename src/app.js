@@ -461,13 +461,14 @@ function renderStrategyGuide() {
         <div class="card-list">
           ${guide.recommendedWeapons
             .map(
-              ({ priority, reason, weapon, official }) => `
+              ({ priority, reason, weapon, official, recommendationScore, recommendationReasons }) => `
                 <article class="guide-card">
                   <div>
                     <span>${escapeHtml(priority)}</span>
                     <h4>${escapeHtml(weapon.name)} <small>（${escapeHtml(weapon.cnName)}，${escapeHtml(weapon.type)}）</small></h4>
                   </div>
                   <p>${escapeHtml(reason)}</p>
+                  <small>推荐评分：${escapeHtml(String(recommendationScore ?? 0))}${recommendationReasons?.length ? `；${escapeHtml(recommendationReasons.join("；"))}` : ""}</small>
                   <small>属性：${escapeHtml(weapon.statNote)}</small>
                   ${weapon.setNote ? `<small>套装：${escapeHtml(weapon.setNote)}</small>` : ""}
                   <small>解锁：${escapeHtml(weapon.unlock)}</small>
@@ -485,13 +486,14 @@ function renderStrategyGuide() {
         <div class="card-list">
           ${guide.keyItems
             .map(
-              ({ priority, reason, item, official }) => `
+              ({ priority, reason, item, official, recommendationScore, recommendationReasons }) => `
                 <article class="guide-card">
                   <div>
                     <span>${escapeHtml(priority)}</span>
                     <h4>${escapeHtml(item.name)} <small>（${escapeHtml(item.cnName)}，${escapeHtml(item.role)}）</small></h4>
                   </div>
                   <p>${escapeHtml(reason)}</p>
+                  <small>推荐评分：${escapeHtml(String(recommendationScore ?? 0))}${recommendationReasons?.length ? `；${escapeHtml(recommendationReasons.join("；"))}` : ""}</small>
                   <small>属性：${escapeHtml(item.statNote)}</small>
                   <small>解锁：${escapeHtml(item.unlock)}</small>
                   ${renderOfficialMeta(official)}
