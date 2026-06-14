@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Brotato 数值实验台</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260614-compendium-links" />
   </head>
   <body>
     <main class="app-shell">
@@ -56,17 +56,17 @@
         <div id="strategy-output" class="strategy-output"></div>
       </section>
 
-      <section class="panel compendium-panel">
+      <section class="panel compendium-panel compendium-overview-mode">
         <div class="panel-header">
           <h2>全图鉴</h2>
           <p>展示角色解锁条件，以及本机安装包提取到的武器/物品中文名、属性说明、套装、价格和掉落状态。</p>
         </div>
         <div class="compendium-controls">
           <div class="segmented-control" aria-label="图鉴分类">
-            <button class="tab-button active" type="button" data-compendium-home>总览</button>
-            <button class="tab-button" type="button" data-compendium-tab="characters">角色</button>
-            <button class="tab-button" type="button" data-compendium-tab="weapons">武器</button>
-            <button class="tab-button" type="button" data-compendium-tab="items">物品</button>
+            <a class="tab-button active" href="#compendium" data-compendium-home>总览</a>
+            <a class="tab-button" href="#compendium/characters" data-compendium-tab="characters">角色</a>
+            <a class="tab-button" href="#compendium/weapons" data-compendium-tab="weapons">武器</a>
+            <a class="tab-button" href="#compendium/items" data-compendium-tab="items">物品</a>
           </div>
           <div class="compendium-search-group">
             <label class="field compendium-search">
@@ -143,6 +143,6 @@
       </p>
     </main>
 
-    <script type="module" src="./src/app.js"></script>
+    <script type="module" src="./src/app.js?v=20260614-compendium-links"></script>
   </body>
 </html>

@@ -487,25 +487,17 @@ function clearCompendiumSearchState() {
   if (searchInput) searchInput.value = "";
 }
 
-function setCompendiumRoute(tabId) {
-  if (tabId && (state.compendiumPage !== "detail" || state.compendiumTab !== tabId)) {
-    clearCompendiumSearchState();
-  }
-
-  const nextHash = tabId ? `#compendium/${tabId}` : "#compendium";
-  if (window.location.hash === nextHash) {
-    syncCompendiumRoute();
-    return;
-  }
-
-  window.location.hash = nextHash;
-}
-
 function syncCompendiumRoute() {
   const [, tabId] = window.location.hash.match(/^#compendium\/([^/]+)$/) ?? [];
+  const previousPage = state.compendiumPage;
+  const previousTab = state.compendiumTab;
+
   if (compendiumTabIds.includes(tabId)) {
     state.compendiumPage = "detail";
     state.compendiumTab = tabId;
+    if (previousPage !== "detail" || previousTab !== tabId) {
+      clearCompendiumSearchState();
+    }
   } else if (window.location.hash === "#compendium") {
     state.compendiumPage = "overview";
   }
@@ -523,7 +515,7 @@ function renderCompendiumOverview(compendium) {
           <span>${escapeHtml(String(count))} 条</span>
           <h4>${escapeHtml(tab.title)}图鉴</h4>
           <p>${escapeHtml(tab.description)}</p>
-          <button type="button" data-compendium-tab="${escapeHtml(tabId)}">查看全部${escapeHtml(tab.title)}</button>
+          <a class="button" href="#compendium/${escapeHtml(tabId)}" data-compendium-tab="${escapeHtml(tabId)}">查看全部${escapeHtml(tab.title)}</a>
         </article>
       `;
     })
@@ -586,7 +578,7 @@ function renderCompendium() {
 
   output.innerHTML = `
     <div class="compendium-page-actions">
-      <button class="secondary" type="button" data-compendium-home>返回总览</button>
+      <a class="button secondary" href="#compendium" data-compendium-home>返回总览</a>
     </div>
     <div class="compendium-summary">
       <strong>${escapeHtml(active.title)}图鉴</strong>
@@ -980,17 +972,6 @@ function bindControls() {
   });
 
   $(".compendium-panel").addEventListener("click", (event) => {
-    if (event.target.closest("[data-compendium-home]")) {
-      setCompendiumRoute(null);
-      return;
-    }
-
-    const tabButton = event.target.closest("[data-compendium-tab]");
-    if (tabButton) {
-      setCompendiumRoute(tabButton.dataset.compendiumTab);
-      return;
-    }
-
     if (event.target.closest("#compendium-search-button")) {
       applyCompendiumSearch();
       return;

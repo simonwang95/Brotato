@@ -84,6 +84,9 @@ h1 {
 
 .button,
 button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--accent);
   border-radius: 8px;
   background: var(--accent);
@@ -91,6 +94,7 @@ button {
   padding: 10px 14px;
   cursor: pointer;
   font-weight: 700;
+  text-decoration: none;
 }
 
 .button.secondary,
@@ -494,11 +498,21 @@ tr:last-child td {
   margin-bottom: 18px;
 }
 
+.compendium-panel .panel-header {
+  text-align: center;
+}
+
+.compendium-panel .panel-header p {
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .compendium-controls {
   display: grid;
-  grid-template-columns: auto minmax(360px, 560px);
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   align-items: end;
+  justify-items: center;
   padding: 14px 18px 18px;
 }
 
@@ -506,11 +520,21 @@ tr:last-child td {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  justify-content: center;
 }
 
 .tab-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 74px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
   background: transparent;
   color: var(--accent-strong);
+  padding: 10px 16px;
+  font-weight: 800;
+  text-decoration: none;
 }
 
 .tab-button.active {
@@ -527,6 +551,7 @@ tr:last-child td {
   grid-template-columns: minmax(220px, 1fr) auto auto;
   gap: 8px;
   align-items: end;
+  width: min(100%, 720px);
 }
 
 .compendium-search-group button {
@@ -550,6 +575,7 @@ tr:last-child td {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+  justify-content: center;
   margin-bottom: 12px;
   color: var(--muted);
 }
@@ -579,6 +605,8 @@ tr:last-child td {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+  width: min(100%, 920px);
+  margin: 0 auto;
 }
 
 .compendium-category-card {
@@ -586,7 +614,8 @@ tr:last-child td {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fff;
-  padding: 14px;
+  padding: 18px;
+  text-align: center;
 }
 
 .compendium-category-card span {
@@ -605,6 +634,10 @@ tr:last-child td {
   margin-bottom: 12px;
   color: var(--muted);
   line-height: 1.5;
+}
+
+.compendium-category-card .button {
+  width: 100%;
 }
 
 .compendium-card {
