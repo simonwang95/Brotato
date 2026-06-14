@@ -645,7 +645,7 @@ function renderCompendium() {
     </div>
     ${
       rows.length
-        ? `<div class="compendium-grid">${rows.map((row) => active.render(row)).join("")}</div>`
+        ? `<div class="compendium-grid compendium-grid-${escapeHtml(state.compendiumTab)}">${rows.map((row) => active.render(row)).join("")}</div>`
         : `<div class="empty-state">没有匹配的图鉴条目。</div>`
     }
   `;

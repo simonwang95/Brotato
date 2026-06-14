@@ -471,7 +471,9 @@ tr:last-child td {
 }
 
 .weapon-tier-table-wrap {
+  width: 100%;
   max-width: 100%;
+  min-width: 0;
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -661,6 +663,10 @@ tr:last-child td {
   padding-right: 2px;
 }
 
+.compendium-grid-weapons {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .compendium-category-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -702,6 +708,8 @@ tr:last-child td {
 
 .compendium-card {
   min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fff;
@@ -768,9 +776,11 @@ tr:last-child td {
 .compendium-meta div {
   display: grid;
   gap: 3px;
+  min-width: 0;
 }
 
 .compendium-meta dd {
+  min-width: 0;
   margin: 0;
   color: var(--text);
   line-height: 1.45;
