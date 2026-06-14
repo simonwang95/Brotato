@@ -56,6 +56,25 @@
         <div id="strategy-output" class="strategy-output"></div>
       </section>
 
+      <section class="panel compendium-panel">
+        <div class="panel-header">
+          <h2>全图鉴</h2>
+          <p>展示角色解锁条件，以及本机安装包提取到的武器/物品中文名、属性说明、套装、价格和掉落状态。</p>
+        </div>
+        <div class="compendium-controls">
+          <div class="segmented-control" aria-label="图鉴分类">
+            <button class="tab-button active" type="button" data-compendium-tab="characters">角色</button>
+            <button class="tab-button" type="button" data-compendium-tab="weapons">武器</button>
+            <button class="tab-button" type="button" data-compendium-tab="items">物品</button>
+          </div>
+          <label class="field compendium-search">
+            <span>搜索</span>
+            <input id="compendium-search" type="search" placeholder="输入中文名、英文名、套装或标签" />
+          </label>
+        </div>
+        <div id="compendium-output" class="compendium-output"></div>
+      </section>
+
       <section class="layout calculator-layout">
         <div>
           <section class="panel">
@@ -115,7 +134,7 @@
       <p class="note">
         当前版本已加入场景估算：穿透、弹射、爆炸额外目标和拾取触发类道具会随敌人密度变化。
         燃烧、诅咒、结构物、敌人护甲、溢出伤害、走位命中损失，以及移速和闪避的有效规避已加入近似模型。
-        攻略数据目前覆盖默认 5 个角色和 Engineer；其余角色会按同一数据结构继续补全。
+        攻略数据目前覆盖原版和深海魔怪角色；图鉴价格与掉落状态来自本机安装包提取的官方目录。
       </p>
     </main>
 

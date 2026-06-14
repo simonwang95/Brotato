@@ -11,6 +11,7 @@ import {
   getAvailableItemEffects,
   getAvailableScenarios,
 } from "./scenarioData.js";
+import { buildCompendium } from "./compendium.js";
 import {
   generateStrategyGuide,
   getAvailableCharacters,
@@ -103,6 +104,10 @@ const state = {
   strategyPreference: "stable",
   officialCatalog: null,
   catalogLoadState: "loading",
+  officialLocalization: null,
+  localizationLoadState: "loading",
+  compendiumTab: "characters",
+  compendiumSearch: "",
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -357,6 +362,136 @@ function renderOfficialMeta(official) {
   }
 
   return `<small class="official-meta">官方目录：${escapeHtml(official.display)}</small>`;
+}
+
+function renderPills(items) {
+  if (!items.length) return `<span class="pill muted-pill">无</span>`;
+  return items.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join("");
+}
+
+function matchesCompendiumSearch(row, query) {
+  if (!query) return true;
+  const haystack = [
+    row.name,
+    row.enName,
+    row.cnName,
+    row.archetype,
+    row.nameKey,
+    row.summary,
+    row.unlock,
+    row.strategyUnlock,
+    row.strategyStatNote,
+    row.strategyType,
+    ...(row.strategyTags ?? []),
+    ...(row.setLabels ?? []),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  return haystack.includes(query.toLowerCase());
+}
+
+function renderCharacterCompendiumCard(character) {
+  return `
+    <article class="compendium-card">
+      <div class="compendium-card-header">
+        <span>${escapeHtml(character.unlockStatus)}</span>
+        <h4>${escapeHtml(character.name)} <small>（${escapeHtml(character.cnName)}${character.archetype ? `，${escapeHtml(character.archetype)}` : ""}）</small></h4>
+      </div>
+      <p>${escapeHtml(character.summary)}</p>
+      <dl class="compendium-meta">
+        <div><dt>解锁</dt><dd>${escapeHtml(character.unlock)}</dd></div>
+      </dl>
+    </article>
+  `;
+}
+
+function renderCatalogCompendiumCard(entry, kindLabel) {
+  const tags = [
+    entry.strategyType,
+    ...entry.strategyTags,
+    `${entry.effectCount} 个效果资源`,
+    entry.isCursedLabel,
+  ].filter(Boolean);
+
+  return `
+    <article class="compendium-card">
+      <div class="compendium-card-header">
+        <span>${escapeHtml(kindLabel)} · ${escapeHtml(entry.sourceLabel)}</span>
+        <h4>${escapeHtml(entry.enName)} <small>（${escapeHtml(entry.cnName)}）</small></h4>
+      </div>
+      <div class="compendium-stats">
+        <div><span>价格</span><strong>${escapeHtml(entry.valueLabel)}</strong></div>
+        <div><span>阶级</span><strong>${escapeHtml(entry.tierLabel)}</strong></div>
+        <div><span>记录</span><strong>${escapeHtml(String(entry.recordCount))}</strong></div>
+      </div>
+      <dl class="compendium-meta">
+        <div><dt>官方状态</dt><dd>${escapeHtml(`${entry.unlockLabel}，${entry.lootLabel}`)}</dd></div>
+        <div><dt>策略解锁</dt><dd>${escapeHtml(entry.strategyUnlock)}</dd></div>
+        <div><dt>属性说明</dt><dd>${escapeHtml(entry.strategyStatNote || "待从效果资源解析具体数值")}</dd></div>
+        <div><dt>套装</dt><dd class="pill-list">${renderPills(entry.setLabels)}</dd></div>
+        <div><dt>标签</dt><dd class="pill-list">${renderPills(tags)}</dd></div>
+      </dl>
+    </article>
+  `;
+}
+
+function renderCompendiumTabs() {
+  document.querySelectorAll("[data-compendium-tab]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.compendiumTab === state.compendiumTab);
+  });
+}
+
+function renderCompendium() {
+  const output = $("#compendium-output");
+  if (!output) return;
+
+  renderCompendiumTabs();
+
+  if (state.catalogLoadState === "loading" || state.localizationLoadState === "loading") {
+    output.innerHTML = `<div class="empty-state">正在载入官方目录和中文本地化。</div>`;
+    return;
+  }
+
+  if (state.catalogLoadState === "error") {
+    output.innerHTML = `<div class="empty-state">官方目录未载入，暂时无法展示武器/物品完整价格图鉴。</div>`;
+    return;
+  }
+
+  const compendium = buildCompendium(state.officialCatalog, state.officialLocalization);
+  const tabConfig = {
+    characters: {
+      title: "角色",
+      rows: compendium.characters,
+      render: renderCharacterCompendiumCard,
+    },
+    weapons: {
+      title: "武器",
+      rows: compendium.weapons,
+      render: (entry) => renderCatalogCompendiumCard(entry, "武器"),
+    },
+    items: {
+      title: "物品",
+      rows: compendium.items,
+      render: (entry) => renderCatalogCompendiumCard(entry, "物品"),
+    },
+  };
+  const active = tabConfig[state.compendiumTab] ?? tabConfig.characters;
+  const query = state.compendiumSearch.trim();
+  const rows = active.rows.filter((row) => matchesCompendiumSearch(row, query));
+
+  output.innerHTML = `
+    <div class="compendium-summary">
+      <strong>${escapeHtml(active.title)}图鉴</strong>
+      <span>${escapeHtml(String(rows.length))} / ${escapeHtml(String(active.rows.length))} 条</span>
+      <span>武器 ${escapeHtml(String(compendium.weapons.length))}，物品 ${escapeHtml(String(compendium.items.length))}，角色 ${escapeHtml(String(compendium.characters.length))}</span>
+    </div>
+    ${
+      rows.length
+        ? `<div class="compendium-grid">${rows.map((row) => active.render(row)).join("")}</div>`
+        : `<div class="empty-state">没有匹配的图鉴条目。</div>`
+    }
+  `;
 }
 
 function renderStrategyControls() {
@@ -737,6 +872,18 @@ function bindControls() {
     renderStrategyGuide();
   });
 
+  document.querySelectorAll("[data-compendium-tab]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.compendiumTab = button.dataset.compendiumTab;
+      renderCompendium();
+    });
+  });
+
+  $("#compendium-search").addEventListener("input", (event) => {
+    state.compendiumSearch = event.target.value;
+    renderCompendium();
+  });
+
   $("#rounding-mode").addEventListener("change", (event) => {
     state.roundingMode = event.target.value;
     renderResults();
@@ -826,6 +973,7 @@ function bindControls() {
 function render() {
   renderStrategyControls();
   renderStrategyGuide();
+  renderCompendium();
   renderStatFields();
   renderWeaponFields();
   renderScenarioFields();
@@ -846,8 +994,25 @@ async function loadOfficialCatalog() {
   }
 
   renderStrategyGuide();
+  renderCompendium();
+}
+
+async function loadOfficialLocalization() {
+  try {
+    const response = await fetch("./data/official-localization.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    state.officialLocalization = await response.json();
+    state.localizationLoadState = "loaded";
+  } catch (error) {
+    console.warn("Failed to load official localization", error);
+    state.officialLocalization = null;
+    state.localizationLoadState = "error";
+  }
+
+  renderCompendium();
 }
 
 bindControls();
 render();
 loadOfficialCatalog();
+loadOfficialLocalization();
