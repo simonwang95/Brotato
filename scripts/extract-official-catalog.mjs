@@ -192,6 +192,7 @@ function parseEffectDetail(path, block) {
 
 function normalizeRecord(kind, block, sourcePackage, resources = new Map()) {
   const extResources = collectExtResources(block);
+  const iconRef = getResourceRef(block, "icon");
   const setRefs = getArrayRefs(block, "sets");
   const effectRefs = getArrayRefs(block, "effects");
   const startingWeaponRefs = getArrayRefs(block, "starting_weapons");
@@ -203,6 +204,10 @@ function normalizeRecord(kind, block, sourcePackage, resources = new Map()) {
     kind,
     sourcePackage,
     nameKey: getString(block, "name"),
+    iconResourcePath: extResources[iconRef]?.path ?? null,
+    expectedImageAssetPath: getString(block, "my_id")
+      ? `data/assets/${kind}s/${getString(block, "my_id")}.png`
+      : null,
     tier: getNumber(block, "tier"),
     value: getNumber(block, "value"),
     unlockedByDefault: getBoolean(block, "unlocked_by_default"),

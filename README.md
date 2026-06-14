@@ -85,7 +85,7 @@ npm run verify:names
 npm run extract:catalog
 ```
 
-生成文件在 `data/official-catalog.json`，包含资源 ID、翻译 key、稀有度、价格、默认解锁状态和 DLC 来源。
+生成文件在 `data/official-catalog.json`，包含资源 ID、翻译 key、稀有度、价格、默认解锁状态、DLC 来源、官方 icon 资源路径，以及后续本地图片资产目标路径。
 
 校验攻略资料中的武器/道具是否能映射到官方目录：
 
@@ -96,12 +96,19 @@ npm run verify:catalog
 页面启动时会读取 `data/official-catalog.json`，在推荐武器和关键道具下方补充官方来源、阶数、价格、解锁和掉落池状态。
 Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“仅原版”时会隐藏该 DLC 武器。
 
+## 部署和图片资产
+
+本机安装目录只用于开发时提取资料。页面运行和线上部署不读取 Steam 安装目录，也不读取 `.pck` 文件；部署时所有数据都应保存在项目内的 `data/*.json` 和后续导出的 `data/assets/**` 中。
+
+角色、武器、物品配图的资产管线见 [docs/assets-and-deployment.md](docs/assets-and-deployment.md)。
+
 ## 后续目标
 
 二期攻略生成器已经接入原版 44 个角色和深海魔怪 DLC 15 个角色。下一步会继续校验角色解锁条件、补全剩余图鉴本地化，并把更多武器/道具参数接入数值模型。
 
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。
+图片和部署数据约束见 [docs/assets-and-deployment.md](docs/assets-and-deployment.md)。
 
 ## 资料来源状态
 

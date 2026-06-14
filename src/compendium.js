@@ -344,6 +344,7 @@ function groupCatalogRecords(catalog, kind) {
 
 function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEntry) {
   const localized = localization?.entries?.[nameKey];
+  const firstRecord = records[0];
   const sources = unique(records.map((record) => record.sourcePackage));
   const setIds = unique(records.flatMap((record) => record.setPaths ?? []).map(setIdFromPath));
   const effectPaths = unique(records.flatMap((record) => record.effectPaths ?? []));
@@ -355,6 +356,9 @@ function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEnt
     enName: localized?.enName ?? strategyEntry?.name ?? nameKey,
     cnName: localized?.cnName ?? strategyEntry?.cnName ?? "待本地化",
     localizationSource: localized?.source ?? "missing",
+    iconResourcePath: firstRecord?.iconResourcePath ?? null,
+    expectedImageAssetPath: firstRecord?.expectedImageAssetPath ?? null,
+    imageAssetPath: null,
     sourcePackages: sources,
     sourceLabel: sources.map(sourceLabel).join(" / "),
     tierLabel: rangeLabel(records.map((record) => record.tier), (tier) => `T${tier + 1}`),
@@ -411,6 +415,9 @@ export function buildCharacterCompendium(catalog) {
         traits,
         officialFound: Boolean(official),
         sourceLabel: official ? sourceLabel(official.sourcePackage) : "未匹配官方角色资源",
+        iconResourcePath: official?.iconResourcePath ?? null,
+        expectedImageAssetPath: official?.expectedImageAssetPath ?? null,
+        imageAssetPath: null,
       };
     })
     .sort((left, right) => left.name.localeCompare(right.name, "en"));
