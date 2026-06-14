@@ -102,11 +102,12 @@ const state = {
   strategyDlc: "allowDlc",
   strategyUnlock: "allowUnlocks",
   strategyPreference: "stable",
+  simulatorCharacter: "ranger",
   officialCatalog: null,
   catalogLoadState: "loading",
   officialLocalization: null,
   localizationLoadState: "loading",
-  activePage: "compendium",
+  activePage: "guide",
   compendiumPage: "overview",
   compendiumTab: "characters",
   compendiumSearch: "",
@@ -409,6 +410,45 @@ function renderCompendiumImage(entry, label) {
   return `<div class="compendium-thumb compendium-thumb-placeholder" aria-hidden="true">${escapeHtml(fallback)}</div>`;
 }
 
+function firstOfficialImagePath(official) {
+  return official?.records?.find((record) => record.imageAssetPath)?.imageAssetPath ?? null;
+}
+
+function compendiumDetailHref(kind, query) {
+  const tab = kind === "weapon" ? "weapons" : "items";
+  return `#compendium/${tab}?q=${encodeURIComponent(query)}`;
+}
+
+function renderGuideEntryImage(kind, official, label, query = label) {
+  const imagePath = firstOfficialImagePath(official);
+  if (imagePath) {
+    return `
+      <a class="guide-entry-thumb" href="${escapeHtml(compendiumDetailHref(kind, query))}" aria-label="在图鉴中查看 ${escapeHtml(label)}">
+        <img src="${escapeHtml(imagePath)}" alt="${escapeHtml(label)}" loading="lazy" />
+      </a>
+    `;
+  }
+
+  return `<span class="guide-entry-thumb guide-entry-thumb-placeholder" aria-hidden="true">${escapeHtml(label.slice(0, 1))}</span>`;
+}
+
+function renderGuideCatalogLink(kind, title, cnName, subtitle, official) {
+  const query = cnName || title;
+  const href = compendiumDetailHref(kind, query);
+  return `
+    <div class="guide-card-title">
+      ${renderGuideEntryImage(kind, official, `${cnName || title} ${title}`, query)}
+      <div>
+        <span>${escapeHtml(subtitle.priority)}</span>
+        <h4>
+          <a href="${escapeHtml(href)}">${escapeHtml(title)}</a>
+          <small>（${escapeHtml(cnName)}，${escapeHtml(subtitle.type)}）</small>
+        </h4>
+      </div>
+    </div>
+  `;
+}
+
 function renderPageShell() {
   document.querySelectorAll("[data-page]").forEach((section) => {
     section.hidden = section.dataset.page !== state.activePage;
@@ -593,14 +633,20 @@ function clearCompendiumSearchState() {
 }
 
 function syncCompendiumRoute() {
-  const [, tabId] = window.location.hash.match(/^#compendium\/([^/]+)$/) ?? [];
+  const [, tabId] = window.location.hash.match(/^#compendium\/([^?]+)/) ?? [];
+  const query = window.location.hash.match(/[?&]q=([^&]+)/)?.[1];
   const previousPage = state.compendiumPage;
   const previousTab = state.compendiumTab;
 
   if (compendiumTabIds.includes(tabId)) {
     state.compendiumPage = "detail";
     state.compendiumTab = tabId;
-    if (previousPage !== "detail" || previousTab !== tabId) {
+    if (query !== undefined) {
+      state.compendiumSearch = decodeURIComponent(query);
+      state.compendiumSearchDraft = state.compendiumSearch;
+      const searchInput = $("#compendium-search");
+      if (searchInput) searchInput.value = state.compendiumSearch;
+    } else if (previousPage !== "detail" || previousTab !== tabId) {
       clearCompendiumSearchState();
     }
   } else if (window.location.hash === "#compendium") {
@@ -610,7 +656,7 @@ function syncCompendiumRoute() {
 
 function syncAppRoute() {
   if (!window.location.hash) {
-    window.history.replaceState(null, "", "#compendium");
+    window.history.replaceState(null, "", "#guide");
   }
 
   state.activePage = routePageFromHash(window.location.hash);
@@ -782,6 +828,21 @@ function renderStrategyControls() {
   preferenceSelect.value = state.strategyPreference;
 }
 
+function renderSimulatorCharacterControl() {
+  const characterSelect = $("#simulator-character");
+  if (!characterSelect) return;
+
+  characterSelect.replaceChildren(
+    ...getAvailableCharacters().map((character) => {
+      const option = document.createElement("option");
+      option.value = character.id;
+      option.textContent = `${character.name}（${character.cnHint}）`;
+      return option;
+    }),
+  );
+  characterSelect.value = state.simulatorCharacter;
+}
+
 function selectedCharacterCompendiumEntry(characterId) {
   if (state.catalogLoadState !== "loaded" || !state.officialCatalog) return null;
   const compendium = buildCompendium(state.officialCatalog, state.officialLocalization);
@@ -840,10 +901,10 @@ function renderStrategyGuide() {
             .map(
               ({ priority, reason, weapon, official, recommendationScore, recommendationReasons }) => `
                 <article class="guide-card">
-                  <div>
-                    <span>${escapeHtml(priority)}</span>
-                    <h4>${escapeHtml(weapon.name)} <small>（${escapeHtml(weapon.cnName)}，${escapeHtml(weapon.type)}）</small></h4>
-                  </div>
+                  ${renderGuideCatalogLink("weapon", weapon.name, weapon.cnName, {
+                    priority,
+                    type: weapon.type,
+                  }, official)}
                   <p>${escapeHtml(reason)}</p>
                   <small>推荐评分：${escapeHtml(String(recommendationScore ?? 0))}${recommendationReasons?.length ? `；${escapeHtml(recommendationReasons.join("；"))}` : ""}</small>
                   <small>属性：${escapeHtml(weapon.statNote)}</small>
@@ -865,10 +926,10 @@ function renderStrategyGuide() {
             .map(
               ({ priority, reason, item, official, recommendationScore, recommendationReasons }) => `
                 <article class="guide-card">
-                  <div>
-                    <span>${escapeHtml(priority)}</span>
-                    <h4>${escapeHtml(item.name)} <small>（${escapeHtml(item.cnName)}，${escapeHtml(item.role)}）</small></h4>
-                  </div>
+                  ${renderGuideCatalogLink("item", item.name, item.cnName, {
+                    priority,
+                    type: item.role,
+                  }, official)}
                   <p>${escapeHtml(reason)}</p>
                   <small>推荐评分：${escapeHtml(String(recommendationScore ?? 0))}${recommendationReasons?.length ? `；${escapeHtml(recommendationReasons.join("；"))}` : ""}</small>
                   <small>属性：${escapeHtml(item.statNote)}</small>
@@ -1099,7 +1160,7 @@ function renderScreenshotParseOutput() {
   output.classList.toggle("empty-state", status === "idle" || status === "error");
   output.innerHTML = `
     <strong>${escapeHtml(statusLabel)}</strong>
-    <span>${escapeHtml(message || "上传 Brotato 截图后，会尝试识别角色、属性、武器和场景参数。")}</span>
+    <span>${escapeHtml(message || "上传 Brotato 截图后，会只识别右侧属性栏的属性名和数字。")}</span>
     ${detail ? `<pre>${escapeHtml(detail)}</pre>` : ""}
   `;
 }
@@ -1116,7 +1177,9 @@ function fileToDataUrl(file) {
 function parseJsonFromText(text) {
   if (!text) return null;
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i)?.[1];
-  const candidate = fenced ?? text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+  const candidate = fenced ?? (start >= 0 && end > start ? text.slice(start, end + 1) : "");
   if (!candidate.trim()) return null;
 
   try {
@@ -1126,14 +1189,203 @@ function parseJsonFromText(text) {
   }
 }
 
+function parseOcrStatsFromText(text) {
+  if (!text) return null;
+
+  const rows = [];
+  const lines = text.split(/\r?\n/);
+  const allAliases = {
+    level: ["当前等级", "等级", "level"],
+    curse: ["诅咒", "curse"],
+    ...statAliases,
+  };
+
+  Object.entries(allAliases).forEach(([key, aliases]) => {
+    const matchedLine = lines.find((line) =>
+      aliases.some((alias) => line.toLowerCase().includes(String(alias).toLowerCase())),
+    );
+    if (!matchedLine) return;
+
+    const quoted = [...matchedLine.matchAll(/["“”'](-?\d+(?:\.\d+)?)["“”']/g)].at(-1)?.[1];
+    const numbers = [...matchedLine.matchAll(/(?<![A-Za-z])[-+]?\d+(?:\.\d+)?%?/g)]
+      .map((match) => match[0])
+      .filter((value) => !/^20\d{2}$/.test(value));
+    const rawValue = quoted ?? numbers.at(-1);
+    const number = numberOrExisting(rawValue, NaN);
+    if (!Number.isFinite(number)) return;
+
+    rows.push({
+      key,
+      label: aliases[0],
+      value: number,
+    });
+  });
+
+  if (!rows.length) return null;
+  return {
+    statsOcr: rows.filter((row) => row.key !== "level" && row.key !== "curse"),
+    level: rows.find((row) => row.key === "level")?.value,
+    curse: rows.find((row) => row.key === "curse")?.value,
+  };
+}
+
 function numberOrExisting(value, current) {
-  const number = Number(value);
+  const number =
+    typeof value === "string"
+      ? Number(value.replace(/[%+，,\s]/g, "").match(/-?\d+(?:\.\d+)?/)?.[0])
+      : Number(value);
   return Number.isFinite(number) ? number : current;
 }
 
+const statAliases = {
+  maxHp: ["maxHp", "最大生命值", "最大生命", "生命值", "生命"],
+  hpRegen: ["hpRegen", "生命再生", "生命恢复", "回血"],
+  lifeSteal: ["lifeSteal", "%生命窃取", "生命窃取", "吸血"],
+  armor: ["armor", "护甲"],
+  dodge: ["dodge", "%闪避", "闪避"],
+  damagePercent: ["damagePercent", "%伤害", "伤害", "总伤害"],
+  attackSpeed: ["attackSpeed", "%攻击速度", "攻击速度", "攻速"],
+  critChance: ["critChance", "%暴击率", "暴击率", "暴击"],
+  meleeDamage: ["meleeDamage", "近战伤害"],
+  rangedDamage: ["rangedDamage", "远程伤害"],
+  elementalDamage: ["elementalDamage", "元素伤害"],
+  engineering: ["engineering", "工程学"],
+  speed: ["speed", "%速度", "速度", "移速"],
+  harvesting: ["harvesting", "收获"],
+  luck: ["luck", "幸运"],
+};
+
+const weaponAliases = {
+  name: ["name", "武器名", "主要武器", "当前武器"],
+  quantity: ["quantity", "数量", "武器数量"],
+  baseDamage: ["baseDamage", "基础伤害", "伤害"],
+  cooldown: ["cooldown", "冷却", "攻击间隔"],
+  hitsPerAttack: ["hitsPerAttack", "每次命中数", "命中数"],
+  piercing: ["piercing", "穿透次数", "穿透"],
+  piercingDamageMultiplier: ["piercingDamageMultiplier", "穿透伤害保留"],
+  bounces: ["bounces", "弹射次数", "弹射"],
+  bounceDamageMultiplier: ["bounceDamageMultiplier", "弹射伤害保留"],
+  explosionTargets: ["explosionTargets", "爆炸额外目标"],
+  explosionDamageMultiplier: ["explosionDamageMultiplier", "爆炸伤害倍率"],
+  critChance: ["critChance", "武器暴击率", "暴击率"],
+  critMultiplier: ["critMultiplier", "暴击倍率"],
+};
+
+const scalingAliases = {
+  meleeDamage: ["meleeDamage", "近战缩放", "近战伤害"],
+  rangedDamage: ["rangedDamage", "远程缩放", "远程伤害"],
+  elementalDamage: ["elementalDamage", "元素缩放", "元素伤害"],
+  engineering: ["engineering", "工程缩放", "工程学"],
+};
+
+function valueByAliases(source, aliases) {
+  if (!source || typeof source !== "object") return undefined;
+  if (Array.isArray(source)) {
+    const row = source.find((item) => {
+      const label = item?.name ?? item?.label ?? item?.key ?? item?.stat ?? item?.["名称"];
+      const normalizedLabel = String(label).toLowerCase().trim();
+      return label && aliases.some((alias) => normalizedLabel === String(alias).toLowerCase());
+    });
+    return row?.value ?? row?.["值"] ?? row?.amount;
+  }
+
+  for (const alias of aliases) {
+    if (source[alias] !== undefined) return source[alias];
+  }
+  return undefined;
+}
+
+function objectByAliases(source, aliases) {
+  for (const alias of aliases) {
+    const value = source?.[alias];
+    if (value && typeof value === "object") return value;
+  }
+  return null;
+}
+
+function normalizeParsedSimulatorData(parsed) {
+  if (!parsed || typeof parsed !== "object") return null;
+
+  const statsSource =
+    objectByAliases(parsed, [
+      "statsOcr",
+      "ocrStats",
+      "rows",
+      "stats",
+      "属性",
+      "主要属性",
+      "attributes",
+      "mainStats",
+    ]) ?? parsed;
+  const weaponSource = objectByAliases(parsed, ["weapon", "武器", "当前武器"]);
+  const scalingSource =
+    objectByAliases(weaponSource, ["scaling", "缩放", "属性缩放"]) ??
+    objectByAliases(parsed, ["scaling", "缩放"]);
+
+  const normalized = {
+    ...parsed,
+    stats: {},
+  };
+
+  Object.entries(statAliases).forEach(([key, aliases]) => {
+    const value = valueByAliases(statsSource, aliases);
+    if (value !== undefined) normalized.stats[key] = value;
+  });
+
+  if (weaponSource) {
+    normalized.weapon = {
+      scaling: {},
+    };
+
+    Object.entries(weaponAliases).forEach(([key, aliases]) => {
+      const value = valueByAliases(weaponSource, aliases);
+      if (value !== undefined) normalized.weapon[key] = value;
+    });
+  }
+
+  if (scalingSource) {
+    normalized.weapon ??= { scaling: {} };
+    normalized.weapon.scaling ??= {};
+    Object.entries(scalingAliases).forEach(([key, aliases]) => {
+      const value = valueByAliases(scalingSource, aliases);
+      if (value !== undefined) normalized.weapon.scaling[key] = value;
+    });
+  }
+
+  normalized.characterName =
+    parsed.characterName ?? parsed.character ?? parsed["角色"] ?? parsed["人物"] ?? null;
+  normalized.characterId = parsed.characterId ?? parsed["角色ID"] ?? null;
+  normalized.wave = parsed.wave ?? parsed["波次"] ?? parsed["当前波次"] ?? null;
+
+  return normalized;
+}
+
+function findCharacterIdByName(name) {
+  if (!name) return null;
+  const query = String(name).toLowerCase();
+  return (
+    getAvailableCharacters().find((character) => {
+      const text = `${character.id} ${character.name} ${character.cnHint}`.toLowerCase();
+      return text.includes(query) || query.includes(character.name.toLowerCase());
+    })?.id ?? null
+  );
+}
+
 function applyParsedSimulatorData(parsed) {
+  parsed = normalizeParsedSimulatorData(parsed);
   if (!parsed || typeof parsed !== "object") return false;
   let changed = false;
+
+  const matchedCharacterId =
+    getAvailableCharacters().some((character) => character.id === parsed.characterId)
+      ? parsed.characterId
+      : findCharacterIdByName(parsed.characterName);
+  if (matchedCharacterId && matchedCharacterId !== state.simulatorCharacter) {
+    state.simulatorCharacter = matchedCharacterId;
+    const characterSelect = $("#simulator-character");
+    if (characterSelect) characterSelect.value = matchedCharacterId;
+    changed = true;
+  }
 
   if (parsed.stats && typeof parsed.stats === "object") {
     Object.keys(statLabels).forEach((key) => {
@@ -1236,17 +1488,32 @@ async function parseScreenshotUpload() {
 
   try {
     const imageDataUrl = await fileToDataUrl(file);
+    const selectedCharacter = getAvailableCharacters().find(
+      (character) => character.id === state.simulatorCharacter,
+    );
     const response = await fetch("/api/parse-screenshot", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ imageDataUrl }),
+      body: JSON.stringify({
+        imageDataUrl,
+        selectedCharacter: selectedCharacter
+          ? {
+              id: selectedCharacter.id,
+              name: selectedCharacter.name,
+              cnHint: selectedCharacter.cnHint,
+            }
+          : null,
+      }),
     });
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) {
-      throw new Error(payload.error || `HTTP ${response.status}`);
+      const detailMessage =
+        payload.detail?.error?.message ?? payload.detail?.message ?? payload.error;
+      throw new Error(detailMessage || `HTTP ${response.status}`);
     }
 
-    const parsed = payload.parsed ?? parseJsonFromText(payload.text);
+    const parsed =
+      payload.parsed ?? parseJsonFromText(payload.text) ?? parseOcrStatsFromText(payload.text);
     const applied = applyParsedSimulatorData(parsed);
     state.screenshotParse = {
       status: "success",
@@ -1305,6 +1572,10 @@ function bindControls() {
   $("#strategy-preference").addEventListener("change", (event) => {
     state.strategyPreference = event.target.value;
     renderStrategyGuide();
+  });
+
+  $("#simulator-character").addEventListener("change", (event) => {
+    state.simulatorCharacter = event.target.value;
   });
 
   $(".compendium-panel").addEventListener("click", (event) => {
@@ -1430,6 +1701,7 @@ function bindControls() {
     state.strategyDlc = "allowDlc";
     state.strategyUnlock = "allowUnlocks";
     state.strategyPreference = "ranged";
+    state.simulatorCharacter = "lucky";
     window.location.hash = "#simulator";
     render();
   });
@@ -1438,6 +1710,7 @@ function bindControls() {
 function render() {
   renderPageShell();
   renderStrategyControls();
+  renderSimulatorCharacterControl();
   renderStrategyGuide();
   renderCompendium();
   renderStatFields();

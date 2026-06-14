@@ -22,8 +22,8 @@
   - 攻击间隔
   - 总 DPS
 - 三个独立页面：
-  - 图鉴页，默认展示。
-  - 角色攻略页，选择角色时同步展示角色图标。
+  - 角色攻略页，默认展示；选择角色时同步展示角色图标。
+  - 图鉴页，支持分类浏览、搜索和详情跳转。
   - 角色场景模拟器页，支持手动输入和上传截图/照片解析。
 
 ## 简化假设
@@ -76,9 +76,12 @@ API_KEY="lm-studio"
 API_URL="http://127.0.0.1:1234/v1"
 MODEL="qwen3.6-35b-a3b-nvfp4"
 MAX_TOKENS="10000"
+USE_RESPONSE_FORMAT_JSON="false"
 ```
 
-`env.local` 是本机配置文件，不提交；仓库里保留 `env.local.example` 作为模板。只看静态页面时仍可用：
+`env.local` 是本机配置文件，不提交；仓库里保留 `env.local.example` 作为模板。LM Studio 对 `response_format` 支持不稳定，默认不要开启 JSON mode；如果换成明确支持 JSON mode 的 OpenAI 兼容服务，再把 `USE_RESPONSE_FORMAT_JSON` 设为 `true`。
+
+截图解析目前只做右侧属性栏 OCR，输出属性名和数字，再由前端映射到角色面板。只看静态页面时仍可用：
 
 ```bash
 npm run start:static
@@ -136,6 +139,7 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。
 图片和部署数据约束见 [docs/assets-and-deployment.md](docs/assets-and-deployment.md)。
+Vercel 部署清单见 [docs/vercel-deployment.md](docs/vercel-deployment.md)。
 
 ## 资料来源状态
 

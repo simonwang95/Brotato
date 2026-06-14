@@ -46,6 +46,7 @@ npm run extract:assets
 - `BROTATO_INSTALL_DIR` 只供 `npm run extract:*` 在开发机上使用。
 - 不在浏览器端读取本机文件路径、Steam 路径或 `.pck` 文件。
 - 每次从安装包重新提取后，需要提交生成的 `data/*.json` 和已导出的 `data/assets/**`。
+- 截图 OCR 不是纯静态能力；线上部署时需要 serverless API 和模型服务环境变量，见 `docs/vercel-deployment.md`。
 
 ## 待办
 

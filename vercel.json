@@ -1,0 +1,18 @@
+{
+  "functions": {
+    "api/parse-screenshot.js": {
+      "maxDuration": 60
+    }
+  },
+  "headers": [
+    {
+      "source": "/data/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}

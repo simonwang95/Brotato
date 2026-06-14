@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Brotato 数值实验台</title>
-    <link rel="stylesheet" href="./styles.css?v=20260614-pages-upload" />
+    <link rel="stylesheet" href="./styles.css?v=20260614-ocr-vercel" />
   </head>
   <body>
     <main class="app-shell">
@@ -26,12 +26,12 @@
       </header>
 
       <nav class="page-nav" aria-label="主功能导航">
-        <a class="page-nav-link active" href="#compendium" data-page-link="compendium">图鉴</a>
-        <a class="page-nav-link" href="#guide" data-page-link="guide">角色攻略</a>
+        <a class="page-nav-link active" href="#guide" data-page-link="guide">角色攻略</a>
+        <a class="page-nav-link" href="#compendium" data-page-link="compendium">图鉴</a>
         <a class="page-nav-link" href="#simulator" data-page-link="simulator">角色场景模拟器</a>
       </nav>
 
-      <section class="panel strategy-panel page-section" data-page="guide" hidden>
+      <section class="panel strategy-panel page-section" data-page="guide">
         <div class="panel-header">
           <h2>角色攻略生成器</h2>
           <p>选择人物和模式，生成推荐武器、关键道具解锁、属性优先级和第 20 关目标面板。</p>
@@ -65,7 +65,7 @@
         <div id="strategy-output" class="strategy-output"></div>
       </section>
 
-      <section class="panel compendium-panel compendium-overview-mode page-section" data-page="compendium">
+      <section class="panel compendium-panel compendium-overview-mode page-section" data-page="compendium" hidden>
         <div class="panel-header">
           <h2>全图鉴</h2>
           <p>展示角色解锁条件，以及本机安装包提取到的武器/物品中文名、属性说明、套装、价格和掉落状态。</p>
@@ -93,9 +93,13 @@
         <section class="panel screenshot-panel">
           <div class="panel-header">
             <h2>截图/照片解析</h2>
-            <p>上传当前局内截图，使用本地 OpenAI 兼容 API 解析角色、属性、武器和场景信息；测试阶段读取 env.local 中的 LM Studio 配置。</p>
+            <p>上传当前局内截图，使用本地 OpenAI 兼容 API 只做右侧属性栏 OCR；测试阶段读取 env.local 中的 LM Studio 配置。</p>
           </div>
           <div class="screenshot-uploader">
+            <label class="field">
+              <span>当前角色（手动选择）</span>
+              <select id="simulator-character"></select>
+            </label>
             <label class="field">
               <span>上传截图或照片</span>
               <input id="screenshot-file" type="file" accept="image/*" />
@@ -172,6 +176,6 @@
       </p>
     </main>
 
-    <script type="module" src="./src/app.js?v=20260614-pages-upload"></script>
+    <script type="module" src="./src/app.js?v=20260614-ocr-vercel"></script>
   </body>
 </html>
