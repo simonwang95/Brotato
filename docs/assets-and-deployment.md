@@ -11,8 +11,8 @@
 `data/official-catalog.json` 已包含：
 
 - `iconResourcePath`：官方资源包里的 icon 路径，例如 `res://items/all/cyberball/cyberball_icon.png`。
-- `expectedImageAssetPath`：后续导出到项目内的目标路径，例如 `data/assets/items/item_cyberball.png`。
-- `imageAssetPath`：运行时实际可用图片路径；当前先保留为 `null`，避免页面请求尚未导出的文件。
+- `expectedImageAssetPath`：导出到项目内的目标路径，例如 `data/assets/items/item_cyberball.webp`。
+- `imageAssetPath`：运行时实际可用图片路径。已提取成功的条目会写入项目本地 WebP 路径，页面不会读取安装目录。
 
 页面运行时只读取：
 
@@ -20,18 +20,25 @@
 - `data/official-localization.json`
 - `src/*.js`
 - `styles.css`
-- 后续导出的 `data/assets/**/*.png`
+- 已导出的 `data/assets/**/*.webp`
 
-## 后续图片管线
+## 图片管线
 
-1. 从安装包读取 `iconResourcePath` 对应的纹理资源。
-2. 将角色、武器、物品图标导出或转换成浏览器可直接显示的 PNG/WebP。
+1. 从安装包读取 `iconResourcePath` 对应的 `.png.import` 元数据。
+2. 解析元数据指向的 Godot `.stex` 文件，并抽取其中浏览器可直接显示的 WebP 数据。
 3. 写入项目本地目录：
-   - `data/assets/characters/*.png`
-   - `data/assets/weapons/*.png`
-   - `data/assets/items/*.png`
+   - `data/assets/characters/*.webp`
+   - `data/assets/weapons/*.webp`
+   - `data/assets/items/*.webp`
 4. 更新 catalog 中对应条目的 `imageAssetPath`。
 5. 图鉴 UI 只在 `imageAssetPath` 非空时渲染 `<img>`，否则显示占位。
+
+重新生成顺序：
+
+```bash
+npm run extract:catalog
+npm run extract:assets
+```
 
 ## 部署规则
 
@@ -42,6 +49,6 @@
 
 ## 待办
 
-- 实现 `extract:assets` 脚本。
-- 确认 Godot `.stex` 到 PNG/WebP 的转换方式。
-- 为图鉴卡片接入 `imageAssetPath` 渲染和占位样式。
+- 为图鉴图片补充更细的尺寸规范，避免后续接入高清图时破坏卡片布局。
+- 如果未来官方资源出现非 WebP `.stex`，为 `extract:assets` 增加对应格式分支。
+- 后续线上部署时确认静态托管会正确设置 `.webp` MIME type。

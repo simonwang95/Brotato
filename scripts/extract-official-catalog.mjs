@@ -206,7 +206,7 @@ function normalizeRecord(kind, block, sourcePackage, resources = new Map()) {
     nameKey: getString(block, "name"),
     iconResourcePath: extResources[iconRef]?.path ?? null,
     expectedImageAssetPath: getString(block, "my_id")
-      ? `data/assets/${kind}s/${getString(block, "my_id")}.png`
+      ? `data/assets/${kind}s/${getString(block, "my_id")}.webp`
       : null,
     tier: getNumber(block, "tier"),
     value: getNumber(block, "value"),

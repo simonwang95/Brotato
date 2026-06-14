@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Brotato 数值实验台</title>
-    <link rel="stylesheet" href="./styles.css?v=20260614-character-traits" />
+    <link rel="stylesheet" href="./styles.css?v=20260614-header-icon" />
   </head>
   <body>
     <main class="app-shell">
@@ -16,9 +16,12 @@
             先按角色和模式生成路线攻略，再用下方手动计算器验证某个武器或道具的具体收益。
           </p>
         </div>
-        <div class="toolbar">
-          <button id="load-example" type="button">载入示例</button>
-          <button id="reset-item" class="secondary" type="button">清空道具变化</button>
+        <div class="topbar-actions">
+          <img class="app-icon" src="./data/assets/characters/character_well_rounded.webp" alt="土豆兄弟图标" />
+          <div class="toolbar">
+            <button id="load-example" type="button">载入示例</button>
+            <button id="reset-item" class="secondary" type="button">清空道具变化</button>
+          </div>
         </div>
       </header>
 
@@ -143,6 +146,6 @@
       </p>
     </main>
 
-    <script type="module" src="./src/app.js?v=20260614-character-traits"></script>
+    <script type="module" src="./src/app.js?v=20260614-header-icon"></script>
   </body>
 </html>

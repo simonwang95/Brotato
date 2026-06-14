@@ -358,7 +358,7 @@ function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEnt
     localizationSource: localized?.source ?? "missing",
     iconResourcePath: firstRecord?.iconResourcePath ?? null,
     expectedImageAssetPath: firstRecord?.expectedImageAssetPath ?? null,
-    imageAssetPath: null,
+    imageAssetPath: firstRecord?.imageAssetPath ?? null,
     sourcePackages: sources,
     sourceLabel: sources.map(sourceLabel).join(" / "),
     tierLabel: rangeLabel(records.map((record) => record.tier), (tier) => `T${tier + 1}`),
@@ -417,7 +417,7 @@ export function buildCharacterCompendium(catalog) {
         sourceLabel: official ? sourceLabel(official.sourcePackage) : "未匹配官方角色资源",
         iconResourcePath: official?.iconResourcePath ?? null,
         expectedImageAssetPath: official?.expectedImageAssetPath ?? null,
-        imageAssetPath: null,
+        imageAssetPath: official?.imageAssetPath ?? null,
       };
     })
     .sort((left, right) => left.name.localeCompare(right.name, "en"));

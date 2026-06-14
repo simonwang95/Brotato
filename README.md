@@ -85,7 +85,15 @@ npm run verify:names
 npm run extract:catalog
 ```
 
-生成文件在 `data/official-catalog.json`，包含资源 ID、翻译 key、稀有度、价格、默认解锁状态、DLC 来源、官方 icon 资源路径，以及后续本地图片资产目标路径。
+生成文件在 `data/official-catalog.json`，包含资源 ID、翻译 key、稀有度、价格、默认解锁状态、DLC 来源、官方 icon 资源路径，以及本地图片资产目标路径。
+
+从本机安装包导出图鉴 WebP 图标：
+
+```bash
+npm run extract:assets
+```
+
+导出的图片保存在 `data/assets/**`，并会回写 `data/official-catalog.json` 的 `imageAssetPath` 字段。线上部署只需要提交后的仓库文件，不需要 Brotato 安装目录。
 
 校验攻略资料中的武器/道具是否能映射到官方目录：
 

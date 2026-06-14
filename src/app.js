@@ -388,6 +388,19 @@ function renderPills(items) {
   return items.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join("");
 }
 
+function renderCompendiumImage(entry, label) {
+  if (entry.imageAssetPath) {
+    return `
+      <div class="compendium-thumb">
+        <img src="${escapeHtml(entry.imageAssetPath)}" alt="${escapeHtml(label)}" loading="lazy" />
+      </div>
+    `;
+  }
+
+  const fallback = (entry.cnName || entry.name || entry.enName || "?").slice(0, 1);
+  return `<div class="compendium-thumb compendium-thumb-placeholder" aria-hidden="true">${escapeHtml(fallback)}</div>`;
+}
+
 function matchesCompendiumSearch(row, query) {
   if (!query) return true;
   const haystack = [
@@ -417,9 +430,12 @@ function matchesCompendiumSearch(row, query) {
 function renderCharacterCompendiumCard(character) {
   return `
     <article class="compendium-card">
-      <div class="compendium-card-header">
-        <span>${escapeHtml(`${character.unlockStatus} · ${character.sourceLabel}`)}</span>
-        <h4>${escapeHtml(character.name)} <small>（${escapeHtml(character.cnName)}${character.archetype ? `，${escapeHtml(character.archetype)}` : ""}）</small></h4>
+      <div class="compendium-card-top">
+        ${renderCompendiumImage(character, `${character.cnName} ${character.name}`)}
+        <div class="compendium-card-header">
+          <span>${escapeHtml(`${character.unlockStatus} · ${character.sourceLabel}`)}</span>
+          <h4>${escapeHtml(character.name)} <small>（${escapeHtml(character.cnName)}${character.archetype ? `，${escapeHtml(character.archetype)}` : ""}）</small></h4>
+        </div>
       </div>
       <p>${escapeHtml(character.summary)}</p>
       <dl class="compendium-meta">
@@ -494,9 +510,12 @@ function renderCatalogCompendiumCard(entry, kindLabel) {
 
   return `
     <article class="compendium-card">
-      <div class="compendium-card-header">
-        <span>${escapeHtml(kindLabel)} · ${escapeHtml(entry.sourceLabel)}</span>
-        <h4>${escapeHtml(entry.enName)} <small>（${escapeHtml(entry.cnName)}）</small></h4>
+      <div class="compendium-card-top">
+        ${renderCompendiumImage(entry, `${entry.cnName} ${entry.enName}`)}
+        <div class="compendium-card-header">
+          <span>${escapeHtml(kindLabel)} · ${escapeHtml(entry.sourceLabel)}</span>
+          <h4>${escapeHtml(entry.enName)} <small>（${escapeHtml(entry.cnName)}）</small></h4>
+        </div>
       </div>
       <div class="compendium-stats">
         <div><span>价格</span><strong>${escapeHtml(entry.valueLabel)}</strong></div>

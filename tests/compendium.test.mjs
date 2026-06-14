@@ -17,6 +17,7 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
   assert.equal(lute?.sourceLabel, "深海魔怪");
   assert.equal(lute?.tierLabel, "T1-T4");
   assert.equal(lute?.valueLabel, "15-122");
+  assert.equal(lute?.imageAssetPath, "data/assets/weapons/weapon_lute_1.webp");
   assert.ok(lute?.setLabels.includes("乐器"), "Lute should expose the musical set");
   assert.ok(lute?.setLabels.includes("支援"), "Lute should expose the support set");
   assert.ok(
@@ -50,6 +51,7 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
   assert.equal(cyberball?.cnName, "赛博球");
   assert.equal(cyberball?.valueLabel, "30");
   assert.equal(cyberball?.unlockLabel, "默认解锁");
+  assert.equal(cyberball?.imageAssetPath, "data/assets/items/item_cyberball.webp");
   assert.match(cyberball?.strategyStatNote ?? "", /幸运拾取伤害/);
   assert.ok(
     cyberball?.detailedAttributes.includes("T2 击杀敌人时：25% 概率，造成 25% 幸运 的伤害"),
@@ -72,6 +74,7 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
   assert.equal(lucky?.cnName, "幸运星");
   assert.match(lucky?.unlock, /300 材料/);
   assert.equal(lucky?.unlockStatus, "已维护条件");
+  assert.equal(lucky?.imageAssetPath, "data/assets/characters/character_lucky.webp");
   assert.ok(lucky?.traits.includes("幸运 +100"), "Lucky should show base luck trait");
   assert.ok(lucky?.traits.includes("幸运 获取 +25%"), "Lucky should show luck gain trait");
   assert.ok(
