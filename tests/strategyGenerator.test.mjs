@@ -21,7 +21,27 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
 
 {
   const characters = getAvailableCharacters();
-  assert.ok(characters.length >= 44, "guide pack should include the original character roster");
+  assert.ok(characters.length >= 59, "guide pack should include original and DLC rosters");
+  const characterIds = new Set(characters.map((character) => character.id));
+  [
+    "sailor",
+    "captain",
+    "builder",
+    "chef",
+    "diver",
+    "curious",
+    "giant",
+    "ogre",
+    "dwarf",
+    "creature",
+    "gangster",
+    "romantic",
+    "druid",
+    "hiker",
+    "buccaneer",
+  ].forEach((characterId) => {
+    assert.ok(characterIds.has(characterId), `${characterId} DLC guide should be present`);
+  });
   assert.ok(
     characters.some((character) => character.id === "ranger"),
     "ranger guide should be present",
@@ -49,6 +69,10 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
   assert.ok(
     characters.some((character) => character.id === "sailor" && character.cnHint.startsWith("水手")),
     "DLC sailor guide should be present with Chinese name",
+  );
+  assert.ok(
+    characters.some((character) => character.id === "buccaneer" && character.cnHint.startsWith("海盗")),
+    "DLC buccaneer guide should be present with Chinese name",
   );
 }
 
@@ -370,6 +394,54 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
   assert.ok(
     guide.recommendedWeapons.some(({ weapon }) => weapon.name === "SMG"),
     "diver should retain base-game ranged fallback when DLC weapons are hidden",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("buccaneer", "normal20", { officialCatalog });
+  assert.equal(guide.character.name, "Buccaneer");
+  assert.ok(
+    guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Harpoon Gun" && weapon.cnName === "鱼叉枪"),
+    "buccaneer should include Harpoon Gun as a naval ranged route",
+  );
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Black Flag" && item.cnName === "黑旗"),
+    "buccaneer should include Black Flag for distance-kill economy",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("hiker", "normal20", { officialCatalog });
+  assert.equal(guide.recommendedWeapons[0].weapon.name, "Hiking Stick");
+  assert.equal(guide.recommendedWeapons[0].weapon.cnName, "登山杖");
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Sunken Bell" && item.cnName === "沉钟"),
+    "hiker should include Sunken Bell for walking economy",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("romantic", "normal20", { officialCatalog });
+  assert.equal(guide.recommendedWeapons[0].weapon.name, "Flute");
+  assert.equal(guide.recommendedWeapons[0].weapon.cnName, "长笛");
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Goblet" && item.cnName === "高脚杯"),
+    "romantic should include Goblet as a DLC sustain item",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("creature", "normal20", {
+    officialCatalog,
+    unlockOptionId: "defaultOnly",
+  });
+  assert.ok(
+    guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Sharp Tooth"),
+    "default-only creature guide should keep Sharp Tooth",
+  );
+  assert.ok(
+    !guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Claw"),
+    "default-only creature guide should hide locked Claw",
   );
 }
 

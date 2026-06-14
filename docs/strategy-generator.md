@@ -2,12 +2,12 @@
 
 目标：用户选择一个角色，并选择是否无尽模式，程序生成一份可执行攻略。
 
-当前实现状态：v0.5 已接入页面，覆盖原版 44 个角色，并开始接入深海魔怪 DLC 角色。数据模块在 `src/strategyData.js`，生成逻辑在 `src/strategyGenerator.js`。
+当前实现状态：v0.6 已接入页面，覆盖原版 44 个角色和深海魔怪 DLC 15 个角色。数据模块在 `src/strategyData.js`，生成逻辑在 `src/strategyGenerator.js`。
 推荐规则的维护说明见 [recommendation-logic.md](recommendation-logic.md)。
 
 ## 输入
 
-- 角色：当前覆盖原版 44 个角色，以及首批深海魔怪 DLC 角色：Sailor（水手）、Captain（船长）、Builder（建造者）、Chef（厨师）、Diver（潜水员）、Curious（好奇之人）。
+- 角色：当前覆盖原版 44 个角色，以及深海魔怪 DLC 15 个角色。
 - 模式：20 关通关 / 无尽模式。
 - 可选难度：危险等级、DLC、是否允许稀有解锁物。
 - 可选偏好：稳健通关、极限输出、工程流、元素流、远程流、近战流。
