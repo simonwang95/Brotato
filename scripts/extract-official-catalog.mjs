@@ -94,6 +94,12 @@ function getArrayRefs(block, key) {
   );
 }
 
+function getArrayStrings(block, key) {
+  const match = block.match(new RegExp(`${key} = \\[([^\\]]*)\\]`));
+  if (!match) return [];
+  return [...match[1].matchAll(/"([^"]+)"/g)].map((item) => item[1]);
+}
+
 function collectExtResources(block) {
   return Object.fromEntries(
     [...block.matchAll(/\[ext_resource path="([^"]+)" type="([^"]+)" id=(\d+)\]/g)].map(
@@ -173,6 +179,14 @@ function parseEffectDetail(path, block) {
     chance: getNumber(block, "chance"),
     trackingText: getString(block, "tracking_text"),
     customArgs: getLineValue(block, "custom_args"),
+    setId: getString(block, "set_id"),
+    statDisplayedName: getString(block, "stat_displayed_name"),
+    statName: getString(block, "stat_name"),
+    statDisplayed: getString(block, "stat_displayed"),
+    statsModified: getArrayStrings(block, "stats_modified"),
+    nbStatScaled: getNumber(block, "nb_stat_scaled"),
+    statScaled: getString(block, "stat_scaled"),
+    permStatsOnly: getBoolean(block, "perm_stats_only"),
   };
 }
 
@@ -180,6 +194,8 @@ function normalizeRecord(kind, block, sourcePackage, resources = new Map()) {
   const extResources = collectExtResources(block);
   const setRefs = getArrayRefs(block, "sets");
   const effectRefs = getArrayRefs(block, "effects");
+  const startingWeaponRefs = getArrayRefs(block, "starting_weapons");
+  const startingItemRefs = getArrayRefs(block, "starting_items");
   const effectPaths = effectRefs.map((id) => extResources[id]?.path).filter(Boolean);
 
   const record = {
@@ -208,6 +224,16 @@ function normalizeRecord(kind, block, sourcePackage, resources = new Map()) {
     record.upgradesInto = getString(block, "upgrades_into");
     record.statsPath = statsPath;
     record.stats = parseWeaponStats(statsPath, resources.get(statsPath));
+  } else if (kind === "character") {
+    record.maxNb = getNumber(block, "max_nb");
+    record.wantedTags = getArrayStrings(block, "wanted_tags");
+    record.bannedItemGroups = getArrayStrings(block, "banned_item_groups");
+    record.bannedItems = getArrayStrings(block, "banned_items");
+    record.bannedUpgrades = getArrayStrings(block, "banned_upgrades");
+    record.startingWeaponPaths = startingWeaponRefs
+      .map((id) => extResources[id]?.path)
+      .filter(Boolean);
+    record.startingItemPaths = startingItemRefs.map((id) => extResources[id]?.path).filter(Boolean);
   }
 
   return record;
@@ -227,6 +253,8 @@ function parsePackage(pkg, sourcePackage) {
       records.push(normalizeRecord("item", block, sourcePackage, pkg.resources));
     } else if (itemId.startsWith("weapon_")) {
       records.push(normalizeRecord("weapon", block, sourcePackage, pkg.resources));
+    } else if (itemId.startsWith("character_")) {
+      records.push(normalizeRecord("character", block, sourcePackage, pkg.resources));
     }
   });
 

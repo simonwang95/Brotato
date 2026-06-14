@@ -72,6 +72,24 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
   assert.equal(lucky?.cnName, "幸运星");
   assert.match(lucky?.unlock, /300 材料/);
   assert.equal(lucky?.unlockStatus, "已维护条件");
+  assert.ok(lucky?.traits.includes("幸运 +100"), "Lucky should show base luck trait");
+  assert.ok(lucky?.traits.includes("幸运 获取 +25%"), "Lucky should show luck gain trait");
+  assert.ok(
+    lucky?.traits.includes("拾取材料时：75% 概率，造成 15% 幸运 的伤害"),
+    "Lucky should show pickup damage trigger",
+  );
+}
+
+{
+  const brawler = compendium.characters.find((entry) => entry.id === "brawler");
+  assert.ok(brawler?.traits.includes("徒手套装：攻速 +50%"));
+  assert.ok(brawler?.traits.includes("闪避 +15%"));
+  assert.ok(brawler?.traits.includes("范围 -50"));
+}
+
+{
+  const wellRounded = compendium.characters.find((entry) => entry.id === "wellRounded");
+  assert.deepEqual(wellRounded?.traits, ["最大生命 +5", "移速 +5%", "收获 +8"]);
 }
 
 console.log("compendium tests passed");

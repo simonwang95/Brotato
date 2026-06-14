@@ -6,6 +6,7 @@ const catalog = JSON.parse(readFileSync("data/official-catalog.json", "utf8"));
 assert.ok(catalog.summary.total >= 500, "catalog should include base game and DLC records");
 assert.ok(catalog.summary.byKind.item > 200, "catalog should include item records");
 assert.ok(catalog.summary.byKind.weapon > 200, "catalog should include weapon records");
+assert.ok(catalog.summary.byKind.character > 60, "catalog should include character records");
 
 {
   const lute = catalog.records.find((record) => record.id === "weapon_lute_1");
@@ -40,6 +41,16 @@ assert.ok(catalog.summary.byKind.weapon > 200, "catalog should include weapon re
   assert.equal(cyberball?.effects?.[0]?.key, "stat_luck");
   assert.equal(cyberball?.effects?.[0]?.chance, 25);
   assert.equal(cyberball?.effects?.[0]?.value, 25);
+}
+
+{
+  const lucky = catalog.records.find((record) => record.id === "character_lucky");
+  assert.equal(lucky?.nameKey, "CHARACTER_LUCKY");
+  assert.equal(lucky?.effects?.find((effect) => effect.key === "stat_luck")?.value, 100);
+  assert.equal(
+    lucky?.effects?.find((effect) => effect.customKey === "dmg_when_pickup_gold")?.chance,
+    75,
+  );
 }
 
 console.log("official catalog tests passed");

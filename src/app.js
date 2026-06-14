@@ -398,6 +398,7 @@ function matchesCompendiumSearch(row, query) {
     row.nameKey,
     row.summary,
     row.unlock,
+    ...(row.traits ?? []),
     row.strategyUnlock,
     row.strategyStatNote,
     row.strategyType,
@@ -417,11 +418,12 @@ function renderCharacterCompendiumCard(character) {
   return `
     <article class="compendium-card">
       <div class="compendium-card-header">
-        <span>${escapeHtml(character.unlockStatus)}</span>
+        <span>${escapeHtml(`${character.unlockStatus} · ${character.sourceLabel}`)}</span>
         <h4>${escapeHtml(character.name)} <small>（${escapeHtml(character.cnName)}${character.archetype ? `，${escapeHtml(character.archetype)}` : ""}）</small></h4>
       </div>
       <p>${escapeHtml(character.summary)}</p>
       <dl class="compendium-meta">
+        <div><dt>角色特性</dt><dd>${character.traits.length ? renderList(character.traits.map((line) => escapeHtml(line)), "compact-list") : "未匹配到官方数值特性"}</dd></div>
         <div><dt>解锁</dt><dd>${escapeHtml(character.unlock)}</dd></div>
       </dl>
     </article>

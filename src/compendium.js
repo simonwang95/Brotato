@@ -1,5 +1,5 @@
 import { CHARACTER_GUIDES, ITEMS, WEAPONS } from "./strategyData.js";
-import { getOfficialNameKey } from "./officialCatalog.js";
+import { getOfficialNameKey, toOfficialNameKey } from "./officialCatalog.js";
 
 const SOURCE_LABELS = {
   base: "原版",
@@ -43,6 +43,16 @@ const STAT_LABELS = {
   stat_range: "范围",
   stat_speed: "移速",
   stat_all: "全属性",
+  enemy_damage: "敌人伤害",
+  enemy_health: "敌人生命",
+  bounce_damage: "弹射伤害",
+  damage_against_bosses: "对 Boss 伤害",
+  explosion_damage: "爆炸伤害",
+  free_weapon_slots: "空武器栏",
+  level_upgrades_modifications: "升级选项",
+  next_level_xp_needed: "升级所需经验",
+  weapon_slot: "武器栏",
+  xp_gain: "经验获取",
   knockback: "击退",
 };
 
@@ -59,7 +69,15 @@ const EFFECT_TEXT_LABELS = {
   EFFECT_DEAL_DMG_WHEN_DEATH: "击杀敌人时",
   EFFECT_DEAL_DMG_WHEN_PICKUP_GOLD: "拾取材料时",
   EFFECT_INCREASE_DAMAGE_RECEIVED: "使目标受到伤害提高",
+  EFFECT_GAIN_STAT_FOR_FREE_WEAPON_SLOTS: "每个空武器栏",
+  EFFECT_LEVEL_UPGRADES_MODIFICATIONS: "升级属性选项",
+  effect_gain_stat_end_of_wave: "每波结束",
+  effect_starting_item: "起始物品",
   effect_knockback: "击退",
+};
+
+const CHARACTER_NAME_KEY_OVERRIDES = {
+  oneArmed: "CHARACTER_ONE_ARM",
 };
 
 function unique(values) {
@@ -89,6 +107,10 @@ function boolStateLabel(values, yesLabel, noLabel, mixedLabel, unknownLabel = "�
 function setIdFromPath(path) {
   const match = String(path).match(/sets\/([^/]+)\//);
   return match?.[1] ?? null;
+}
+
+function setLabelFromId(setId) {
+  return SET_LABELS[String(setId).replace(/^set_/, "")] ?? setId ?? "未知套装";
 }
 
 function statLabel(stat) {
@@ -142,6 +164,24 @@ function formatEffectDetail(effect) {
   const trigger = EFFECT_TEXT_LABELS[effect.textKey] ?? effect.textKey;
   const keyLabel = statLabel(effect.key);
 
+  if (effect.scriptPath?.includes("class_bonus_effect")) {
+    const setLabel = setLabelFromId(effect.setId);
+    const stat = statLabel(effect.statDisplayedName);
+    return `${setLabel}套装：${stat} ${signedNumber(effect.value)}%`;
+  }
+
+  if (effect.scriptPath?.includes("stat_gains_modification_effect")) {
+    const stats = effect.statsModified?.length
+      ? effect.statsModified.map(statLabel).join("、")
+      : statLabel(effect.statDisplayed);
+    return `${stats} 获取 ${signedNumber(effect.value)}%`;
+  }
+
+  if (effect.scriptPath?.includes("gain_stat_for_every_stat_effect")) {
+    const scaled = statLabel(effect.statScaled);
+    return `${trigger || `每 ${effect.nbStatScaled ?? 1} ${scaled}`}：${statLabel(effect.key)} ${signedNumber(effect.value)}%`;
+  }
+
   if (effect.scriptPath?.includes("chance_stat_damage_effect")) {
     const chance = Number.isFinite(effect.chance) ? `${effect.chance}% 概率` : "概率触发";
     return `${trigger || "触发时"}：${chance}，造成 ${effect.value}% ${keyLabel} 的伤害`;
@@ -153,6 +193,10 @@ function formatEffectDetail(effect) {
 
   if (effect.key) {
     const value = formatStatValue(effect.key, effect.value);
+    if (effect.customKey === "starting_weapon") return `起始武器：${effect.key}`;
+    if (effect.customKey === "stats_end_of_wave") {
+      return `${trigger || "每波结束"}：${keyLabel} ${value}`;
+    }
     if (trigger === keyLabel) return `${keyLabel} ${value}`;
     return trigger && trigger !== effect.textKey
       ? `${trigger}：${keyLabel} ${value}`
@@ -257,6 +301,22 @@ function buildItemAttributeLines(records) {
   return lines.length ? lines : ["待从效果资源解析具体数值"];
 }
 
+function characterNameKey(character) {
+  return CHARACTER_NAME_KEY_OVERRIDES[character.id] ?? toOfficialNameKey("CHARACTER", character.name);
+}
+
+function findCharacterRecord(catalog, character) {
+  const nameKey = characterNameKey(character);
+  return (catalog?.records ?? []).find(
+    (record) => record.kind === "character" && record.nameKey === nameKey,
+  );
+}
+
+function buildCharacterTraitLines(record) {
+  const lines = (record?.effects ?? []).map(formatEffectDetail);
+  return unique(lines.filter(Boolean));
+}
+
 function splitChineseHint(cnHint) {
   const [cnName = "", ...rest] = String(cnHint).split("，");
   return {
@@ -331,20 +391,26 @@ function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEnt
   };
 }
 
-export function buildCharacterCompendium() {
+export function buildCharacterCompendium(catalog) {
   return Object.values(CHARACTER_GUIDES)
     .map((character) => {
       const { cnName, archetype } = splitChineseHint(character.cnHint);
       const unlockVerified = !/待校验|待补/.test(character.unlock);
+      const official = findCharacterRecord(catalog, character);
+      const traits = buildCharacterTraitLines(official);
 
       return {
         id: character.id,
         name: character.name,
+        nameKey: characterNameKey(character),
         cnName,
         archetype,
         unlock: character.unlock,
         unlockStatus: unlockVerified ? "已维护条件" : "待补精确条件",
         summary: character.summary,
+        traits,
+        officialFound: Boolean(official),
+        sourceLabel: official ? sourceLabel(official.sourcePackage) : "未匹配官方角色资源",
       };
     })
     .sort((left, right) => left.name.localeCompare(right.name, "en"));
@@ -367,7 +433,7 @@ export function buildCatalogCompendium(catalog, localization, kind, strategyEntr
 
 export function buildCompendium(catalog, localization) {
   return {
-    characters: buildCharacterCompendium(),
+    characters: buildCharacterCompendium(catalog),
     weapons: buildCatalogCompendium(catalog, localization, "weapon", WEAPONS),
     items: buildCatalogCompendium(catalog, localization, "item", ITEMS),
   };
