@@ -115,6 +115,11 @@ function formatCooldown(frames) {
   return `${frames} 帧 / ${(frames / 60).toFixed(2)} 秒`;
 }
 
+function formatCompactCooldown(frames) {
+  if (!Number.isFinite(frames)) return "";
+  return `${frames}帧 (${(frames / 60).toFixed(2)}秒)`;
+}
+
 function formatTierSeries(records, getter, formatter = (value) => String(value)) {
   return records
     .filter((record) => getter(record) !== null && getter(record) !== undefined)
@@ -218,6 +223,35 @@ function buildWeaponAttributeLines(records) {
   return [...lines, ...buildEffectLines(records)];
 }
 
+function buildWeaponTierRows(records) {
+  return records
+    .filter((record) => record.stats)
+    .sort((left, right) => left.tier - right.tier)
+    .map((record) => {
+      const { stats } = record;
+      return {
+        tier: `T${record.tier + 1}`,
+        price: Number.isFinite(record.value) ? String(record.value) : "",
+        damage: Number.isFinite(stats.damage) ? String(stats.damage) : "",
+        cooldown: formatCompactCooldown(stats.cooldown),
+        crit:
+          Number.isFinite(stats.crit_chance) && Number.isFinite(stats.crit_damage)
+            ? `${formatPercent(stats.crit_chance)} x${stats.crit_damage}`
+            : "",
+        range: Number.isFinite(stats.max_range) ? String(stats.max_range) : "",
+        knockback: Number.isFinite(stats.knockback) ? String(stats.knockback) : "",
+        scaling: formatScalingStats(stats.scalingStats),
+        projectiles: Number.isFinite(stats.nb_projectiles) ? String(stats.nb_projectiles) : "",
+        piercing: Number.isFinite(stats.piercing)
+          ? `${stats.piercing} / ${formatPercent(1 - (stats.piercing_dmg_reduction ?? 0))}`
+          : "",
+        bounce: Number.isFinite(stats.bounce)
+          ? `${stats.bounce} / ${formatPercent(1 - (stats.bounce_dmg_reduction ?? 0))}`
+          : "",
+      };
+    });
+}
+
 function buildItemAttributeLines(records) {
   const lines = buildEffectLines(records);
   return lines.length ? lines : ["待从效果资源解析具体数值"];
@@ -292,6 +326,8 @@ function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEnt
       records[0]?.kind === "weapon"
         ? buildWeaponAttributeLines(records)
         : buildItemAttributeLines(records),
+    weaponTierRows: records[0]?.kind === "weapon" ? buildWeaponTierRows(records) : [],
+    tierEffectLines: records[0]?.kind === "weapon" ? buildEffectLines(records) : [],
   };
 }
 

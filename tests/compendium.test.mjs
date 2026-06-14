@@ -27,6 +27,22 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
     lute?.detailedAttributes.some((line) => line.includes("伤害：T1 4 / T2 8")),
     "Lute should expose tiered damage stats",
   );
+  assert.deepEqual(
+    lute?.weaponTierRows.map(({ tier, damage, cooldown, scaling }) => ({
+      tier,
+      damage,
+      cooldown,
+      scaling,
+    })),
+    [
+      { tier: "T1", damage: "4", cooldown: "45帧 (0.75秒)", scaling: "50% 近战伤害，10% 幸运" },
+      { tier: "T2", damage: "8", cooldown: "40帧 (0.67秒)", scaling: "50% 近战伤害，15% 幸运" },
+      { tier: "T3", damage: "12", cooldown: "35帧 (0.58秒)", scaling: "50% 近战伤害，20% 幸运" },
+      { tier: "T4", damage: "16", cooldown: "30帧 (0.50秒)", scaling: "50% 近战伤害，25% 幸运" },
+    ],
+    "Lute should expose structured rows for the tier table",
+  );
+  assert.equal(lute?.tierEffectLines.length, 4, "Lute should keep per-tier effects separate");
 }
 
 {

@@ -470,6 +470,57 @@ tr:last-child td {
   line-height: 1.35;
 }
 
+.weapon-tier-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffdfa;
+}
+
+.weapon-tier-table {
+  min-width: 880px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.weapon-tier-table th,
+.weapon-tier-table td {
+  padding: 7px 8px;
+  vertical-align: top;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: left;
+  white-space: normal;
+}
+
+.weapon-tier-table thead th {
+  background: rgba(184, 77, 42, 0.08);
+  color: var(--accent-strong);
+}
+
+.weapon-tier-table tbody th {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.weapon-tier-table td {
+  font-variant-numeric: tabular-nums;
+}
+
+.tier-effect-block {
+  display: grid;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.tier-effect-block > span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .target-section,
 .source-section {
   margin-top: 14px;

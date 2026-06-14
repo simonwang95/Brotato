@@ -402,6 +402,8 @@ function matchesCompendiumSearch(row, query) {
     row.strategyStatNote,
     row.strategyType,
     ...(row.detailedAttributes ?? []),
+    ...(row.weaponTierRows ?? []).flatMap((tier) => Object.values(tier)),
+    ...(row.tierEffectLines ?? []),
     ...(row.strategyTags ?? []),
     ...(row.setLabels ?? []),
   ]
@@ -423,6 +425,60 @@ function renderCharacterCompendiumCard(character) {
         <div><dt>解锁</dt><dd>${escapeHtml(character.unlock)}</dd></div>
       </dl>
     </article>
+  `;
+}
+
+function renderWeaponTierTable(entry) {
+  if (!entry.weaponTierRows?.length) {
+    return renderList(entry.detailedAttributes.map((line) => escapeHtml(line)), "compact-list");
+  }
+
+  return `
+    <div class="weapon-tier-table-wrap">
+      <table class="weapon-tier-table">
+        <thead>
+          <tr>
+            <th>等级</th>
+            <th>价格</th>
+            <th>伤害</th>
+            <th>冷却</th>
+            <th>暴击</th>
+            <th>范围</th>
+            <th>击退</th>
+            <th>缩放</th>
+            <th>投射</th>
+            <th>穿透/保留</th>
+            <th>弹射/保留</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${entry.weaponTierRows
+            .map(
+              (row) => `
+                <tr>
+                  <th>${escapeHtml(row.tier)}</th>
+                  <td>${escapeHtml(row.price || "-")}</td>
+                  <td>${escapeHtml(row.damage || "-")}</td>
+                  <td>${escapeHtml(row.cooldown || "-")}</td>
+                  <td>${escapeHtml(row.crit || "-")}</td>
+                  <td>${escapeHtml(row.range || "-")}</td>
+                  <td>${escapeHtml(row.knockback || "-")}</td>
+                  <td>${escapeHtml(row.scaling || "-")}</td>
+                  <td>${escapeHtml(row.projectiles || "-")}</td>
+                  <td>${escapeHtml(row.piercing || "-")}</td>
+                  <td>${escapeHtml(row.bounce || "-")}</td>
+                </tr>
+              `,
+            )
+            .join("")}
+        </tbody>
+      </table>
+    </div>
+    ${
+      entry.tierEffectLines?.length
+        ? `<div class="tier-effect-block"><span>等级效果</span>${renderList(entry.tierEffectLines.map((line) => escapeHtml(line)), "compact-list")}</div>`
+        : ""
+    }
   `;
 }
 
@@ -448,7 +504,7 @@ function renderCatalogCompendiumCard(entry, kindLabel) {
       <dl class="compendium-meta">
         <div><dt>官方状态</dt><dd>${escapeHtml(`${entry.unlockLabel}，${entry.lootLabel}`)}</dd></div>
         <div><dt>策略解锁</dt><dd>${escapeHtml(entry.strategyUnlock)}</dd></div>
-        <div><dt>详细属性</dt><dd>${renderList(entry.detailedAttributes.map((line) => escapeHtml(line)), "compact-list")}</dd></div>
+        <div><dt>详细属性</dt><dd>${entry.weaponTierRows?.length ? renderWeaponTierTable(entry) : renderList(entry.detailedAttributes.map((line) => escapeHtml(line)), "compact-list")}</dd></div>
         <div><dt>功能说明</dt><dd>${escapeHtml(entry.strategyStatNote || "待补策略说明")}</dd></div>
         <div><dt>套装</dt><dd class="pill-list">${renderPills(entry.setLabels)}</dd></div>
         <div><dt>标签</dt><dd class="pill-list">${renderPills(tags)}</dd></div>
