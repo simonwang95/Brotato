@@ -19,6 +19,7 @@
    - `API_URL`
    - `MODEL`
    - `MAX_TOKENS`
+   - `OCR_TIMEOUT_SECONDS`
    - `USE_RESPONSE_FORMAT_JSON`
    - 环境变量修改后只会作用于新的部署，需要重新部署。
    - 第一阶段如果不启用截图 OCR，可以先不配置这些变量；图鉴和攻略生成器仍可正常使用。
@@ -40,7 +41,7 @@
 - Output Directory：`public`。
 - Install Command：不需要依赖时可留空；如果 Vercel 要求安装，默认 `npm install` 也可以。
 - Node.js Version：建议 20.x 或更高。
-- `vercel.json` 已为 `api/parse-screenshot.js` 设置 `maxDuration: 60`，用于给视觉 OCR 留出响应时间。
+- `vercel.json` 已为 `api/parse-screenshot.js` 设置 `maxDuration: 1200`，用于给视觉 OCR 留出响应时间；`OCR_TIMEOUT_SECONDS` 默认也是 1200。
 
 ## 本地验证
 

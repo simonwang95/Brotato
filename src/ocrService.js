@@ -33,6 +33,11 @@ export function parseJsonFromText(text) {
   }
 }
 
+function numberFromEnv(value, fallback) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
 export function screenshotPrompt(selectedCharacter) {
   const selectedCharacterLine = selectedCharacter
     ? `用户已手动选择当前角色：${selectedCharacter.name}（${selectedCharacter.cnHint}）。角色只用于上下文，不要输出角色字段。`
@@ -81,7 +86,8 @@ export function buildAiConfig(env) {
     apiKey: env.API_KEY,
     apiUrl: env.API_URL,
     model: env.MODEL,
-    maxTokens: Number(env.MAX_TOKENS || 4000),
+    maxTokens: numberFromEnv(env.MAX_TOKENS, 4000),
+    timeoutMs: numberFromEnv(env.OCR_TIMEOUT_SECONDS, 1200) * 1000,
     useResponseFormatJson: String(env.USE_RESPONSE_FORMAT_JSON || "").toLowerCase() === "true",
   };
 }
@@ -127,14 +133,31 @@ export async function parseScreenshotWithOpenAi({ env, imageDataUrl, selectedCha
     };
   }
 
-  const apiResponse = await fetch(`${config.apiUrl.replace(/\/$/, "")}/chat/completions`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${config.apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(buildChatCompletionBody(config, imageDataUrl, selectedCharacter)),
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), config.timeoutMs);
+
+  let apiResponse;
+  try {
+    apiResponse = await fetch(`${config.apiUrl.replace(/\/$/, "")}/chat/completions`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${config.apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(buildChatCompletionBody(config, imageDataUrl, selectedCharacter)),
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (error.name === "AbortError") {
+      return {
+        status: 504,
+        body: { error: `OCR 请求超时：已等待 ${Math.round(config.timeoutMs / 1000)} 秒。` },
+      };
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
 
   const payload = await apiResponse.json().catch(() => ({}));
   if (!apiResponse.ok) {

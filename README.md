@@ -76,6 +76,7 @@ API_KEY="lm-studio"
 API_URL="http://127.0.0.1:1234/v1"
 MODEL="qwen3.6-35b-a3b-nvfp4"
 MAX_TOKENS="10000"
+OCR_TIMEOUT_SECONDS="1200"
 USE_RESPONSE_FORMAT_JSON="false"
 ```
 
