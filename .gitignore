@@ -14,6 +14,7 @@ pnpm-debug.log*
 # Build and test artifacts
 dist/
 build/
+public/
 coverage/
 .nyc_output/
 

@@ -36,8 +36,8 @@
 
 - Framework Preset：Other。
 - Root Directory：仓库根目录。
-- Build Command：留空或不设置。
-- Output Directory：留空。当前项目的静态文件就在仓库根目录，由 Vercel 直接托管。
+- Build Command：`npm run build`。
+- Output Directory：`public`。
 - Install Command：不需要依赖时可留空；如果 Vercel 要求安装，默认 `npm install` 也可以。
 - Node.js Version：建议 20.x 或更高。
 - `vercel.json` 已为 `api/parse-screenshot.js` 设置 `maxDuration: 60`，用于给视觉 OCR 留出响应时间。

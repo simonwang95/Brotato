@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "node scripts/build-static.mjs",
     "test": "node tests/calculator.test.mjs && node tests/strategyGenerator.test.mjs && node tests/scenarioCalculator.test.mjs && node tests/officialCatalog.test.mjs && node tests/officialLocalization.test.mjs && node tests/strategyCatalog.test.mjs && node tests/compendium.test.mjs",
     "extract:catalog": "node scripts/extract-official-catalog.mjs --write",
     "extract:assets": "node scripts/extract-official-assets.mjs",

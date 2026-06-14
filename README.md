@@ -93,6 +93,14 @@ npm run start:static
 npm test
 ```
 
+生成 Vercel 静态部署输出：
+
+```bash
+npm run build
+```
+
+输出目录是 `public/`。Vercel 部署时建议设置 Build Command 为 `npm run build`，Output Directory 为 `public`。
+
 校验当前资料库里的中文名称是否出现在本机安装包：
 
 ```bash
