@@ -106,10 +106,28 @@ const state = {
   catalogLoadState: "loading",
   officialLocalization: null,
   localizationLoadState: "loading",
+  compendiumPage: "overview",
   compendiumTab: "characters",
   compendiumSearch: "",
   compendiumSearchDraft: "",
 };
+
+const compendiumTabs = {
+  characters: {
+    title: "角色",
+    description: "查看全角色中文名、流派定位、攻略摘要和解锁条件维护状态。",
+  },
+  weapons: {
+    title: "武器",
+    description: "查看全武器中文名、价格区间、阶级、套装、掉落状态和策略属性说明。",
+  },
+  items: {
+    title: "物品",
+    description: "查看全物品中文名、价格、阶级、掉落/解锁状态和策略属性说明。",
+  },
+};
+
+const compendiumTabIds = Object.keys(compendiumTabs);
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -438,8 +456,20 @@ function renderCatalogCompendiumCard(entry, kindLabel) {
 }
 
 function renderCompendiumTabs() {
+  $(".compendium-panel")?.classList.toggle(
+    "compendium-overview-mode",
+    state.compendiumPage === "overview",
+  );
+
+  document.querySelectorAll("[data-compendium-home]").forEach((button) => {
+    const isActive = state.compendiumPage === "overview";
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+
   document.querySelectorAll("[data-compendium-tab]").forEach((button) => {
-    const isActive = button.dataset.compendiumTab === state.compendiumTab;
+    const isActive =
+      state.compendiumPage === "detail" && button.dataset.compendiumTab === state.compendiumTab;
     button.classList.toggle("active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
   });
@@ -448,6 +478,66 @@ function renderCompendiumTabs() {
 function applyCompendiumSearch() {
   state.compendiumSearch = state.compendiumSearchDraft.trim();
   renderCompendium();
+}
+
+function clearCompendiumSearchState() {
+  state.compendiumSearch = "";
+  state.compendiumSearchDraft = "";
+  const searchInput = $("#compendium-search");
+  if (searchInput) searchInput.value = "";
+}
+
+function setCompendiumRoute(tabId) {
+  if (tabId && (state.compendiumPage !== "detail" || state.compendiumTab !== tabId)) {
+    clearCompendiumSearchState();
+  }
+
+  const nextHash = tabId ? `#compendium/${tabId}` : "#compendium";
+  if (window.location.hash === nextHash) {
+    syncCompendiumRoute();
+    return;
+  }
+
+  window.location.hash = nextHash;
+}
+
+function syncCompendiumRoute() {
+  const [, tabId] = window.location.hash.match(/^#compendium\/([^/]+)$/) ?? [];
+  if (compendiumTabIds.includes(tabId)) {
+    state.compendiumPage = "detail";
+    state.compendiumTab = tabId;
+  } else if (window.location.hash === "#compendium") {
+    state.compendiumPage = "overview";
+  }
+
+  renderCompendium();
+}
+
+function renderCompendiumOverview(compendium) {
+  const cards = compendiumTabIds
+    .map((tabId) => {
+      const tab = compendiumTabs[tabId];
+      const count = compendium[tabId].length;
+      return `
+        <article class="compendium-category-card">
+          <span>${escapeHtml(String(count))} 条</span>
+          <h4>${escapeHtml(tab.title)}图鉴</h4>
+          <p>${escapeHtml(tab.description)}</p>
+          <button type="button" data-compendium-tab="${escapeHtml(tabId)}">查看全部${escapeHtml(tab.title)}</button>
+        </article>
+      `;
+    })
+    .join("");
+
+  return `
+    <div class="compendium-summary">
+      <strong>图鉴总览</strong>
+      <span>角色 ${escapeHtml(String(compendium.characters.length))}</span>
+      <span>武器 ${escapeHtml(String(compendium.weapons.length))}</span>
+      <span>物品 ${escapeHtml(String(compendium.items.length))}</span>
+    </div>
+    <div class="compendium-category-grid">${cards}</div>
+  `;
 }
 
 function renderCompendium() {
@@ -469,26 +559,35 @@ function renderCompendium() {
   const compendium = buildCompendium(state.officialCatalog, state.officialLocalization);
   const tabConfig = {
     characters: {
-      title: "角色",
+      title: compendiumTabs.characters.title,
       rows: compendium.characters,
       render: renderCharacterCompendiumCard,
     },
     weapons: {
-      title: "武器",
+      title: compendiumTabs.weapons.title,
       rows: compendium.weapons,
       render: (entry) => renderCatalogCompendiumCard(entry, "武器"),
     },
     items: {
-      title: "物品",
+      title: compendiumTabs.items.title,
       rows: compendium.items,
       render: (entry) => renderCatalogCompendiumCard(entry, "物品"),
     },
   };
+
+  if (state.compendiumPage === "overview") {
+    output.innerHTML = renderCompendiumOverview(compendium);
+    return;
+  }
+
   const active = tabConfig[state.compendiumTab] ?? tabConfig.characters;
   const query = state.compendiumSearch.trim();
   const rows = active.rows.filter((row) => matchesCompendiumSearch(row, query));
 
   output.innerHTML = `
+    <div class="compendium-page-actions">
+      <button class="secondary" type="button" data-compendium-home>返回总览</button>
+    </div>
     <div class="compendium-summary">
       <strong>${escapeHtml(active.title)}图鉴</strong>
       <span>${escapeHtml(String(rows.length))} / ${escapeHtml(String(active.rows.length))} 条</span>
@@ -881,10 +980,14 @@ function bindControls() {
   });
 
   $(".compendium-panel").addEventListener("click", (event) => {
+    if (event.target.closest("[data-compendium-home]")) {
+      setCompendiumRoute(null);
+      return;
+    }
+
     const tabButton = event.target.closest("[data-compendium-tab]");
     if (tabButton) {
-      state.compendiumTab = tabButton.dataset.compendiumTab;
-      renderCompendium();
+      setCompendiumRoute(tabButton.dataset.compendiumTab);
       return;
     }
 
@@ -894,9 +997,7 @@ function bindControls() {
     }
 
     if (event.target.closest("#compendium-clear-search")) {
-      state.compendiumSearch = "";
-      state.compendiumSearchDraft = "";
-      $("#compendium-search").value = "";
+      clearCompendiumSearchState();
       renderCompendium();
     }
   });
@@ -911,6 +1012,8 @@ function bindControls() {
       applyCompendiumSearch();
     }
   });
+
+  window.addEventListener("hashchange", syncCompendiumRoute);
 
   $("#rounding-mode").addEventListener("change", (event) => {
     state.roundingMode = event.target.value;
@@ -1041,6 +1144,7 @@ async function loadOfficialLocalization() {
 }
 
 bindControls();
+syncCompendiumRoute();
 render();
 loadOfficialCatalog();
 loadOfficialLocalization();

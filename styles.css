@@ -537,6 +537,14 @@ tr:last-child td {
   padding: 0 18px 18px;
 }
 
+.compendium-overview-mode .compendium-search-group {
+  display: none;
+}
+
+.compendium-page-actions {
+  margin-bottom: 12px;
+}
+
 .compendium-summary {
   display: flex;
   flex-wrap: wrap;
@@ -565,6 +573,38 @@ tr:last-child td {
   max-height: 720px;
   overflow: auto;
   padding-right: 2px;
+}
+
+.compendium-category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.compendium-category-card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 14px;
+}
+
+.compendium-category-card span {
+  color: var(--accent-strong);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.compendium-category-card h4 {
+  margin: 5px 0 8px;
+  font-size: 20px;
+}
+
+.compendium-category-card p {
+  min-height: 66px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  line-height: 1.5;
 }
 
 .compendium-card {
@@ -691,6 +731,7 @@ tr:last-child td {
   .compendium-controls,
   .compendium-search-group,
   .compendium-grid,
+  .compendium-category-grid,
   .strategy-controls {
     grid-template-columns: 1fr;
   }
