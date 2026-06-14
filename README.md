@@ -21,6 +21,10 @@
   - 单次期望伤害
   - 攻击间隔
   - 总 DPS
+- 三个独立页面：
+  - 图鉴页，默认展示。
+  - 角色攻略页，选择角色时同步展示角色图标。
+  - 角色场景模拟器页，支持手动输入和上传截图/照片解析。
 
 ## 简化假设
 
@@ -57,13 +61,28 @@ DPS = 单次期望伤害 × 每次攻击命中数 × 武器数量 / 攻击间隔
 
 ## 使用
 
-直接打开 `index.html`，或启动本地服务：
+启动本地服务：
 
 ```bash
 npm run start
 ```
 
 然后访问 `http://localhost:5174`。
+
+截图/照片解析使用本地 OpenAI 兼容 API。开发阶段默认读取 `env.local`：
+
+```bash
+API_KEY="lm-studio"
+API_URL="http://127.0.0.1:1234/v1"
+MODEL="qwen3.6-35b-a3b-nvfp4"
+MAX_TOKENS="10000"
+```
+
+`env.local` 是本机配置文件，不提交；仓库里保留 `env.local.example` 作为模板。只看静态页面时仍可用：
+
+```bash
+npm run start:static
+```
 
 运行公式测试：
 

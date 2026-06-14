@@ -101,6 +101,37 @@ h1 {
   justify-content: flex-end;
 }
 
+.page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 250, 0.78);
+  padding: 8px;
+}
+
+.page-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--accent-strong);
+  padding: 10px 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.page-nav-link.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.page-section[hidden] {
+  display: none !important;
+}
+
 .button,
 button {
   display: inline-flex;
@@ -188,6 +219,7 @@ button.secondary {
 
 .field input,
 .field select,
+.field textarea,
 select {
   width: 100%;
   border: 1px solid var(--line);
@@ -199,6 +231,7 @@ select {
 }
 
 .field input:focus,
+.field textarea:focus,
 select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(184, 77, 42, 0.14);
@@ -345,10 +378,34 @@ tr:last-child td {
 
 .guide-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.35fr);
+  grid-template-columns: auto minmax(0, 1fr) minmax(240px, 0.35fr);
   gap: 14px;
   align-items: stretch;
   margin-bottom: 14px;
+}
+
+.guide-character-portrait {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  min-height: 112px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.guide-character-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.guide-character-portrait span {
+  color: var(--accent-strong);
+  font-size: 42px;
+  font-weight: 900;
 }
 
 .guide-hero h3 {
@@ -573,6 +630,39 @@ tr:last-child td {
 
 .calculator-layout {
   margin-top: 0;
+}
+
+.screenshot-panel {
+  margin-bottom: 18px;
+}
+
+.screenshot-uploader {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto auto;
+  gap: 10px;
+  align-items: end;
+  padding: 14px 18px 18px;
+}
+
+.parse-output {
+  margin: 0 18px 18px;
+  text-align: left;
+}
+
+.parse-output pre {
+  max-height: 360px;
+  overflow: auto;
+  margin: 10px 0 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 12px;
+  white-space: pre-wrap;
+}
+
+.parse-output strong {
+  display: block;
+  margin-bottom: 4px;
 }
 
 .compendium-panel {
@@ -891,8 +981,14 @@ tr:last-child td {
   .compendium-search-group,
   .compendium-grid,
   .compendium-category-grid,
+  .screenshot-uploader,
   .strategy-controls {
     grid-template-columns: 1fr;
+  }
+
+  .guide-character-portrait {
+    width: 88px;
+    min-height: 88px;
   }
 
   .summary-grid,

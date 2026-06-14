@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Brotato 数值实验台</title>
-    <link rel="stylesheet" href="./styles.css?v=20260614-header-icon" />
+    <link rel="stylesheet" href="./styles.css?v=20260614-pages-upload" />
   </head>
   <body>
     <main class="app-shell">
@@ -13,7 +13,7 @@
           <p class="eyebrow">Brotato Number Lab v0.4</p>
           <h1>土豆兄弟数值实验台</h1>
           <p class="subtitle">
-            先按角色和模式生成路线攻略，再用下方手动计算器验证某个武器或道具的具体收益。
+            图鉴、角色攻略和场景模拟拆成独立页面；先查资料，再生成路线，最后用截图或手动输入验证收益。
           </p>
         </div>
         <div class="topbar-actions">
@@ -25,7 +25,13 @@
         </div>
       </header>
 
-      <section class="panel strategy-panel">
+      <nav class="page-nav" aria-label="主功能导航">
+        <a class="page-nav-link active" href="#compendium" data-page-link="compendium">图鉴</a>
+        <a class="page-nav-link" href="#guide" data-page-link="guide">角色攻略</a>
+        <a class="page-nav-link" href="#simulator" data-page-link="simulator">角色场景模拟器</a>
+      </nav>
+
+      <section class="panel strategy-panel page-section" data-page="guide" hidden>
         <div class="panel-header">
           <h2>角色攻略生成器</h2>
           <p>选择人物和模式，生成推荐武器、关键道具解锁、属性优先级和第 20 关目标面板。</p>
@@ -59,7 +65,7 @@
         <div id="strategy-output" class="strategy-output"></div>
       </section>
 
-      <section class="panel compendium-panel compendium-overview-mode">
+      <section class="panel compendium-panel compendium-overview-mode page-section" data-page="compendium">
         <div class="panel-header">
           <h2>全图鉴</h2>
           <p>展示角色解锁条件，以及本机安装包提取到的武器/物品中文名、属性说明、套装、价格和掉落状态。</p>
@@ -83,7 +89,26 @@
         <div id="compendium-output" class="compendium-output"></div>
       </section>
 
-      <section class="layout calculator-layout">
+      <section class="page-section simulator-page" data-page="simulator" hidden>
+        <section class="panel screenshot-panel">
+          <div class="panel-header">
+            <h2>截图/照片解析</h2>
+            <p>上传当前局内截图，使用本地 OpenAI 兼容 API 解析角色、属性、武器和场景信息；测试阶段读取 env.local 中的 LM Studio 配置。</p>
+          </div>
+          <div class="screenshot-uploader">
+            <label class="field">
+              <span>上传截图或照片</span>
+              <input id="screenshot-file" type="file" accept="image/*" />
+            </label>
+            <button id="parse-screenshot" type="button">解析并填入</button>
+            <button id="clear-screenshot-parse" class="secondary" type="button">清空解析</button>
+          </div>
+          <div id="screenshot-parse-output" class="parse-output empty-state">
+            尚未上传图片。解析服务需要通过 npm run start 启动本地 Node 服务。
+          </div>
+        </section>
+
+        <section class="layout calculator-layout">
         <div>
           <section class="panel">
             <div class="panel-header">
@@ -137,6 +162,7 @@
           <div id="summary" class="summary-grid"></div>
           <div id="details" class="details"></div>
         </aside>
+        </section>
       </section>
 
       <p class="note">
@@ -146,6 +172,6 @@
       </p>
     </main>
 
-    <script type="module" src="./src/app.js?v=20260614-header-icon"></script>
+    <script type="module" src="./src/app.js?v=20260614-pages-upload"></script>
   </body>
 </html>

@@ -106,10 +106,17 @@ const state = {
   catalogLoadState: "loading",
   officialLocalization: null,
   localizationLoadState: "loading",
+  activePage: "compendium",
   compendiumPage: "overview",
   compendiumTab: "characters",
   compendiumSearch: "",
   compendiumSearchDraft: "",
+  screenshotParse: {
+    status: "idle",
+    message: "",
+    rawText: "",
+    parsed: null,
+  },
 };
 
 const compendiumTabs = {
@@ -128,6 +135,7 @@ const compendiumTabs = {
 };
 
 const compendiumTabIds = Object.keys(compendiumTabs);
+const pageIds = ["compendium", "guide", "simulator"];
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -401,6 +409,24 @@ function renderCompendiumImage(entry, label) {
   return `<div class="compendium-thumb compendium-thumb-placeholder" aria-hidden="true">${escapeHtml(fallback)}</div>`;
 }
 
+function renderPageShell() {
+  document.querySelectorAll("[data-page]").forEach((section) => {
+    section.hidden = section.dataset.page !== state.activePage;
+  });
+
+  document.querySelectorAll("[data-page-link]").forEach((link) => {
+    const isActive = link.dataset.pageLink === state.activePage;
+    link.classList.toggle("active", isActive);
+    link.setAttribute("aria-current", isActive ? "page" : "false");
+  });
+}
+
+function routePageFromHash(hash) {
+  if (hash.startsWith("#guide")) return "guide";
+  if (hash.startsWith("#simulator")) return "simulator";
+  return "compendium";
+}
+
 function matchesCompendiumSearch(row, query) {
   if (!query) return true;
   const haystack = [
@@ -580,8 +606,23 @@ function syncCompendiumRoute() {
   } else if (window.location.hash === "#compendium") {
     state.compendiumPage = "overview";
   }
+}
 
+function syncAppRoute() {
+  if (!window.location.hash) {
+    window.history.replaceState(null, "", "#compendium");
+  }
+
+  state.activePage = routePageFromHash(window.location.hash);
+  if (!pageIds.includes(state.activePage)) state.activePage = "compendium";
+  if (state.activePage === "compendium") {
+    syncCompendiumRoute();
+  }
+
+  renderPageShell();
   renderCompendium();
+  renderStrategyGuide();
+  renderScreenshotParseOutput();
 }
 
 function renderCompendiumOverview(compendium) {
@@ -741,6 +782,28 @@ function renderStrategyControls() {
   preferenceSelect.value = state.strategyPreference;
 }
 
+function selectedCharacterCompendiumEntry(characterId) {
+  if (state.catalogLoadState !== "loaded" || !state.officialCatalog) return null;
+  const compendium = buildCompendium(state.officialCatalog, state.officialLocalization);
+  return compendium.characters.find((character) => character.id === characterId) ?? null;
+}
+
+function renderGuideCharacterPortrait(character) {
+  const compendiumEntry = selectedCharacterCompendiumEntry(character.id);
+  const label = `${character.name} ${compendiumEntry?.cnName ?? character.cnHint}`;
+
+  if (compendiumEntry?.imageAssetPath) {
+    return `
+      <div class="guide-character-portrait">
+        <img src="${escapeHtml(compendiumEntry.imageAssetPath)}" alt="${escapeHtml(label)}" loading="lazy" />
+      </div>
+    `;
+  }
+
+  const fallback = (compendiumEntry?.cnName || character.cnHint || character.name || "?").slice(0, 1);
+  return `<div class="guide-character-portrait" aria-hidden="true"><span>${escapeHtml(fallback)}</span></div>`;
+}
+
 function renderStrategyGuide() {
   const guide = generateStrategyGuide(state.strategyCharacter, state.strategyMode, {
     officialCatalog: state.officialCatalog,
@@ -757,6 +820,7 @@ function renderStrategyGuide() {
 
   output.innerHTML = `
     <section class="guide-hero">
+      ${renderGuideCharacterPortrait(guide.character)}
       <div>
         <p class="eyebrow">${escapeHtml(guide.mode.label)}</p>
         <h3>${escapeHtml(guide.character.name)} <span>${escapeHtml(guide.character.cnHint)}</span></h3>
@@ -1019,6 +1083,199 @@ function renderResults() {
   `;
 }
 
+function renderScreenshotParseOutput() {
+  const output = $("#screenshot-parse-output");
+  if (!output) return;
+
+  const { status, message, rawText, parsed } = state.screenshotParse;
+  const statusLabel = {
+    idle: "尚未解析",
+    loading: "解析中",
+    success: "解析完成",
+    error: "解析失败",
+  }[status];
+  const detail = parsed ? JSON.stringify(parsed, null, 2) : rawText;
+
+  output.classList.toggle("empty-state", status === "idle" || status === "error");
+  output.innerHTML = `
+    <strong>${escapeHtml(statusLabel)}</strong>
+    <span>${escapeHtml(message || "上传 Brotato 截图后，会尝试识别角色、属性、武器和场景参数。")}</span>
+    ${detail ? `<pre>${escapeHtml(detail)}</pre>` : ""}
+  `;
+}
+
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(reader.result));
+    reader.addEventListener("error", () => reject(reader.error));
+    reader.readAsDataURL(file);
+  });
+}
+
+function parseJsonFromText(text) {
+  if (!text) return null;
+  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i)?.[1];
+  const candidate = fenced ?? text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);
+  if (!candidate.trim()) return null;
+
+  try {
+    return JSON.parse(candidate);
+  } catch {
+    return null;
+  }
+}
+
+function numberOrExisting(value, current) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : current;
+}
+
+function applyParsedSimulatorData(parsed) {
+  if (!parsed || typeof parsed !== "object") return false;
+  let changed = false;
+
+  if (parsed.stats && typeof parsed.stats === "object") {
+    Object.keys(statLabels).forEach((key) => {
+      if (parsed.stats[key] !== undefined) {
+        state.stats[key] = numberOrExisting(parsed.stats[key], state.stats[key]);
+        changed = true;
+      }
+    });
+  }
+
+  if (parsed.weapon && typeof parsed.weapon === "object") {
+    Object.keys(weaponLabels).forEach((key) => {
+      if (key === "name" && parsed.weapon.name) {
+        state.weapon.name = String(parsed.weapon.name);
+        changed = true;
+      } else if (parsed.weapon[key] !== undefined) {
+        state.weapon[key] = numberOrExisting(parsed.weapon[key], state.weapon[key]);
+        changed = true;
+      }
+    });
+
+    if (parsed.weapon.scaling && typeof parsed.weapon.scaling === "object") {
+      DAMAGE_TYPES.forEach((key) => {
+        if (parsed.weapon.scaling[key] !== undefined) {
+          state.weapon.scaling[key] = numberOrExisting(
+            parsed.weapon.scaling[key],
+            state.weapon.scaling[key],
+          );
+          changed = true;
+        }
+      });
+    }
+  }
+
+  if (parsed.itemDelta && typeof parsed.itemDelta === "object") {
+    Object.keys(statLabels).forEach((key) => {
+      if (parsed.itemDelta[key] !== undefined) {
+        state.itemDelta[key] = numberOrExisting(parsed.itemDelta[key], state.itemDelta[key]);
+        changed = true;
+      }
+    });
+  }
+
+  if (parsed.combatContext && typeof parsed.combatContext === "object") {
+    Object.keys(combatContextLabels).forEach((key) => {
+      if (parsed.combatContext[key] !== undefined) {
+        state.combatContext[key] = numberOrExisting(
+          parsed.combatContext[key],
+          state.combatContext[key],
+        );
+        changed = true;
+      }
+    });
+  }
+
+  if (parsed.scenarioId && getAvailableScenarios().some((scenario) => scenario.id === parsed.scenarioId)) {
+    state.scenarioId = parsed.scenarioId;
+    changed = true;
+  }
+
+  if (
+    parsed.itemEffectId &&
+    getAvailableItemEffects().some((itemEffect) => itemEffect.id === parsed.itemEffectId)
+  ) {
+    state.itemEffectId = parsed.itemEffectId;
+    changed = true;
+  }
+
+  if (parsed.roundingMode && ["none", "floor", "round", "ceil"].includes(parsed.roundingMode)) {
+    state.roundingMode = parsed.roundingMode;
+    const roundingSelect = $("#rounding-mode");
+    if (roundingSelect) roundingSelect.value = state.roundingMode;
+    changed = true;
+  }
+
+  return changed;
+}
+
+async function parseScreenshotUpload() {
+  const input = $("#screenshot-file");
+  const file = input?.files?.[0];
+  if (!file) {
+    state.screenshotParse = {
+      status: "error",
+      message: "请先选择一张截图或照片。",
+      rawText: "",
+      parsed: null,
+    };
+    renderScreenshotParseOutput();
+    return;
+  }
+
+  state.screenshotParse = {
+    status: "loading",
+    message: "正在发送到本地解析服务。",
+    rawText: "",
+    parsed: null,
+  };
+  renderScreenshotParseOutput();
+
+  try {
+    const imageDataUrl = await fileToDataUrl(file);
+    const response = await fetch("/api/parse-screenshot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ imageDataUrl }),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(payload.error || `HTTP ${response.status}`);
+    }
+
+    const parsed = payload.parsed ?? parseJsonFromText(payload.text);
+    const applied = applyParsedSimulatorData(parsed);
+    state.screenshotParse = {
+      status: "success",
+      message: applied
+        ? "已解析并将可识别字段填入模拟器。请核对数值，截图识别仍可能有误。"
+        : "已解析，但没有找到可直接填入模拟器的字段。",
+      rawText: payload.text ?? "",
+      parsed,
+    };
+
+    if (applied) {
+      renderStatFields();
+      renderWeaponFields();
+      renderScenarioFields();
+      renderItemFields();
+      renderResults();
+    }
+  } catch (error) {
+    state.screenshotParse = {
+      status: "error",
+      message: `解析失败：${error.message}。请确认使用 npm run start 启动，并且 env.local 指向可用的 LM Studio 服务。`,
+      rawText: "",
+      parsed: null,
+    };
+  }
+
+  renderScreenshotParseOutput();
+}
+
 function bindControls() {
   $("#strategy-character").addEventListener("change", (event) => {
     state.strategyCharacter = event.target.value;
@@ -1073,7 +1330,7 @@ function bindControls() {
     }
   });
 
-  window.addEventListener("hashchange", syncCompendiumRoute);
+  window.addEventListener("hashchange", syncAppRoute);
 
   $("#rounding-mode").addEventListener("change", (event) => {
     state.roundingMode = event.target.value;
@@ -1084,6 +1341,22 @@ function bindControls() {
     state.itemDelta = { ...DEFAULT_ITEM_DELTA };
     renderItemFields();
     renderResults();
+  });
+
+  $("#parse-screenshot").addEventListener("click", () => {
+    parseScreenshotUpload();
+  });
+
+  $("#clear-screenshot-parse").addEventListener("click", () => {
+    state.screenshotParse = {
+      status: "idle",
+      message: "",
+      rawText: "",
+      parsed: null,
+    };
+    const input = $("#screenshot-file");
+    if (input) input.value = "";
+    renderScreenshotParseOutput();
   });
 
   $("#load-example").addEventListener("click", () => {
@@ -1157,11 +1430,13 @@ function bindControls() {
     state.strategyDlc = "allowDlc";
     state.strategyUnlock = "allowUnlocks";
     state.strategyPreference = "ranged";
+    window.location.hash = "#simulator";
     render();
   });
 }
 
 function render() {
+  renderPageShell();
   renderStrategyControls();
   renderStrategyGuide();
   renderCompendium();
@@ -1169,6 +1444,7 @@ function render() {
   renderWeaponFields();
   renderScenarioFields();
   renderItemFields();
+  renderScreenshotParseOutput();
   renderResults();
 }
 
@@ -1200,11 +1476,12 @@ async function loadOfficialLocalization() {
     state.localizationLoadState = "error";
   }
 
+  renderStrategyGuide();
   renderCompendium();
 }
 
 bindControls();
-syncCompendiumRoute();
+syncAppRoute();
 render();
 loadOfficialCatalog();
 loadOfficialLocalization();
