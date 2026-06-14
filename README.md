@@ -134,7 +134,7 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 
 ## 后续目标
 
-二期攻略生成器已经接入原版 44 个角色和深海魔怪 DLC 15 个角色。下一步会继续校验角色解锁条件、补全剩余图鉴本地化，并把更多武器/道具参数接入数值模型。
+二期攻略生成器已经接入原版 44 个角色和深海魔怪 DLC 15 个角色。武器/物品图鉴本地化已覆盖当前官方目录；下一步会继续补全角色精确挑战条件，并把更多武器/道具参数接入数值模型。
 
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。
@@ -146,3 +146,13 @@ Vercel 部署清单见 [docs/vercel-deployment.md](docs/vercel-deployment.md)。
 当前攻略数据参考 Brotato Wiki 的 Characters、Progress、Weapons、Stats 和 Endless Mode 页面，并在数据里保留了解锁说明。攻略推荐本身是策略化整理，不等同于游戏内唯一最优解；后续会继续把可量化部分接入 DPS 计算器。
 
 官方简中名称优先以本机安装包里的 `Brotato.pck` 和 `BrotatoAbyssalTerrors.pck` 为准；`npm run verify:names` 会扫描这些包并报告当前数据是否匹配。
+
+当前可从官方目录稳定校验武器/物品/角色的默认解锁状态和掉落池状态：
+
+```bash
+npm run verify:unlocks
+```
+
+精确挑战条件仍有一批待补。主要原因是当前目录提取脚本读取的是物品、武器和角色资源里的 `unlocked_by_default` / `can_be_looted` 等静态字段，这些字段能说明“默认可用还是需要解锁”，但不直接包含“用哪个角色通关、收集多少材料、完成哪项挑战”这类完整条件。完整条件需要继续解析安装包里的 Progress / achievement / challenge 资源，并把挑战文本和角色、武器、物品 ID 建立映射。
+
+这不依赖当前电脑的存档解锁进度。安装包 `.pck` 是静态游戏数据；本机进度只会影响游戏内或存档里“你已经解锁了什么”，不会改变仓库中由安装包提取出的官方目录字段。除非后续改为读取存档或游戏 UI 截图，否则本机是否已经全解锁不会影响这些脚本的结果。

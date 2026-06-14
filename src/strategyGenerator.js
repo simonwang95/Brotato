@@ -31,6 +31,28 @@ const WEAPON_SET_LABELS = {
   unarmed: "徒手",
 };
 
+const OFFICIAL_STAT_TO_PLAN_STAT = {
+  stat_max_hp: "maxHp",
+  stat_hp_regeneration: "hpRegen",
+  stat_lifesteal: "lifeSteal",
+  stat_armor: "armor",
+  stat_dodge: "dodge",
+  stat_percent_damage: "damagePercent",
+  stat_attack_speed: "attackSpeed",
+  stat_crit_chance: "critChance",
+  stat_melee_damage: "meleeDamage",
+  stat_ranged_damage: "rangedDamage",
+  stat_elemental_damage: "elementalDamage",
+  stat_engineering: "engineering",
+  stat_range: "range",
+  stat_speed: "speed",
+  stat_harvesting: "harvesting",
+  stat_luck: "luck",
+  explosion_damage: "damagePercent",
+  damage_against_bosses: "damagePercent",
+  xp_gain: "harvesting",
+};
+
 export function getAvailableCharacters() {
   return Object.values(CHARACTER_GUIDES).map(({ id, name, cnHint, unlock }) => ({
     id,
@@ -230,7 +252,77 @@ function officialAvailabilityScore(official) {
   return (defaultUnlocked ? 1 : 0) + (canBeLooted ? 1 : 0);
 }
 
-function scoreRecommendation(entry, preference) {
+function expandPlanPriority(priority) {
+  return String(priority)
+    .split(/或|\/|、|,|，|\s+/)
+    .map((part) => part.trim())
+    .filter((part) => STAT_LABELS[part]);
+}
+
+function collectPlanStats(plan) {
+  const priorityStats = Object.values(plan.statPriority ?? {}).flatMap((priorities) =>
+    priorities.flatMap(expandPlanPriority),
+  );
+  const targetStats = Object.keys(plan.wave20Targets ?? {}).filter((statId) => STAT_LABELS[statId]);
+  return new Set([...priorityStats, ...targetStats]);
+}
+
+function collectOfficialStats(official) {
+  const officialStatKeys = (official?.records ?? []).flatMap((record) => [
+    ...(record.effects ?? []).flatMap((effect) => [
+      effect.key,
+      effect.statDisplayed,
+      effect.statDisplayedName,
+      effect.statName,
+      effect.statScaled,
+      ...(effect.statsModified ?? []),
+    ]),
+    ...(record.stats?.scalingStats ?? []).map((scaling) => scaling.stat),
+  ]);
+
+  return [
+    ...new Set(
+      officialStatKeys.map((statKey) => OFFICIAL_STAT_TO_PLAN_STAT[statKey]).filter(Boolean),
+    ),
+  ];
+}
+
+function scoreOfficialStatSynergy(entry, plan) {
+  if (!plan || !entry.official?.found) return { score: 0, reasons: [] };
+
+  const planStats = collectPlanStats(plan);
+  const matchedStats = collectOfficialStats(entry.official).filter((statId) => planStats.has(statId));
+  if (!matchedStats.length) return { score: 0, reasons: [] };
+
+  const labels = matchedStats.map((statId) => STAT_LABELS[statId] ?? statId);
+  return {
+    score: Math.min(8, matchedStats.length * 2),
+    reasons: [`官方数值匹配角色目标：${labels.join(" / ")}`],
+  };
+}
+
+function scoreModeFit(entry, mode) {
+  const target = entry.weapon ?? entry.item;
+  const text = entryText(entry, target);
+
+  if (mode?.id === "endless" && /经济|成长|拾取|幸运|收获|弹射|贯通|范围|诅咒/.test(text)) {
+    return {
+      score: 2,
+      reasons: ["无尽模式偏好成长、拾取或覆盖收益"],
+    };
+  }
+
+  if (mode?.id === "normal20" && /稳定|生存|护甲|生命|回复|续航|攻速|伤害/.test(text)) {
+    return {
+      score: 1,
+      reasons: ["20 关通关偏好稳定阈值"],
+    };
+  }
+
+  return { score: 0, reasons: [] };
+}
+
+function scoreRecommendation(entry, preference, plan, mode) {
   const target = entry.weapon ?? entry.item;
   const targetTags = (target.tags ?? []).map(normalizeTag);
   const routeTags = (entry.routeTags ?? []).map(normalizeTag);
@@ -267,18 +359,32 @@ function scoreRecommendation(entry, preference) {
   const availabilityScore = officialAvailabilityScore(entry.official);
   if (availabilityScore) reasons.push("官方目录显示可稳定获取");
 
+  const officialStatSynergy = scoreOfficialStatSynergy(entry, plan);
+  reasons.push(...officialStatSynergy.reasons);
+
+  const modeFit = scoreModeFit(entry, mode);
+  reasons.push(...modeFit.reasons);
+
   return {
-    score: keywordScore + targetTagScore + routeTagScore + routeFitScore + planScore + availabilityScore,
+    score:
+      keywordScore +
+      targetTagScore +
+      routeTagScore +
+      routeFitScore +
+      planScore +
+      availabilityScore +
+      officialStatSynergy.score +
+      modeFit.score,
     reasons,
   };
 }
 
-function sortByRecommendationScore(entries, preference) {
+function sortByRecommendationScore(entries, preference, plan, mode) {
   return entries
     .map((entry, index) => ({
       entry,
       index,
-      scoring: scoreRecommendation(entry, preference),
+      scoring: scoreRecommendation(entry, preference, plan, mode),
     }))
     .sort((a, b) => b.scoring.score - a.scoring.score || a.index - b.index)
     .map(({ entry, scoring }) => ({
@@ -288,10 +394,12 @@ function sortByRecommendationScore(entries, preference) {
     }));
 }
 
-function filterAndSort(entries, options) {
+function filterAndSort(entries, options, plan, mode) {
   return sortByRecommendationScore(
     entries.filter((entry) => entryAllowedByOptions(entry, options)),
     options.preference,
+    plan,
+    mode,
   );
 }
 
@@ -353,10 +461,14 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
   const recommendedWeapons = filterAndSort(
     plan.recommendedWeapons.map((entry) => resolveWeapon(entry, options.officialCatalog)),
     resolvedOptions,
+    plan,
+    mode,
   );
   const keyItems = filterAndSort(
     plan.keyItems.map((entry) => resolveItem(entry, options.officialCatalog)),
     resolvedOptions,
+    plan,
+    mode,
   );
 
   return {

@@ -1,0 +1,132 @@
+import { readFileSync } from "node:fs";
+import { findOfficialRecords, getOfficialNameKey, toOfficialNameKey } from "../src/officialCatalog.js";
+import { CHARACTER_GUIDES, ITEMS, WEAPONS } from "../src/strategyData.js";
+
+const catalogPath = process.env.BROTATO_CATALOG_PATH || "data/official-catalog.json";
+const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
+
+const CHARACTER_NAME_KEY_OVERRIDES = {
+  oneArmed: "CHARACTER_ONE_ARM",
+};
+
+function unique(values) {
+  return [...new Set(values.filter((value) => value !== null && value !== undefined))];
+}
+
+function characterNameKey(character) {
+  return CHARACTER_NAME_KEY_OVERRIDES[character.id] ?? toOfficialNameKey("CHARACTER", character.name);
+}
+
+function officialState(records, field) {
+  const values = unique(records.map((record) => record[field])).filter(
+    (value) => typeof value === "boolean",
+  );
+  if (!values.length) return "unknown";
+  if (values.length > 1) return "mixed";
+  return values[0] ? "yes" : "no";
+}
+
+function textClaimsDefault(text) {
+  return /默认|无需解锁|默认池/.test(text);
+}
+
+function textClaimsLocked(text) {
+  return /需解锁|通关|赢得一局|收集|同时|挑战|待校验/.test(text);
+}
+
+function textClaimsLootable(text) {
+  return /可掉落/.test(text);
+}
+
+function textClaimsUnlootable(text) {
+  return /不进掉落池|不可掉落/.test(text);
+}
+
+function validateEntry(kind, entry) {
+  const records = findOfficialRecords(catalog, kind, entry);
+  const label = `${kind}:${entry.id} ${entry.name} / ${entry.cnName}`;
+  const errors = [];
+  const warnings = [];
+
+  if (!records.length) {
+    errors.push(`${label} 未匹配官方目录 ${getOfficialNameKey(kind, entry)}`);
+    return { errors, warnings };
+  }
+
+  const unlockState = officialState(records, "unlockedByDefault");
+  const lootState = officialState(records, "canBeLooted");
+  const unlock = entry.unlock ?? "";
+
+  if (unlockState === "yes" && textClaimsLocked(unlock) && !textClaimsDefault(unlock)) {
+    errors.push(`${label} 官方为默认解锁，但策略文案写成：${unlock}`);
+  }
+  if (unlockState === "no" && textClaimsDefault(unlock) && !textClaimsLocked(unlock)) {
+    errors.push(`${label} 官方为需解锁，但策略文案写成：${unlock}`);
+  }
+  if (lootState === "yes" && textClaimsUnlootable(unlock)) {
+    errors.push(`${label} 官方可掉落，但策略文案写成：${unlock}`);
+  }
+  if (lootState === "no" && textClaimsLootable(unlock)) {
+    errors.push(`${label} 官方不进掉落池，但策略文案写成：${unlock}`);
+  }
+  if (lootState === "unknown" && textClaimsLootable(unlock)) {
+    warnings.push(`${label} 官方掉落状态未知，策略文案写成：${unlock}`);
+  }
+
+  return { errors, warnings };
+}
+
+function validateCharacter(character) {
+  const nameKey = characterNameKey(character);
+  const record = (catalog.records ?? []).find(
+    (entry) => entry.kind === "character" && entry.nameKey === nameKey,
+  );
+  const label = `character:${character.id} ${character.name}`;
+  const errors = [];
+  const warnings = [];
+
+  if (!record) {
+    warnings.push(`${label} 未匹配官方角色目录 ${nameKey}`);
+    return { errors, warnings };
+  }
+
+  const unlock = character.unlock ?? "";
+  if (record.unlockedByDefault === true && textClaimsLocked(unlock) && !textClaimsDefault(unlock)) {
+    errors.push(`${label} 官方为默认角色，但攻略文案写成：${unlock}`);
+  }
+  if (record.unlockedByDefault === false && textClaimsDefault(unlock) && !textClaimsLocked(unlock)) {
+    errors.push(`${label} 官方为需解锁角色，但攻略文案写成：${unlock}`);
+  }
+
+  if (/待校验|待补/.test(unlock)) {
+    warnings.push(`${label} 仍缺精确挑战条件：${unlock}`);
+  }
+
+  return { errors, warnings };
+}
+
+const results = [
+  ...Object.values(WEAPONS).map((entry) => validateEntry("weapon", entry)),
+  ...Object.values(ITEMS).map((entry) => validateEntry("item", entry)),
+  ...Object.values(CHARACTER_GUIDES).map(validateCharacter),
+];
+
+const errors = results.flatMap((result) => result.errors);
+const warnings = results.flatMap((result) => result.warnings);
+
+console.log("Brotato unlock verification");
+console.log(`Catalog: ${catalogPath}`);
+console.log(`Checked ${Object.keys(WEAPONS).length} weapons, ${Object.keys(ITEMS).length} items, ${Object.keys(CHARACTER_GUIDES).length} characters.`);
+
+if (warnings.length) {
+  console.log("\nWarnings:");
+  warnings.forEach((warning) => console.log(`- ${warning}`));
+}
+
+if (errors.length) {
+  console.log("\nErrors:");
+  errors.forEach((error) => console.log(`- ${error}`));
+  process.exit(1);
+}
+
+console.log("\nUnlock states are consistent with the official catalog.");

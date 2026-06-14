@@ -4,13 +4,18 @@ import { readFileSync } from "node:fs";
 const localization = JSON.parse(readFileSync("data/official-localization.json", "utf8"));
 
 assert.ok(
-  localization.summary.localized >= 280,
-  "official localization should cover the majority of catalog names",
+  localization.summary.localized === localization.summary.total,
+  "official localization should cover all catalog names",
 );
 assert.equal(
   localization.summary.byKind.weapon.localized,
-  78,
-  "official localization should cover all currently verified weapon names",
+  localization.summary.byKind.weapon.total,
+  "official localization should cover all weapon names",
+);
+assert.equal(
+  localization.summary.byKind.item.localized,
+  localization.summary.byKind.item.total,
+  "official localization should cover all item names",
 );
 
 {

@@ -9,6 +9,7 @@
     "extract:assets": "node scripts/extract-official-assets.mjs",
     "extract:localization": "node scripts/extract-official-localization.mjs --write",
     "verify:catalog": "node scripts/verify-strategy-catalog.mjs",
+    "verify:unlocks": "node scripts/verify-unlocks.mjs",
     "verify:names": "node scripts/verify-official-names.mjs",
     "localization:coverage": "node scripts/report-localization-coverage.mjs",
     "start": "node scripts/dev-server.mjs",

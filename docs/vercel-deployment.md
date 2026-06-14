@@ -3,7 +3,8 @@
 ## 当前结构
 
 - 前端是静态页面：`index.html`、`styles.css`、`src/*.js`、`data/*.json`、`data/assets/**/*.webp`。
-- OCR 接口是 Vercel Serverless Function：`api/parse-screenshot.js`。
+- 图鉴和角色攻略是第一阶段部署核心，完全依赖仓库内静态数据即可运行。
+- OCR 接口是可选的 Vercel Serverless Function：`api/parse-screenshot.js`。
 - 本地开发服务是 `scripts/dev-server.mjs`，只用于读取 `env.local` 和本地调试。
 
 ## 必备准备
@@ -20,6 +21,7 @@
    - `MAX_TOKENS`
    - `USE_RESPONSE_FORMAT_JSON`
    - 环境变量修改后只会作用于新的部署，需要重新部署。
+   - 第一阶段如果不启用截图 OCR，可以先不配置这些变量；图鉴和攻略生成器仍可正常使用。
 3. 选择线上可访问的 OpenAI 兼容 API。
    - `http://127.0.0.1:1234/v1` 只适合本机 LM Studio，部署到 Vercel 后不可用。
    - 线上需要换成公网可访问的 API 地址，或用官方/云端兼容服务。

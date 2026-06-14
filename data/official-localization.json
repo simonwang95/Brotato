@@ -11,22 +11,21 @@
   ],
   "summary": {
     "total": 323,
-    "localized": 284,
-    "missing": 39,
+    "localized": 323,
+    "missing": 0,
     "byKind": {
       "weapon": {
         "total": 79,
-        "localized": 78
+        "localized": 79
       },
       "item": {
         "total": 244,
-        "localized": 206
+        "localized": 244
       }
     },
     "bySource": {
       "translation-join": 183,
-      "manual-override": 101,
-      "missing": 39
+      "manual-override": 140
     }
   },
   "entries": {
@@ -213,8 +212,8 @@
     "ITEM_BARNACLE": {
       "kind": "item",
       "enName": "Barnacle",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "藤壶",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -285,8 +284,8 @@
     "ITEM_BLAZEMANDER": {
       "kind": "item",
       "enName": "Blazemander",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "焰蜥蜴",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -366,8 +365,8 @@
     "ITEM_BOT_O_MINE": {
       "kind": "item",
       "enName": "Bot O Mine",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "地雷机器人",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -393,8 +392,8 @@
     "ITEM_BROKEN_HOURGLASS": {
       "kind": "item",
       "enName": "Broken Hourglass",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "破损沙漏",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -411,8 +410,8 @@
     "ITEM_BROKEN_MOUTH": {
       "kind": "item",
       "enName": "Broken Mouth",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "破嘴",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -420,8 +419,8 @@
     "ITEM_BUILDER_TURRET": {
       "kind": "item",
       "enName": "Builder Turret",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "建造者的炮塔",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -483,8 +482,8 @@
     "ITEM_CATLING_GUN": {
       "kind": "item",
       "enName": "Catling Gun",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "双枪猫",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -501,8 +500,8 @@
     "ITEM_CELERY_TEA": {
       "kind": "item",
       "enName": "Celery Tea",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "芹菜茶",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -609,8 +608,8 @@
     "ITEM_CORRUPTED_SHARD": {
       "kind": "item",
       "enName": "Corrupted Shard",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "被腐蚀的碎片",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -681,8 +680,8 @@
     "ITEM_DECOMPOSING_FLESH": {
       "kind": "item",
       "enName": "Decomposing Flesh",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "腐肉",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -753,8 +752,8 @@
     "ITEM_EVIL_HAT": {
       "kind": "item",
       "enName": "Evil Hat",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "邪恶帽子",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -771,8 +770,8 @@
     "ITEM_EXPLOSIVE_SHELLS": {
       "kind": "item",
       "enName": "Explosive Shells",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "爆裂弹",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -780,8 +779,8 @@
     "ITEM_EXTRA_STOMACH": {
       "kind": "item",
       "enName": "Extra Stomach",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "另一个胃",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -816,8 +815,8 @@
     "ITEM_FEATHER": {
       "kind": "item",
       "enName": "Feather",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "羽毛",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -870,8 +869,8 @@
     "ITEM_FRIED_RICE": {
       "kind": "item",
       "enName": "Fried Rice",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "炒饭",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -879,8 +878,8 @@
     "ITEM_FROZEN_HEART": {
       "kind": "item",
       "enName": "Frozen Heart",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "冰冷之心",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1005,8 +1004,8 @@
     "ITEM_GOLDFISH_USED": {
       "kind": "item",
       "enName": "Goldfish Used",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "休息的金鱼",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1095,8 +1094,8 @@
     "ITEM_HOURGLASS": {
       "kind": "item",
       "enName": "Hourglass",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "沙漏",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1140,8 +1139,8 @@
     "ITEM_INSANITY": {
       "kind": "item",
       "enName": "Insanity",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "疯狂",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1158,8 +1157,8 @@
     "ITEM_JELLYSHIELD": {
       "kind": "item",
       "enName": "Jellyshield",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "水母盾",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1212,8 +1211,8 @@
     "ITEM_LANTERN": {
       "kind": "item",
       "enName": "Lantern",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "灯笼",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1248,8 +1247,8 @@
     "ITEM_LIGHTHOUSE": {
       "kind": "item",
       "enName": "Lighthouse",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "灯塔",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1338,8 +1337,8 @@
     "ITEM_MASTERY": {
       "kind": "item",
       "enName": "Mastery",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "精通",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1455,8 +1454,8 @@
     "ITEM_PADDING": {
       "kind": "item",
       "enName": "Padding",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "护垫",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1473,8 +1472,8 @@
     "ITEM_PEACEFUL_BEE": {
       "kind": "item",
       "enName": "Peaceful Bee",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "和平蜜蜂",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1527,8 +1526,8 @@
     "ITEM_PILE_OF_BOOKS": {
       "kind": "item",
       "enName": "Pile Of Books",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "书堆",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1563,8 +1562,8 @@
     "ITEM_POISONOUS_TONIC": {
       "kind": "item",
       "enName": "Poisonous Tonic",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "毒性补品",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1581,8 +1580,8 @@
     "ITEM_POTION": {
       "kind": "item",
       "enName": "Potion",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "再生药水",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1599,8 +1598,8 @@
     "ITEM_PROPELLER_HAT": {
       "kind": "item",
       "enName": "Propeller Hat",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "螺旋桨帽",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1617,8 +1616,8 @@
     "ITEM_RATZILLA": {
       "kind": "item",
       "enName": "Ratzilla",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "碰碰狗",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1635,8 +1634,8 @@
     "ITEM_REINFORCED_STEEL": {
       "kind": "item",
       "enName": "Reinforced Steel",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "强化钢",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1662,8 +1661,8 @@
     "ITEM_RIP_AND_TEAR": {
       "kind": "item",
       "enName": "Rip And Tear",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "撕裂",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1707,8 +1706,8 @@
     "ITEM_SALTWATER": {
       "kind": "item",
       "enName": "Saltwater",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "盐水",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1761,8 +1760,8 @@
     "ITEM_SEASHELL": {
       "kind": "item",
       "enName": "Seashell",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "海贝壳",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1779,8 +1778,8 @@
     "ITEM_SHADY_POTION": {
       "kind": "item",
       "enName": "Shady Potion",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "阴影药水",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -1932,8 +1931,8 @@
     "ITEM_SUNGLASSES": {
       "kind": "item",
       "enName": "Sunglasses",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "墨镜",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]
@@ -2013,8 +2012,8 @@
     "ITEM_TREASURE_MAP": {
       "kind": "item",
       "enName": "Treasure Map",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "藏宝图",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2175,8 +2174,8 @@
     "ITEM_WHISTLE": {
       "kind": "item",
       "enName": "Whistle",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "哨子",
+      "source": "manual-override",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2535,8 +2534,8 @@
     "WEAPON_JOUSTING_LANCE": {
       "kind": "weapon",
       "enName": "Jousting Lance",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "骑枪",
+      "source": "manual-override",
       "sourcePackages": [
         "base"
       ]

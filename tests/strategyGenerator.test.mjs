@@ -276,6 +276,14 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
     "lucky lute recommendation should include official DLC catalog metadata",
   );
   assert.ok(
+    guide.recommendedWeapons.some(
+      ({ weapon, recommendationReasons }) =>
+        weapon.name === "Lute" &&
+        recommendationReasons.some((reason) => reason.includes("官方数值匹配角色目标：幸运")),
+    ),
+    "lucky lute recommendation should explain official stat synergy",
+  );
+  assert.ok(
     guide.keyItems.some(({ item }) => item.name === "Cyberball" && item.cnName === "赛博球"),
     "lucky guide should include Cyberball",
   );
