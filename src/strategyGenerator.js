@@ -10,6 +10,7 @@ import {
   WEAPONS,
 } from "./strategyData.js";
 import { summarizeOfficialRecords } from "./officialCatalog.js";
+import { calculateItemEffectDps, calculateScenarioDps } from "./scenarioCalculator.js";
 
 const WEAPON_SET_LABELS = {
   blade: "剑类",
@@ -48,6 +49,9 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   stat_speed: "speed",
   stat_harvesting: "harvesting",
   stat_luck: "luck",
+  stat_all: "damagePercent",
+  stat_damage: "damagePercent",
+  enemy_percent_damage_taken: "damagePercent",
   explosion_damage: "damagePercent",
   damage_against_bosses: "damagePercent",
   xp_gain: "harvesting",
@@ -72,6 +76,12 @@ const FOCUS_ROUTE_TAGS = new Set([
   "tool",
   "unarmed",
 ]);
+
+const ITEM_EFFECT_NAME_KEYS = {
+  ITEM_CYBERBALL: "cyberball",
+  ITEM_BABY_ELEPHANT: "babyElephant",
+  ITEM_BABY_WITH_A_BEARD: "babyWithABeard",
+};
 
 export function getAvailableCharacters() {
   return Object.values(CHARACTER_GUIDES).map(({ id, name, cnHint, unlock }) => ({
@@ -374,9 +384,9 @@ function entryText(entry, target) {
 }
 
 function priorityScore(priority) {
-  if (/主推荐|核心/.test(priority)) return 5;
-  if (/替代|高|条件核心/.test(priority)) return 3;
-  if (/补充|中/.test(priority)) return 1;
+  if (/主推荐|核心/.test(priority)) return 14;
+  if (/替代|高|条件核心/.test(priority)) return 7;
+  if (/补充|中/.test(priority)) return 2;
   return 0;
 }
 
@@ -411,6 +421,7 @@ function collectOfficialStats(official) {
       effect.statDisplayedName,
       effect.statName,
       effect.statScaled,
+      effect.customKey,
       ...(effect.statsModified ?? []),
     ]),
     ...(record.stats?.scalingStats ?? []).map((scaling) => scaling.stat),
@@ -437,6 +448,26 @@ function scoreOfficialStatSynergy(entry, plan) {
   };
 }
 
+function scoreMechanicFit(entry, plan) {
+  if (!entry.official?.found) return { score: 0, reasons: [] };
+
+  const planStats = collectPlanStats(plan);
+  const officialStats = collectOfficialStats(entry.official);
+  const reasons = [];
+  let score = 0;
+
+  if (planStats.has("luck") && officialStats.includes("luck")) {
+    score += 3;
+    reasons.push("机制修正：幸运缩放贴合拾取触发路线");
+  }
+  if (planStats.has("damagePercent") && officialStats.includes("damagePercent")) {
+    score += 2;
+    reasons.push("机制修正：百分比伤害可放大触发收益");
+  }
+
+  return { score, reasons };
+}
+
 function scoreModeFit(entry, mode) {
   const target = entry.weapon ?? entry.item;
   const text = entryText(entry, target);
@@ -452,6 +483,129 @@ function scoreModeFit(entry, mode) {
     return {
       score: 1,
       reasons: ["20 关通关偏好稳定阈值"],
+    };
+  }
+
+  return { score: 0, reasons: [] };
+}
+
+function midpoint(value) {
+  if (Array.isArray(value)) return (Number(value[0]) + Number(value[1])) / 2;
+  return Number(value) || 0;
+}
+
+function representativeStats(plan) {
+  return Object.fromEntries(
+    Object.entries(plan?.wave20Targets ?? {}).map(([statId, range]) => [statId, midpoint(range)]),
+  );
+}
+
+function scenarioIdForEntry(entry, mode) {
+  const text = entryText(entry, entry.weapon ?? entry.item);
+  if (mode?.id === "endless" || /弹射|贯通|爆炸|拾取|幸运|清怪|覆盖|无尽/.test(text)) {
+    return "swarm";
+  }
+  if (/Boss|精英|头目|高生命/.test(text)) return "boss";
+  return "normalWave";
+}
+
+function calculatorWeaponFromRecord(record) {
+  const stats = record?.stats;
+  if (!stats?.damage || !stats?.cooldown) return null;
+
+  const scaling = Object.fromEntries(
+    Object.entries(OFFICIAL_STAT_TO_PLAN_STAT)
+      .filter(([, statId]) =>
+        ["meleeDamage", "rangedDamage", "elementalDamage", "engineering"].includes(statId),
+      )
+      .map(([, statId]) => [statId, 0]),
+  );
+  (stats.scalingStats ?? []).forEach((scalingStat) => {
+    const statId = OFFICIAL_STAT_TO_PLAN_STAT[scalingStat.stat];
+    if (scaling[statId] !== undefined) {
+      scaling[statId] += Number(scalingStat.value) * 100;
+    }
+  });
+
+  return {
+    name: record.nameKey,
+    baseDamage: stats.damage,
+    cooldown: stats.cooldown / 60,
+    hitsPerAttack: Math.max(1, stats.nb_projectiles ?? 1),
+    piercing: stats.piercing ?? 0,
+    piercingDamageMultiplier:
+      stats.piercing_dmg_reduction === undefined
+        ? 0.5
+        : Math.max(0, 1 - stats.piercing_dmg_reduction),
+    bounces: stats.bounce ?? 0,
+    bounceDamageMultiplier:
+      stats.bounce_dmg_reduction === undefined
+        ? 0.5
+        : Math.max(0, 1 - stats.bounce_dmg_reduction),
+    explosionTargets: stats.explosion_targets ?? 0,
+    explosionDamageMultiplier: stats.explosion_damage_multiplier ?? 1,
+    critChance: (stats.crit_chance ?? 0) * 100,
+    critMultiplier: stats.crit_damage ?? 2,
+    scaling,
+  };
+}
+
+function bestWeaponScenarioModel(entry, plan, mode) {
+  if (!entry.weapon || !entry.official?.found) return null;
+
+  const scenarioId = scenarioIdForEntry(entry, mode);
+  const stats = representativeStats(plan);
+  const results = (entry.official.records ?? [])
+    .map((record) => {
+      const weapon = calculatorWeaponFromRecord(record);
+      if (!weapon) return null;
+      return {
+        record,
+        result: calculateScenarioDps(stats, weapon, scenarioId),
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => right.result.effectiveClearScore - left.result.effectiveClearScore);
+
+  return results[0] ? { scenarioId, ...results[0] } : null;
+}
+
+function itemScenarioModel(entry, plan, mode) {
+  if (!entry.item || !entry.official?.found) return null;
+
+  const itemEffectId = ITEM_EFFECT_NAME_KEYS[entry.official.nameKey];
+  if (!itemEffectId) return null;
+
+  const scenarioId = scenarioIdForEntry(entry, mode);
+  const result = calculateItemEffectDps(representativeStats(plan), scenarioId, itemEffectId);
+  return { scenarioId, itemEffectId, result };
+}
+
+function scoreScenarioModel(entry, plan, mode) {
+  const weaponModel = bestWeaponScenarioModel(entry, plan, mode);
+  if (weaponModel) {
+    const score = Math.min(10, Math.max(0, Math.round(weaponModel.result.effectiveClearScore / 60)));
+    const scenarioName = weaponModel.result.scenario.name;
+    return {
+      score,
+      reasons: [
+        `场景模型：${scenarioName}有效清场 ${Math.round(
+          weaponModel.result.effectiveClearScore,
+        )}`,
+      ],
+    };
+  }
+
+  const itemModel = itemScenarioModel(entry, plan, mode);
+  if (itemModel) {
+    const score = Math.min(8, Math.max(0, Math.round(itemModel.result.dps / 12)));
+    return {
+      score,
+      reasons: [
+        `场景模型：${itemModel.result.scenario.name}触发伤害 ${Math.round(
+          itemModel.result.dps,
+        )} DPS`,
+      ],
     };
   }
 
@@ -500,8 +654,14 @@ function scoreRecommendation(entry, preference, plan, mode) {
   const officialStatSynergy = scoreOfficialStatSynergy(entry, plan);
   reasons.push(...officialStatSynergy.reasons);
 
+  const mechanicFit = scoreMechanicFit(entry, plan);
+  reasons.push(...mechanicFit.reasons);
+
   const modeFit = scoreModeFit(entry, mode);
   reasons.push(...modeFit.reasons);
+
+  const scenarioModel = scoreScenarioModel(entry, plan, mode);
+  reasons.push(...scenarioModel.reasons);
 
   return {
     score:
@@ -513,7 +673,9 @@ function scoreRecommendation(entry, preference, plan, mode) {
       manualRouteScore +
       availabilityScore +
       officialStatSynergy.score +
-      modeFit.score,
+      mechanicFit.score +
+      modeFit.score +
+      scenarioModel.score,
     reasons,
   };
 }
@@ -529,7 +691,7 @@ function sortByRecommendationScore(entries, preference, plan, mode) {
     .map(({ entry, scoring }) => ({
       ...entry,
       recommendationScore: scoring.score,
-      recommendationReasons: scoring.reasons.slice(0, 4),
+      recommendationReasons: scoring.reasons.slice(0, 6),
     }));
 }
 

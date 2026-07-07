@@ -253,6 +253,10 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     officialCandidate.official.records.some((record) => record.imageAssetPath),
     "official weapon candidates should keep compendium image metadata",
   );
+  assert.ok(
+    officialCandidate.recommendationReasons.some((reason) => reason.includes("场景模型：")),
+    "official weapon candidates should expose scenario-model scoring reasons",
+  );
 }
 
 {
@@ -303,9 +307,19 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     guide.recommendedWeapons.some(
       ({ weapon, recommendationReasons }) =>
         weapon.name === "Lute" &&
-        recommendationReasons.some((reason) => reason.includes("官方数值匹配角色目标：幸运")),
+        recommendationReasons.some(
+          (reason) => reason.includes("官方数值匹配角色目标：") && reason.includes("幸运"),
+        ),
     ),
     "lucky lute recommendation should explain official stat synergy",
+  );
+  assert.ok(
+    guide.recommendedWeapons.some(
+      ({ weapon, recommendationReasons }) =>
+        weapon.name === "Lute" &&
+        recommendationReasons.some((reason) => reason.includes("机制修正：百分比伤害")),
+    ),
+    "lucky lute recommendation should explain percent-damage trigger synergy",
   );
   assert.ok(
     guide.keyItems.some(({ item }) => item.name === "Cyberball" && item.cnName === "赛博球"),
