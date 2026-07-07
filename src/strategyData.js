@@ -845,6 +845,54 @@ const dlcSourceNotes = [
   "DLC 角色机制与解锁条件仍在逐条校验中，当前先提供可运行的路线模板。",
 ];
 
+const VERIFIED_CHARACTER_UNLOCKS = {
+  apprentice: "官方 Progress 静态数据：达到 20 等级后解锁。",
+  armsDealer: "官方 Progress 静态数据：单局内回收 12 把武器后解锁。",
+  artificer: "官方 Progress 静态数据：使用单次爆炸击杀 15 名敌人后解锁。",
+  baby: "官方 Progress 静态数据：在第 6 波前达到 10 等级后解锁。",
+  bull: "官方 Progress 静态数据：危险 1 通关后解锁。",
+  chunky: "官方 Progress 静态数据：首次阵亡后解锁。",
+  cryptid: "官方 Progress 静态数据：以不少于 10 棵存活树木完成一波后解锁。",
+  cyborg: "官方 Progress 静态数据：达到 10 远程伤害并同时拥有 3 个构筑物后解锁。",
+  demon: "官方 Progress 静态数据：危险 5 通关后解锁。",
+  doctor: "官方 Progress 静态数据：在一波内恢复 200 生命值后解锁。",
+  engineer: "官方 Progress 静态数据：同时在地图上拥有 5 个炮塔后解锁。",
+  entrepreneur: "官方 Progress 静态数据：持有 3000 材料后解锁。",
+  explorer: "官方 Progress 静态数据：击杀 50 棵树木后解锁。",
+  farmer: "官方 Progress 静态数据：达到 200 收获后解锁。",
+  fisherman: "官方 Progress 静态数据：单局内获得 2 个诱饵后解锁。",
+  generalist: "官方 Progress 静态数据：累计收集 2000 材料后解锁。",
+  ghost: "官方 Progress 静态数据：达到 60% 闪避后解锁。",
+  gladiator: "官方 Progress 静态数据：累计击杀 20000 名敌人后解锁。",
+  glutton: "官方 Progress 静态数据：单局内拾取 20 个消耗品后解锁。",
+  golem: "官方 Progress 静态数据：以 1 生命值完成一波后解锁。",
+  hunter: "官方 Progress 静态数据：达到 300 范围后解锁。",
+  jack: "官方 Progress 静态数据：在 15 秒内击杀一个 Boss 或精英后解锁。",
+  king: "官方 Progress 静态数据：同时拥有 3 把 IV 阶武器后解锁。",
+  knight: "官方 Progress 静态数据：危险 4 通关后解锁。",
+  lich: "官方 Progress 静态数据：达到 100 最大生命后解锁。",
+  loud: "官方 Progress 静态数据：累计击杀 5000 名敌人后解锁。",
+  lucky: "官方 Progress 静态数据：累计收集 300 材料后解锁。",
+  masochist: "官方 Progress 静态数据：危险 3 通关后解锁。",
+  multitasker: "官方 Progress 静态数据：累计收集 5000 材料后解锁。",
+  mutant: "官方 Progress 静态数据：累计击杀 2000 名敌人后解锁。",
+  old: "官方 Progress 静态数据：累计击杀 300 名敌人后解锁。",
+  oneArmed: "官方 Progress 静态数据：危险 0 通关后解锁。",
+  pacifist: "官方 Progress 静态数据：累计收集 10000 材料后解锁。",
+  renegade: "官方 Progress 静态数据：单局内获得 10 个不同的 I 阶道具后解锁。",
+  saver: "官方 Progress 静态数据：累计收集 20000 材料后解锁。",
+  sick: "官方 Progress 静态数据：达到 -5 生命再生后解锁。",
+  soldier: "官方 Progress 静态数据：危险 2 通关后解锁。",
+  speedy: "官方 Progress 静态数据：达到 50% 移速后解锁。",
+  streamer: "官方 Progress 静态数据：达到 -20% 移速后解锁。",
+  technomage: "官方 Progress 静态数据：达到 10 元素伤害并同时拥有 3 个构筑物后解锁。",
+  vagabond: "官方 Progress 静态数据：同时拥有 6 把不同武器后解锁。",
+  vampire: "官方 Progress 静态数据：达到 40% 生命窃取后解锁。",
+  wildling: "官方 Progress 静态数据：累计击杀 10000 名敌人后解锁。",
+  giant:
+    "深海魔怪 DLC/策略层候选；当前 base+DLC 官方角色资源未包含 CHARACTER_GIANT，具体挑战条件待校验。",
+};
+
 function weaponPlan(weaponIds) {
   return weaponIds.map((weaponId, index) => ({
     weaponId,
@@ -3752,3 +3800,9 @@ export const CHARACTER_GUIDES = {
     }),
   },
 };
+
+Object.entries(VERIFIED_CHARACTER_UNLOCKS).forEach(([characterId, unlock]) => {
+  if (CHARACTER_GUIDES[characterId]) {
+    CHARACTER_GUIDES[characterId].unlock = unlock;
+  }
+});

@@ -53,6 +53,26 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   xp_gain: "harvesting",
 };
 
+const FOCUS_ROUTE_TAGS = new Set([
+  "blade",
+  "blunt",
+  "engineering",
+  "elemental",
+  "ethereal",
+  "explosive",
+  "gun",
+  "heavy",
+  "medical",
+  "medieval",
+  "musical",
+  "naval",
+  "precise",
+  "primitive",
+  "support",
+  "tool",
+  "unarmed",
+]);
+
 export function getAvailableCharacters() {
   return Object.values(CHARACTER_GUIDES).map(({ id, name, cnHint, unlock }) => ({
     id,
@@ -113,6 +133,122 @@ function resolveItem(entry, officialCatalog) {
       statNote: item.statNote ?? inferItemStatNote(item),
     },
     official: summarizeOfficialRecords(officialCatalog, "item", item),
+  };
+}
+
+function displayNameFromNameKey(nameKey) {
+  return nameKey
+    .replace(/^(WEAPON|ITEM)_/, "")
+    .toLowerCase()
+    .split("_")
+    .map((word) => {
+      if (word === "smg") return "SMG";
+      if (word === "dex") return "DEX";
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+}
+
+function localizationForNameKey(localization, nameKey) {
+  return localization?.entries?.[nameKey] ?? null;
+}
+
+function uniqueOfficialNameKeys(catalog, kind) {
+  return [
+    ...new Set(
+      (catalog?.records ?? [])
+        .filter((record) => record.kind === kind && record.nameKey)
+        .map((record) => record.nameKey),
+    ),
+  ];
+}
+
+function officialSetTags(official) {
+  return [
+    ...new Set(
+      (official?.records ?? [])
+        .flatMap((record) => record.setPaths ?? [])
+        .map(setIdFromPath)
+        .filter(Boolean)
+        .map((setId) => {
+          if (setId === "gun") return "Gun";
+          if (setId === "tool") return "Engineering";
+          return setId.charAt(0).toUpperCase() + setId.slice(1);
+        }),
+    ),
+  ];
+}
+
+function officialStatTags(official) {
+  const stats = collectOfficialStats(official);
+  const tags = [];
+  if (stats.includes("meleeDamage")) tags.push("Melee");
+  if (stats.includes("rangedDamage")) tags.push("Ranged");
+  if (stats.includes("elementalDamage")) tags.push("Elemental");
+  if (stats.includes("engineering")) tags.push("Engineering");
+  if (stats.includes("critChance")) tags.push("Precise");
+  if (stats.includes("luck")) tags.push("Luck");
+  return tags;
+}
+
+function buildOfficialWeaponCandidate(nameKey, options, plan, routeTags) {
+  const enName = localizationForNameKey(options.officialLocalization, nameKey)?.enName ?? displayNameFromNameKey(nameKey);
+  const cnName = localizationForNameKey(options.officialLocalization, nameKey)?.cnName ?? "";
+  const official = summarizeOfficialRecords(options.officialCatalog, "weapon", {
+    name: enName,
+    officialNameKey: nameKey,
+  });
+  const tags = [...new Set([...officialSetTags(official), ...officialStatTags(official)])];
+  const weapon = {
+    id: `official:${nameKey}`,
+    name: enName,
+    cnName,
+    type: tags.length ? tags.join(" / ") : "官方武器候选",
+    tags,
+    unlock: official.display,
+    statNote: `官方图鉴候选；${collectOfficialStats(official)
+      .map((statId) => STAT_LABELS[statId] ?? statId)
+      .join(" / ") || "详细数值见图鉴"}`,
+    setNote: inferWeaponSetNote({ id: nameKey, tags }, official),
+  };
+
+  return {
+    officialCandidate: true,
+    priority: "官方候选",
+    reason: "由官方图鉴补入候选池，按角色目标数值、套装和获取状态参与评分。",
+    routeTags,
+    weapon,
+    official,
+  };
+}
+
+function buildOfficialItemCandidate(nameKey, options, plan, routeTags) {
+  const enName = localizationForNameKey(options.officialLocalization, nameKey)?.enName ?? displayNameFromNameKey(nameKey);
+  const cnName = localizationForNameKey(options.officialLocalization, nameKey)?.cnName ?? "";
+  const official = summarizeOfficialRecords(options.officialCatalog, "item", {
+    name: enName,
+    officialNameKey: nameKey,
+  });
+  const statLabels = collectOfficialStats(official).map((statId) => STAT_LABELS[statId] ?? statId);
+  const item = {
+    id: `official:${nameKey}`,
+    name: enName,
+    cnName,
+    role: statLabels.length ? statLabels.join(" / ") : "官方道具候选",
+    tags: officialStatTags(official),
+    unlock: official.display,
+    statNote: statLabels.length
+      ? `官方图鉴候选；影响 ${statLabels.join(" / ")}。`
+      : "官方图鉴候选；详细属性见图鉴。",
+  };
+
+  return {
+    officialCandidate: true,
+    priority: "官方候选",
+    reason: "由官方图鉴补入候选池，按角色目标数值、稀有度和获取状态参与评分。",
+    routeTags,
+    item,
+    official,
   };
 }
 
@@ -355,6 +491,8 @@ function scoreRecommendation(entry, preference, plan, mode) {
 
   const planScore = priorityScore(entry.priority);
   if (planScore) reasons.push(`手写优先级：${entry.priority}`);
+  const manualRouteScore = entry.officialCandidate ? 0 : 20;
+  if (manualRouteScore) reasons.push("手写路线候选");
 
   const availabilityScore = officialAvailabilityScore(entry.official);
   if (availabilityScore) reasons.push("官方目录显示可稳定获取");
@@ -372,6 +510,7 @@ function scoreRecommendation(entry, preference, plan, mode) {
       routeTagScore +
       routeFitScore +
       planScore +
+      manualRouteScore +
       availabilityScore +
       officialStatSynergy.score +
       modeFit.score,
@@ -401,6 +540,57 @@ function filterAndSort(entries, options, plan, mode) {
     plan,
     mode,
   );
+}
+
+function manualRouteTags(manualEntries) {
+  return [
+    ...new Set(
+      manualEntries.flatMap((entry) => [
+        ...(entry.routeTags ?? []),
+        ...((entry.weapon ?? entry.item)?.tags ?? []),
+      ]),
+    ),
+  ];
+}
+
+function routeOrStatMatchesPlan(entry, plan, routeTags) {
+  const target = entry.weapon ?? entry.item;
+  const targetTags = (target.tags ?? []).map(normalizeTag);
+  const normalizedRouteTags = routeTags.map(normalizeTag);
+  const focusTags = normalizedRouteTags.filter((tag) => FOCUS_ROUTE_TAGS.has(tag));
+  const tagMatch = targetTags.some((tag) => normalizedRouteTags.includes(tag));
+  if (focusTags.length) {
+    return targetTags.some((tag) => focusTags.includes(tag));
+  }
+
+  const statMatch = scoreOfficialStatSynergy(entry, plan).score > 0;
+  return tagMatch || statMatch;
+}
+
+function expandOfficialWeaponPool(manualEntries, options, plan) {
+  const manualNameKeys = new Set(manualEntries.map((entry) => entry.official.nameKey));
+  const routeTags = manualRouteTags(manualEntries);
+  const officialEntries = uniqueOfficialNameKeys(options.officialCatalog, "weapon")
+    .filter((nameKey) => !manualNameKeys.has(nameKey))
+    .map((nameKey) => buildOfficialWeaponCandidate(nameKey, options, plan, routeTags))
+    .filter((entry) => routeOrStatMatchesPlan(entry, plan, routeTags));
+
+  return [...manualEntries, ...officialEntries];
+}
+
+function expandOfficialItemPool(manualEntries, options, plan) {
+  const manualNameKeys = new Set(manualEntries.map((entry) => entry.official.nameKey));
+  const routeTags = manualRouteTags(manualEntries);
+  const officialEntries = uniqueOfficialNameKeys(options.officialCatalog, "item")
+    .filter((nameKey) => !manualNameKeys.has(nameKey))
+    .map((nameKey) => buildOfficialItemCandidate(nameKey, options, plan, routeTags))
+    .filter((entry) => routeOrStatMatchesPlan(entry, plan, routeTags));
+
+  return [...manualEntries, ...officialEntries];
+}
+
+function visibleRecommendationLimit(entries, manualCount, extraCount) {
+  return Math.min(entries.length, Math.max(manualCount, manualCount + extraCount));
 }
 
 export function formatStatTarget(statId, range) {
@@ -458,17 +648,21 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
     throw new Error(`Missing ${modeId} plan for ${character.name}`);
   }
 
-  const recommendedWeapons = filterAndSort(
-    plan.recommendedWeapons.map((entry) => resolveWeapon(entry, options.officialCatalog)),
-    resolvedOptions,
-    plan,
-    mode,
+  const manualWeapons = plan.recommendedWeapons.map((entry) =>
+    resolveWeapon(entry, options.officialCatalog),
   );
-  const keyItems = filterAndSort(
-    plan.keyItems.map((entry) => resolveItem(entry, options.officialCatalog)),
-    resolvedOptions,
-    plan,
-    mode,
+  const manualItems = plan.keyItems.map((entry) => resolveItem(entry, options.officialCatalog));
+  const weaponPool = options.officialCatalog
+    ? expandOfficialWeaponPool(manualWeapons, options, plan)
+    : manualWeapons;
+  const itemPool = options.officialCatalog ? expandOfficialItemPool(manualItems, options, plan) : manualItems;
+  const recommendedWeapons = filterAndSort(weaponPool, resolvedOptions, plan, mode).slice(
+    0,
+    visibleRecommendationLimit(weaponPool, manualWeapons.length, 5),
+  );
+  const keyItems = filterAndSort(itemPool, resolvedOptions, plan, mode).slice(
+    0,
+    visibleRecommendationLimit(itemPool, manualItems.length, 8),
   );
 
   return {

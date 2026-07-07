@@ -13,6 +13,8 @@ import {
 } from "../src/strategyGenerator.js";
 
 const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "utf8"));
+const officialLocalization = JSON.parse(readFileSync("data/official-localization.json", "utf8"));
+const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "utf8"));
 
 {
   const errors = validateStrategyData();
@@ -232,9 +234,31 @@ const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "u
 }
 
 {
+  const luckyUnlock = officialUnlocks.records.find((record) => record.characterId === "lucky");
+  const lucky = getAvailableCharacters().find((character) => character.id === "lucky");
+  assert.equal(luckyUnlock?.zhDescription, "搜集300材料");
+  assert.match(lucky?.unlock ?? "", /300 材料/);
+  assert.doesNotMatch(lucky?.unlock ?? "", /待校验|待补/);
+}
+
+{
+  const guide = generateStrategyGuide("ranger", "normal20", {
+    officialCatalog,
+    officialLocalization,
+  });
+  const officialCandidate = guide.recommendedWeapons.find((entry) => entry.officialCandidate);
+  assert.ok(officialCandidate, "official catalog should expand the weapon recommendation pool");
+  assert.ok(officialCandidate.weapon.cnName, "official weapon candidates should use localization");
+  assert.ok(
+    officialCandidate.official.records.some((record) => record.imageAssetPath),
+    "official weapon candidates should keep compendium image metadata",
+  );
+}
+
+{
   const guide = generateStrategyGuide("ghost", "normal20", { officialCatalog });
   assert.deepEqual(
-    guide.recommendedWeapons.map(({ weapon }) => weapon.name),
+    guide.recommendedWeapons.slice(0, 3).map(({ weapon }) => weapon.name),
     ["Ghost Axe", "Ghost Flint", "Ghost Scepter"],
     "ghost should recommend the ethereal weapon line",
   );

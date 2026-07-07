@@ -9,6 +9,11 @@ const CHARACTER_NAME_KEY_OVERRIDES = {
   oneArmed: "CHARACTER_ONE_ARM",
 };
 
+const CHARACTER_CATALOG_GAPS = {
+  giant:
+    "当前 base+DLC 官方角色资源未包含 CHARACTER_GIANT；保留为策略层待校验候选，不按普通目录映射失败处理。",
+};
+
 function unique(values) {
   return [...new Set(values.filter((value) => value !== null && value !== undefined))];
 }
@@ -86,7 +91,12 @@ function validateCharacter(character) {
   const warnings = [];
 
   if (!record) {
-    warnings.push(`${label} 未匹配官方角色目录 ${nameKey}`);
+    const knownGap = CHARACTER_CATALOG_GAPS[character.id];
+    warnings.push(
+      knownGap
+        ? `${label} 官方目录缺口：${knownGap}`
+        : `${label} 未匹配官方角色目录 ${nameKey}`,
+    );
     return { errors, warnings };
   }
 
@@ -113,10 +123,23 @@ const results = [
 
 const errors = results.flatMap((result) => result.errors);
 const warnings = results.flatMap((result) => result.warnings);
+const officialWeaponCandidateCount = unique(
+  (catalog.records ?? [])
+    .filter((record) => record.kind === "weapon")
+    .map((record) => record.nameKey),
+).length;
+const officialItemCandidateCount = unique(
+  (catalog.records ?? [])
+    .filter((record) => record.kind === "item")
+    .map((record) => record.nameKey),
+).length;
 
 console.log("Brotato unlock verification");
 console.log(`Catalog: ${catalogPath}`);
 console.log(`Checked ${Object.keys(WEAPONS).length} weapons, ${Object.keys(ITEMS).length} items, ${Object.keys(CHARACTER_GUIDES).length} characters.`);
+console.log(
+  `Official recommendation candidate pool: ${officialWeaponCandidateCount} weapons, ${officialItemCandidateCount} items.`,
+);
 
 if (warnings.length) {
   console.log("\nWarnings:");

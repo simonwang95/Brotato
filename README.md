@@ -118,6 +118,14 @@ npm run extract:catalog
 
 生成文件在 `data/official-catalog.json`，包含资源 ID、翻译 key、稀有度、价格、默认解锁状态、DLC 来源、官方 icon 资源路径，以及本地图片资产目标路径。
 
+从本机安装包提取角色解锁挑战映射：
+
+```bash
+npm run extract:unlocks
+```
+
+生成文件在 `data/official-unlocks.json`。该脚本只读取安装包里的静态 `challenge` / achievement 资源，不读取玩家存档，因此不受本机已解锁进度影响。当前可稳定写入 43 条原版角色精确条件，DLC translation 描述和 `Giant / CHARACTER_GIANT` 仍保留为待校验资源缺口。
+
 从本机安装包导出图鉴 WebP 图标：
 
 ```bash
@@ -132,7 +140,7 @@ npm run extract:assets
 npm run verify:catalog
 ```
 
-页面启动时会读取 `data/official-catalog.json`，在推荐武器和关键道具下方补充官方来源、阶数、价格、解锁和掉落池状态。
+页面启动时会读取 `data/official-catalog.json` 和 `data/official-localization.json`，在推荐武器和关键道具下方补充官方来源、阶数、价格、解锁、掉落池状态、图片和中文名。攻略推荐会把全量官方武器/道具图鉴作为补充候选池参与评分，手写路线仍优先展示。
 Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“仅原版”时会隐藏该 DLC 武器。
 
 ## 部署和图片资产
@@ -162,6 +170,6 @@ Vercel 部署清单见 [docs/vercel-deployment.md](docs/vercel-deployment.md)。
 npm run verify:unlocks
 ```
 
-精确挑战条件仍有一批待补。主要原因是当前目录提取脚本读取的是物品、武器和角色资源里的 `unlocked_by_default` / `can_be_looted` 等静态字段，这些字段能说明“默认可用还是需要解锁”，但不直接包含“用哪个角色通关、收集多少材料、完成哪项挑战”这类完整条件。完整条件需要继续解析安装包里的 Progress / achievement / challenge 资源，并把挑战文本和角色、武器、物品 ID 建立映射。
+精确挑战条件已开始从安装包静态 Progress / achievement / challenge 资源抽取。`data/official-unlocks.json` 当前记录 54 条角色奖励映射，其中 43 条带有可直接解析的原版中英挑战文本；DLC challenge 资源能稳定映射奖励角色，但描述文本仍需继续解码 translation，因此继续保守标注为待校验。`Giant / CHARACTER_GIANT` 当前不在 base+DLC 官方角色目录中，项目把它记录为策略层待校验候选，而不是凭名称强行映射。
 
 这不依赖当前电脑的存档解锁进度。安装包 `.pck` 是静态游戏数据；本机进度只会影响游戏内或存档里“你已经解锁了什么”，不会改变仓库中由安装包提取出的官方目录字段。除非后续改为读取存档或游戏 UI 截图，否则本机是否已经全解锁不会影响这些脚本的结果。

@@ -868,6 +868,7 @@ function renderGuideCharacterPortrait(character) {
 function renderStrategyGuide() {
   const guide = generateStrategyGuide(state.strategyCharacter, state.strategyMode, {
     officialCatalog: state.officialCatalog,
+    officialLocalization: state.officialLocalization,
     dangerLevelId: state.strategyDanger,
     dlcOptionId: state.strategyDlc,
     unlockOptionId: state.strategyUnlock,

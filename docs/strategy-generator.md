@@ -218,6 +218,14 @@ npm run extract:localization
 
 该命令会读取原版和深海魔怪 DLC 的 `PHashTranslation` 资源，把英文/中文 translation 按哈希合并，生成 `data/official-localization.json`。如果英文 translation 中某些条目不是明文，脚本会使用已从中文资源确认过的 `manual-override`。
 
+从安装包提取角色解锁挑战映射：
+
+```bash
+npm run extract:unlocks
+```
+
+该命令读取 base/DLC `.pck` 中的 challenge 资源，并用原版 `achievementLocalizations.csv` 连接挑战 ID、奖励角色和中英条件文本，生成 `data/official-unlocks.json`。它只读取静态安装包数据，不读取玩家存档，也不受本机解锁进度影响。当前原版有 43 条可直接确认文本；DLC challenge 能映射奖励角色，但 translation 描述仍列为 `pending-text`。
+
 攻略资料和官方目录的引用校验：
 
 ```bash
@@ -226,12 +234,15 @@ npm run verify:catalog
 
 这会把 `src/strategyData.js` 里的武器和道具名称转换为官方 `nameKey`，并检查是否能在 `data/official-catalog.json` 找到对应记录。
 
-运行页面时，攻略生成器会把官方目录注入推荐结果，在武器和道具卡片中显示：
+运行页面时，攻略生成器会把官方目录和本地化表注入推荐结果，在武器和道具卡片中显示：
 
 - 来源包：原版或深海魔怪。
 - 阶数范围：例如 `T1-T4`。
 - 商店价格范围。
 - 官方解锁状态和是否进入掉落池。
+- 图鉴图片、官方中文名和可点击图鉴入口。
+
+生成器先保留手写路线推荐，再把官方目录里的全量武器/道具按 `nameKey` 扩展成补充候选。补充候选必须命中路线标签、武器套装或角色目标数值；评分理由会说明手写优先级、官方可获取性、套装/数值协同和模式修正。
 
 图鉴本地化覆盖率：
 
