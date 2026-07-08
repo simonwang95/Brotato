@@ -118,6 +118,27 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const babyGecko = calculateItemEffectDps(
+    {
+      ...baseStats,
+      luck: 300,
+    },
+    "swarm",
+    "babyGecko",
+  );
+
+  closeTo(babyGecko.extraPickupRate, 0.375, "baby gecko adds pickup opportunities");
+  closeTo(babyGecko.pickupUtilityScore, 5.625, "luck routes amplify pickup utility scoring");
+}
+
+{
+  const sifdsRelic = calculateItemEffectDps(baseStats, "normalWave", "sifdsRelic");
+
+  closeTo(sifdsRelic.pickupMultiplier, 2, "sifd's relic models full pickup attraction");
+  closeTo(sifdsRelic.pickupUtilityScore, 8, "full attraction has strong normal-wave utility");
+}
+
+{
   const result = calculateScenarioDps(
     baseStats,
     {

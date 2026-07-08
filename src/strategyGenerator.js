@@ -81,6 +81,8 @@ const ITEM_EFFECT_NAME_KEYS = {
   ITEM_CYBERBALL: "cyberball",
   ITEM_BABY_ELEPHANT: "babyElephant",
   ITEM_BABY_WITH_A_BEARD: "babyWithABeard",
+  ITEM_BABY_GECKO: "babyGecko",
+  ITEM_SIFDS_RELIC: "sifdsRelic",
 };
 
 export function getAvailableCharacters() {
@@ -533,6 +535,9 @@ function scoreMechanicFit(entry, plan) {
 
   const planStats = collectPlanStats(plan);
   const officialStats = collectOfficialStats(entry.official);
+  const hasPickupAttraction = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) => effect.key === "instant_gold_attracting"),
+  );
   const reasons = [];
   let score = 0;
 
@@ -543,6 +548,10 @@ function scoreMechanicFit(entry, plan) {
   if (planStats.has("damagePercent") && officialStats.includes("damagePercent")) {
     score += 2;
     reasons.push("机制修正：百分比伤害可放大触发收益");
+  }
+  if (planStats.has("luck") && hasPickupAttraction) {
+    score += 3;
+    reasons.push("机制修正：拾取吸附提高 Lucky 触发频率");
   }
 
   return { score, reasons };
@@ -678,6 +687,18 @@ function scoreScenarioModel(entry, plan, mode) {
 
   const itemModel = itemScenarioModel(entry, plan, mode);
   if (itemModel) {
+    if (itemModel.result.pickupUtilityScore) {
+      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.pickupUtilityScore)));
+      return {
+        score,
+        reasons: [
+          `场景模型：${itemModel.result.scenario.name}拾取频率 +${itemModel.result.extraPickupRate.toFixed(
+            2,
+          )}/秒`,
+        ],
+      };
+    }
+
     const score = Math.min(8, Math.max(0, Math.round(itemModel.result.dps / 12)));
     return {
       score,

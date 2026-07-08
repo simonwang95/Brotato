@@ -365,8 +365,24 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     "lucky guide should include Baby Gecko",
   );
   assert.ok(
+    guide.keyItems.some(
+      ({ item, recommendationReasons }) =>
+        item.name === "Baby Gecko" &&
+        recommendationReasons.some((reason) => reason.includes("拾取频率 +")),
+    ),
+    "lucky guide should explain Baby Gecko pickup utility",
+  );
+  assert.ok(
     guide.keyItems.some(({ item }) => item.name === "Sifd's Relic" && item.cnName === "圣物"),
     "lucky guide should include Sifd's Relic",
+  );
+  assert.ok(
+    guide.keyItems.some(
+      ({ item, recommendationReasons }) =>
+        item.name === "Sifd's Relic" &&
+        recommendationReasons.some((reason) => reason.includes("拾取吸附提高 Lucky 触发频率")),
+    ),
+    "lucky guide should explain Sifd pickup-chain utility",
   );
   assert.ok(
     guide.statPriority.early.includes("总伤害 %"),

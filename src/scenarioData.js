@@ -112,6 +112,30 @@ export const ITEM_EFFECTS = {
     description:
       "简化为击杀触发的额外弹体，用场景击杀频率估算；具体数值待逐条校验。",
   },
+  babyGecko: {
+    id: "babyGecko",
+    name: "Baby Gecko",
+    cnName: "壁虎宝宝",
+    trigger: "pickupUtility",
+    chance: 100,
+    baseDamage: 0,
+    luckScaling: 0,
+    pickupAttraction: 25,
+    description:
+      "简化为提高材料和消耗品吸入效率，用场景拾取频率估算额外触发机会。",
+  },
+  sifdsRelic: {
+    id: "sifdsRelic",
+    name: "Sifd's Relic",
+    cnName: "Sifd的圣物",
+    trigger: "pickupUtility",
+    chance: 100,
+    baseDamage: 0,
+    luckScaling: 0,
+    pickupAttraction: 100,
+    description:
+      "简化为全屏拾取带来的额外拾取节奏，用于估算 Lucky 等拾取触发路线收益。",
+  },
 };
 
 export function getAvailableScenarios() {

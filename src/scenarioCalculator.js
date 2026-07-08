@@ -145,6 +145,31 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "pickupUtility") {
+    const pickupAttraction = Math.max(0, itemEffect.pickupAttraction ?? 0);
+    const pickupMultiplier = 1 + pickupAttraction / 100;
+    const extraPickupRate = scenario.pickupRatePerSecond * (pickupAttraction / 100);
+    const triggerAmplifier =
+      1 +
+      clamp(normalizedStats.luck / 300, 0, 2) * 0.5 +
+      clamp(normalizedStats.damagePercent / 300, 0, 1);
+    const pickupUtilityScore = extraPickupRate * triggerAmplifier * 10;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: extraPickupRate,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      pickupAttraction,
+      pickupMultiplier,
+      extraPickupRate,
+      triggerAmplifier,
+      pickupUtilityScore,
+    };
+  }
+
   const triggerRate =
     itemEffect.trigger === "onPickup"
       ? scenario.pickupRatePerSecond
