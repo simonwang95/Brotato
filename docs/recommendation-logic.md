@@ -35,6 +35,7 @@
 - `npm run localization:coverage` 用来检查官方图鉴里还有哪些角色、武器、道具没有进入本地化维护表。
 - `npm run extract:localization` 可以重新从本机安装包生成本地化表。部分英文 translation 条目不是明文，脚本里用 `manual-override` 对已从中文包确认的关键名称做校准。
 - 当前本地化表已覆盖官方目录里的 79 个武器、244 个物品和 44/64 个角色。后续如果官方目录新增条目，未确认名称要继续留在覆盖率报告中，不要凭直觉填入。
+- 角色图鉴特性来自官方目录里的 stat/effect key。已知 key 会格式化成中文；仍藏在官方 `custom_arg` SubResource 里的效果只显示为“官方自定义收益”，表示资源已定位但精确内部收益还没可靠解析。
 - `npm run verify:unlocks` 用来校验策略层的默认解锁、需解锁和掉落池文案是否与官方目录状态冲突。待校验角色会同时输出静态 challenge key 和 pending 阻塞原因；脚本也会反向列出已抽到但策略层未维护的官方角色解锁记录。角色图鉴会展示这些 official-only 角色，但攻略推荐仍只使用已维护路线的 `CHARACTER_GUIDES`。`Giant / CHARACTER_GIANT` 当前是记录在 `data/official-character-catalog-gaps.json` 的官方角色目录缺口，校验时单独列入 `Audited catalog gaps`，不按普通 warning 或映射失败处理。
 
 ## 推荐流程
@@ -109,7 +110,7 @@
 - `Hiker（徒步旅行者）`：行走经济和高移速路线。
 - `Buccaneer（海盗）`：海军远程和距离击杀经济。
 
-DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 能映射 DLC challenge 奖励角色，但当前 DLC translation 描述文本还未可靠解码，因此 `unlock` 文案必须继续保守标注。`npm run unlocks:pending` 会把这些未确认文本集中列成待校验清单；图鉴可以展示 `pendingEvidence` 里的静态 challenge 证据，不能把它等同于精确条件文本。`Baby`、`Technomage`、`Vagabond`、`Vampire` 已根据 verified-static-text 解锁记录进入攻略层；`Beast Master` 和 `Wounded` 仍作为 official-only 图鉴条目显示，后续需要解码或人工核验 pending 文本后再新增策略模板。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`，保留为策略层待校验候选。
+DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 能映射 DLC challenge 奖励角色，但当前 DLC translation 描述文本还未可靠解码，因此 `unlock` 文案必须继续保守标注。`npm run unlocks:pending` 会把这些未确认文本集中列成待校验清单；图鉴可以展示 `pendingEvidence` 里的静态 challenge 证据，不能把它等同于精确条件文本。`Baby`、`Technomage`、`Vagabond`、`Vampire` 已根据 verified-static-text 解锁记录进入攻略层；`Beast Master` 和 `Wounded` 仍作为 official-only 图鉴条目显示官方特性和静态 challenge 证据，后续需要解码或人工核验 pending 文本后再新增策略模板。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`，保留为策略层待校验候选。
 
 ## Lucky（幸运星）规则
 

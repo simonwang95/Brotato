@@ -49,11 +49,27 @@ const STAT_LABELS = {
   damage_against_bosses: "对 Boss 伤害",
   explosion_damage: "爆炸伤害",
   free_weapon_slots: "空武器栏",
+  items_price: "物品价格",
   level_upgrades_modifications: "升级选项",
+  minimum_weapons_in_shop: "商店保底武器",
   next_level_xp_needed: "升级所需经验",
   weapon_slot: "武器栏",
+  weapon_slot_upgrades: "武器栏升级波次",
   xp_gain: "经验获取",
   knockback: "击退",
+  structure: "结构物",
+  pet: "宠物",
+  living_tree: "树",
+  percent_player_missing_health: "已损失生命百分比",
+  consumable_heal: "消耗品治疗",
+  die_in_one_hit: "受到一次伤害即死亡",
+  beast_master_effect: "驯兽师宠物机制",
+  boosted_wanted_item_tag: "提高宠物标签出现率",
+  all_weapons_count_for_sets: "所有武器计入套装",
+  no_duplicate_weapons: "不能持有重复武器",
+  item_lootworm: "战利品虫",
+  item_tardigrade: "水熊虫",
+  item_turret: "炮塔",
 };
 
 const PERCENT_STATS = new Set([
@@ -70,11 +86,26 @@ const EFFECT_TEXT_LABELS = {
   EFFECT_DEAL_DMG_WHEN_PICKUP_GOLD: "拾取材料时",
   EFFECT_INCREASE_DAMAGE_RECEIVED: "使目标受到伤害提高",
   EFFECT_GAIN_STAT_FOR_FREE_WEAPON_SLOTS: "每个空武器栏",
+  EFFECT_GAIN_STAT_FOR_EVERY_STAT: "每点属性",
+  EFFECT_GAIN_STAT_FOR_EVERY_PERM_STAT: "每点永久属性",
+  EFFECT_GAIN_STAT_FOR_EVERY_PERCENT_PLAYER_MISSING_HEALTH: "每点已损失生命百分比",
+  EFFECT_GAIN_STAT_FOR_EVERY_TREE: "每棵树",
+  EFFECT_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT: "每种不同属性",
   EFFECT_LEVEL_UPGRADES_MODIFICATIONS: "升级属性选项",
+  EFFECT_BEAST_MASTER_EFFECT: "驯兽师宠物机制",
+  EFFECT_DIE_IN_ONE_HIT: "受到一次伤害即死亡",
+  EFFECT_WEAPON_SLOT_UPGRADES: "武器栏升级波次",
+  EFFECT_ONE_WEAPON_SLOT_INITIAL_LIMIT: "初始武器栏限制",
+  WOUNDED_ITEMS_EXPLANATION: "受伤者道具机制",
   effect_gain_stat_end_of_wave: "每波结束",
   effect_starting_item: "起始物品",
   effect_knockback: "击退",
+  effect_no_weapons: "不能持有武器",
+  effect_minimum_weapon_in_shop: "商店保底武器",
+  effect_consumable_heal: "消耗品治疗",
 };
+
+const BINARY_EFFECT_KEYS = new Set(["die_in_one_hit", "beast_master_effect"]);
 
 const CHARACTER_NAME_KEY_OVERRIDES = {
   oneArmed: "CHARACTER_ONE_ARM",
@@ -136,6 +167,11 @@ function statLabel(stat) {
   return STAT_LABELS[stat] ?? stat ?? "未知属性";
 }
 
+function effectTextLabel(textKey) {
+  if (!textKey || textKey === "[EMPTY]") return "";
+  return EFFECT_TEXT_LABELS[textKey] ?? textKey;
+}
+
 function signedNumber(value) {
   if (!Number.isFinite(value)) return "未知";
   return value > 0 ? `+${value}` : String(value);
@@ -161,6 +197,29 @@ function formatCompactCooldown(frames) {
   return `${frames}帧 (${(frames / 60).toFixed(2)}秒)`;
 }
 
+function formatCustomScalingEffect(effect, trigger) {
+  const scaled = statLabel(effect.statScaled);
+  const count = Number.isFinite(effect.nbStatScaled) ? effect.nbStatScaled : 1;
+
+  if (effect.textKey === "EFFECT_GAIN_STAT_FOR_EVERY_PERM_STAT") {
+    return `每 ${count} 点永久${scaled}：官方自定义收益`;
+  }
+
+  if (effect.textKey === "EFFECT_GAIN_STAT_FOR_EVERY_PERCENT_PLAYER_MISSING_HEALTH") {
+    return `每 ${count} 点${scaled}：官方自定义收益`;
+  }
+
+  if (effect.textKey === "EFFECT_GAIN_STAT_FOR_EVERY_TREE") {
+    return `每 ${count} 棵${scaled}：官方自定义收益`;
+  }
+
+  if (effect.textKey === "EFFECT_GAIN_STAT_FOR_EVERY_STAT") {
+    return `每 ${count} 点${scaled}：官方自定义收益`;
+  }
+
+  return `${trigger || `每 ${count} 点${scaled}`}：官方自定义收益`;
+}
+
 function formatTierSeries(records, getter, formatter = (value) => String(value)) {
   return records
     .filter((record) => getter(record) !== null && getter(record) !== undefined)
@@ -180,7 +239,7 @@ function formatScalingStats(stats) {
 }
 
 function formatEffectDetail(effect) {
-  const trigger = EFFECT_TEXT_LABELS[effect.textKey] ?? effect.textKey;
+  const trigger = effectTextLabel(effect.textKey);
   const keyLabel = statLabel(effect.key);
 
   if (effect.scriptPath?.includes("class_bonus_effect")) {
@@ -196,7 +255,13 @@ function formatEffectDetail(effect) {
     return `${stats} 获取 ${signedNumber(effect.value)}%`;
   }
 
-  if (effect.scriptPath?.includes("gain_stat_for_every_stat_effect")) {
+  if (
+    effect.scriptPath?.includes("gain_stat_for_every_stat_effect") ||
+    effect.scriptPath?.includes("custom_arg.gd")
+  ) {
+    if (!effect.key) {
+      return formatCustomScalingEffect(effect, trigger);
+    }
     const scaled = statLabel(effect.statScaled);
     return `${trigger || `每 ${effect.nbStatScaled ?? 1} ${scaled}`}：${statLabel(effect.key)} ${signedNumber(effect.value)}%`;
   }
@@ -213,6 +278,9 @@ function formatEffectDetail(effect) {
   if (effect.key) {
     const value = formatStatValue(effect.key, effect.value);
     if (effect.customKey === "starting_weapon") return `起始武器：${effect.key}`;
+    if (effect.customKey === "starting_item") return `起始物品：${keyLabel} ${signedNumber(effect.value)}`;
+    if (BINARY_EFFECT_KEYS.has(effect.key)) return keyLabel;
+    if (trigger && Number.isFinite(effect.value) && effect.value === 0) return trigger;
     if (effect.customKey === "stats_end_of_wave") {
       return `${trigger || "每波结束"}：${keyLabel} ${value}`;
     }
@@ -225,6 +293,8 @@ function formatEffectDetail(effect) {
   if (effect.customKey) {
     return `${effect.customKey} ${signedNumber(effect.value)}`;
   }
+
+  if (trigger) return trigger;
 
   return effect.scriptPath ? effect.scriptPath.split("/").at(-1) : "未解析效果";
 }

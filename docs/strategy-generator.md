@@ -261,6 +261,8 @@ npm run unlocks:pending
 
 角色图鉴会读取 `data/official-unlocks.json` 展示静态解锁证据。图鉴角色列表会合并官方目录角色和策略层角色；官方目录里存在但 `CHARACTER_GUIDES` 尚未维护的角色会标记为 official-only，只展示官方图片、特性和解锁证据，不生成攻略推荐。`pending-text` 的证据只能说明官方 challenge 资源和奖励角色已经定位，不能当作已确认条件文本；只有写入 `zhDescription` 的 `verified-static-text` 才能同步到 `src/strategyData.js` 的角色 `unlock` 文案。
 
+角色特性展示同样遵守可信边界：`src/compendium.js` 会把已知官方 stat/effect key 翻译成中文，把起始物品、二元机制、掉落/宠物标签等静态字段展示出来；如果效果仍依赖未展开的官方 `custom_arg` SubResource，则只显示“官方自定义收益”。这表示资源已定位，但具体内部收益尚未可靠解析，不能直接用于攻略评分或精确解锁文案。
+
 `npm run verify:unlocks` 会同时检查反向覆盖：如果安装包里已有角色奖励映射，但 `src/strategyData.js` 还没有维护对应角色，脚本会输出 `official-unlock:*` warning，并输出未维护记录中 verified-static-text、pending-text 和其他状态的细分计数。当前 `oneArm` 会通过别名映射到策略层的 `oneArmed`；`Baby`、`Technomage`、`Vagabond`、`Vampire` 已用 verified-static-text 解锁证据维护攻略模板；剩余 warning 对应 pending-text official-only 角色，需先解码或人工核验挑战文本，再决定新增攻略或明确排除。
 
 攻略资料和官方目录的引用校验：

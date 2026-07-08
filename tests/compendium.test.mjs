@@ -7,6 +7,13 @@ const localization = JSON.parse(readFileSync("data/official-localization.json", 
 const unlocks = JSON.parse(readFileSync("data/official-unlocks.json", "utf8"));
 const compendium = buildCompendium(catalog, localization, unlocks);
 
+function assertNoRawEffectArtifacts(entry) {
+  assert.ok(
+    entry?.traits.every((line) => !/custom_arg\.gd|effect\.gd/.test(line)),
+    `${entry?.id ?? "character"} traits should not expose raw effect script filenames`,
+  );
+}
+
 assert.equal(compendium.characters.length, 65, "character compendium should include official-only records and the maintained Giant gap");
 assert.equal(compendium.weapons.length, 79, "weapon compendium should group all official weapons");
 assert.equal(compendium.items.length, 244, "item compendium should group all official items");
@@ -108,10 +115,40 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
   assert.equal(wounded?.officialOnly, true);
   assert.equal(wounded?.cnName, "待本地化");
   assert.equal(wounded?.unlockEvidenceStatus, "pending-text");
+  assert.ok(wounded?.traits.includes("受到一次伤害即死亡"));
+  assert.ok(wounded?.traits.includes("起始物品：水熊虫 +1"));
+  assert.ok(wounded?.traits.includes("受伤者道具机制"));
+  assertNoRawEffectArtifacts(wounded);
   assert.ok(
     wounded?.unlockEvidenceLines.some((line) => line.includes("CHAL_DIFFICULTY_NIGHTMARE_1_DESC")),
     "official-only pending characters should keep static challenge evidence",
   );
+}
+
+{
+  const beastMaster = compendium.characters.find((entry) => entry.id === "beastMaster");
+  assert.ok(beastMaster?.traits.includes("不能持有武器"));
+  assert.ok(beastMaster?.traits.includes("每 1 点永久宠物：官方自定义收益"));
+  assert.ok(beastMaster?.traits.includes("驯兽师宠物机制"));
+  assert.ok(beastMaster?.traits.includes("提高宠物标签出现率 +1"));
+  assertNoRawEffectArtifacts(beastMaster);
+}
+
+{
+  const technomage = compendium.characters.find((entry) => entry.id === "technomage");
+  assert.ok(technomage?.traits.includes("起始物品：炮塔 +2"));
+  assert.ok(technomage?.traits.includes("每 1 点永久元素伤害：官方自定义收益"));
+  assert.ok(technomage?.traits.includes("每 1 点结构物：官方自定义收益"));
+  assertNoRawEffectArtifacts(technomage);
+}
+
+{
+  const vampire = compendium.characters.find((entry) => entry.id === "vampire");
+  assert.ok(vampire?.traits.includes("每 1 点已损失生命百分比：官方自定义收益"));
+  assert.ok(vampire?.traits.includes("每 3 点已损失生命百分比：官方自定义收益"));
+  assert.ok(vampire?.traits.includes("每 5 点已损失生命百分比：官方自定义收益"));
+  assert.ok(vampire?.traits.includes("消耗品治疗 -100"));
+  assertNoRawEffectArtifacts(vampire);
 }
 
 {
