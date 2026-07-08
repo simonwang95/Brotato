@@ -16,10 +16,30 @@ const CHARACTER_NAME_KEY_OVERRIDES = {
   oneArmed: "CHARACTER_ONE_ARM",
 };
 
+const UNLOCK_CHARACTER_ID_ALIASES = {
+  oneArm: "oneArmed",
+};
+
 const CHARACTER_CATALOG_GAPS = {
   giant:
     "当前 base+DLC 官方角色资源未包含 CHARACTER_GIANT；保留为策略层待校验候选，不按普通目录映射失败处理。",
 };
+
+const strategyCharacterIds = new Set(Object.keys(CHARACTER_GUIDES));
+
+function strategyCharacterIdForUnlock(record) {
+  return UNLOCK_CHARACTER_ID_ALIASES[record.characterId] ?? record.characterId;
+}
+
+function characterCatalogIdFromUnlockId(characterId) {
+  return `character_${characterId.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)}`;
+}
+
+function unmaintainedUnlockRecords() {
+  return (unlocks.records ?? []).filter(
+    (record) => !strategyCharacterIds.has(strategyCharacterIdForUnlock(record)),
+  );
+}
 
 function unique(values) {
   return [...new Set(values.filter((value) => value !== null && value !== undefined))];
@@ -126,10 +146,29 @@ function validateCharacter(character) {
   return { errors, warnings };
 }
 
+function auditUnmaintainedUnlockRecord(record) {
+  if (strategyCharacterIds.has(strategyCharacterIdForUnlock(record))) return null;
+
+  const catalogRecord = (catalog.records ?? []).find(
+    (entry) =>
+      entry.kind === "character" && entry.id === characterCatalogIdFromUnlockId(record.characterId),
+  );
+  const officialKey = catalogRecord?.nameKey ?? "未匹配官方角色目录";
+  const pendingReason = record.pendingReason ? `；${record.pendingReason}` : "";
+
+  return {
+    errors: [],
+    warnings: [
+      `official-unlock:${record.characterId} 官方静态解锁记录未进入策略层；官方角色 ${officialKey}；静态挑战 ${record.challengeId} / ${record.descriptionKey}，value=${record.value}${pendingReason}`,
+    ],
+  };
+}
+
 const results = [
   ...Object.values(WEAPONS).map((entry) => validateEntry("weapon", entry)),
   ...Object.values(ITEMS).map((entry) => validateEntry("item", entry)),
   ...Object.values(CHARACTER_GUIDES).map(validateCharacter),
+  ...(unlocks.records ?? []).map(auditUnmaintainedUnlockRecord).filter(Boolean),
 ];
 
 const errors = results.flatMap((result) => result.errors);
@@ -149,6 +188,9 @@ console.log("Brotato unlock verification");
 console.log(`Catalog: ${catalogPath}`);
 console.log(`Unlocks: ${unlocksPath}`);
 console.log(`Checked ${Object.keys(WEAPONS).length} weapons, ${Object.keys(ITEMS).length} items, ${Object.keys(CHARACTER_GUIDES).length} characters.`);
+console.log(
+  `Static unlock records: ${(unlocks.records ?? []).length}; unmaintained in strategy layer: ${unmaintainedUnlockRecords().length}.`,
+);
 console.log(
   `Official recommendation candidate pool: ${officialWeaponCandidateCount} weapons, ${officialItemCandidateCount} items.`,
 );
