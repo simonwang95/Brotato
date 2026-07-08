@@ -140,7 +140,7 @@ npm run extract:assets
 npm run verify:catalog
 ```
 
-页面启动时会读取 `data/official-catalog.json` 和 `data/official-localization.json`，在推荐武器和关键道具下方补充官方来源、阶数、价格、解锁、掉落池状态、图片和中文名。攻略推荐会把全量官方武器/道具图鉴作为补充候选池参与评分，手写路线仍优先展示。
+页面启动时会读取 `data/official-catalog.json` 和 `data/official-localization.json`，在推荐武器和关键道具下方补充官方来源、阶数、价格、解锁、掉落池状态、图片和中文名。角色图鉴也会使用已确认的官方角色中文名；未确认角色名继续显示为待本地化。攻略推荐会把全量官方武器/道具图鉴作为补充候选池参与评分，手写路线仍优先展示。
 Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“仅原版”时会隐藏该 DLC 武器。
 
 ## 部署和图片资产
@@ -151,7 +151,7 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 
 ## 后续目标
 
-二期攻略生成器已经接入原版 44 个角色和深海魔怪 DLC 15 个角色。武器/物品图鉴本地化已覆盖当前官方目录；下一步会继续补全角色精确挑战条件，并把更多武器/道具参数接入数值模型。
+二期攻略生成器已经接入原版 44 个角色和深海魔怪 DLC 15 个角色。武器/物品图鉴本地化已覆盖当前官方目录，角色名本地化当前覆盖 44/64；下一步会继续补全角色精确挑战条件，并把更多武器/道具参数接入数值模型。
 
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。

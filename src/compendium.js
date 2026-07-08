@@ -462,7 +462,7 @@ function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEnt
   };
 }
 
-export function buildCharacterCompendium(catalog, unlocks) {
+export function buildCharacterCompendium(catalog, localization, unlocks) {
   const unlockRecords = buildUnlockRecordIndex(unlocks);
   const maintainedNameKeys = new Set(Object.values(CHARACTER_GUIDES).map(characterNameKey));
   const officialOnlyCharacters = (catalog?.records ?? [])
@@ -470,14 +470,15 @@ export function buildCharacterCompendium(catalog, unlocks) {
     .map((official) => {
       const id = camelIdFromCatalogId(official.id);
       const unlockRecord = unlockRecords.get(id);
-      const name = displayNameFromNameKey(official.nameKey);
+      const localized = localization?.entries?.[official.nameKey];
+      const name = localized?.enName ?? displayNameFromNameKey(official.nameKey);
       const unlockVerified = unlockRecord?.extractionStatus === "verified-static-text";
 
       return {
         id,
         name,
         nameKey: official.nameKey,
-        cnName: "待本地化",
+        cnName: localized?.cnName ?? "待本地化",
         archetype: "官方角色目录待补攻略",
         unlock: buildOfficialUnlockText(official, unlockRecord),
         unlockStatus: unlockVerified ? "已抽取静态条件" : "待补精确条件",
@@ -543,7 +544,7 @@ export function buildCatalogCompendium(catalog, localization, kind, strategyEntr
 
 export function buildCompendium(catalog, localization, unlocks) {
   return {
-    characters: buildCharacterCompendium(catalog, unlocks),
+    characters: buildCharacterCompendium(catalog, localization, unlocks),
     weapons: buildCatalogCompendium(catalog, localization, "weapon", WEAPONS),
     items: buildCatalogCompendium(catalog, localization, "item", ITEMS),
   };

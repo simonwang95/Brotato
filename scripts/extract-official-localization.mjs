@@ -276,7 +276,10 @@ function parseTranslation(pck, locale) {
 function catalogKeys(catalog) {
   const seen = new Map();
   catalog.records
-    .filter((record) => record.kind === "weapon" || record.kind === "item")
+    .filter(
+      (record) =>
+        record.kind === "weapon" || record.kind === "item" || record.kind === "character",
+    )
     .forEach((record) => {
       if (!seen.has(record.nameKey)) {
         seen.set(record.nameKey, {
@@ -299,6 +302,7 @@ function displayNameFromKey(nameKey) {
 
   const words = nameKey
     .replace(/^(ITEM|WEAPON)_/, "")
+    .replace(/^CHARACTER_/, "")
     .toLowerCase()
     .split("_")
     .map((word) => {
@@ -367,6 +371,10 @@ const summary = {
     item: {
       total: allEntries.filter((entry) => entry.kind === "item").length,
       localized: allEntries.filter((entry) => entry.kind === "item" && entry.cnName).length,
+    },
+    character: {
+      total: allEntries.filter((entry) => entry.kind === "character").length,
+      localized: allEntries.filter((entry) => entry.kind === "character" && entry.cnName).length,
     },
   },
   bySource: allEntries.reduce((counts, entry) => {

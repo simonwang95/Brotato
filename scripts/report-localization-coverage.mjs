@@ -61,9 +61,14 @@ const itemRows = coverageRows(
   "item",
   uniqueCatalogEntries("item"),
 );
+const characterRows = coverageRows(
+  "character",
+  uniqueCatalogEntries("character"),
+);
 
 console.log("Brotato localization maintenance coverage");
 console.log(`Catalog: ${catalogPath}`);
 console.log(`Localization: ${localizationPath}`);
 printCoverage("weapon", weaponRows);
 printCoverage("item", itemRows);
+printCoverage("character", characterRows);

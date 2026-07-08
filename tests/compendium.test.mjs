@@ -92,6 +92,7 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
   const baby = compendium.characters.find((entry) => entry.id === "baby");
   assert.equal(baby?.officialOnly, true);
   assert.equal(baby?.nameKey, "CHARACTER_BABY");
+  assert.equal(baby?.cnName, "宝宝");
   assert.equal(baby?.unlockStatus, "已抽取静态条件");
   assert.match(baby?.unlock ?? "", /第6波前达到10等级/);
   assert.equal(baby?.imageAssetPath, "data/assets/characters/character_baby.webp");
@@ -104,6 +105,7 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
 {
   const wounded = compendium.characters.find((entry) => entry.id === "wounded");
   assert.equal(wounded?.officialOnly, true);
+  assert.equal(wounded?.cnName, "待本地化");
   assert.equal(wounded?.unlockEvidenceStatus, "pending-text");
   assert.ok(
     wounded?.unlockEvidenceLines.some((line) => line.includes("CHAL_DIFFICULTY_NIGHTMARE_1_DESC")),

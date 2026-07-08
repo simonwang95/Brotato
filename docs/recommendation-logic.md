@@ -27,13 +27,13 @@
 
 全图鉴本地化是后续“最优解评分”的基础。当前维护状态：
 
-- `data/official-catalog.json` 先提供完整武器/道具 `nameKey`、来源包、阶数、价格、套装和效果路径。
+- `data/official-catalog.json` 先提供完整角色/武器/道具 `nameKey`、来源包、阶数、价格、套装和效果路径。
 - `data/official-localization.json` 维护 `nameKey -> 官方中文名`，由本机安装包的英文/中文 translation 资源合并生成。
 - `src/strategyData.js` 只维护当前策略会引用到的类型、定位、解锁说明和推荐理由。
 - `data/official-unlocks.json` 由 `npm run extract:unlocks` 从安装包静态 challenge / achievement 资源生成。该数据不读取玩家存档，不受本机解锁进度影响。已确认文本写入 `zhDescription`；未解码文本保留 `pendingReason` 和 `pendingEvidence`，其中包含 `challengeId`、`nameKey`、`descriptionKey`、`value`、`stat`、`additionalArgs`、challenge 路径和奖励路径。
-- `npm run localization:coverage` 用来检查官方图鉴里还有哪些武器/道具没有进入本地化维护表。
+- `npm run localization:coverage` 用来检查官方图鉴里还有哪些角色、武器、道具没有进入本地化维护表。
 - `npm run extract:localization` 可以重新从本机安装包生成本地化表。部分英文 translation 条目不是明文，脚本里用 `manual-override` 对已从中文包确认的关键名称做校准。
-- 当前本地化表已覆盖官方目录里的 79 个武器和 244 个物品。后续如果官方目录新增条目，未确认名称要继续留在覆盖率报告中，不要凭直觉填入。
+- 当前本地化表已覆盖官方目录里的 79 个武器、244 个物品和 44/64 个角色。后续如果官方目录新增条目，未确认名称要继续留在覆盖率报告中，不要凭直觉填入。
 - `npm run verify:unlocks` 用来校验策略层的默认解锁、需解锁和掉落池文案是否与官方目录状态冲突。待校验角色会同时输出静态 challenge key 和 pending 阻塞原因；脚本也会反向列出已抽到但策略层未维护的官方角色解锁记录。角色图鉴会展示这些 official-only 角色，但攻略推荐仍只使用已维护路线的 `CHARACTER_GUIDES`。`Giant / CHARACTER_GIANT` 当前是已记录的官方角色目录缺口，不按普通映射失败处理。
 
 ## 推荐流程

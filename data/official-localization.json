@@ -10,9 +10,9 @@
     }
   ],
   "summary": {
-    "total": 323,
-    "localized": 323,
-    "missing": 0,
+    "total": 387,
+    "localized": 367,
+    "missing": 20,
     "byKind": {
       "weapon": {
         "total": 79,
@@ -21,14 +21,595 @@
       "item": {
         "total": 244,
         "localized": 244
+      },
+      "character": {
+        "total": 64,
+        "localized": 44
       }
     },
     "bySource": {
-      "translation-join": 183,
+      "missing": 20,
+      "translation-join": 227,
       "manual-override": 140
     }
   },
   "entries": {
+    "CHARACTER_APPRENTICE": {
+      "kind": "character",
+      "enName": "Apprentice",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_ARMS_DEALER": {
+      "kind": "character",
+      "enName": "Arms Dealer",
+      "cnName": "军火商",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_ARTIFICER": {
+      "kind": "character",
+      "enName": "Artificer",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_BABY": {
+      "kind": "character",
+      "enName": "Baby",
+      "cnName": "宝宝",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_BEAST_MASTER": {
+      "kind": "character",
+      "enName": "Beast Master",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_BRAWLER": {
+      "kind": "character",
+      "enName": "Brawler",
+      "cnName": "斗士",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_BUCCANEER": {
+      "kind": "character",
+      "enName": "Buccaneer",
+      "cnName": "海盗",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_BUILDER": {
+      "kind": "character",
+      "enName": "Builder",
+      "cnName": "建造者",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_BULL": {
+      "kind": "character",
+      "enName": "Bull",
+      "cnName": "公牛",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_CAPTAIN": {
+      "kind": "character",
+      "enName": "Captain",
+      "cnName": "船长",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_CHEF": {
+      "kind": "character",
+      "enName": "Chef",
+      "cnName": "厨师",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_CHUNKY": {
+      "kind": "character",
+      "enName": "Chunky",
+      "cnName": "大壮",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_CRAZY": {
+      "kind": "character",
+      "enName": "Crazy",
+      "cnName": "狂人",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_CREATURE": {
+      "kind": "character",
+      "enName": "Creature",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_CRYPTID": {
+      "kind": "character",
+      "enName": "Cryptid",
+      "cnName": "神秘生物",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_CURIOUS": {
+      "kind": "character",
+      "enName": "Curious",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_CYBORG": {
+      "kind": "character",
+      "enName": "Cyborg",
+      "cnName": "赛博格",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_DEMON": {
+      "kind": "character",
+      "enName": "Demon",
+      "cnName": "恶魔",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_DIVER": {
+      "kind": "character",
+      "enName": "Diver",
+      "cnName": "潜水员",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_DOCTOR": {
+      "kind": "character",
+      "enName": "Doctor",
+      "cnName": "医生",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_DRUID": {
+      "kind": "character",
+      "enName": "Druid",
+      "cnName": "德鲁伊",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_DWARF": {
+      "kind": "character",
+      "enName": "Dwarf",
+      "cnName": "矮人",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_ENGINEER": {
+      "kind": "character",
+      "enName": "Engineer",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_ENTREPRENEUR": {
+      "kind": "character",
+      "enName": "Entrepreneur",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_EXPLORER": {
+      "kind": "character",
+      "enName": "Explorer",
+      "cnName": "探险家",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_FARMER": {
+      "kind": "character",
+      "enName": "Farmer",
+      "cnName": "农夫",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_FISHERMAN": {
+      "kind": "character",
+      "enName": "Fisherman",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_GANGSTER": {
+      "kind": "character",
+      "enName": "Gangster",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_GENERALIST": {
+      "kind": "character",
+      "enName": "Generalist",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_GHOST": {
+      "kind": "character",
+      "enName": "Ghost",
+      "cnName": "幽灵",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_GLADIATOR": {
+      "kind": "character",
+      "enName": "Gladiator",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_GLUTTON": {
+      "kind": "character",
+      "enName": "Glutton",
+      "cnName": "暴食",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_GOLEM": {
+      "kind": "character",
+      "enName": "Golem",
+      "cnName": "魔像",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_HIKER": {
+      "kind": "character",
+      "enName": "Hiker",
+      "cnName": "徒步旅行者",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_HUNTER": {
+      "kind": "character",
+      "enName": "Hunter",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_JACK": {
+      "kind": "character",
+      "enName": "Jack",
+      "cnName": "杰克",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_KING": {
+      "kind": "character",
+      "enName": "King",
+      "cnName": "国王",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_KNIGHT": {
+      "kind": "character",
+      "enName": "Knight",
+      "cnName": "骑士",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_LICH": {
+      "kind": "character",
+      "enName": "Lich",
+      "cnName": "巫妖",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_LOUD": {
+      "kind": "character",
+      "enName": "Loud",
+      "cnName": "大嗓门",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_LUCKY": {
+      "kind": "character",
+      "enName": "Lucky",
+      "cnName": "幸运星",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_MAGE": {
+      "kind": "character",
+      "enName": "Mage",
+      "cnName": "法师",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_MASOCHIST": {
+      "kind": "character",
+      "enName": "Masochist",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_MULTITASKER": {
+      "kind": "character",
+      "enName": "Multitasker",
+      "cnName": "多面手",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_MUTANT": {
+      "kind": "character",
+      "enName": "Mutant",
+      "cnName": "异变体",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_OGRE": {
+      "kind": "character",
+      "enName": "Ogre",
+      "cnName": "食人魔",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_OLD": {
+      "kind": "character",
+      "enName": "Old",
+      "cnName": "老叟",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_ONE_ARM": {
+      "kind": "character",
+      "enName": "One Arm",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_PACIFIST": {
+      "kind": "character",
+      "enName": "Pacifist",
+      "cnName": "和平主义者",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_RANGER": {
+      "kind": "character",
+      "enName": "Ranger",
+      "cnName": "游侠",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_RENEGADE": {
+      "kind": "character",
+      "enName": "Renegade",
+      "cnName": "叛徒",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_ROMANTIC": {
+      "kind": "character",
+      "enName": "Romantic",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_SAILOR": {
+      "kind": "character",
+      "enName": "Sailor",
+      "cnName": "水手",
+      "source": "translation-join",
+      "sourcePackages": [
+        "abyssalTerrors"
+      ]
+    },
+    "CHARACTER_SAVER": {
+      "kind": "character",
+      "enName": "Saver",
+      "cnName": "节俭者",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_SICK": {
+      "kind": "character",
+      "enName": "Sick",
+      "cnName": "病人",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_SOLDIER": {
+      "kind": "character",
+      "enName": "Soldier",
+      "cnName": "士兵",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_SPEEDY": {
+      "kind": "character",
+      "enName": "Speedy",
+      "cnName": "飞毛腿",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_STREAMER": {
+      "kind": "character",
+      "enName": "Streamer",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_TECHNOMAGE": {
+      "kind": "character",
+      "enName": "Technomage",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_VAGABOND": {
+      "kind": "character",
+      "enName": "Vagabond",
+      "cnName": "流浪汉",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_VAMPIRE": {
+      "kind": "character",
+      "enName": "Vampire",
+      "cnName": "吸血鬼",
+      "source": "translation-join",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_WELL_ROUNDED": {
+      "kind": "character",
+      "enName": "Well Rounded",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_WILDLING": {
+      "kind": "character",
+      "enName": "Wildling",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
+    "CHARACTER_WOUNDED": {
+      "kind": "character",
+      "enName": "Wounded",
+      "cnName": null,
+      "source": "missing",
+      "sourcePackages": [
+        "base"
+      ]
+    },
     "ITEM_ACID": {
       "kind": "item",
       "enName": "Acid",

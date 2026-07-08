@@ -264,4 +264,4 @@ npm run verify:catalog
 npm run localization:coverage
 ```
 
-该命令会把官方目录中的唯一武器/道具 `nameKey` 与 `data/official-localization.json` 对齐，列出尚未本地化维护的图鉴条目。后续推荐、截图识别和最优解评分都应共用这份名称数据。
+该命令会把官方目录中的唯一角色/武器/道具 `nameKey` 与 `data/official-localization.json` 对齐，列出尚未本地化维护的图鉴条目。当前武器和物品已满覆盖，角色名覆盖 44/64；后续推荐、截图识别和最优解评分都应共用这份名称数据。

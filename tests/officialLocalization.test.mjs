@@ -3,10 +3,6 @@ import { readFileSync } from "node:fs";
 
 const localization = JSON.parse(readFileSync("data/official-localization.json", "utf8"));
 
-assert.ok(
-  localization.summary.localized === localization.summary.total,
-  "official localization should cover all catalog names",
-);
 assert.equal(
   localization.summary.byKind.weapon.localized,
   localization.summary.byKind.weapon.total,
@@ -16,6 +12,12 @@ assert.equal(
   localization.summary.byKind.item.localized,
   localization.summary.byKind.item.total,
   "official localization should cover all item names",
+);
+assert.equal(localization.summary.byKind.character.total, 64);
+assert.equal(
+  localization.summary.byKind.character.localized,
+  44,
+  "official character localization should track confirmed names without hiding gaps",
 );
 
 {
@@ -33,6 +35,18 @@ assert.equal(
 {
   const item = localization.entries.ITEM_HUNTING_TROPHY;
   assert.equal(item.cnName, "狩猎战利品");
+}
+
+{
+  const character = localization.entries.CHARACTER_BABY;
+  assert.equal(character.cnName, "宝宝");
+  assert.equal(character.source, "translation-join");
+}
+
+{
+  const character = localization.entries.CHARACTER_BEAST_MASTER;
+  assert.equal(character.cnName, null);
+  assert.equal(character.source, "missing");
 }
 
 console.log("official localization tests passed");
