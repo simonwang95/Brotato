@@ -340,6 +340,12 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     guide.recommendedWeapons.some(({ weapon }) => weapon.cnName === "幽魂节杖"),
     "ghost scepter should use the official Chinese name",
   );
+  assert.ok(
+    guide.recommendedWeapons.slice(0, 3).every(({ recommendationReasons }) =>
+      recommendationReasons.some((reason) => reason.includes("幽魂击杀成长")),
+    ),
+    "ghost weapons should explain official kill-growth mechanics",
+  );
 }
 
 {

@@ -545,6 +545,10 @@ function scoreMechanicFit(entry, plan) {
 
   const planStats = collectPlanStats(plan);
   const officialStats = collectOfficialStats(entry.official);
+  const routeTags = new Set((entry.routeTags ?? []).map(normalizeTag));
+  const weaponSetIds = new Set(
+    entry.weapon ? inferWeaponSetIds(entry.weapon, entry.official).map(normalizeTag) : [],
+  );
   const hasPickupAttraction = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) => effect.key === "instant_gold_attracting"),
   );
@@ -555,6 +559,9 @@ function scoreMechanicFit(entry, plan) {
     (record.effects ?? []).some(
       (effect) => effect.textKey === "effect_gain_pct_gold_start_wave_limited",
     ),
+  );
+  const hasKillGrowth = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) => effect.key === "effect_gain_stat_every_killed_enemies"),
   );
   const reasons = [];
   let score = 0;
@@ -578,6 +585,10 @@ function scoreMechanicFit(entry, plan) {
   if (planStats.has("harvesting") && hasStartWaveSavings) {
     score += 3;
     reasons.push("机制修正：波次存钱放大经济滚动");
+  }
+  if ((routeTags.has("ethereal") || weaponSetIds.has("ethereal")) && hasKillGrowth) {
+    score += 3;
+    reasons.push("机制修正：幽魂击杀成长适合后期属性滚雪球");
   }
 
   return { score, reasons };
