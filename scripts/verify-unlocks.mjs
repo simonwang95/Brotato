@@ -118,7 +118,7 @@ function validateCharacter(character) {
   if (/待校验|待补/.test(unlock)) {
     const unlockRecord = unlockRecordsByCharacterId.get(character.id);
     const evidence = unlockRecord
-      ? `；静态挑战 ${unlockRecord.challengeId} / ${unlockRecord.descriptionKey}，value=${unlockRecord.value}`
+      ? `；静态挑战 ${unlockRecord.challengeId} / ${unlockRecord.descriptionKey}，value=${unlockRecord.value}${unlockRecord.pendingReason ? `；${unlockRecord.pendingReason}` : ""}`
       : "";
     warnings.push(`${label} 仍缺精确挑战条件：${unlock.replace(/[。.]$/, "")}${evidence}`);
   }

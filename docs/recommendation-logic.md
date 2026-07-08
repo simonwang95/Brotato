@@ -30,11 +30,11 @@
 - `data/official-catalog.json` 先提供完整武器/道具 `nameKey`、来源包、阶数、价格、套装和效果路径。
 - `data/official-localization.json` 维护 `nameKey -> 官方中文名`，由本机安装包的英文/中文 translation 资源合并生成。
 - `src/strategyData.js` 只维护当前策略会引用到的类型、定位、解锁说明和推荐理由。
-- `data/official-unlocks.json` 由 `npm run extract:unlocks` 从安装包静态 challenge / achievement 资源生成。该数据不读取玩家存档，不受本机解锁进度影响。已确认文本写入 `zhDescription`；未解码文本保留 `challengeId`、`nameKey`、`descriptionKey`、`value`、`stat` 和 `additionalArgs`。
+- `data/official-unlocks.json` 由 `npm run extract:unlocks` 从安装包静态 challenge / achievement 资源生成。该数据不读取玩家存档，不受本机解锁进度影响。已确认文本写入 `zhDescription`；未解码文本保留 `pendingReason` 和 `pendingEvidence`，其中包含 `challengeId`、`nameKey`、`descriptionKey`、`value`、`stat`、`additionalArgs`、challenge 路径和奖励路径。
 - `npm run localization:coverage` 用来检查官方图鉴里还有哪些武器/道具没有进入本地化维护表。
 - `npm run extract:localization` 可以重新从本机安装包生成本地化表。部分英文 translation 条目不是明文，脚本里用 `manual-override` 对已从中文包确认的关键名称做校准。
 - 当前本地化表已覆盖官方目录里的 79 个武器和 244 个物品。后续如果官方目录新增条目，未确认名称要继续留在覆盖率报告中，不要凭直觉填入。
-- `npm run verify:unlocks` 用来校验策略层的默认解锁、需解锁和掉落池文案是否与官方目录状态冲突。待校验角色会同时输出静态 challenge key；`Giant / CHARACTER_GIANT` 当前是已记录的官方角色目录缺口，不按普通映射失败处理。
+- `npm run verify:unlocks` 用来校验策略层的默认解锁、需解锁和掉落池文案是否与官方目录状态冲突。待校验角色会同时输出静态 challenge key 和 pending 阻塞原因；`Giant / CHARACTER_GIANT` 当前是已记录的官方角色目录缺口，不按普通映射失败处理。
 
 ## 推荐流程
 
@@ -103,7 +103,7 @@
 - `Hiker（徒步旅行者）`：行走经济和高移速路线。
 - `Buccaneer（海盗）`：海军远程和距离击杀经济。
 
-DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 能映射 DLC challenge 奖励角色，但当前 DLC translation 描述文本还未可靠解码，因此 `unlock` 文案必须继续保守标注。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，保留为策略层待校验候选。
+DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 能映射 DLC challenge 奖励角色，但当前 DLC translation 描述文本还未可靠解码，因此 `unlock` 文案必须继续保守标注。图鉴可以展示 `pendingEvidence` 里的静态 challenge 证据，不能把它等同于精确条件文本。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，保留为策略层待校验候选。
 
 ## Lucky（幸运星）规则
 

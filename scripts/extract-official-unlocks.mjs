@@ -8,6 +8,8 @@ const installDir = process.env.BROTATO_INSTALL_DIR || defaultInstallDir;
 const outputPath = process.env.BROTATO_UNLOCKS_OUTPUT || "data/official-unlocks.json";
 const basePackagePath = join(installDir, "Brotato.app/Contents/Resources/Brotato.pck");
 const dlcPackagePath = join(installDir, "BrotatoAbyssalTerrors.pck");
+const pendingTextReason =
+  "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。";
 
 function readPck(path) {
   const buffer = readFileSync(path);
@@ -139,6 +141,27 @@ function extractCharacterUnlocks(packageFiles, sourcePackage, localizations = ne
 
       const challengeId = getString(block, "my_id");
       const localization = localizations.get(challengeId) ?? {};
+      const extractionStatus = localization["zh-Hans"]?.description
+        ? "verified-static-text"
+        : "pending-text";
+      const pendingFields =
+        extractionStatus === "pending-text"
+          ? {
+              pendingReason: pendingTextReason,
+              pendingEvidence: {
+                challengeId,
+                nameKey: getString(block, "name"),
+                descriptionKey: getString(block, "description"),
+                value: getNumber(block, "value"),
+                number: getNumber(block, "number"),
+                stat: getString(block, "stat"),
+                additionalArgs: getLineValue(block, "additional_args"),
+                challengePath: path,
+                rewardPath: reward,
+              },
+            }
+          : {};
+
       return {
         characterId,
         challengeId,
@@ -155,7 +178,8 @@ function extractCharacterUnlocks(packageFiles, sourcePackage, localizations = ne
         description: localization.default?.description ?? null,
         zhTitle: localization["zh-Hans"]?.title ?? null,
         zhDescription: localization["zh-Hans"]?.description ?? null,
-        extractionStatus: localization["zh-Hans"]?.description ? "verified-static-text" : "pending-text",
+        extractionStatus,
+        ...pendingFields,
       };
     })
     .filter(Boolean)

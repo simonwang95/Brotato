@@ -108,7 +108,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_paws_n_claws",
+        "nameKey": "CHAL_PAWS_N_CLAWS",
+        "descriptionKey": "CHAL_PAWS_N_CLAWS_DESC",
+        "value": 3,
+        "number": 0,
+        "stat": "",
+        "additionalArgs": "[  ]",
+        "challengePath": "res://challenges/chal_paws_n_claws.tres",
+        "rewardPath": "res://items/characters/beast_master/beast_master_data.tres"
+      }
     },
     {
       "characterId": "bull",
@@ -828,7 +840,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_difficulty_6",
+        "nameKey": "DIFFICULTY_NIGHTMARE_1",
+        "descriptionKey": "CHAL_DIFFICULTY_NIGHTMARE_1_DESC",
+        "value": 6,
+        "number": 6,
+        "stat": "",
+        "additionalArgs": "[  ]",
+        "challengePath": "res://challenges/chal_difficulty_6_data.tres",
+        "rewardPath": "res://items/characters/wounded/wounded_data.tres"
+      }
     },
     {
       "characterId": "buccaneer",
@@ -846,7 +870,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_blind_greed",
+        "nameKey": "CHAL_BLIND_GREED",
+        "descriptionKey": "CHAL_STAT_DESC",
+        "value": 100,
+        "number": 0,
+        "stat": "pickup_range",
+        "additionalArgs": "[  ]",
+        "challengePath": "res://dlcs/dlc_1/challenges/blind_greed_data.tres",
+        "rewardPath": "res://dlcs/dlc_1/characters/buccaneer/buccaneer_data.tres"
+      }
     },
     {
       "characterId": "chef",
@@ -864,7 +900,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_barbecue",
+        "nameKey": "CHAL_BARBECUE",
+        "descriptionKey": "CHAL_BARBECUE_DESC",
+        "value": 25,
+        "number": 0,
+        "stat": "",
+        "additionalArgs": "[  ]",
+        "challengePath": "res://dlcs/dlc_1/challenges/barbecue_data.tres",
+        "rewardPath": "res://dlcs/dlc_1/characters/chef/chef_data.tres"
+      }
     },
     {
       "characterId": "diver",
@@ -882,7 +930,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_cautious",
+        "nameKey": "CHAL_CAUTIOUS",
+        "descriptionKey": "CHAL_CAUTIOUS_DESC",
+        "value": 1000,
+        "number": 0,
+        "stat": "",
+        "additionalArgs": "[ 700 ]",
+        "challengePath": "res://dlcs/dlc_1/challenges/cautious_data.tres",
+        "rewardPath": "res://dlcs/dlc_1/characters/diver/diver_data.tres"
+      }
     },
     {
       "characterId": "druid",
@@ -900,7 +960,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_herbalist",
+        "nameKey": "CHAL_HERBALIST",
+        "descriptionKey": "CHAL_HERBALIST_DESC",
+        "value": 250,
+        "number": 0,
+        "stat": "",
+        "additionalArgs": "[  ]",
+        "challengePath": "res://dlcs/dlc_1/challenges/herbalist_data.tres",
+        "rewardPath": "res://dlcs/dlc_1/characters/druid/druid_data.tres"
+      }
     },
     {
       "characterId": "dwarf",
@@ -918,7 +990,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_unstoppable_force",
+        "nameKey": "CHAL_UNSTOPPABLE_FORCE",
+        "descriptionKey": "CHAL_UNSTOPPABLE_FORCE_DESC",
+        "value": 25,
+        "number": 0,
+        "stat": "",
+        "additionalArgs": "[  ]",
+        "challengePath": "res://dlcs/dlc_1/challenges/unstoppable_force_data.tres",
+        "rewardPath": "res://dlcs/dlc_1/characters/dwarf/dwarf_data.tres"
+      }
     },
     {
       "characterId": "gangster",
@@ -936,7 +1020,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_unlucky",
+        "nameKey": "CHAL_UNLUCKY",
+        "descriptionKey": "CHAL_UNLUCKY_DESC",
+        "value": 10,
+        "number": 0,
+        "stat": "",
+        "additionalArgs": "[  ]",
+        "challengePath": "res://dlcs/dlc_1/challenges/unlucky_data.tres",
+        "rewardPath": "res://dlcs/dlc_1/characters/gangster/gangster_data.tres"
+      }
     },
     {
       "characterId": "hiker",
@@ -954,7 +1050,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_smelly_feet",
+        "nameKey": "CHAL_SMELLY_FEET",
+        "descriptionKey": "CHAL_SMELLY_FEET_DESC",
+        "value": 20000,
+        "number": 0,
+        "stat": "",
+        "additionalArgs": "[  ]",
+        "challengePath": "res://dlcs/dlc_1/challenges/smelly_feet_data.tres",
+        "rewardPath": "res://dlcs/dlc_1/characters/hiker/hiker_data.tres"
+      }
     },
     {
       "characterId": "ogre",
@@ -972,7 +1080,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_overkill",
+        "nameKey": "CHAL_OVERKILL",
+        "descriptionKey": "CHAL_OVERKILL_DESC",
+        "value": 1000,
+        "number": 0,
+        "stat": "",
+        "additionalArgs": "[  ]",
+        "challengePath": "res://dlcs/dlc_1/challenges/overkill_data.tres",
+        "rewardPath": "res://dlcs/dlc_1/characters/ogre/ogre_data.tres"
+      }
     },
     {
       "characterId": "romantic",
@@ -990,7 +1110,19 @@
       "description": null,
       "zhTitle": null,
       "zhDescription": null,
-      "extractionStatus": "pending-text"
+      "extractionStatus": "pending-text",
+      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
+      "pendingEvidence": {
+        "challengeId": "chal_uncorrupted",
+        "nameKey": "CHAL_UNCORRUPTED",
+        "descriptionKey": "CHAL_UNCORRUPTED_DESC",
+        "value": 0,
+        "number": 0,
+        "stat": "stat_curse",
+        "additionalArgs": "[  ]",
+        "challengePath": "res://dlcs/dlc_1/challenges/uncorrupted_data.tres",
+        "rewardPath": "res://dlcs/dlc_1/characters/romantic/romantic_data.tres"
+      }
     }
   ]
 }

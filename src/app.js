@@ -107,6 +107,8 @@ const state = {
   catalogLoadState: "loading",
   officialLocalization: null,
   localizationLoadState: "loading",
+  officialUnlocks: null,
+  unlocksLoadState: "loading",
   activePage: "guide",
   compendiumPage: "overview",
   compendiumTab: "characters",
@@ -494,6 +496,10 @@ function matchesCompendiumSearch(row, query) {
 }
 
 function renderCharacterCompendiumCard(character) {
+  const evidenceBlock = character.unlockEvidenceLines?.length
+    ? `<div><dt>静态证据</dt><dd>${renderList(character.unlockEvidenceLines.map((line) => escapeHtml(line)), "compact-list")}</dd></div>`
+    : "";
+
   return `
     <article class="compendium-card">
       <div class="compendium-card-top">
@@ -507,6 +513,7 @@ function renderCharacterCompendiumCard(character) {
       <dl class="compendium-meta">
         <div><dt>角色特性</dt><dd>${character.traits.length ? renderList(character.traits.map((line) => escapeHtml(line)), "compact-list") : "未匹配到官方数值特性"}</dd></div>
         <div><dt>解锁</dt><dd>${escapeHtml(character.unlock)}</dd></div>
+        ${evidenceBlock}
       </dl>
     </article>
   `;
@@ -704,8 +711,12 @@ function renderCompendium() {
 
   renderCompendiumTabs();
 
-  if (state.catalogLoadState === "loading" || state.localizationLoadState === "loading") {
-    output.innerHTML = `<div class="empty-state">正在载入官方目录和中文本地化。</div>`;
+  if (
+    state.catalogLoadState === "loading" ||
+    state.localizationLoadState === "loading" ||
+    state.unlocksLoadState === "loading"
+  ) {
+    output.innerHTML = `<div class="empty-state">正在载入官方目录、中文本地化和解锁证据。</div>`;
     return;
   }
 
@@ -714,7 +725,11 @@ function renderCompendium() {
     return;
   }
 
-  const compendium = buildCompendium(state.officialCatalog, state.officialLocalization);
+  const compendium = buildCompendium(
+    state.officialCatalog,
+    state.officialLocalization,
+    state.officialUnlocks,
+  );
   const tabConfig = {
     characters: {
       title: compendiumTabs.characters.title,
@@ -845,7 +860,11 @@ function renderSimulatorCharacterControl() {
 
 function selectedCharacterCompendiumEntry(characterId) {
   if (state.catalogLoadState !== "loaded" || !state.officialCatalog) return null;
-  const compendium = buildCompendium(state.officialCatalog, state.officialLocalization);
+  const compendium = buildCompendium(
+    state.officialCatalog,
+    state.officialLocalization,
+    state.officialUnlocks,
+  );
   return compendium.characters.find((character) => character.id === characterId) ?? null;
 }
 
@@ -1754,8 +1773,24 @@ async function loadOfficialLocalization() {
   renderCompendium();
 }
 
+async function loadOfficialUnlocks() {
+  try {
+    const response = await fetch("./data/official-unlocks.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    state.officialUnlocks = await response.json();
+    state.unlocksLoadState = "loaded";
+  } catch (error) {
+    console.warn("Failed to load official unlocks", error);
+    state.officialUnlocks = null;
+    state.unlocksLoadState = "error";
+  }
+
+  renderCompendium();
+}
+
 bindControls();
 syncAppRoute();
 render();
 loadOfficialCatalog();
 loadOfficialLocalization();
+loadOfficialUnlocks();

@@ -231,7 +231,9 @@ npm run extract:localization
 npm run extract:unlocks
 ```
 
-该命令读取 base/DLC `.pck` 中的 challenge 资源，并用原版 `achievementLocalizations.csv` 连接挑战 ID、奖励角色和中英条件文本，生成 `data/official-unlocks.json`。它只读取静态安装包数据，不读取玩家存档，也不受本机解锁进度影响。当前原版有 43 条可直接确认文本；其余 `pending-text` 记录会保留 `challengeId`、`nameKey`、`descriptionKey`、`value`、`number`、`stat` 和 `additionalArgs`，用于后续继续解码 translation 或人工核验。
+该命令读取 base/DLC `.pck` 中的 challenge 资源，并用原版 `achievementLocalizations.csv` 连接挑战 ID、奖励角色和中英条件文本，生成 `data/official-unlocks.json`。它只读取静态安装包数据，不读取玩家存档，也不受本机解锁进度影响。当前原版有 43 条可直接确认文本；其余 `pending-text` 记录会保留 `pendingReason` 与 `pendingEvidence`，包括 `challengeId`、`nameKey`、`descriptionKey`、`value`、`number`、`stat`、`additionalArgs`、challenge 路径和奖励路径，用于后续继续解码 translation 或人工核验。
+
+角色图鉴会读取 `data/official-unlocks.json` 展示静态解锁证据。`pending-text` 的证据只能说明官方 challenge 资源和奖励角色已经定位，不能当作已确认条件文本；只有写入 `zhDescription` 的 `verified-static-text` 才能同步到 `src/strategyData.js` 的角色 `unlock` 文案。
 
 攻略资料和官方目录的引用校验：
 

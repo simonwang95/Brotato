@@ -312,6 +312,36 @@ function findCharacterRecord(catalog, character) {
   );
 }
 
+function buildUnlockRecordIndex(unlocks) {
+  return new Map((unlocks?.records ?? []).map((record) => [record.characterId, record]));
+}
+
+function buildUnlockEvidenceLines(record) {
+  if (!record) return [];
+
+  const staticFields = [
+    `challenge=${record.challengeId}`,
+    `descriptionKey=${record.descriptionKey}`,
+    `value=${record.value}`,
+    record.stat ? `stat=${record.stat}` : "",
+    record.additionalArgs && record.additionalArgs !== "[  ]"
+      ? `additionalArgs=${record.additionalArgs}`
+      : "",
+  ].filter(Boolean);
+
+  if (record.extractionStatus === "verified-static-text") {
+    return [
+      record.zhDescription ? `官方静态条件：${record.zhDescription}` : "",
+      staticFields.length ? `静态字段：${staticFields.join("，")}` : "",
+    ].filter(Boolean);
+  }
+
+  return [
+    record.pendingReason ?? "已定位静态 challenge，但精确条件文本仍待校验。",
+    staticFields.length ? `静态字段：${staticFields.join("，")}` : "",
+  ].filter(Boolean);
+}
+
 function buildCharacterTraitLines(record) {
   const lines = (record?.effects ?? []).map(formatEffectDetail);
   return unique(lines.filter(Boolean));
@@ -395,13 +425,16 @@ function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEnt
   };
 }
 
-export function buildCharacterCompendium(catalog) {
+export function buildCharacterCompendium(catalog, unlocks) {
+  const unlockRecords = buildUnlockRecordIndex(unlocks);
+
   return Object.values(CHARACTER_GUIDES)
     .map((character) => {
       const { cnName, archetype } = splitChineseHint(character.cnHint);
       const unlockVerified = !/待校验|待补/.test(character.unlock);
       const official = findCharacterRecord(catalog, character);
       const traits = buildCharacterTraitLines(official);
+      const unlockRecord = unlockRecords.get(character.id);
 
       return {
         id: character.id,
@@ -411,6 +444,8 @@ export function buildCharacterCompendium(catalog) {
         archetype,
         unlock: character.unlock,
         unlockStatus: unlockVerified ? "已维护条件" : "待补精确条件",
+        unlockEvidenceStatus: unlockRecord?.extractionStatus ?? "missing",
+        unlockEvidenceLines: buildUnlockEvidenceLines(unlockRecord),
         summary: character.summary,
         traits,
         officialFound: Boolean(official),
@@ -438,9 +473,9 @@ export function buildCatalogCompendium(catalog, localization, kind, strategyEntr
     });
 }
 
-export function buildCompendium(catalog, localization) {
+export function buildCompendium(catalog, localization, unlocks) {
   return {
-    characters: buildCharacterCompendium(catalog),
+    characters: buildCharacterCompendium(catalog, unlocks),
     weapons: buildCatalogCompendium(catalog, localization, "weapon", WEAPONS),
     items: buildCatalogCompendium(catalog, localization, "item", ITEMS),
   };

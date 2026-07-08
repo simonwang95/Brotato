@@ -252,6 +252,8 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
   assert.equal(chefUnlock?.descriptionKey, "CHAL_BARBECUE_DESC");
   assert.equal(chefUnlock?.value, 25);
   assert.equal(chefUnlock?.extractionStatus, "pending-text");
+  assert.match(chefUnlock?.pendingReason ?? "", /PHashTranslation/);
+  assert.equal(chefUnlock?.pendingEvidence?.rewardPath, "res://dlcs/dlc_1/characters/chef/chef_data.tres");
 }
 
 {

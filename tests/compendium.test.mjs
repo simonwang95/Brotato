@@ -4,7 +4,8 @@ import { buildCompendium } from "../src/compendium.js";
 
 const catalog = JSON.parse(readFileSync("data/official-catalog.json", "utf8"));
 const localization = JSON.parse(readFileSync("data/official-localization.json", "utf8"));
-const compendium = buildCompendium(catalog, localization);
+const unlocks = JSON.parse(readFileSync("data/official-unlocks.json", "utf8"));
+const compendium = buildCompendium(catalog, localization, unlocks);
 
 assert.equal(compendium.characters.length, 59, "compendium should include the maintained roster");
 assert.equal(compendium.weapons.length, 79, "weapon compendium should group all official weapons");
@@ -74,12 +75,30 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
   assert.equal(lucky?.cnName, "幸运星");
   assert.match(lucky?.unlock, /300 材料/);
   assert.equal(lucky?.unlockStatus, "已维护条件");
+  assert.ok(
+    lucky?.unlockEvidenceLines.some((line) => line.includes("搜集300材料")),
+    "Lucky should expose verified static unlock evidence",
+  );
   assert.equal(lucky?.imageAssetPath, "data/assets/characters/character_lucky.webp");
   assert.ok(lucky?.traits.includes("幸运 +100"), "Lucky should show base luck trait");
   assert.ok(lucky?.traits.includes("幸运 获取 +25%"), "Lucky should show luck gain trait");
   assert.ok(
     lucky?.traits.includes("拾取材料时：75% 概率，造成 15% 幸运 的伤害"),
     "Lucky should show pickup damage trigger",
+  );
+}
+
+{
+  const chef = compendium.characters.find((entry) => entry.id === "chef");
+  assert.equal(chef?.unlockStatus, "待补精确条件");
+  assert.equal(chef?.unlockEvidenceStatus, "pending-text");
+  assert.ok(
+    chef?.unlockEvidenceLines.some((line) => line.includes("CHAL_BARBECUE_DESC")),
+    "pending DLC unlocks should expose static challenge keys",
+  );
+  assert.ok(
+    chef?.unlockEvidenceLines.some((line) => line.includes("PHashTranslation")),
+    "pending DLC unlocks should explain why the text is not promoted",
   );
 }
 
