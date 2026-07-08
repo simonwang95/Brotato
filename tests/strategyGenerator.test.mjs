@@ -192,13 +192,24 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
   );
   assert.ok(
     guide.recommendedWeapons[0].recommendationReasons.some((reason) =>
+      reason.includes("套装修正：剑类 / 中世纪"),
+    ),
+    "Sword recommendation should explain blade and medieval set fit",
+  );
+  assert.ok(
+    guide.recommendedWeapons[0].recommendationReasons.some((reason) =>
       reason.includes("稀有度修正：最低 T2"),
     ),
     "Sword recommendation should explain tier availability",
   );
+  const spikyShield = guide.recommendedWeapons.find(({ weapon }) => weapon.name === "Spiky Shield");
   assert.ok(
-    guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Spiky Shield"),
+    spikyShield,
     "knight should include Spiky Shield as an armor-scaling weapon",
+  );
+  assert.ok(
+    spikyShield.recommendationReasons.some((reason) => reason.includes("官方护甲缩放")),
+    "spiky shield should explain official armor scaling",
   );
 }
 

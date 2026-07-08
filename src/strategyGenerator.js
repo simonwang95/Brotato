@@ -563,6 +563,9 @@ function scoreMechanicFit(entry, plan) {
   const hasKillGrowth = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) => effect.key === "effect_gain_stat_every_killed_enemies"),
   );
+  const hasArmorScaling = (entry.official.records ?? []).some((record) =>
+    (record.stats?.scalingStats ?? []).some((scaling) => scaling.stat === "stat_armor"),
+  );
   const reasons = [];
   let score = 0;
 
@@ -589,6 +592,10 @@ function scoreMechanicFit(entry, plan) {
   if ((routeTags.has("ethereal") || weaponSetIds.has("ethereal")) && hasKillGrowth) {
     score += 3;
     reasons.push("机制修正：幽魂击杀成长适合后期属性滚雪球");
+  }
+  if (planStats.has("armor") && hasArmorScaling) {
+    score += 3;
+    reasons.push("机制修正：官方护甲缩放适合骑士防御转输出");
   }
 
   return { score, reasons };

@@ -3180,6 +3180,7 @@ export const CHARACTER_GUIDES = {
     plans: makeSeedPlans({
       normalStance: "优先用 Sword 走护甲近战路线，尖刺盾可把护甲继续转成近战输出。",
       weapons: ["sword", "spikyShield", "spear"],
+      routeTags: ["Blade", "Medieval", "Melee", "Blunt"],
       avoid: "不要转远程或工程；骑士优势在护甲近战。",
       items: ["whetstone", "wings", "coffee"],
       statPriority: {
