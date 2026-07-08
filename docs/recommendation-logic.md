@@ -31,6 +31,7 @@
 - `data/official-localization.json` 维护 `nameKey -> 官方中文名`，由本机安装包的英文/中文 translation 资源合并生成。
 - `src/strategyData.js` 只维护当前策略会引用到的类型、定位、解锁说明和推荐理由。
 - `data/official-unlocks.json` 由 `npm run extract:unlocks` 从安装包静态 challenge / achievement 资源生成。该数据不读取玩家存档，不受本机解锁进度影响。已确认文本写入 `zhDescription`；未解码文本保留 `pendingReason` 和 `pendingEvidence`，其中包含 `challengeId`、`nameKey`、`descriptionKey`、`value`、`stat`、`additionalArgs`、challenge 路径和奖励路径。
+- `data/official-unlock-pending.json` 由 `npm run unlocks:pending` 从 `data/official-unlocks.json` 的 `pending-text` 记录派生。它集中维护当前无法可靠解码的 11 条挑战文本，标明 source package、官方角色 key、是否已有攻略、challenge key、数值和后续核验动作。
 - `npm run localization:coverage` 用来检查官方图鉴里还有哪些角色、武器、道具没有进入本地化维护表。
 - `npm run extract:localization` 可以重新从本机安装包生成本地化表。部分英文 translation 条目不是明文，脚本里用 `manual-override` 对已从中文包确认的关键名称做校准。
 - 当前本地化表已覆盖官方目录里的 79 个武器、244 个物品和 44/64 个角色。后续如果官方目录新增条目，未确认名称要继续留在覆盖率报告中，不要凭直觉填入。
@@ -105,7 +106,7 @@
 - `Hiker（徒步旅行者）`：行走经济和高移速路线。
 - `Buccaneer（海盗）`：海军远程和距离击杀经济。
 
-DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 能映射 DLC challenge 奖励角色，但当前 DLC translation 描述文本还未可靠解码，因此 `unlock` 文案必须继续保守标注。图鉴可以展示 `pendingEvidence` 里的静态 challenge 证据，不能把它等同于精确条件文本。`Baby`、`Beast Master`、`Technomage`、`Vagabond`、`Vampire`、`Wounded` 当前作为 official-only 图鉴条目显示，后续需要新增策略模板或明确排除。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`，保留为策略层待校验候选。
+DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 能映射 DLC challenge 奖励角色，但当前 DLC translation 描述文本还未可靠解码，因此 `unlock` 文案必须继续保守标注。`npm run unlocks:pending` 会把这些未确认文本集中列成待校验清单；图鉴可以展示 `pendingEvidence` 里的静态 challenge 证据，不能把它等同于精确条件文本。`Baby`、`Beast Master`、`Technomage`、`Vagabond`、`Vampire`、`Wounded` 当前作为 official-only 图鉴条目显示，后续需要新增策略模板或明确排除。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`，保留为策略层待校验候选。
 
 ## Lucky（幸运星）规则
 

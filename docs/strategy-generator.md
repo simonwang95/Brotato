@@ -238,6 +238,14 @@ npm run extract:unlocks
 
 该命令读取 base/DLC `.pck` 中的 challenge 资源，并用原版 `achievementLocalizations.csv` 连接挑战 ID、奖励角色和中英条件文本，生成 `data/official-unlocks.json`。它只读取静态安装包数据，不读取玩家存档，也不受本机解锁进度影响。当前原版有 43 条可直接确认文本；其余 `pending-text` 记录会保留 `pendingReason` 与 `pendingEvidence`，包括 `challengeId`、`nameKey`、`descriptionKey`、`value`、`number`、`stat`、`additionalArgs`、challenge 路径和奖励路径，用于后续继续解码 translation 或人工核验。
 
+集中导出待校验解锁文本：
+
+```bash
+npm run unlocks:pending
+```
+
+该命令不会重新读取安装包，而是从 `data/official-unlocks.json` 过滤 `pending-text`，生成 `data/official-unlock-pending.json`。当前清单包含 11 条待核验项：base 2 条、abyssalTerrors 9 条；其中 9 条已有攻略层角色，2 条是 official-only 角色。每条记录都保留官方角色 `nameKey`、静态 challenge key、数值、奖励路径和后续核验动作，方便继续解码 `PHashTranslation` 或人工核验。
+
 角色图鉴会读取 `data/official-unlocks.json` 展示静态解锁证据。图鉴角色列表会合并官方目录角色和策略层角色；官方目录里存在但 `CHARACTER_GUIDES` 尚未维护的角色会标记为 official-only，只展示官方图片、特性和解锁证据，不生成攻略推荐。`pending-text` 的证据只能说明官方 challenge 资源和奖励角色已经定位，不能当作已确认条件文本；只有写入 `zhDescription` 的 `verified-static-text` 才能同步到 `src/strategyData.js` 的角色 `unlock` 文案。
 
 `npm run verify:unlocks` 会同时检查反向覆盖：如果安装包里已有角色奖励映射，但 `src/strategyData.js` 还没有维护对应角色，脚本会输出 `official-unlock:*` warning。当前 `oneArm` 会通过别名映射到策略层的 `oneArmed`；其余 warning 代表后续需要新增或明确排除的官方角色攻略。

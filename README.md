@@ -126,6 +126,14 @@ npm run extract:unlocks
 
 生成文件在 `data/official-unlocks.json`。该脚本只读取安装包里的静态 `challenge` / achievement 资源，不读取玩家存档，因此不受本机已解锁进度影响。当前可稳定写入 43 条原版角色精确条件；仍待校验的 2 条原版后补挑战和 9 条 DLC 挑战会保留 `pendingReason` 与 `pendingEvidence`，其中包含 `challengeId`、`nameKey`、`descriptionKey`、`value`、`stat` 和 `additionalArgs`，方便继续解码 translation。角色图鉴会合并官方目录和策略层：当前展示 64 条官方角色记录，加上 `Giant / CHARACTER_GIANT` 这个已记录在 `data/official-character-catalog-gaps.json` 的策略层官方目录缺口。
 
+生成集中待校验清单：
+
+```bash
+npm run unlocks:pending
+```
+
+生成文件在 `data/official-unlock-pending.json`，由 `data/official-unlocks.json` 里的 `pending-text` 记录派生，当前包含 11 条待核验解锁文本，并标注角色是否已进入攻略层、官方 `nameKey`、静态 challenge key、数值和阻塞原因。它同样只反映静态安装包数据，不读取本机存档。
+
 从本机安装包导出图鉴 WebP 图标：
 
 ```bash
@@ -170,6 +178,6 @@ Vercel 部署清单见 [docs/vercel-deployment.md](docs/vercel-deployment.md)。
 npm run verify:unlocks
 ```
 
-精确挑战条件已开始从安装包静态 Progress / achievement / challenge 资源抽取。`data/official-unlocks.json` 当前记录 54 条角色奖励映射，其中 43 条带有可直接解析的原版中英挑战文本；剩余 `pending-text` 按来源分为 base 2 条、abyssalTerrors 9 条，并保留静态翻译 key、挑战数值、奖励路径和阻塞原因。`npm run verify:unlocks` 还会反向报告已抽到但策略层尚未维护的官方角色解锁记录，当前为 6 条，并把已审计的策略层目录缺口单独列入 `Audited catalog gaps`，避免和真正待处理 warning 混在一起。角色图鉴已把这 6 条作为 official-only 角色展示，显示图片、官方特性和静态解锁证据，但不生成攻略推荐。DLC challenge 资源能稳定映射奖励角色，但描述文本仍需继续解码 `PHashTranslation` 的 key->文本映射，因此继续保守标注为待校验。`Giant / CHARACTER_GIANT` 当前不在 base+DLC 官方角色目录中，依据记录在 `data/official-character-catalog-gaps.json`，项目把它保留为策略层待校验候选，而不是凭名称强行映射。
+精确挑战条件已开始从安装包静态 Progress / achievement / challenge 资源抽取。`data/official-unlocks.json` 当前记录 54 条角色奖励映射，其中 43 条带有可直接解析的原版中英挑战文本；剩余 `pending-text` 按来源分为 base 2 条、abyssalTerrors 9 条，并保留静态翻译 key、挑战数值、奖励路径和阻塞原因。`npm run unlocks:pending` 会把这些待核验项集中写入 `data/official-unlock-pending.json`，当前 11 条中 9 条已有攻略层角色、2 条为 official-only。`npm run verify:unlocks` 还会反向报告已抽到但策略层尚未维护的官方角色解锁记录，当前为 6 条，并把已审计的策略层目录缺口单独列入 `Audited catalog gaps`，避免和真正待处理 warning 混在一起。角色图鉴已把这 6 条作为 official-only 角色展示，显示图片、官方特性和静态解锁证据，但不生成攻略推荐。DLC challenge 资源能稳定映射奖励角色，但描述文本仍需继续解码 `PHashTranslation` 的 key->文本映射，因此继续保守标注为待校验。`Giant / CHARACTER_GIANT` 当前不在 base+DLC 官方角色目录中，依据记录在 `data/official-character-catalog-gaps.json`，项目把它保留为策略层待校验候选，而不是凭名称强行映射。
 
 这不依赖当前电脑的存档解锁进度。安装包 `.pck` 是静态游戏数据；本机进度只会影响游戏内或存档里“你已经解锁了什么”，不会改变仓库中由安装包提取出的官方目录字段。除非后续改为读取存档或游戏 UI 截图，否则本机是否已经全解锁不会影响这些脚本的结果。

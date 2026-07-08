@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-static.mjs",
-    "test": "node tests/calculator.test.mjs && node tests/strategyGenerator.test.mjs && node tests/scenarioCalculator.test.mjs && node tests/officialCatalog.test.mjs && node tests/officialLocalization.test.mjs && node tests/strategyCatalog.test.mjs && node tests/compendium.test.mjs && node tests/unlockAudit.test.mjs",
+    "test": "node tests/calculator.test.mjs && node tests/strategyGenerator.test.mjs && node tests/scenarioCalculator.test.mjs && node tests/officialCatalog.test.mjs && node tests/officialLocalization.test.mjs && node tests/strategyCatalog.test.mjs && node tests/compendium.test.mjs && node tests/unlockAudit.test.mjs && node tests/pendingUnlocks.test.mjs",
     "extract:catalog": "node scripts/extract-official-catalog.mjs --write",
     "extract:assets": "node scripts/extract-official-assets.mjs",
     "extract:localization": "node scripts/extract-official-localization.mjs --write",
     "extract:unlocks": "node scripts/extract-official-unlocks.mjs --write",
+    "unlocks:pending": "node scripts/report-unlock-pending.mjs --write",
     "verify:catalog": "node scripts/verify-strategy-catalog.mjs",
     "verify:unlocks": "node scripts/verify-unlocks.mjs",
     "verify:names": "node scripts/verify-official-names.mjs",
