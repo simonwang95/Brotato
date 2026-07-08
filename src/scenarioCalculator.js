@@ -248,6 +248,23 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "startWaveSavings") {
+    const savingsPercent = Math.max(0, itemEffect.savingsPercent ?? 0);
+    const economyUtilityScore = savingsPercent / 2;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      savingsPercent,
+      economyUtilityScore,
+      economyLabel: "波次存钱潜力",
+    };
+  }
+
   const triggerRate =
     itemEffect.trigger === "onPickup"
       ? scenario.pickupRatePerSecond

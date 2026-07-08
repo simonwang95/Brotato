@@ -174,6 +174,13 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const piggyBank = calculateItemEffectDps(baseStats, "normalWave", "piggyBank");
+
+  closeTo(piggyBank.savingsPercent, 8, "piggy bank uses official savings percent");
+  closeTo(piggyBank.economyUtilityScore, 4, "start-wave savings produce economy utility");
+}
+
+{
   const sifdsRelic = calculateItemEffectDps(baseStats, "normalWave", "sifdsRelic");
 
   closeTo(sifdsRelic.pickupMultiplier, 2, "sifd's relic models full pickup attraction");

@@ -160,6 +160,18 @@ export const ITEM_EFFECTS = {
     description:
       "按官方箱子材料奖励估算经济潜力；不计入伤害 DPS，也不假设箱子掉落频率。",
   },
+  piggyBank: {
+    id: "piggyBank",
+    name: "Piggy Bank",
+    cnName: "存钱罐",
+    trigger: "startWaveSavings",
+    chance: 100,
+    baseDamage: 0,
+    luckScaling: 0,
+    savingsPercent: 8,
+    description:
+      "按官方波次开始材料百分比收益估算经济潜力；不计入伤害 DPS，也不假设具体持有材料数。",
+  },
   babyGecko: {
     id: "babyGecko",
     name: "Baby Gecko",

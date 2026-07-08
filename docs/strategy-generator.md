@@ -136,6 +136,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 拾取经济道具：用官方 `chance_double_gold` 触发值和场景拾取频率估算额外材料/秒，不计入伤害 DPS。
 - 收获成长道具：用官方 `harvesting_growth` 和角色目标收获中位数估算等效额外收获，不计入伤害 DPS。
 - 箱子经济道具：用官方 `item_box_gold` 估算每个箱子的额外材料潜力，不假设箱子掉落频率，也不计入伤害 DPS。
+- 波次存钱道具：用官方 `effect_gain_pct_gold_start_wave_limited` 估算波次开始材料百分比潜力，不假设具体持有材料数，也不计入伤害 DPS。
 - 移速和闪避：合成为有效规避率，用来估算承伤倍率。
 - 燃烧：用命中频率、施加概率和持续时间估算覆盖率，支持刷新和传播目标。
 - 诅咒：拆成敌人强度倍率和奖励倍率，并给出奖励修正清场评分。
@@ -158,6 +159,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - `Metal Detector（金属探测器）`
 - `Crown（王冠）`
 - `Bag（袋子）`
+- `Piggy Bank（存钱罐）`
 - `Baby Gecko（壁虎宝宝）`
 - `Sifd's Relic（Sifd的圣物）`
 

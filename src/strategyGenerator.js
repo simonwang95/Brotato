@@ -50,6 +50,7 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   stat_harvesting: "harvesting",
   harvesting_growth: "harvesting",
   item_box_gold: "harvesting",
+  effect_gain_pct_gold_start_wave_limited: "harvesting",
   stat_luck: "luck",
   stat_all: "damagePercent",
   stat_damage: "damagePercent",
@@ -87,6 +88,7 @@ const ITEM_EFFECT_NAME_KEYS = {
   ITEM_METAL_DETECTOR: "metalDetector",
   ITEM_CROWN: "crown",
   ITEM_BAG: "bag",
+  ITEM_PIGGY_BANK: "piggyBank",
   ITEM_BABY_GECKO: "babyGecko",
   ITEM_SIFDS_RELIC: "sifdsRelic",
 };
@@ -510,6 +512,7 @@ function collectOfficialStats(official) {
       effect.statDisplayedName,
       effect.statName,
       effect.statScaled,
+      effect.textKey,
       effect.customKey,
       ...(effect.statsModified ?? []),
     ]),
@@ -548,6 +551,11 @@ function scoreMechanicFit(entry, plan) {
   const hasHarvestingGrowth = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) => effect.key === "harvesting_growth"),
   );
+  const hasStartWaveSavings = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some(
+      (effect) => effect.textKey === "effect_gain_pct_gold_start_wave_limited",
+    ),
+  );
   const reasons = [];
   let score = 0;
 
@@ -566,6 +574,10 @@ function scoreMechanicFit(entry, plan) {
   if (planStats.has("harvesting") && hasHarvestingGrowth) {
     score += 3;
     reasons.push("机制修正：收获成长加速经济滚雪球");
+  }
+  if (planStats.has("harvesting") && hasStartWaveSavings) {
+    score += 3;
+    reasons.push("机制修正：波次存钱放大经济滚动");
   }
 
   return { score, reasons };
@@ -716,13 +728,7 @@ function scoreScenarioModel(entry, plan, mode) {
     if (itemModel.result.economyUtilityScore) {
       const score = Math.min(8, Math.max(0, Math.round(itemModel.result.economyUtilityScore)));
       const economyLabel = itemModel.result.economyLabel ?? "经济收益";
-      const value = Number.isFinite(itemModel.result.extraMaterialRate)
-        ? `+${itemModel.result.extraMaterialRate.toFixed(2)}/秒`
-        : Number.isFinite(itemModel.result.extraHarvesting)
-          ? `+${itemModel.result.extraHarvesting.toFixed(1)} 收获`
-          : Number.isFinite(itemModel.result.extraMaterialPerCrate)
-            ? `+${itemModel.result.extraMaterialPerCrate.toFixed(0)}/箱`
-          : `+${score}`;
+      const value = formatEconomyUtilityValue(itemModel.result, score);
       return {
         score,
         reasons: [`场景模型：${itemModel.result.scenario.name}${economyLabel} ${value}`],
@@ -741,6 +747,22 @@ function scoreScenarioModel(entry, plan, mode) {
   }
 
   return { score: 0, reasons: [] };
+}
+
+function formatEconomyUtilityValue(result, fallbackScore) {
+  if (Number.isFinite(result.extraMaterialRate)) {
+    return `+${result.extraMaterialRate.toFixed(2)}/秒`;
+  }
+  if (Number.isFinite(result.extraHarvesting)) {
+    return `+${result.extraHarvesting.toFixed(1)} 收获`;
+  }
+  if (Number.isFinite(result.extraMaterialPerCrate)) {
+    return `+${result.extraMaterialPerCrate.toFixed(0)}/箱`;
+  }
+  if (Number.isFinite(result.savingsPercent)) {
+    return `+${result.savingsPercent.toFixed(0)}%/波`;
+  }
+  return `+${fallbackScore}`;
 }
 
 function scoreRecommendation(entry, preference, plan, mode) {

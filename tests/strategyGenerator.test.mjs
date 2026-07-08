@@ -277,6 +277,11 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     bag.recommendationReasons.some((reason) => reason.includes("箱子材料潜力")),
     "farmer bag recommendation should explain crate material utility",
   );
+  const piggyBank = guide.keyItems.find(({ item }) => item.name === "Piggy Bank");
+  assert.ok(
+    piggyBank?.recommendationReasons.some((reason) => reason.includes("波次存钱潜力")),
+    "farmer piggy bank recommendation should explain start-wave savings utility",
+  );
 }
 
 {
