@@ -191,6 +191,12 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     "Sword recommendation should expose its weapon set effect",
   );
   assert.ok(
+    guide.recommendedWeapons[0].recommendationReasons.some((reason) =>
+      reason.includes("稀有度修正：最低 T2"),
+    ),
+    "Sword recommendation should explain tier availability",
+  );
+  assert.ok(
     guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Spiky Shield"),
     "knight should include Spiky Shield as an armor-scaling weapon",
   );
@@ -337,6 +343,14 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     "lucky lute recommendation should explain percent-damage trigger synergy",
   );
   assert.ok(
+    guide.recommendedWeapons.some(
+      ({ weapon, recommendationReasons }) =>
+        weapon.name === "Lute" &&
+        recommendationReasons.some((reason) => reason.includes("价格修正：最低价格 15")),
+    ),
+    "lucky lute recommendation should explain early price fit",
+  );
+  assert.ok(
     guide.keyItems.some(({ item }) => item.name === "Cyberball" && item.cnName === "赛博球"),
     "lucky guide should include Cyberball",
   );
@@ -421,6 +435,23 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
   assert.ok(
     guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Sword"),
     "captain guide should keep base-game sword fallback when unlocks are hidden",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("captain", "normal20", { officialCatalog });
+  const captainSword = guide.recommendedWeapons.find(
+    ({ weapon }) => weapon.name === "Captain's Sword",
+  );
+  assert.ok(
+    captainSword?.recommendationReasons.some((reason) => reason.includes("解锁修正：需解锁")),
+    "Captain's Sword should explain locked-item availability",
+  );
+  assert.ok(
+    captainSword?.recommendationReasons.some((reason) =>
+      reason.includes("套装修正：海军 / 剑类"),
+    ),
+    "Captain's Sword should explain naval/blade set fit",
   );
 }
 

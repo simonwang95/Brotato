@@ -390,12 +390,92 @@ function priorityScore(priority) {
   return 0;
 }
 
-function officialAvailabilityScore(official) {
-  if (!official?.found) return 0;
+function officialNumericValues(official, field) {
+  return (official?.records ?? [])
+    .map((record) => record[field])
+    .filter((value) => Number.isFinite(value));
+}
+
+function scoreAvailabilityFit(official) {
+  if (!official?.found) return { score: 0, reasons: [] };
 
   const defaultUnlocked = official.records.some((record) => record.unlockedByDefault === true);
+  const lockedOnly = official.records.every((record) => record.unlockedByDefault === false);
   const canBeLooted = official.records.some((record) => record.canBeLooted === true);
-  return (defaultUnlocked ? 1 : 0) + (canBeLooted ? 1 : 0);
+  const unlootableOnly =
+    official.records.length > 0 && official.records.every((record) => record.canBeLooted === false);
+  const reasons = [];
+  let score = 0;
+
+  if (defaultUnlocked) {
+    score += 1;
+    reasons.push("解锁修正：默认池更容易纳入路线");
+  } else if (lockedOnly) {
+    score -= 1;
+    reasons.push("解锁修正：需解锁，评分保守");
+  }
+
+  if (canBeLooted) {
+    score += 1;
+    reasons.push("掉落修正：官方目录显示可掉落");
+  } else if (unlootableOnly) {
+    score -= 1;
+    reasons.push("掉落修正：不进掉落池，依赖固定来源");
+  }
+
+  return { score, reasons };
+}
+
+function scoreRarityFit(official, mode) {
+  if (!official?.found) return { score: 0, reasons: [] };
+
+  const tiers = officialNumericValues(official, "tier");
+  const values = officialNumericValues(official, "value");
+  if (!tiers.length && !values.length) return { score: 0, reasons: [] };
+
+  const minTier = tiers.length ? Math.min(...tiers) : null;
+  const minValue = values.length ? Math.min(...values) : null;
+  const reasons = [];
+  let score = 0;
+
+  if (minTier !== null && minTier <= 1) {
+    score += 2;
+    reasons.push(`稀有度修正：最低 T${minTier + 1}，前中期更容易成型`);
+  } else if (minTier !== null && minTier >= 3) {
+    const endlessBonus = mode?.id === "endless" ? 1 : -1;
+    score += endlessBonus;
+    reasons.push(
+      mode?.id === "endless"
+        ? `稀有度修正：T${minTier + 1} 高阶收益适合无尽后期`
+        : `稀有度修正：最低 T${minTier + 1}，通关局评分保守`,
+    );
+  }
+
+  if (minValue !== null && minValue <= 35) {
+    score += 1;
+    reasons.push(`价格修正：最低价格 ${minValue}，前期试错成本低`);
+  } else if (minValue !== null && minValue >= 100 && mode?.id !== "endless") {
+    score -= 1;
+    reasons.push(`价格修正：最低价格 ${minValue}，需要更强经济支撑`);
+  }
+
+  return { score, reasons };
+}
+
+function scoreSetFit(entry) {
+  if (!entry.weapon || !entry.official?.found) return { score: 0, reasons: [] };
+
+  const routeTags = new Set((entry.routeTags ?? []).map(normalizeTag));
+  const matchedSetIds = inferWeaponSetIds(entry.weapon, entry.official).filter((setId) =>
+    routeTags.has(normalizeTag(setId)),
+  );
+  if (!matchedSetIds.length) return { score: 0, reasons: [] };
+
+  const labels = matchedSetIds.map((setId) => WEAPON_SET_LABELS[setId] ?? setId);
+  return {
+    score: Math.min(4, matchedSetIds.length * 2),
+    reasons: [`套装修正：${labels.join(" / ")}与角色路线集中度匹配`],
+  };
 }
 
 function expandPlanPriority(priority) {
@@ -648,8 +728,14 @@ function scoreRecommendation(entry, preference, plan, mode) {
   const manualRouteScore = entry.officialCandidate ? 0 : 20;
   if (manualRouteScore) reasons.push("手写路线候选");
 
-  const availabilityScore = officialAvailabilityScore(entry.official);
-  if (availabilityScore) reasons.push("官方目录显示可稳定获取");
+  const availabilityFit = scoreAvailabilityFit(entry.official);
+  reasons.push(...availabilityFit.reasons);
+
+  const rarityFit = scoreRarityFit(entry.official, mode);
+  reasons.push(...rarityFit.reasons);
+
+  const setFit = scoreSetFit(entry);
+  reasons.push(...setFit.reasons);
 
   const officialStatSynergy = scoreOfficialStatSynergy(entry, plan);
   reasons.push(...officialStatSynergy.reasons);
@@ -671,7 +757,9 @@ function scoreRecommendation(entry, preference, plan, mode) {
       routeFitScore +
       planScore +
       manualRouteScore +
-      availabilityScore +
+      availabilityFit.score +
+      rarityFit.score +
+      setFit.score +
       officialStatSynergy.score +
       mechanicFit.score +
       modeFit.score +
@@ -691,7 +779,7 @@ function sortByRecommendationScore(entries, preference, plan, mode) {
     .map(({ entry, scoring }) => ({
       ...entry,
       recommendationScore: scoring.score,
-      recommendationReasons: scoring.reasons.slice(0, 6),
+      recommendationReasons: scoring.reasons.slice(0, 10),
     }));
 }
 

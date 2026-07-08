@@ -160,7 +160,7 @@ Vercel 部署清单见 [docs/vercel-deployment.md](docs/vercel-deployment.md)。
 
 ## 资料来源状态
 
-当前攻略数据参考 Brotato Wiki 的 Characters、Progress、Weapons、Stats 和 Endless Mode 页面，并在数据里保留了解锁说明。攻略推荐本身是策略化整理，不等同于游戏内唯一最优解；当前已把官方武器数值和部分幸运/拾取触发道具接入场景模型评分，后续还会继续校准更多具体效果。
+当前攻略数据参考 Brotato Wiki 的 Characters、Progress、Weapons、Stats 和 Endless Mode 页面，并在数据里保留了解锁说明。攻略推荐本身是策略化整理，不等同于游戏内唯一最优解；当前已把官方武器数值、解锁/掉落状态、稀有度、价格、套装匹配和部分幸运/拾取触发道具接入可解释评分，后续还会继续校准更多具体效果。
 
 官方简中名称优先以本机安装包里的 `Brotato.pck` 和 `BrotatoAbyssalTerrors.pck` 为准；`npm run verify:names` 会扫描这些包并报告当前数据是否匹配。
 
