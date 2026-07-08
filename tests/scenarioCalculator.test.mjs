@@ -146,6 +146,13 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const metalDetector = calculateItemEffectDps(baseStats, "swarm", "metalDetector");
+
+  closeTo(metalDetector.extraMaterialRate, 0.075, "metal detector uses pickup rate and double-material chance");
+  closeTo(metalDetector.economyUtilityScore, 1.5, "double-material chance produces economy utility");
+}
+
+{
   const sifdsRelic = calculateItemEffectDps(baseStats, "normalWave", "sifdsRelic");
 
   closeTo(sifdsRelic.pickupMultiplier, 2, "sifd's relic models full pickup attraction");

@@ -124,6 +124,18 @@ export const ITEM_EFFECTS = {
     description:
       "按官方暴击击杀材料触发值估算经济收益；不计入伤害 DPS。",
   },
+  metalDetector: {
+    id: "metalDetector",
+    name: "Metal Detector",
+    cnName: "金属探测器",
+    trigger: "onPickupMaterialBonus",
+    chance: 5,
+    baseDamage: 0,
+    luckScaling: 0,
+    materialValue: 1,
+    description:
+      "按官方双倍材料概率估算额外材料期望；不计入伤害 DPS。",
+  },
   babyGecko: {
     id: "babyGecko",
     name: "Baby Gecko",

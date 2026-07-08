@@ -82,6 +82,7 @@ const ITEM_EFFECT_NAME_KEYS = {
   ITEM_BABY_ELEPHANT: "babyElephant",
   ITEM_BABY_WITH_A_BEARD: "babyWithABeard",
   ITEM_HUNTING_TROPHY: "huntingTrophy",
+  ITEM_METAL_DETECTOR: "metalDetector",
   ITEM_BABY_GECKO: "babyGecko",
   ITEM_SIFDS_RELIC: "sifdsRelic",
 };
@@ -702,10 +703,11 @@ function scoreScenarioModel(entry, plan, mode) {
 
     if (itemModel.result.economyUtilityScore) {
       const score = Math.min(8, Math.max(0, Math.round(itemModel.result.economyUtilityScore)));
+      const economyLabel = itemModel.result.economyLabel ?? "经济收益";
       return {
         score,
         reasons: [
-          `场景模型：${itemModel.result.scenario.name}暴击击杀材料 +${itemModel.result.extraMaterialRate.toFixed(
+          `场景模型：${itemModel.result.scenario.name}${economyLabel} +${itemModel.result.extraMaterialRate.toFixed(
             2,
           )}/秒`,
         ],

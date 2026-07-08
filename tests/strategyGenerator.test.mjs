@@ -247,6 +247,17 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 }
 
 {
+  const guide = generateStrategyGuide("lucky", "normal20", { officialCatalog });
+  const metalDetector = guide.keyItems.find(({ item }) => item.name === "Metal Detector");
+  assert.ok(
+    metalDetector?.recommendationReasons.some((reason) =>
+      reason.includes("拾取双倍材料期望"),
+    ),
+    "lucky metal detector recommendation should explain double-material economy utility",
+  );
+}
+
+{
   const luckyUnlock = officialUnlocks.records.find((record) => record.characterId === "lucky");
   const lucky = getAvailableCharacters().find((character) => character.id === "lucky");
   assert.equal(luckyUnlock?.zhDescription, "搜集300材料");

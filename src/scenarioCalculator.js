@@ -188,6 +188,27 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
       materialValue,
       extraMaterialRate,
       economyUtilityScore,
+      economyLabel: "暴击击杀材料",
+    };
+  }
+
+  if (itemEffect.trigger === "onPickupMaterialBonus") {
+    const chance = clamp((itemEffect.chance ?? 0) / 100, 0, 1);
+    const materialValue = Math.max(0, itemEffect.materialValue ?? 1);
+    const extraMaterialRate = scenario.pickupRatePerSecond * chance * materialValue;
+    const economyUtilityScore = extraMaterialRate * 20;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: scenario.pickupRatePerSecond,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      materialValue,
+      extraMaterialRate,
+      economyUtilityScore,
+      economyLabel: "拾取双倍材料期望",
     };
   }
 
