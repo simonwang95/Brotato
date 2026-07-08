@@ -237,6 +237,13 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Shuriken"),
     "crazy should include Shuriken as a precise ranged branch",
   );
+  const huntingTrophy = guide.keyItems.find(({ item }) => item.name === "Hunting Trophy");
+  assert.ok(
+    huntingTrophy?.recommendationReasons.some((reason) =>
+      reason.includes("暴击击杀材料"),
+    ),
+    "crazy hunting trophy recommendation should explain crit-kill economy utility",
+  );
 }
 
 {

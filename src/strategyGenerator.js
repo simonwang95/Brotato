@@ -81,6 +81,7 @@ const ITEM_EFFECT_NAME_KEYS = {
   ITEM_CYBERBALL: "cyberball",
   ITEM_BABY_ELEPHANT: "babyElephant",
   ITEM_BABY_WITH_A_BEARD: "babyWithABeard",
+  ITEM_HUNTING_TROPHY: "huntingTrophy",
   ITEM_BABY_GECKO: "babyGecko",
   ITEM_SIFDS_RELIC: "sifdsRelic",
 };
@@ -693,6 +694,18 @@ function scoreScenarioModel(entry, plan, mode) {
         score,
         reasons: [
           `场景模型：${itemModel.result.scenario.name}拾取频率 +${itemModel.result.extraPickupRate.toFixed(
+            2,
+          )}/秒`,
+        ],
+      };
+    }
+
+    if (itemModel.result.economyUtilityScore) {
+      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.economyUtilityScore)));
+      return {
+        score,
+        reasons: [
+          `场景模型：${itemModel.result.scenario.name}暴击击杀材料 +${itemModel.result.extraMaterialRate.toFixed(
             2,
           )}/秒`,
         ],

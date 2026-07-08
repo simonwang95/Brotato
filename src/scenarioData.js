@@ -112,6 +112,18 @@ export const ITEM_EFFECTS = {
     description:
       "简化为击杀触发的额外弹体，用场景击杀频率估算；具体数值待逐条校验。",
   },
+  huntingTrophy: {
+    id: "huntingTrophy",
+    name: "Hunting Trophy",
+    cnName: "狩猎战利品",
+    trigger: "onCritKillMaterial",
+    chance: 33,
+    baseDamage: 0,
+    luckScaling: 0,
+    materialValue: 1,
+    description:
+      "按官方暴击击杀材料触发值估算经济收益；不计入伤害 DPS。",
+  },
   babyGecko: {
     id: "babyGecko",
     name: "Baby Gecko",

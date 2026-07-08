@@ -132,6 +132,20 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const huntingTrophy = calculateItemEffectDps(
+    {
+      ...baseStats,
+      critChance: 50,
+    },
+    "normalWave",
+    "huntingTrophy",
+  );
+
+  closeTo(huntingTrophy.extraMaterialRate, 0.165, "hunting trophy uses crit-kill chance");
+  closeTo(huntingTrophy.economyUtilityScore, 3.3, "crit-kill materials produce economy utility");
+}
+
+{
   const sifdsRelic = calculateItemEffectDps(baseStats, "normalWave", "sifdsRelic");
 
   closeTo(sifdsRelic.pickupMultiplier, 2, "sifd's relic models full pickup attraction");

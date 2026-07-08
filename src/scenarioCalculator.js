@@ -170,6 +170,27 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "onCritKillMaterial") {
+    const critChance = clamp(normalizedStats.critChance / 100, 0, 1);
+    const chance = clamp((itemEffect.chance ?? 0) / 100, 0, 1);
+    const materialValue = Math.max(0, itemEffect.materialValue ?? 1);
+    const extraMaterialRate = scenario.killRateMultiplier * critChance * chance * materialValue;
+    const economyUtilityScore = extraMaterialRate * 20;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: scenario.killRateMultiplier,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      critChance,
+      materialValue,
+      extraMaterialRate,
+      economyUtilityScore,
+    };
+  }
+
   const triggerRate =
     itemEffect.trigger === "onPickup"
       ? scenario.pickupRatePerSecond
