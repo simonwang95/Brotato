@@ -153,6 +153,20 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const crown = calculateItemEffectDps(
+    {
+      ...baseStats,
+      harvesting: 100,
+    },
+    "normalWave",
+    "crown",
+  );
+
+  closeTo(crown.extraHarvesting, 8, "crown uses harvesting growth percentage");
+  closeTo(crown.economyUtilityScore, 8, "harvesting growth produces economy utility");
+}
+
+{
   const sifdsRelic = calculateItemEffectDps(baseStats, "normalWave", "sifdsRelic");
 
   closeTo(sifdsRelic.pickupMultiplier, 2, "sifd's relic models full pickup attraction");

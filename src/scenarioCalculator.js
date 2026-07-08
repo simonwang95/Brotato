@@ -212,6 +212,25 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "harvestingGrowth") {
+    const growthPercent = Math.max(0, itemEffect.growthPercent ?? 0);
+    const extraHarvesting = Math.max(0, normalizedStats.harvesting) * (growthPercent / 100);
+    const economyUtilityScore = extraHarvesting;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      growthPercent,
+      extraHarvesting,
+      economyUtilityScore,
+      economyLabel: "收获成长等效",
+    };
+  }
+
   const triggerRate =
     itemEffect.trigger === "onPickup"
       ? scenario.pickupRatePerSecond

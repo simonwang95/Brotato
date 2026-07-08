@@ -136,6 +136,18 @@ export const ITEM_EFFECTS = {
     description:
       "按官方双倍材料概率估算额外材料期望；不计入伤害 DPS。",
   },
+  crown: {
+    id: "crown",
+    name: "Crown",
+    cnName: "王冠",
+    trigger: "harvestingGrowth",
+    chance: 100,
+    baseDamage: 0,
+    luckScaling: 0,
+    growthPercent: 8,
+    description:
+      "按官方收获成长百分比估算额外收获等效值；不计入伤害 DPS。",
+  },
   babyGecko: {
     id: "babyGecko",
     name: "Baby Gecko",

@@ -48,6 +48,7 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   stat_range: "range",
   stat_speed: "speed",
   stat_harvesting: "harvesting",
+  harvesting_growth: "harvesting",
   stat_luck: "luck",
   stat_all: "damagePercent",
   stat_damage: "damagePercent",
@@ -83,6 +84,7 @@ const ITEM_EFFECT_NAME_KEYS = {
   ITEM_BABY_WITH_A_BEARD: "babyWithABeard",
   ITEM_HUNTING_TROPHY: "huntingTrophy",
   ITEM_METAL_DETECTOR: "metalDetector",
+  ITEM_CROWN: "crown",
   ITEM_BABY_GECKO: "babyGecko",
   ITEM_SIFDS_RELIC: "sifdsRelic",
 };
@@ -202,6 +204,7 @@ function officialStatTags(official) {
   if (stats.includes("engineering")) tags.push("Engineering");
   if (stats.includes("critChance")) tags.push("Precise");
   if (stats.includes("luck")) tags.push("Luck");
+  if (stats.includes("harvesting")) tags.push("Economy");
   return tags;
 }
 
@@ -540,6 +543,9 @@ function scoreMechanicFit(entry, plan) {
   const hasPickupAttraction = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) => effect.key === "instant_gold_attracting"),
   );
+  const hasHarvestingGrowth = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) => effect.key === "harvesting_growth"),
+  );
   const reasons = [];
   let score = 0;
 
@@ -554,6 +560,10 @@ function scoreMechanicFit(entry, plan) {
   if (planStats.has("luck") && hasPickupAttraction) {
     score += 3;
     reasons.push("机制修正：拾取吸附提高 Lucky 触发频率");
+  }
+  if (planStats.has("harvesting") && hasHarvestingGrowth) {
+    score += 3;
+    reasons.push("机制修正：收获成长加速经济滚雪球");
   }
 
   return { score, reasons };
@@ -704,13 +714,14 @@ function scoreScenarioModel(entry, plan, mode) {
     if (itemModel.result.economyUtilityScore) {
       const score = Math.min(8, Math.max(0, Math.round(itemModel.result.economyUtilityScore)));
       const economyLabel = itemModel.result.economyLabel ?? "经济收益";
+      const value = Number.isFinite(itemModel.result.extraMaterialRate)
+        ? `+${itemModel.result.extraMaterialRate.toFixed(2)}/秒`
+        : Number.isFinite(itemModel.result.extraHarvesting)
+          ? `+${itemModel.result.extraHarvesting.toFixed(1)} 收获`
+          : `+${score}`;
       return {
         score,
-        reasons: [
-          `场景模型：${itemModel.result.scenario.name}${economyLabel} +${itemModel.result.extraMaterialRate.toFixed(
-            2,
-          )}/秒`,
-        ],
+        reasons: [`场景模型：${itemModel.result.scenario.name}${economyLabel} ${value}`],
       };
     }
 
@@ -845,11 +856,11 @@ function routeOrStatMatchesPlan(entry, plan, routeTags) {
   const normalizedRouteTags = routeTags.map(normalizeTag);
   const focusTags = normalizedRouteTags.filter((tag) => FOCUS_ROUTE_TAGS.has(tag));
   const tagMatch = targetTags.some((tag) => normalizedRouteTags.includes(tag));
+  const statMatch = scoreOfficialStatSynergy(entry, plan).score > 0;
   if (focusTags.length) {
-    return targetTags.some((tag) => focusTags.includes(tag));
+    return targetTags.some((tag) => focusTags.includes(tag)) || (!entry.weapon && statMatch);
   }
 
-  const statMatch = scoreOfficialStatSynergy(entry, plan).score > 0;
   return tagMatch || statMatch;
 }
 
@@ -948,7 +959,7 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
   );
   const keyItems = filterAndSort(itemPool, resolvedOptions, plan, mode).slice(
     0,
-    visibleRecommendationLimit(itemPool, manualItems.length, 8),
+    visibleRecommendationLimit(itemPool, manualItems.length, 10),
   );
 
   return {

@@ -258,6 +258,22 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 }
 
 {
+  const guide = generateStrategyGuide("farmer", "normal20", { officialCatalog });
+  const crown = guide.keyItems.find(({ item }) => item.name === "Crown");
+  assert.ok(crown, "farmer guide should surface Crown from the official item candidate pool");
+  assert.ok(
+    crown.recommendationReasons.some((reason) => reason.includes("收获成长等效")),
+    "farmer crown recommendation should explain harvesting growth utility",
+  );
+  assert.ok(
+    crown.recommendationReasons.some((reason) =>
+      reason.includes("收获成长加速经济滚雪球"),
+    ),
+    "farmer crown recommendation should explain its economy-growth mechanic",
+  );
+}
+
+{
   const luckyUnlock = officialUnlocks.records.find((record) => record.characterId === "lucky");
   const lucky = getAvailableCharacters().find((character) => character.id === "lucky");
   assert.equal(luckyUnlock?.zhDescription, "搜集300材料");
