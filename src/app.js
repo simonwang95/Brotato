@@ -394,6 +394,20 @@ function renderOfficialMeta(official) {
   return `<small class="official-meta">官方目录：${escapeHtml(official.display)}</small>`;
 }
 
+function renderRecommendationBreakdown(score, reasons = []) {
+  const reasonList = Array.isArray(reasons) ? reasons.filter(Boolean) : [];
+  return `
+    <div class="recommendation-breakdown">
+      <span>推荐评分：${escapeHtml(String(score ?? 0))}</span>
+      ${
+        reasonList.length
+          ? `<ul>${reasonList.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>`
+          : ""
+      }
+    </div>
+  `;
+}
+
 function renderPills(items) {
   if (!items.length) return `<span class="pill muted-pill">无</span>`;
   return items.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join("");
@@ -926,7 +940,7 @@ function renderStrategyGuide() {
                     type: weapon.type,
                   }, official)}
                   <p>${escapeHtml(reason)}</p>
-                  <small>推荐评分：${escapeHtml(String(recommendationScore ?? 0))}${recommendationReasons?.length ? `；${escapeHtml(recommendationReasons.join("；"))}` : ""}</small>
+                  ${renderRecommendationBreakdown(recommendationScore, recommendationReasons)}
                   <small>属性：${escapeHtml(weapon.statNote)}</small>
                   ${weapon.setNote ? `<small>套装：${escapeHtml(weapon.setNote)}</small>` : ""}
                   <small>解锁：${escapeHtml(weapon.unlock)}</small>
@@ -951,7 +965,7 @@ function renderStrategyGuide() {
                     type: item.role,
                   }, official)}
                   <p>${escapeHtml(reason)}</p>
-                  <small>推荐评分：${escapeHtml(String(recommendationScore ?? 0))}${recommendationReasons?.length ? `；${escapeHtml(recommendationReasons.join("；"))}` : ""}</small>
+                  ${renderRecommendationBreakdown(recommendationScore, recommendationReasons)}
                   <small>属性：${escapeHtml(item.statNote)}</small>
                   <small>解锁：${escapeHtml(item.unlock)}</small>
                   ${renderOfficialMeta(official)}

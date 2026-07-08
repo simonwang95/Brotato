@@ -542,6 +542,30 @@ tr:last-child td {
   line-height: 1.45;
 }
 
+.recommendation-breakdown {
+  margin: 10px 0;
+  border: 1px solid rgba(184, 77, 42, 0.18);
+  border-radius: 8px;
+  background: rgba(184, 77, 42, 0.05);
+  padding: 8px 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.recommendation-breakdown span {
+  display: block;
+  color: var(--accent-strong);
+  font-weight: 800;
+}
+
+.recommendation-breakdown ul {
+  display: grid;
+  gap: 3px;
+  margin: 6px 0 0;
+  padding-left: 16px;
+}
+
 .guide-card .official-meta {
   display: block;
   margin-top: 5px;
