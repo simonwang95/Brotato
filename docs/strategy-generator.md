@@ -151,6 +151,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 场景分只作为排序修正；手写主路线、解锁/掉落、稀有度、价格、套装适配和机制修正仍保留解释权重。
 - 幽魂武器会读取官方 `effect_gain_stat_every_killed_enemies` 效果，在幽魂路线中解释击杀成长带来的后期属性滚雪球。
 - 骑士路线显式标记 `Blade`、`Medieval`、`Melee` 和 `Blunt`，用于让 Sword 的剑类/中世纪套装、Spiky Shield 的官方护甲缩放进入推荐理由。
+- Lucky 路线会读取官方武器 `scalingStats` 中的 `stat_luck`，用于解释 Lute、Flute 这类幸运缩放武器为什么适合高幸运路线。
 
 当前特殊道具先支持：
 

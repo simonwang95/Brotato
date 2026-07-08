@@ -566,12 +566,19 @@ function scoreMechanicFit(entry, plan) {
   const hasArmorScaling = (entry.official.records ?? []).some((record) =>
     (record.stats?.scalingStats ?? []).some((scaling) => scaling.stat === "stat_armor"),
   );
+  const hasLuckScaling = (entry.official.records ?? []).some((record) =>
+    (record.stats?.scalingStats ?? []).some((scaling) => scaling.stat === "stat_luck"),
+  );
   const reasons = [];
   let score = 0;
 
   if (planStats.has("luck") && officialStats.includes("luck")) {
     score += 3;
     reasons.push("机制修正：幸运缩放贴合拾取触发路线");
+  }
+  if (planStats.has("luck") && hasLuckScaling) {
+    score += 3;
+    reasons.push("机制修正：官方幸运缩放武器适合 Lucky 高幸运路线");
   }
   if (planStats.has("damagePercent") && officialStats.includes("damagePercent")) {
     score += 2;

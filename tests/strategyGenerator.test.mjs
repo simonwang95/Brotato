@@ -408,6 +408,14 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     guide.recommendedWeapons.some(
       ({ weapon, recommendationReasons }) =>
         weapon.name === "Lute" &&
+        recommendationReasons.some((reason) => reason.includes("官方幸运缩放武器")),
+    ),
+    "lucky lute recommendation should explain official luck weapon scaling",
+  );
+  assert.ok(
+    guide.recommendedWeapons.some(
+      ({ weapon, recommendationReasons }) =>
+        weapon.name === "Lute" &&
         recommendationReasons.some((reason) => reason.includes("价格修正：最低价格 15")),
     ),
     "lucky lute recommendation should explain early price fit",
