@@ -4,12 +4,21 @@ import { CHARACTER_GUIDES, ITEMS, WEAPONS } from "../src/strategyData.js";
 
 const catalogPath = process.env.BROTATO_CATALOG_PATH || "data/official-catalog.json";
 const unlocksPath = process.env.BROTATO_UNLOCKS_PATH || "data/official-unlocks.json";
+const catalogGapsPath =
+  process.env.BROTATO_CHARACTER_CATALOG_GAPS_PATH ||
+  "data/official-character-catalog-gaps.json";
 const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
 const unlocks = existsSync(unlocksPath)
   ? JSON.parse(readFileSync(unlocksPath, "utf8"))
   : { records: [] };
+const catalogGaps = existsSync(catalogGapsPath)
+  ? JSON.parse(readFileSync(catalogGapsPath, "utf8"))
+  : { records: [] };
 const unlockRecordsByCharacterId = new Map(
   (unlocks.records ?? []).map((record) => [record.characterId, record]),
+);
+const catalogGapByCharacterId = new Map(
+  (catalogGaps.records ?? []).map((record) => [record.characterId, record]),
 );
 
 const CHARACTER_NAME_KEY_OVERRIDES = {
@@ -18,11 +27,6 @@ const CHARACTER_NAME_KEY_OVERRIDES = {
 
 const UNLOCK_CHARACTER_ID_ALIASES = {
   oneArm: "oneArmed",
-};
-
-const CHARACTER_CATALOG_GAPS = {
-  giant:
-    "当前 base+DLC 官方角色资源未包含 CHARACTER_GIANT；保留为策略层待校验候选，不按普通目录映射失败处理。",
 };
 
 const strategyCharacterIds = new Set(Object.keys(CHARACTER_GUIDES));
@@ -116,15 +120,18 @@ function validateCharacter(character) {
   const label = `character:${character.id} ${character.name}`;
   const errors = [];
   const warnings = [];
+  const catalogGapNotices = [];
 
   if (!record) {
-    const knownGap = CHARACTER_CATALOG_GAPS[character.id];
-    warnings.push(
-      knownGap
-        ? `${label} 官方目录缺口：${knownGap}`
-        : `${label} 未匹配官方角色目录 ${nameKey}`,
-    );
-    return { errors, warnings };
+    const knownGap = catalogGapByCharacterId.get(character.id);
+    if (knownGap) {
+      catalogGapNotices.push(
+        `${label} 已审计官方目录缺口：${knownGap.expectedNameKey}；${knownGap.reason}`,
+      );
+      return { errors, warnings, catalogGapNotices };
+    }
+    warnings.push(`${label} 未匹配官方角色目录 ${nameKey}`);
+    return { errors, warnings, catalogGapNotices };
   }
 
   const unlock = character.unlock ?? "";
@@ -143,7 +150,7 @@ function validateCharacter(character) {
     warnings.push(`${label} 仍缺精确挑战条件：${unlock.replace(/[。.]$/, "")}${evidence}`);
   }
 
-  return { errors, warnings };
+  return { errors, warnings, catalogGapNotices };
 }
 
 function auditUnmaintainedUnlockRecord(record) {
@@ -173,6 +180,7 @@ const results = [
 
 const errors = results.flatMap((result) => result.errors);
 const warnings = results.flatMap((result) => result.warnings);
+const catalogGapNotices = results.flatMap((result) => result.catalogGapNotices ?? []);
 const officialWeaponCandidateCount = unique(
   (catalog.records ?? [])
     .filter((record) => record.kind === "weapon")
@@ -188,6 +196,7 @@ console.log("Brotato unlock verification");
 console.log(`Catalog: ${catalogPath}`);
 console.log(`Unlocks: ${unlocksPath}`);
 console.log(`Checked ${Object.keys(WEAPONS).length} weapons, ${Object.keys(ITEMS).length} items, ${Object.keys(CHARACTER_GUIDES).length} characters.`);
+console.log(`Audited character catalog gaps: ${catalogGapNotices.length}.`);
 console.log(
   `Static unlock records: ${(unlocks.records ?? []).length}; unmaintained in strategy layer: ${unmaintainedUnlockRecords().length}.`,
 );
@@ -198,6 +207,11 @@ console.log(
 if (warnings.length) {
   console.log("\nWarnings:");
   warnings.forEach((warning) => console.log(`- ${warning}`));
+}
+
+if (catalogGapNotices.length) {
+  console.log("\nAudited catalog gaps:");
+  catalogGapNotices.forEach((notice) => console.log(`- ${notice}`));
 }
 
 if (errors.length) {

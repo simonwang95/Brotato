@@ -4,11 +4,27 @@ import { execFileSync } from "node:child_process";
 const output = execFileSync("node", ["scripts/verify-unlocks.mjs"], {
   encoding: "utf8",
 });
+const warningsSection = output.split("\nAudited catalog gaps:")[0] ?? output;
 
 assert.match(
   output,
   /Static unlock records: 54; unmaintained in strategy layer: 6\./,
   "unlock verifier should report official unlock records missing from strategy data",
+);
+assert.match(
+  output,
+  /Audited character catalog gaps: 1\./,
+  "unlock verifier should count audited strategy-only catalog gaps separately",
+);
+assert.doesNotMatch(
+  warningsSection,
+  /Warnings:[\s\S]*character:giant/,
+  "audited Giant catalog gap should not be reported as an unlock warning",
+);
+assert.match(
+  output,
+  /Audited catalog gaps:[\s\S]*character:giant Giant .*CHARACTER_GIANT/,
+  "audited Giant catalog gap should remain visible in the verifier report",
 );
 assert.doesNotMatch(
   output,

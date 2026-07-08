@@ -1,0 +1,20 @@
+{
+  "summary": {
+    "total": 1,
+    "description": "策略层保留、但当前 base + Abyssal Terrors 静态官方角色目录没有匹配资源的角色。"
+  },
+  "records": [
+    {
+      "characterId": "giant",
+      "strategyName": "Giant",
+      "expectedNameKey": "CHARACTER_GIANT",
+      "status": "not-in-static-catalog",
+      "reason": "当前已抽取的 base + Abyssal Terrors 官方角色目录没有 CHARACTER_GIANT 记录。保留 Giant 为策略层待校验候选，而不是硬造官方目录映射。",
+      "evidence": [
+        "data/official-catalog.json 没有 nameKey 为 CHARACTER_GIANT 的 character 记录。",
+        "data/official-localization.json 没有 CHARACTER_GIANT 条目。",
+        "data/official-unlocks.json 包含 chal_giant_slayer，但该静态挑战奖励 Jack，不是 Giant 角色。"
+      ]
+    }
+  ]
+}

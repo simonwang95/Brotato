@@ -14,6 +14,8 @@
 
 当前页面已经接入全部输入。默认策略是危险 0、允许 DLC、允许解锁物、稳健通关；选择“仅原版”会隐藏深海魔怪等 DLC 武器和道具，选择“只看默认池”会隐藏官方目录标记为非默认解锁的条目。
 
+角色目录校验以 `data/official-catalog.json` 为准。`Giant / CHARACTER_GIANT` 当前不在已抽取的 base + 深海魔怪官方角色目录里，相关证据记录在 `data/official-character-catalog-gaps.json`；攻略层暂时把它作为待校验候选，而不是硬填官方映射。
+
 ## 输出
 
 攻略结果建议分成五块。
