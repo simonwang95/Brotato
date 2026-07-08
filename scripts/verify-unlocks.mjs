@@ -1,9 +1,16 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { findOfficialRecords, getOfficialNameKey, toOfficialNameKey } from "../src/officialCatalog.js";
 import { CHARACTER_GUIDES, ITEMS, WEAPONS } from "../src/strategyData.js";
 
 const catalogPath = process.env.BROTATO_CATALOG_PATH || "data/official-catalog.json";
+const unlocksPath = process.env.BROTATO_UNLOCKS_PATH || "data/official-unlocks.json";
 const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
+const unlocks = existsSync(unlocksPath)
+  ? JSON.parse(readFileSync(unlocksPath, "utf8"))
+  : { records: [] };
+const unlockRecordsByCharacterId = new Map(
+  (unlocks.records ?? []).map((record) => [record.characterId, record]),
+);
 
 const CHARACTER_NAME_KEY_OVERRIDES = {
   oneArmed: "CHARACTER_ONE_ARM",
@@ -109,7 +116,11 @@ function validateCharacter(character) {
   }
 
   if (/待校验|待补/.test(unlock)) {
-    warnings.push(`${label} 仍缺精确挑战条件：${unlock}`);
+    const unlockRecord = unlockRecordsByCharacterId.get(character.id);
+    const evidence = unlockRecord
+      ? `；静态挑战 ${unlockRecord.challengeId} / ${unlockRecord.descriptionKey}，value=${unlockRecord.value}`
+      : "";
+    warnings.push(`${label} 仍缺精确挑战条件：${unlock.replace(/[。.]$/, "")}${evidence}`);
   }
 
   return { errors, warnings };
@@ -136,6 +147,7 @@ const officialItemCandidateCount = unique(
 
 console.log("Brotato unlock verification");
 console.log(`Catalog: ${catalogPath}`);
+console.log(`Unlocks: ${unlocksPath}`);
 console.log(`Checked ${Object.keys(WEAPONS).length} weapons, ${Object.keys(ITEMS).length} items, ${Object.keys(CHARACTER_GUIDES).length} characters.`);
 console.log(
   `Official recommendation candidate pool: ${officialWeaponCandidateCount} weapons, ${officialItemCandidateCount} items.`,

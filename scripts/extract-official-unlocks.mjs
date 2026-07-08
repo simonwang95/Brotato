@@ -47,6 +47,10 @@ function getNumber(block, key) {
   return match ? Number(match[1]) : null;
 }
 
+function getLineValue(block, key) {
+  return block.match(new RegExp(`^${key} = (.+)$`, "m"))?.[1]?.trim() ?? null;
+}
+
 function getResourceRef(block, key) {
   const match = block.match(new RegExp(`${key} = ExtResource\\(\\s*(\\d+)\\s*\\)`));
   return match ? Number(match[1]) : null;
@@ -141,6 +145,12 @@ function extractCharacterUnlocks(packageFiles, sourcePackage, localizations = ne
         sourcePackage,
         challengePath: path,
         rewardPath: reward,
+        nameKey: getString(block, "name"),
+        descriptionKey: getString(block, "description"),
+        value: getNumber(block, "value"),
+        number: getNumber(block, "number"),
+        stat: getString(block, "stat"),
+        additionalArgs: getLineValue(block, "additional_args"),
         title: localization.default?.title ?? null,
         description: localization.default?.description ?? null,
         zhTitle: localization["zh-Hans"]?.title ?? null,
@@ -184,6 +194,12 @@ const output = {
     total: records.length,
     verifiedStaticText: records.filter((record) => record.extractionStatus === "verified-static-text").length,
     pendingText: records.filter((record) => record.extractionStatus === "pending-text").length,
+    pendingBySourcePackage: records
+      .filter((record) => record.extractionStatus === "pending-text")
+      .reduce((counts, record) => {
+        counts[record.sourcePackage] = (counts[record.sourcePackage] ?? 0) + 1;
+        return counts;
+      }, {}),
   },
   records,
 };

@@ -242,6 +242,19 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 }
 
 {
+  assert.deepEqual(
+    officialUnlocks.summary.pendingBySourcePackage,
+    { base: 2, abyssalTerrors: 9 },
+    "pending unlock text should be tracked by source package",
+  );
+  const chefUnlock = officialUnlocks.records.find((record) => record.characterId === "chef");
+  assert.equal(chefUnlock?.challengeId, "chal_barbecue");
+  assert.equal(chefUnlock?.descriptionKey, "CHAL_BARBECUE_DESC");
+  assert.equal(chefUnlock?.value, 25);
+  assert.equal(chefUnlock?.extractionStatus, "pending-text");
+}
+
+{
   const guide = generateStrategyGuide("ranger", "normal20", {
     officialCatalog,
     officialLocalization,

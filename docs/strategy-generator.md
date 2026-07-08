@@ -231,7 +231,7 @@ npm run extract:localization
 npm run extract:unlocks
 ```
 
-该命令读取 base/DLC `.pck` 中的 challenge 资源，并用原版 `achievementLocalizations.csv` 连接挑战 ID、奖励角色和中英条件文本，生成 `data/official-unlocks.json`。它只读取静态安装包数据，不读取玩家存档，也不受本机解锁进度影响。当前原版有 43 条可直接确认文本；DLC challenge 能映射奖励角色，但 translation 描述仍列为 `pending-text`。
+该命令读取 base/DLC `.pck` 中的 challenge 资源，并用原版 `achievementLocalizations.csv` 连接挑战 ID、奖励角色和中英条件文本，生成 `data/official-unlocks.json`。它只读取静态安装包数据，不读取玩家存档，也不受本机解锁进度影响。当前原版有 43 条可直接确认文本；其余 `pending-text` 记录会保留 `challengeId`、`nameKey`、`descriptionKey`、`value`、`number`、`stat` 和 `additionalArgs`，用于后续继续解码 translation 或人工核验。
 
 攻略资料和官方目录的引用校验：
 
