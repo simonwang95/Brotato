@@ -45,6 +45,22 @@ function unmaintainedUnlockRecords() {
   );
 }
 
+function unmaintainedUnlockRecordCounts() {
+  return unmaintainedUnlockRecords().reduce(
+    (counts, record) => {
+      if (record.extractionStatus === "verified-static-text") {
+        counts.verifiedStaticText += 1;
+      } else if (record.extractionStatus === "pending-text") {
+        counts.pendingText += 1;
+      } else {
+        counts.other += 1;
+      }
+      return counts;
+    },
+    { verifiedStaticText: 0, pendingText: 0, other: 0 },
+  );
+}
+
 function unique(values) {
   return [...new Set(values.filter((value) => value !== null && value !== undefined))];
 }
@@ -191,6 +207,7 @@ const officialItemCandidateCount = unique(
     .filter((record) => record.kind === "item")
     .map((record) => record.nameKey),
 ).length;
+const unmaintainedCounts = unmaintainedUnlockRecordCounts();
 
 console.log("Brotato unlock verification");
 console.log(`Catalog: ${catalogPath}`);
@@ -199,6 +216,9 @@ console.log(`Checked ${Object.keys(WEAPONS).length} weapons, ${Object.keys(ITEMS
 console.log(`Audited character catalog gaps: ${catalogGapNotices.length}.`);
 console.log(
   `Static unlock records: ${(unlocks.records ?? []).length}; unmaintained in strategy layer: ${unmaintainedUnlockRecords().length}.`,
+);
+console.log(
+  `Unmaintained unlock detail: verified-static-text ${unmaintainedCounts.verifiedStaticText}, pending-text ${unmaintainedCounts.pendingText}, other ${unmaintainedCounts.other}.`,
 );
 console.log(
   `Official recommendation candidate pool: ${officialWeaponCandidateCount} weapons, ${officialItemCandidateCount} items.`,

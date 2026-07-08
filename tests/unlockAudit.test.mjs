@@ -13,6 +13,11 @@ assert.match(
 );
 assert.match(
   output,
+  /Unmaintained unlock detail: verified-static-text 0, pending-text 2, other 0\./,
+  "unlock verifier should prove no verified static unlock text remains unmaintained",
+);
+assert.match(
+  output,
   /Audited character catalog gaps: 1\./,
   "unlock verifier should count audited strategy-only catalog gaps separately",
 );
