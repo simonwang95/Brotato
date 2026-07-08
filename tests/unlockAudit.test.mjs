@@ -8,7 +8,7 @@ const warningsSection = output.split("\nAudited catalog gaps:")[0] ?? output;
 
 assert.match(
   output,
-  /Static unlock records: 54; unmaintained in strategy layer: 6\./,
+  /Static unlock records: 54; unmaintained in strategy layer: 2\./,
   "unlock verifier should report official unlock records missing from strategy data",
 );
 assert.match(
@@ -41,10 +41,10 @@ assert.match(
   /official-unlock:wounded .*CHARACTER_WOUNDED.*CHAL_DIFFICULTY_NIGHTMARE_1_DESC/,
   "wounded static unlock evidence should not be hidden",
 );
-assert.match(
+assert.doesNotMatch(
   output,
   /official-unlock:vampire .*CHARACTER_VAMPIRE.*CHAL_STAT_DESC/,
-  "verified static unlock evidence for newly discovered official characters should be visible",
+  "vampire has verified static unlock text and should now be maintained in strategy data",
 );
 
 console.log("unlock audit tests passed");

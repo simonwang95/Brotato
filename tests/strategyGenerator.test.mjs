@@ -41,8 +41,12 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     "druid",
     "hiker",
     "buccaneer",
+    "baby",
+    "technomage",
+    "vagabond",
+    "vampire",
   ].forEach((characterId) => {
-    assert.ok(characterIds.has(characterId), `${characterId} DLC guide should be present`);
+    assert.ok(characterIds.has(characterId), `${characterId} guide should be present`);
   });
   assert.ok(
     characters.some((character) => character.id === "ranger"),
@@ -76,6 +80,26 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     characters.some((character) => character.id === "buccaneer" && character.cnHint.startsWith("海盗")),
     "DLC buccaneer guide should be present with Chinese name",
   );
+}
+
+{
+  const verifiedOfficialGuides = [
+    ["baby", /第 6 波前达到 10 等级/],
+    ["technomage", /10 元素伤害.*3 个构筑物/],
+    ["vagabond", /6 把不同武器/],
+    ["vampire", /40% 生命窃取/],
+  ];
+
+  verifiedOfficialGuides.forEach(([characterId, unlockPattern]) => {
+    const guide = generateStrategyGuide(characterId, "normal20", { officialCatalog });
+    assert.match(
+      guide.character.unlock,
+      unlockPattern,
+      `${characterId} should use verified static unlock text`,
+    );
+    assert.ok(guide.recommendedWeapons.length > 0, `${characterId} should have weapon guidance`);
+    assert.ok(guide.keyItems.length > 0, `${characterId} should have item guidance`);
+  });
 }
 
 {

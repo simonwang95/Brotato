@@ -109,7 +109,7 @@
 - `Hiker（徒步旅行者）`：行走经济和高移速路线。
 - `Buccaneer（海盗）`：海军远程和距离击杀经济。
 
-DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 能映射 DLC challenge 奖励角色，但当前 DLC translation 描述文本还未可靠解码，因此 `unlock` 文案必须继续保守标注。`npm run unlocks:pending` 会把这些未确认文本集中列成待校验清单；图鉴可以展示 `pendingEvidence` 里的静态 challenge 证据，不能把它等同于精确条件文本。`Baby`、`Beast Master`、`Technomage`、`Vagabond`、`Vampire`、`Wounded` 当前作为 official-only 图鉴条目显示，后续需要新增策略模板或明确排除。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`，保留为策略层待校验候选。
+DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 能映射 DLC challenge 奖励角色，但当前 DLC translation 描述文本还未可靠解码，因此 `unlock` 文案必须继续保守标注。`npm run unlocks:pending` 会把这些未确认文本集中列成待校验清单；图鉴可以展示 `pendingEvidence` 里的静态 challenge 证据，不能把它等同于精确条件文本。`Baby`、`Technomage`、`Vagabond`、`Vampire` 已根据 verified-static-text 解锁记录进入攻略层；`Beast Master` 和 `Wounded` 仍作为 official-only 图鉴条目显示，后续需要解码或人工核验 pending 文本后再新增策略模板。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`，保留为策略层待校验候选。
 
 ## Lucky（幸运星）规则
 
