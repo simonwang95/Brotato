@@ -67,7 +67,7 @@
 - 稀有度和价格会作为可得性修正：低阶低价条目更适合前中期成型；高阶高价条目在普通通关中更保守，在无尽后期可保留成长价值。
 - 官方效果或武器缩放命中角色属性优先级/第 20 关目标时，会得到数值协同加分。
 - 官方武器记录会转换为 `scenario model` 输入，用角色目标面板中位数估算普通清怪、无尽怪潮或 Boss 单体的有效清场分。该分数用于排序和解释，但权重低于手写主线。
-- 支持的触发道具会用 `calculateItemEffectDps` 估算场景 DPS 或经济/成长收益。当前重点覆盖 `Cyberball`、`Baby Elephant`、`Baby with a Beard` 这类幸运/拾取/击杀触发伤害，以及 `Hunting Trophy` 的暴击击杀材料收益、`Metal Detector` 的拾取双倍材料期望收益、`Crown` 的收获成长等效收益。
+- 支持的触发道具会用 `calculateItemEffectDps` 估算场景 DPS 或经济/成长收益。当前重点覆盖 `Cyberball`、`Baby Elephant`、`Baby with a Beard` 这类幸运/拾取/击杀触发伤害，以及 `Hunting Trophy` 的暴击击杀材料收益、`Metal Detector` 的拾取双倍材料期望收益、`Crown` 的收获成长等效收益、`Bag` 的箱子材料潜力。
 - 官方道具补充候选默认展示手写关键道具外的前 10 个高分候选，让 `Crown` 这类非手写但强协同的经济成长道具能进入收获路线推荐。
 - 拾取吸附类道具不会伪装成伤害 DPS，而是输出拾取频率收益。例如 `Baby Gecko` 和 `Sifd's Relic` 会按场景 `pickupRatePerSecond` 估算额外拾取机会，并给 Lucky 这类拾取触发路线机制加分。
 - 机制修正用于表达纯 DPS 不容易覆盖的价值。例如 Lucky 路线会额外重视幸运缩放，Lute 的百分比伤害会被视作能放大拾取/击杀触发收益。

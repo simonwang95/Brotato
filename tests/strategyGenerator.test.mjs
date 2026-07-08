@@ -271,6 +271,12 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     ),
     "farmer crown recommendation should explain its economy-growth mechanic",
   );
+  const bag = guide.keyItems.find(({ item }) => item.name === "Bag");
+  assert.ok(bag, "farmer guide should surface Bag from the official item candidate pool");
+  assert.ok(
+    bag.recommendationReasons.some((reason) => reason.includes("箱子材料潜力")),
+    "farmer bag recommendation should explain crate material utility",
+  );
 }
 
 {

@@ -49,6 +49,7 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   stat_speed: "speed",
   stat_harvesting: "harvesting",
   harvesting_growth: "harvesting",
+  item_box_gold: "harvesting",
   stat_luck: "luck",
   stat_all: "damagePercent",
   stat_damage: "damagePercent",
@@ -85,6 +86,7 @@ const ITEM_EFFECT_NAME_KEYS = {
   ITEM_HUNTING_TROPHY: "huntingTrophy",
   ITEM_METAL_DETECTOR: "metalDetector",
   ITEM_CROWN: "crown",
+  ITEM_BAG: "bag",
   ITEM_BABY_GECKO: "babyGecko",
   ITEM_SIFDS_RELIC: "sifdsRelic",
 };
@@ -718,6 +720,8 @@ function scoreScenarioModel(entry, plan, mode) {
         ? `+${itemModel.result.extraMaterialRate.toFixed(2)}/秒`
         : Number.isFinite(itemModel.result.extraHarvesting)
           ? `+${itemModel.result.extraHarvesting.toFixed(1)} 收获`
+          : Number.isFinite(itemModel.result.extraMaterialPerCrate)
+            ? `+${itemModel.result.extraMaterialPerCrate.toFixed(0)}/箱`
           : `+${score}`;
       return {
         score,

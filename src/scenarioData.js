@@ -148,6 +148,18 @@ export const ITEM_EFFECTS = {
     description:
       "按官方收获成长百分比估算额外收获等效值；不计入伤害 DPS。",
   },
+  bag: {
+    id: "bag",
+    name: "Bag",
+    cnName: "袋子",
+    trigger: "crateMaterialBonus",
+    chance: 100,
+    baseDamage: 0,
+    luckScaling: 0,
+    crateMaterialValue: 15,
+    description:
+      "按官方箱子材料奖励估算经济潜力；不计入伤害 DPS，也不假设箱子掉落频率。",
+  },
   babyGecko: {
     id: "babyGecko",
     name: "Baby Gecko",

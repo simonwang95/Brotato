@@ -167,6 +167,13 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const bag = calculateItemEffectDps(baseStats, "normalWave", "bag");
+
+  closeTo(bag.extraMaterialPerCrate, 15, "bag uses official crate material value");
+  closeTo(bag.economyUtilityScore, 3, "crate material bonus produces economy utility");
+}
+
+{
   const sifdsRelic = calculateItemEffectDps(baseStats, "normalWave", "sifdsRelic");
 
   closeTo(sifdsRelic.pickupMultiplier, 2, "sifd's relic models full pickup attraction");

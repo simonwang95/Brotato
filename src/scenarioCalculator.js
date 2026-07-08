@@ -231,6 +231,23 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "crateMaterialBonus") {
+    const extraMaterialPerCrate = Math.max(0, itemEffect.crateMaterialValue ?? 0);
+    const economyUtilityScore = extraMaterialPerCrate / 5;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      extraMaterialPerCrate,
+      economyUtilityScore,
+      economyLabel: "箱子材料潜力",
+    };
+  }
+
   const triggerRate =
     itemEffect.trigger === "onPickup"
       ? scenario.pickupRatePerSecond
