@@ -80,6 +80,25 @@ const CHARACTER_NAME_KEY_OVERRIDES = {
   oneArmed: "CHARACTER_ONE_ARM",
 };
 
+const UNLOCK_CHARACTER_ID_ALIASES = {
+  oneArmed: "oneArm",
+};
+
+function camelIdFromCatalogId(id) {
+  return String(id)
+    .replace(/^character_/, "")
+    .replace(/_([a-z])/g, (_match, letter) => letter.toUpperCase());
+}
+
+function displayNameFromNameKey(nameKey) {
+  return String(nameKey)
+    .replace(/^CHARACTER_/, "")
+    .toLowerCase()
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 function unique(values) {
   return [...new Set(values.filter((value) => value !== null && value !== undefined))];
 }
@@ -316,6 +335,10 @@ function buildUnlockRecordIndex(unlocks) {
   return new Map((unlocks?.records ?? []).map((record) => [record.characterId, record]));
 }
 
+function unlockRecordForCharacterId(unlockRecords, characterId) {
+  return unlockRecords.get(characterId) ?? unlockRecords.get(UNLOCK_CHARACTER_ID_ALIASES[characterId]);
+}
+
 function buildUnlockEvidenceLines(record) {
   if (!record) return [];
 
@@ -340,6 +363,20 @@ function buildUnlockEvidenceLines(record) {
     record.pendingReason ?? "已定位静态 challenge，但精确条件文本仍待校验。",
     staticFields.length ? `静态字段：${staticFields.join("，")}` : "",
   ].filter(Boolean);
+}
+
+function buildOfficialUnlockText(official, unlockRecord) {
+  if (unlockRecord?.extractionStatus === "verified-static-text" && unlockRecord.zhDescription) {
+    return `官方静态条件：${unlockRecord.zhDescription}`;
+  }
+
+  if (unlockRecord?.extractionStatus === "pending-text") {
+    return "官方静态 challenge 已定位，具体条件文本待校验。";
+  }
+
+  if (official?.unlockedByDefault === true) return "官方目录显示默认解锁。";
+  if (official?.unlockedByDefault === false) return "官方目录显示需解锁，具体条件待补。";
+  return "官方目录解锁状态未知。";
 }
 
 function buildCharacterTraitLines(record) {
@@ -427,14 +464,43 @@ function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEnt
 
 export function buildCharacterCompendium(catalog, unlocks) {
   const unlockRecords = buildUnlockRecordIndex(unlocks);
+  const maintainedNameKeys = new Set(Object.values(CHARACTER_GUIDES).map(characterNameKey));
+  const officialOnlyCharacters = (catalog?.records ?? [])
+    .filter((record) => record.kind === "character" && !maintainedNameKeys.has(record.nameKey))
+    .map((official) => {
+      const id = camelIdFromCatalogId(official.id);
+      const unlockRecord = unlockRecords.get(id);
+      const name = displayNameFromNameKey(official.nameKey);
+      const unlockVerified = unlockRecord?.extractionStatus === "verified-static-text";
 
-  return Object.values(CHARACTER_GUIDES)
-    .map((character) => {
+      return {
+        id,
+        name,
+        nameKey: official.nameKey,
+        cnName: "待本地化",
+        archetype: "官方角色目录待补攻略",
+        unlock: buildOfficialUnlockText(official, unlockRecord),
+        unlockStatus: unlockVerified ? "已抽取静态条件" : "待补精确条件",
+        unlockEvidenceStatus: unlockRecord?.extractionStatus ?? "missing",
+        unlockEvidenceLines: buildUnlockEvidenceLines(unlockRecord),
+        summary: "官方角色目录已抽取；策略路线、中文名和攻略模板仍待维护。",
+        traits: buildCharacterTraitLines(official),
+        officialFound: true,
+        officialOnly: true,
+        sourceLabel: sourceLabel(official.sourcePackage),
+        iconResourcePath: official.iconResourcePath ?? null,
+        expectedImageAssetPath: official.expectedImageAssetPath ?? null,
+        imageAssetPath: official.imageAssetPath ?? null,
+      };
+    });
+
+  return [
+    ...Object.values(CHARACTER_GUIDES).map((character) => {
       const { cnName, archetype } = splitChineseHint(character.cnHint);
       const unlockVerified = !/待校验|待补/.test(character.unlock);
       const official = findCharacterRecord(catalog, character);
       const traits = buildCharacterTraitLines(official);
-      const unlockRecord = unlockRecords.get(character.id);
+      const unlockRecord = unlockRecordForCharacterId(unlockRecords, character.id);
 
       return {
         id: character.id,
@@ -454,7 +520,9 @@ export function buildCharacterCompendium(catalog, unlocks) {
         expectedImageAssetPath: official?.expectedImageAssetPath ?? null,
         imageAssetPath: official?.imageAssetPath ?? null,
       };
-    })
+    }),
+    ...officialOnlyCharacters,
+  ]
     .sort((left, right) => left.name.localeCompare(right.name, "en"));
 }
 

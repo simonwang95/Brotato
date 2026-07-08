@@ -7,7 +7,7 @@ const localization = JSON.parse(readFileSync("data/official-localization.json", 
 const unlocks = JSON.parse(readFileSync("data/official-unlocks.json", "utf8"));
 const compendium = buildCompendium(catalog, localization, unlocks);
 
-assert.equal(compendium.characters.length, 59, "compendium should include the maintained roster");
+assert.equal(compendium.characters.length, 65, "character compendium should include official-only records and the maintained Giant gap");
 assert.equal(compendium.weapons.length, 79, "weapon compendium should group all official weapons");
 assert.equal(compendium.items.length, 244, "item compendium should group all official items");
 
@@ -86,6 +86,44 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
     lucky?.traits.includes("拾取材料时：75% 概率，造成 15% 幸运 的伤害"),
     "Lucky should show pickup damage trigger",
   );
+}
+
+{
+  const baby = compendium.characters.find((entry) => entry.id === "baby");
+  assert.equal(baby?.officialOnly, true);
+  assert.equal(baby?.nameKey, "CHARACTER_BABY");
+  assert.equal(baby?.unlockStatus, "已抽取静态条件");
+  assert.match(baby?.unlock ?? "", /第6波前达到10等级/);
+  assert.equal(baby?.imageAssetPath, "data/assets/characters/character_baby.webp");
+  assert.ok(
+    baby?.traits.some((line) => line.includes("收获 +12")),
+    "official-only characters should expose parsed official traits",
+  );
+}
+
+{
+  const wounded = compendium.characters.find((entry) => entry.id === "wounded");
+  assert.equal(wounded?.officialOnly, true);
+  assert.equal(wounded?.unlockEvidenceStatus, "pending-text");
+  assert.ok(
+    wounded?.unlockEvidenceLines.some((line) => line.includes("CHAL_DIFFICULTY_NIGHTMARE_1_DESC")),
+    "official-only pending characters should keep static challenge evidence",
+  );
+}
+
+{
+  const oneArmed = compendium.characters.find((entry) => entry.id === "oneArmed");
+  assert.ok(
+    oneArmed?.unlockEvidenceLines.some((line) => line.includes("CHAL_DIFFICULTY_DESC")),
+    "oneArmed should use the oneArm official unlock alias for static evidence",
+  );
+}
+
+{
+  const giant = compendium.characters.find((entry) => entry.id === "giant");
+  assert.equal(giant?.officialFound, false);
+  assert.equal(giant?.sourceLabel, "未匹配官方角色资源");
+  assert.match(giant?.unlock ?? "", /官方角色资源未包含 CHARACTER_GIANT/);
 }
 
 {
