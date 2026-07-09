@@ -1027,6 +1027,19 @@ function scoreScenarioModel(entry, plan, mode) {
       };
     }
 
+    if (itemModel.result.piercingUtilityScore) {
+      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.piercingUtilityScore)));
+      const utilityLabel = itemModel.result.utilityLabel ?? "贯通覆盖潜力";
+      return {
+        score,
+        reasons: [
+          `场景模型：${itemModel.result.scenario.name}${utilityLabel} +${itemModel.result.effectivePiercing.toFixed(
+            1,
+          )} 贯通`,
+        ],
+      };
+    }
+
     if (itemModel.result.customGrowthUtilityScore) {
       const score = Math.min(8, Math.max(0, Math.round(itemModel.result.customGrowthUtilityScore)));
       const utilityLabel = itemModel.result.utilityLabel ?? "官方自定义成长潜力";
@@ -1133,6 +1146,39 @@ function endWaveStatGrowthEffectForEntry(baseEffect, effects, plan) {
   };
 }
 
+function piercingSupportEffectForEntry(baseEffect, effects, plan) {
+  const planStats = collectPlanStats(plan);
+  const piercing = effects
+    .filter((effect) => effect.key === "piercing" && effect.value > 0)
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  if (piercing > 0 && (planStats.has("rangedDamage") || planStats.has("damagePercent"))) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:piercing-support`,
+      trigger: "piercingSupport",
+      piercing,
+      critGated: false,
+      description: "按官方贯通数值估算怪潮覆盖潜力；不计入直接 DPS。",
+    };
+  }
+
+  const critPiercing = effects
+    .filter((effect) => effect.key === "pierce_on_crit" && effect.value > 0)
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  if (critPiercing > 0 && planStats.has("critChance")) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:crit-piercing-support`,
+      trigger: "piercingSupport",
+      piercing: critPiercing,
+      critGated: true,
+      description: "按官方暴击贯通数值和角色目标暴击率估算覆盖潜力；不计入直接 DPS。",
+    };
+  }
+
+  return null;
+}
+
 function itemEffectForEntry(entry) {
   const effects = officialEffects(entry.official);
   const baseEffect = {
@@ -1229,6 +1275,9 @@ function itemEffectForEntry(entry) {
       description: "按官方材料吸附范围估算额外拾取节奏和触发机会。",
     };
   }
+
+  const piercingSupport = piercingSupportEffectForEntry(baseEffect, effects, entry.plan);
+  if (piercingSupport) return piercingSupport;
 
   const cursedKillGold = effects.find(
     (effect) => effect.key === "gold_on_cursed_enemy_kill" && effect.value > 0,

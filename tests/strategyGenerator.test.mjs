@@ -282,6 +282,14 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     guide.keyItems.some(({ item }) => item.name === "Bandana" && item.cnName === "头巾"),
     "renegade should include Bandana for pierce coverage",
   );
+  assert.ok(
+    guide.keyItems.some(
+      ({ item, recommendationReasons }) =>
+        item.name === "Bandana" &&
+        recommendationReasons.some((reason) => reason.includes("贯通覆盖潜力")),
+    ),
+    "renegade bandana recommendation should explain official piercing coverage utility",
+  );
 }
 
 {

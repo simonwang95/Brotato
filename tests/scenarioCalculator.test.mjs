@@ -255,6 +255,45 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const bandana = calculateItemEffectDps(
+    {
+      ...baseStats,
+      rangedDamage: 40,
+      damagePercent: 50,
+    },
+    "swarm",
+    {
+      id: "official:piercing-support",
+      trigger: "piercingSupport",
+      piercing: 1,
+      critGated: false,
+    },
+  );
+
+  closeTo(bandana.effectivePiercing, 1, "piercing support uses official piercing amount");
+  closeTo(bandana.piercingUtilityScore, 9.8, "piercing support scales with density and ranged route strength");
+}
+
+{
+  const eyepatch = calculateItemEffectDps(
+    {
+      ...baseStats,
+      critChance: 50,
+    },
+    "swarm",
+    {
+      id: "official:crit-piercing-support",
+      trigger: "piercingSupport",
+      piercing: 1,
+      critGated: true,
+    },
+  );
+
+  closeTo(eyepatch.effectivePiercing, 0.5, "crit-gated piercing uses crit chance");
+  closeTo(eyepatch.piercingUtilityScore, 2.8, "crit-gated piercing produces coverage utility");
+}
+
+{
   const customGrowth = calculateItemEffectDps({ ...baseStats, speed: 80 }, "normalWave", {
     id: "official:custom-growth",
     trigger: "customGrowthPotential",

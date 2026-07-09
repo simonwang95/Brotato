@@ -375,6 +375,37 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "piercingSupport") {
+    const piercing = Math.max(0, itemEffect.piercing ?? 0);
+    const critChance = itemEffect.critGated ? clamp(normalizedStats.critChance / 100, 0, 1) : 1;
+    const lineOpportunity = Math.max(0, scenario.averageLineTargets - 1);
+    const effectivePiercing = Math.min(piercing, lineOpportunity) * critChance;
+    const rangedMultiplier =
+      1 +
+      clamp(normalizedStats.rangedDamage / 80, 0, 1) +
+      clamp(normalizedStats.damagePercent / 200, 0, 0.8);
+    const densityMultiplier = clamp(scenario.averageLineTargets / 2, 0.5, 2);
+    const piercingUtilityScore =
+      effectivePiercing * scenario.killRateMultiplier * rangedMultiplier * densityMultiplier * 2;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      piercing,
+      critChance,
+      lineOpportunity,
+      effectivePiercing,
+      rangedMultiplier,
+      densityMultiplier,
+      piercingUtilityScore,
+      utilityLabel: itemEffect.critGated ? "暴击贯通覆盖潜力" : "贯通覆盖潜力",
+    };
+  }
+
   if (itemEffect.trigger === "customGrowthPotential") {
     const scaledPlanStat = itemEffect.scaledPlanStat;
     const sourceStatValue = Math.max(0, normalizedStats[scaledPlanStat] ?? 0);
