@@ -14,8 +14,8 @@ assert.equal(
   sourcePendingRecords.length,
   "pending unlock list should mirror official-unlocks pending-text records",
 );
-assert.deepEqual(pending.summary.bySourcePackage, { base: 2, abyssalTerrors: 9 });
-assert.deepEqual(pending.summary.byStrategyStatus, { "official-only": 2, maintained: 9 });
+assert.deepEqual(pending.summary.bySourcePackage, { base: 2, abyssalTerrors: 8 });
+assert.deepEqual(pending.summary.byStrategyStatus, { "official-only": 2, maintained: 8 });
 assert.match(
   pending.note,
   /does not read save files and is not affected by local unlock progress/,
@@ -42,7 +42,8 @@ assert.match(
 const report = execFileSync("node", ["scripts/report-unlock-pending.mjs"], {
   encoding: "utf8",
 });
-assert.match(report, /"total": 11/);
+assert.match(report, /"total": 10/);
+assert.doesNotMatch(report, /buccaneer: chal_blind_greed/);
 assert.match(report, /chef: chal_barbecue \/ CHAL_BARBECUE_DESC, value=25, maintained/);
 
 console.log("pending unlock tests passed");

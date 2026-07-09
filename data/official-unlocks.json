@@ -12,11 +12,11 @@
   "note": "Static install-package data only. This does not read save files and is not affected by local unlock progress.",
   "summary": {
     "total": 54,
-    "verifiedStaticText": 43,
-    "pendingText": 11,
+    "verifiedStaticText": 44,
+    "pendingText": 10,
     "pendingBySourcePackage": {
       "base": 2,
-      "abyssalTerrors": 9
+      "abyssalTerrors": 8
     }
   },
   "records": [
@@ -867,22 +867,10 @@
       "stat": "pickup_range",
       "additionalArgs": "[  ]",
       "title": null,
-      "description": null,
+      "description": "Reach 100 % Pickup Range",
       "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_blind_greed",
-        "nameKey": "CHAL_BLIND_GREED",
-        "descriptionKey": "CHAL_STAT_DESC",
-        "value": 100,
-        "number": 0,
-        "stat": "pickup_range",
-        "additionalArgs": "[  ]",
-        "challengePath": "res://dlcs/dlc_1/challenges/blind_greed_data.tres",
-        "rewardPath": "res://dlcs/dlc_1/characters/buccaneer/buccaneer_data.tres"
-      }
+      "zhDescription": "达到100%拾取范围",
+      "extractionStatus": "verified-static-text"
     },
     {
       "characterId": "chef",

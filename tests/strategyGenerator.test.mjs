@@ -348,9 +348,16 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 {
   assert.deepEqual(
     officialUnlocks.summary.pendingBySourcePackage,
-    { base: 2, abyssalTerrors: 9 },
+    { base: 2, abyssalTerrors: 8 },
     "pending unlock text should be tracked by source package",
   );
+  const buccaneerUnlock = officialUnlocks.records.find((record) => record.characterId === "buccaneer");
+  const buccaneer = getAvailableCharacters().find((character) => character.id === "buccaneer");
+  assert.equal(buccaneerUnlock?.descriptionKey, "CHAL_STAT_DESC");
+  assert.equal(buccaneerUnlock?.zhDescription, "达到100%拾取范围");
+  assert.equal(buccaneerUnlock?.extractionStatus, "verified-static-text");
+  assert.match(buccaneer?.unlock ?? "", /100% 拾取范围/);
+  assert.doesNotMatch(buccaneer?.unlock ?? "", /待校验|待补/);
   const chefUnlock = officialUnlocks.records.find((record) => record.characterId === "chef");
   assert.equal(chefUnlock?.challengeId, "chal_barbecue");
   assert.equal(chefUnlock?.descriptionKey, "CHAL_BARBECUE_DESC");

@@ -890,6 +890,7 @@ const VERIFIED_CHARACTER_UNLOCKS = {
   vagabond: "官方 Progress 静态数据：同时拥有 6 把不同武器后解锁。",
   vampire: "官方 Progress 静态数据：达到 40% 生命窃取后解锁。",
   wildling: "官方 Progress 静态数据：累计击杀 10000 名敌人后解锁。",
+  buccaneer: "官方 Progress 静态数据：达到 100% 拾取范围后解锁。",
   giant:
     "深海魔怪 DLC/策略层候选；当前 base+DLC 官方角色资源未包含 CHARACTER_GIANT，具体挑战条件待校验。",
 };
@@ -3768,7 +3769,7 @@ export const CHARACTER_GUIDES = {
     id: "buccaneer",
     name: "Buccaneer",
     cnHint: "海盗，海军远程经济",
-    unlock: "深海魔怪 DLC 角色；官方目录显示需解锁，具体挑战条件待校验。",
+    unlock: VERIFIED_CHARACTER_UNLOCKS.buccaneer,
     summary: "海盗适合海军远程、距离击杀和商店风险收益。强在经济滚动，弱在前期需要迅速建立清怪覆盖。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({

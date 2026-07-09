@@ -11,6 +11,26 @@ const dlcPackagePath = join(installDir, "BrotatoAbyssalTerrors.pck");
 const pendingTextReason =
   "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。";
 
+const STAT_LABELS = {
+  pickup_range: { en: "% Pickup Range", zh: "%拾取范围" },
+  stat_armor: { en: "Armor", zh: "护甲" },
+  stat_attack_speed: { en: "% Attack Speed", zh: "%攻击速度" },
+  stat_crit_chance: { en: "% Crit Chance", zh: "%暴击率" },
+  stat_dodge: { en: "% Dodge", zh: "%闪避" },
+  stat_elemental_damage: { en: "Elemental Damage", zh: "元素伤害" },
+  stat_engineering: { en: "Engineering", zh: "工程学" },
+  stat_harvesting: { en: "Harvesting", zh: "收获" },
+  stat_hp_regeneration: { en: "HP Regeneration", zh: "生命再生" },
+  stat_lifesteal: { en: "% Life Steal", zh: "%生命窃取" },
+  stat_luck: { en: "Luck", zh: "幸运" },
+  stat_max_hp: { en: "Max HP", zh: "最大生命值" },
+  stat_melee_damage: { en: "Melee Damage", zh: "近战伤害" },
+  stat_percent_damage: { en: "% Damage", zh: "%伤害" },
+  stat_range: { en: "Range", zh: "范围" },
+  stat_ranged_damage: { en: "Ranged Damage", zh: "远程伤害" },
+  stat_speed: { en: "% Speed", zh: "%速度" },
+};
+
 function readPck(path) {
   const buffer = readFileSync(path);
   if (buffer.subarray(0, 4).toString("ascii") !== "GDPC") {
@@ -130,6 +150,27 @@ function challengeLocalizations(baseFiles) {
   return result;
 }
 
+function templateLocalizationForChallenge(block) {
+  const descriptionKey = getString(block, "description");
+  if (descriptionKey !== "CHAL_STAT_DESC") return null;
+
+  const stat = getString(block, "stat");
+  const statLabel = STAT_LABELS[stat];
+  const value = getNumber(block, "value");
+  if (!statLabel || value === null) return null;
+
+  return {
+    default: {
+      title: null,
+      description: `Reach ${value} ${statLabel.en}`,
+    },
+    "zh-Hans": {
+      title: null,
+      description: `达到${value}${statLabel.zh}`,
+    },
+  };
+}
+
 function extractCharacterUnlocks(packageFiles, sourcePackage, localizations = new Map()) {
   return [...packageFiles.entries()]
     .filter(([path]) => path.includes("/challenges/") && path.endsWith(".tres"))
@@ -140,7 +181,8 @@ function extractCharacterUnlocks(packageFiles, sourcePackage, localizations = ne
       if (getNumber(block, "reward_type") !== 6 || !characterId) return null;
 
       const challengeId = getString(block, "my_id");
-      const localization = localizations.get(challengeId) ?? {};
+      const localization =
+        localizations.get(challengeId) ?? templateLocalizationForChallenge(block) ?? {};
       const extractionStatus = localization["zh-Hans"]?.description
         ? "verified-static-text"
         : "pending-text";

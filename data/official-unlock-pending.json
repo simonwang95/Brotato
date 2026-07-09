@@ -6,14 +6,14 @@
   },
   "note": "Pending unlock text is derived from static install-package challenge records only. This does not read save files and is not affected by local unlock progress.",
   "summary": {
-    "total": 11,
+    "total": 10,
     "bySourcePackage": {
       "base": 2,
-      "abyssalTerrors": 9
+      "abyssalTerrors": 8
     },
     "byStrategyStatus": {
       "official-only": 2,
-      "maintained": 9
+      "maintained": 8
     }
   },
   "records": [
@@ -55,27 +55,6 @@
       "additionalArgs": "[  ]",
       "challengePath": "res://challenges/chal_difficulty_6_data.tres",
       "rewardPath": "res://items/characters/wounded/wounded_data.tres",
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "verificationAction": "继续解码 PHashTranslation 的 key->文本映射，或用安装包/游戏内静态界面人工核验后再写入 zhDescription。"
-    },
-    {
-      "characterId": "buccaneer",
-      "strategyCharacterId": "buccaneer",
-      "strategyStatus": "maintained",
-      "officialNameKey": "CHARACTER_BUCCANEER",
-      "characterEnName": "Buccaneer",
-      "characterCnName": "海盗",
-      "sourcePackage": "abyssalTerrors",
-      "challengeId": "chal_blind_greed",
-      "nameKey": "CHAL_BLIND_GREED",
-      "descriptionKey": "CHAL_STAT_DESC",
-      "value": 100,
-      "number": 0,
-      "stat": "pickup_range",
-      "additionalArgs": "[  ]",
-      "challengePath": "res://dlcs/dlc_1/challenges/blind_greed_data.tres",
-      "rewardPath": "res://dlcs/dlc_1/characters/buccaneer/buccaneer_data.tres",
       "extractionStatus": "pending-text",
       "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
       "verificationAction": "继续解码 PHashTranslation 的 key->文本映射，或用安装包/游戏内静态界面人工核验后再写入 zhDescription。"
