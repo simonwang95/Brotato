@@ -65,7 +65,15 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   stat_damage: "damagePercent",
   enemy_percent_damage_taken: "damagePercent",
   explosion_damage: "damagePercent",
+  explosion_size: "damagePercent",
   damage_against_bosses: "damagePercent",
+  burning_spread: "elementalDamage",
+  burning_enemy_hp_percent_damage: "elementalDamage",
+  burning_cooldown_reduction: "elementalDamage",
+  tree_turrets: "engineering",
+  structure_attack_speed: "engineering",
+  structures_cooldown_reduction: "engineering",
+  structures_can_crit: "engineering",
   xp_gain: "harvesting",
 };
 
@@ -596,6 +604,28 @@ function scoreMechanicFit(entry, plan) {
   const hasCurseGain = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) => effect.key === "stat_curse" && effect.value > 0),
   );
+  const hasExplosionSupport = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) =>
+      ["explosion_damage", "explosion_size", "explode_on_hit"].includes(effect.key),
+    ),
+  );
+  const hasBurningSupport = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) =>
+      [
+        "burning_spread",
+        "burning_enemy_hp_percent_damage",
+        "burning_cooldown_reduction",
+      ].includes(effect.key),
+    ),
+  );
+  const hasStructureSupport = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some(
+      (effect) =>
+        ["structure_attack_speed", "tree_turrets", "structures_can_crit"].includes(effect.key) ||
+        effect.customKey === "structures_cooldown_reduction" ||
+        /turret_effect|structure_effect|builder_turret_effect/.test(effect.scriptPath ?? ""),
+    ),
+  );
   const reasons = [];
   let score = 0;
 
@@ -649,6 +679,21 @@ function scoreMechanicFit(entry, plan) {
   if (modeSupportsCurseRisk(planStats, routeTags) && hasCurseGain) {
     score += 2;
     reasons.push("机制修正：诅咒收益适合高输出或无尽路线");
+  }
+  if ((routeTags.has("explosive") || planStats.has("damagePercent")) && hasExplosionSupport) {
+    score += 3;
+    reasons.push("机制修正：官方爆炸强化适合高密度清怪");
+  }
+  if ((routeTags.has("elemental") || planStats.has("elementalDamage")) && hasBurningSupport) {
+    score += 3;
+    reasons.push("机制修正：官方燃烧效果强化元素覆盖");
+  }
+  if (
+    (routeTags.has("engineering") || routeTags.has("tool") || planStats.has("engineering")) &&
+    hasStructureSupport
+  ) {
+    score += 3;
+    reasons.push("机制修正：官方结构物效果强化工程输出");
   }
 
   return { score, reasons };
@@ -833,6 +878,33 @@ function scoreScenarioModel(entry, plan, mode) {
       };
     }
 
+    if (itemModel.result.explosionUtilityScore) {
+      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.explosionUtilityScore)));
+      const utilityLabel = itemModel.result.utilityLabel ?? "爆炸潜力";
+      return {
+        score,
+        reasons: [`场景模型：${itemModel.result.scenario.name}${utilityLabel} +${score}`],
+      };
+    }
+
+    if (itemModel.result.burningUtilityScore) {
+      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.burningUtilityScore)));
+      const utilityLabel = itemModel.result.utilityLabel ?? "燃烧潜力";
+      return {
+        score,
+        reasons: [`场景模型：${itemModel.result.scenario.name}${utilityLabel} +${score}`],
+      };
+    }
+
+    if (itemModel.result.structureUtilityScore) {
+      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.structureUtilityScore / 2)));
+      const utilityLabel = itemModel.result.utilityLabel ?? "结构物潜力";
+      return {
+        score,
+        reasons: [`场景模型：${itemModel.result.scenario.name}${utilityLabel} +${score}`],
+      };
+    }
+
     const score = Math.min(8, Math.max(0, Math.round(itemModel.result.dps / 12)));
     return {
       score,
@@ -946,6 +1018,65 @@ function itemEffectForEntry(entry) {
       curseLockedChance: curseLockedItems.value,
       curseGain: statValue("stat_curse"),
       description: "按官方锁定物品诅咒概率估算商店强化潜力；不计入伤害 DPS。",
+    };
+  }
+
+  const explosionDamage = statValue("explosion_damage");
+  const explosionSize = statValue("explosion_size");
+  const explodeOnHit = effects.find(
+    (effect) => effect.key === "explode_on_hit" && (effect.chance ?? effect.value) > 0,
+  );
+  if (explosionDamage > 0 || explosionSize > 0 || explodeOnHit) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:explosion-amplifier`,
+      trigger: "explosionAmplifier",
+      explosionDamagePercent: explosionDamage + (explodeOnHit ? 20 : 0),
+      explosionSizePercent: explosionSize,
+      description: "按官方爆炸伤害、爆炸范围或命中爆炸效果估算覆盖潜力；不计入直接 DPS。",
+    };
+  }
+
+  const burningSpread = statValue("burning_spread");
+  const burningEnemyHpPercent = statValue("burning_enemy_hp_percent_damage");
+  const burningCooldownReduction = statValue("burning_cooldown_reduction");
+  if (burningSpread > 0 || burningEnemyHpPercent > 0 || burningCooldownReduction > 0) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:burning-support`,
+      trigger: "burningSupport",
+      burnSpreadTargets: burningSpread,
+      burningEnemyHpPercent,
+      burningCooldownReductionPercent: burningCooldownReduction,
+      description: "按官方燃烧传播、燃烧百分比伤害或燃烧冷却缩短估算覆盖潜力；不计入直接 DPS。",
+    };
+  }
+
+  const structureAttackSpeed = statValue("structure_attack_speed");
+  const structureCooldownReduction = effects.find(
+    (effect) => effect.customKey === "structures_cooldown_reduction" && effect.value > 0,
+  )?.value ?? 0;
+  const projectileBonus = Math.max(0, statValue("projectiles"));
+  const structureEffectCount = effects.filter((effect) =>
+    /turret_effect|structure_effect|builder_turret_effect/.test(effect.scriptPath ?? ""),
+  ).length;
+  const treeTurrets = statValue("tree_turrets");
+  if (
+    structureAttackSpeed > 0 ||
+    structureCooldownReduction > 0 ||
+    projectileBonus > 0 ||
+    structureEffectCount > 0 ||
+    treeTurrets > 0
+  ) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:structure-support`,
+      trigger: "structureSupport",
+      structureCount: structureEffectCount + treeTurrets,
+      structureAttackSpeedPercent: structureAttackSpeed,
+      structuresCooldownReductionPercent: structureCooldownReduction,
+      projectileBonus,
+      description: "按官方结构物、结构攻速、结构冷却或投射物字段估算工程输出潜力；不计入直接 DPS。",
     };
   }
 

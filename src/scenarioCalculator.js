@@ -284,6 +284,97 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "explosionAmplifier") {
+    const explosionDamagePercent = Math.max(0, itemEffect.explosionDamagePercent ?? 0);
+    const explosionSizePercent = Math.max(0, itemEffect.explosionSizePercent ?? 0);
+    const densityMultiplier = clamp(scenario.averageTargetsInRange / 4, 0.5, 2);
+    const explosionUtilityScore =
+      (explosionDamagePercent / 15 + explosionSizePercent / 12) * densityMultiplier;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      explosionDamagePercent,
+      explosionSizePercent,
+      densityMultiplier,
+      explosionUtilityScore,
+      utilityLabel: "爆炸覆盖潜力",
+    };
+  }
+
+  if (itemEffect.trigger === "burningSupport") {
+    const burnSpreadTargets = Math.max(0, itemEffect.burnSpreadTargets ?? 0);
+    const burningEnemyHpPercent = Math.max(0, itemEffect.burningEnemyHpPercent ?? 0);
+    const burningCooldownReductionPercent = Math.max(
+      0,
+      itemEffect.burningCooldownReductionPercent ?? 0,
+    );
+    const densityMultiplier = clamp(scenario.averageTargetsInRange / 4, 0.5, 2);
+    const elementalMultiplier = 1 + clamp(normalizedStats.elementalDamage / 80, 0, 1.5);
+    const burningUtilityScore =
+      (burnSpreadTargets * 2 +
+        burningEnemyHpPercent / 6 +
+        burningCooldownReductionPercent / 12) *
+      densityMultiplier *
+      elementalMultiplier;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      burnSpreadTargets,
+      burningEnemyHpPercent,
+      burningCooldownReductionPercent,
+      densityMultiplier,
+      elementalMultiplier,
+      burningUtilityScore,
+      utilityLabel: "燃烧覆盖潜力",
+    };
+  }
+
+  if (itemEffect.trigger === "structureSupport") {
+    const structureCount = Math.max(0, itemEffect.structureCount ?? 0);
+    const structureAttackSpeedPercent = Math.max(0, itemEffect.structureAttackSpeedPercent ?? 0);
+    const structuresCooldownReductionPercent = Math.max(
+      0,
+      itemEffect.structuresCooldownReductionPercent ?? 0,
+    );
+    const projectileBonus = Math.max(0, itemEffect.projectileBonus ?? 0);
+    const engineeringMultiplier = 1 + clamp(normalizedStats.engineering / 80, 0, 1.5);
+    const densityMultiplier = clamp(scenario.averageTargetsInRange / 4, 0.5, 2);
+    const structureUtilityScore =
+      (structureCount * 2 +
+        structureAttackSpeedPercent / 10 +
+        structuresCooldownReductionPercent / 8 +
+        projectileBonus) *
+      engineeringMultiplier *
+      densityMultiplier;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      structureCount,
+      structureAttackSpeedPercent,
+      structuresCooldownReductionPercent,
+      projectileBonus,
+      engineeringMultiplier,
+      densityMultiplier,
+      structureUtilityScore,
+      utilityLabel: "结构物输出潜力",
+    };
+  }
+
   if (itemEffect.trigger === "harvestingGrowth") {
     const growthPercent = Math.max(0, itemEffect.growthPercent ?? 0);
     const extraHarvesting = Math.max(0, normalizedStats.harvesting) * (growthPercent / 100);

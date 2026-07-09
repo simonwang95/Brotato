@@ -595,12 +595,42 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 }
 
 {
+  const guide = generateStrategyGuide("mage", "normal20", { officialCatalog });
+  const snake = guide.keyItems.find(({ item }) => item.name === "Snake");
+  assert.ok(snake, "mage should include Snake as a burning spread item");
+  assert.ok(
+    snake.recommendationReasons.some((reason) => reason.includes("燃烧覆盖潜力")),
+    "snake should explain official burning support utility",
+  );
+}
+
+{
   const guide = generateStrategyGuide("ghost", "normal20", { officialCatalog });
   const adrenaline = guide.keyItems.find(({ item }) => item.name === "Adrenaline");
   assert.ok(adrenaline, "ghost guide should surface official dodge-heal sustain candidates");
   assert.ok(
     adrenaline.recommendationReasons.some((reason) => reason.includes("闪避治疗期望")),
     "adrenaline should explain dodge-heal sustain utility",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("engineer", "normal20", { officialCatalog });
+  const turret = guide.keyItems.find(({ item }) => item.name === "Turret");
+  assert.ok(turret, "engineer should include Turret as a structure item");
+  assert.ok(
+    turret.recommendationReasons.some((reason) => reason.includes("结构物输出潜力")),
+    "turret should explain official structure utility",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("artificer", "normal20", { officialCatalog });
+  const dynamite = guide.keyItems.find(({ item }) => item.name === "Dynamite");
+  assert.ok(dynamite, "artificer should include Dynamite as an explosion item");
+  assert.ok(
+    dynamite.recommendationReasons.some((reason) => reason.includes("爆炸覆盖潜力")),
+    "dynamite should explain official explosion utility",
   );
 }
 

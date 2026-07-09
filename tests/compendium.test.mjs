@@ -80,6 +80,19 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
 }
 
 {
+  const snake = compendium.items.find((entry) => entry.nameKey === "ITEM_SNAKE");
+  assert.ok(
+    snake?.detailedAttributes.includes("T1 燃烧传播 +1"),
+    "Snake should expose localized burning spread attributes",
+  );
+  const turret = compendium.items.find((entry) => entry.nameKey === "ITEM_TURRET");
+  assert.ok(
+    turret?.detailedAttributes.includes("T1 炮塔"),
+    "Turret should expose localized structure attributes",
+  );
+}
+
+{
   const slingshot = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_SLINGSHOT");
   assert.ok(
     slingshot?.detailedAttributes.some((line) =>

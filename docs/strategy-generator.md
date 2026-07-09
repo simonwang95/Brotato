@@ -139,6 +139,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 波次存钱道具：用官方 `effect_gain_pct_gold_start_wave_limited` 估算波次开始材料百分比潜力，不假设具体持有材料数，也不计入伤害 DPS。
 - 续航触发道具：用官方 `heal_when_pickup_gold`、`consumable_heal` 和 `heal_on_dodge` 估算拾取治疗、消耗品治疗和闪避治疗期望，不计入伤害 DPS。
 - 诅咒/风险经济道具：用官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items`、`stat_curse` 和敌人风险字段估算额外材料或商店诅咒潜力，不计入伤害 DPS。
+- 覆盖潜力道具：用官方 `explosion_damage`、`explosion_size`、`burning_spread`、`burning_enemy_hp_percent_damage`、`structure_attack_speed`、`structures_cooldown_reduction` 和结构物脚本路径估算爆炸、燃烧、结构物路线潜力；这类分数用于排序和解释，不作为精确 DPS。
 - 移速和闪避：合成为有效规避率，用来估算承伤倍率。
 - 燃烧：用命中频率、施加概率和持续时间估算覆盖率，支持刷新和传播目标。
 - 诅咒：拆成敌人强度倍率和奖励倍率，并给出奖励修正清场评分。
@@ -170,6 +171,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - `Sifd's Relic（Sifd的圣物）`
 - 官方 `heal_when_pickup_gold`、`consumable_heal`、`heal_on_dodge` 动态续航模型，例如 `Cute Monkey（萌萌猴）`、`Lemonade（柠檬水）`、`Weird Food（奇怪的食物）`、`Jerky（干肉条）`、`Adrenaline（肾上腺素）`
 - 官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items` 动态风险经济模型，例如 `Black Flag（黑旗）`、`Fish Hook（鱼钩）`、`Starfish（海星）`
+- 官方爆炸/燃烧/结构物动态潜力模型，例如 `Dynamite（炸药）`、`Honey（蜂蜜）`、`Snake（蛇）`、`Eyes Surgery（眼部手术）`、`Turret（炮塔）`、`Clockwork Wasp（机械黄蜂）`
 
 仍待校准：
 

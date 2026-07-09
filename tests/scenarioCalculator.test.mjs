@@ -194,6 +194,42 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const dynamite = calculateItemEffectDps(baseStats, "swarm", {
+    id: "official:explosion-amplifier",
+    trigger: "explosionAmplifier",
+    explosionDamagePercent: 15,
+    explosionSizePercent: 0,
+  });
+
+  closeTo(dynamite.explosionUtilityScore, 2, "explosion utility scales with density and explosion damage");
+}
+
+{
+  const snake = calculateItemEffectDps({ ...baseStats, elementalDamage: 40 }, "swarm", {
+    id: "official:burning-support",
+    trigger: "burningSupport",
+    burnSpreadTargets: 1,
+    burningEnemyHpPercent: 0,
+    burningCooldownReductionPercent: 0,
+  });
+
+  closeTo(snake.burningUtilityScore, 6, "burning utility scales with density and elemental route strength");
+}
+
+{
+  const turret = calculateItemEffectDps({ ...baseStats, engineering: 40 }, "normalWave", {
+    id: "official:structure-support",
+    trigger: "structureSupport",
+    structureCount: 1,
+    structureAttackSpeedPercent: 10,
+    structuresCooldownReductionPercent: 0,
+    projectileBonus: 0,
+  });
+
+  closeTo(turret.structureUtilityScore, 4.5, "structure utility scales with engineering and structure fields");
+}
+
+{
   const crown = calculateItemEffectDps(
     {
       ...baseStats,
