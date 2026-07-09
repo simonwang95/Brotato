@@ -75,7 +75,10 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   structures_cooldown_reduction: "engineering",
   structures_can_crit: "engineering",
   xp_gain: "harvesting",
+  free_rerolls: "harvesting",
+  items_price: "harvesting",
   materials: "harvesting",
+  reroll_price: "harvesting",
   structure: "engineering",
   burning_enemy: "elementalDamage",
 };
@@ -676,6 +679,11 @@ function scoreMechanicFit(entry, plan) {
       (effect) => effect.textKey === "effect_gain_pct_gold_start_wave_limited",
     ),
   );
+  const hasShopEfficiency = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) =>
+      ["free_rerolls", "items_price", "reroll_price"].includes(effect.key),
+    ),
+  );
   const hasKillGrowth = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) => effect.key === "effect_gain_stat_every_killed_enemies"),
   );
@@ -750,6 +758,10 @@ function scoreMechanicFit(entry, plan) {
   if (planStats.has("harvesting") && hasStartWaveSavings) {
     score += 3;
     reasons.push("机制修正：波次存钱放大经济滚动");
+  }
+  if ((routeTags.has("economy") || planStats.has("harvesting")) && hasShopEfficiency) {
+    score += 2;
+    reasons.push("机制修正：官方商店效率降低成型成本");
   }
   if ((routeTags.has("ethereal") || weaponSetIds.has("ethereal")) && hasKillGrowth) {
     score += 3;
@@ -1179,6 +1191,38 @@ function piercingSupportEffectForEntry(baseEffect, effects, plan) {
   return null;
 }
 
+function shopEfficiencyEffectForEntry(baseEffect, effects, plan) {
+  const planStats = collectPlanStats(plan);
+  const itemDiscountPercent = Math.max(
+    0,
+    ...effects
+      .filter((effect) => effect.key === "items_price" && effect.value < 0)
+      .map((effect) => Math.abs(Number(effect.value ?? 0))),
+  );
+  const rerollDiscountPercent = Math.max(
+    0,
+    ...effects
+      .filter((effect) => effect.key === "reroll_price" && effect.value < 0)
+      .map((effect) => Math.abs(Number(effect.value ?? 0))),
+  );
+  const freeRerolls = effects
+    .filter((effect) => effect.key === "free_rerolls" && effect.value > 0)
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+
+  if (!itemDiscountPercent && !rerollDiscountPercent && !freeRerolls) return null;
+  if (!planStats.has("harvesting") && !planStats.has("luck")) return null;
+
+  return {
+    ...baseEffect,
+    id: `${baseEffect.id}:shop-efficiency`,
+    trigger: "shopEfficiency",
+    itemDiscountPercent,
+    rerollDiscountPercent,
+    freeRerolls,
+    description: "按官方商店折扣、刷新折扣或免费刷新字段估算成型效率；不计入直接 DPS。",
+  };
+}
+
 function itemEffectForEntry(entry) {
   const effects = officialEffects(entry.official);
   const baseEffect = {
@@ -1278,6 +1322,9 @@ function itemEffectForEntry(entry) {
 
   const piercingSupport = piercingSupportEffectForEntry(baseEffect, effects, entry.plan);
   if (piercingSupport) return piercingSupport;
+
+  const shopEfficiency = shopEfficiencyEffectForEntry(baseEffect, effects, entry.plan);
+  if (shopEfficiency) return shopEfficiency;
 
   const cursedKillGold = effects.find(
     (effect) => effect.key === "gold_on_cursed_enemy_kill" && effect.value > 0,
@@ -1458,6 +1505,19 @@ function formatEconomyUtilityValue(result, fallbackScore) {
   }
   if (Number.isFinite(result.savingsPercent)) {
     return `+${result.savingsPercent.toFixed(0)}%/波`;
+  }
+  if (
+    Number.isFinite(result.itemDiscountPercent) ||
+    Number.isFinite(result.rerollDiscountPercent) ||
+    Number.isFinite(result.freeRerolls)
+  ) {
+    return [
+      result.itemDiscountPercent ? `物品折扣 ${result.itemDiscountPercent.toFixed(0)}%` : "",
+      result.rerollDiscountPercent ? `刷新折扣 ${result.rerollDiscountPercent.toFixed(0)}%` : "",
+      result.freeRerolls ? `免费刷新 +${result.freeRerolls.toFixed(0)}` : "",
+    ]
+      .filter(Boolean)
+      .join(" / ");
   }
   return `+${fallbackScore}`;
 }
@@ -1682,7 +1742,7 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
   );
   const keyItems = filterAndSort(itemPool, resolvedOptions, plan, mode).slice(
     0,
-    visibleRecommendationLimit(itemPool, manualItems.length, 12),
+    visibleRecommendationLimit(itemPool, manualItems.length, 16),
   );
 
   return {

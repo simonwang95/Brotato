@@ -219,6 +219,27 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const coupon = calculateItemEffectDps(
+    {
+      ...baseStats,
+      harvesting: 150,
+      luck: 250,
+    },
+    "normalWave",
+    {
+      id: "official:shop-efficiency",
+      trigger: "shopEfficiency",
+      itemDiscountPercent: 5,
+      rerollDiscountPercent: 25,
+      freeRerolls: 1,
+    },
+  );
+
+  closeTo(coupon.economyMultiplier, 1.85, "shop efficiency scales with economy route stats");
+  closeTo(coupon.economyUtilityScore, 19.425, "shop efficiency combines discounts and free rerolls");
+}
+
+{
   const dynamite = calculateItemEffectDps(baseStats, "swarm", {
     id: "official:explosion-amplifier",
     trigger: "explosionAmplifier",

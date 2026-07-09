@@ -156,8 +156,8 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 幽魂武器会读取官方 `effect_gain_stat_every_killed_enemies` 效果，在幽魂路线中解释击杀成长带来的后期属性滚雪球。
 - 骑士路线显式标记 `Blade`、`Medieval`、`Melee` 和 `Blunt`，用于让 Sword 的剑类/中世纪套装、Spiky Shield 的官方护甲缩放进入推荐理由。
 - Lucky 路线会读取官方武器 `scalingStats` 中的 `stat_luck`，用于解释 Lute、Flute 这类幸运缩放武器为什么适合高幸运路线。
-- 官方关键道具补充展示手写条目外的前 12 个候选；新增候选仍必须通过路线标签、目标属性或官方效果模型命中，不会只凭名称进入推荐。
-- 官方道具效果会优先从静态 effect 字段生成模型：`chance_stat_damage_effect` 会按 `customKey` 区分击杀、拾取或闪避触发伤害，`gold_on_crit_kill`、`chance_double_gold`、`instant_gold_attracting`、`harvesting_growth`、`item_box_gold`、波次存钱模板、`stats_end_of_wave`、`piercing` 和 `pierce_on_crit` 会生成经济/拾取/每波成长/贯通覆盖模型；`Cyberball` 因此按官方 `dmg_when_death` 作为击杀触发、25% 幸运伤害估算。
+- 官方关键道具补充展示手写条目外的前 16 个候选；新增候选仍必须通过路线标签、目标属性或官方效果模型命中，不会只凭名称进入推荐。
+- 官方道具效果会优先从静态 effect 字段生成模型：`chance_stat_damage_effect` 会按 `customKey` 区分击杀、拾取或闪避触发伤害，`gold_on_crit_kill`、`chance_double_gold`、`instant_gold_attracting`、`harvesting_growth`、`item_box_gold`、波次存钱模板、`stats_end_of_wave`、`piercing`、`pierce_on_crit`、`items_price`、`free_rerolls` 和 `reroll_price` 会生成经济/拾取/每波成长/贯通覆盖/商店效率模型；`Cyberball` 因此按官方 `dmg_when_death` 作为击杀触发、25% 幸运伤害估算。
 
 当前特殊道具先支持：
 
@@ -174,6 +174,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 官方 `dmg_on_dodge` 动态闪避触发伤害模型，例如 `Riposte（还击）`
 - 官方 `stats_end_of_wave` 动态每波成长模型，例如 `Robot Arm（机械臂）` 的工程学成长
 - 官方 `piercing` / `pierce_on_crit` 动态贯通覆盖模型，例如 `Bandana（头巾）`、`Sharp Bullet（尖头子弹）`、`Eyepatch（眼罩）`
+- 官方 `items_price` / `free_rerolls` / `reroll_price` 动态商店效率模型，例如 `Coupon（优惠券）`、`Dangerous Bunny（危险兔子）`、`Spyglass（望远镜）`
 - 官方 `heal_when_pickup_gold`、`consumable_heal`、`heal_on_dodge` 动态续航模型，例如 `Cute Monkey（萌萌猴）`、`Lemonade（柠檬水）`、`Weird Food（奇怪的食物）`、`Jerky（干肉条）`、`Adrenaline（肾上腺素）`
 - 官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items` 动态风险经济模型，例如 `Black Flag（黑旗）`、`Fish Hook（鱼钩）`、`Starfish（海星）`
 - 官方爆炸/燃烧/结构物动态潜力模型，例如 `Dynamite（炸药）`、`Honey（蜂蜜）`、`Snake（蛇）`、`Eyes Surgery（眼部手术）`、`Turret（炮塔）`、`Clockwork Wasp（机械黄蜂）`

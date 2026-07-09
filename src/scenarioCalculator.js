@@ -284,6 +284,34 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "shopEfficiency") {
+    const itemDiscountPercent = Math.max(0, itemEffect.itemDiscountPercent ?? 0);
+    const rerollDiscountPercent = Math.max(0, itemEffect.rerollDiscountPercent ?? 0);
+    const freeRerolls = Math.max(0, itemEffect.freeRerolls ?? 0);
+    const economyMultiplier =
+      1 +
+      clamp(normalizedStats.harvesting / 150, 0, 1) * 0.5 +
+      clamp(normalizedStats.luck / 250, 0, 1) * 0.35;
+    const economyUtilityScore =
+      (itemDiscountPercent * 0.8 + rerollDiscountPercent * 0.16 + freeRerolls * 2.5) *
+      economyMultiplier;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      itemDiscountPercent,
+      rerollDiscountPercent,
+      freeRerolls,
+      economyMultiplier,
+      economyUtilityScore,
+      economyLabel: "商店效率潜力",
+    };
+  }
+
   if (itemEffect.trigger === "explosionAmplifier") {
     const explosionDamagePercent = Math.max(0, itemEffect.explosionDamagePercent ?? 0);
     const explosionSizePercent = Math.max(0, itemEffect.explosionSizePercent ?? 0);

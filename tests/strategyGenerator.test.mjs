@@ -343,6 +343,11 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     piggyBank?.recommendationReasons.some((reason) => reason.includes("波次存钱潜力")),
     "farmer piggy bank recommendation should explain start-wave savings utility",
   );
+  const coupon = guide.keyItems.find(({ item }) => item.name === "Coupon");
+  assert.ok(
+    coupon?.recommendationReasons.some((reason) => reason.includes("商店效率潜力 物品折扣 5%")),
+    "farmer coupon recommendation should explain official shop discount utility",
+  );
 }
 
 {
