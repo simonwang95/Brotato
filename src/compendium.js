@@ -62,6 +62,9 @@ const STAT_LABELS = {
   living_tree: "树",
   percent_player_missing_health: "已损失生命百分比",
   consumable_heal: "消耗品治疗",
+  consumable_heal_over_time: "消耗品持续治疗",
+  heal_when_pickup_gold: "拾取材料治疗概率",
+  lose_hp_per_second: "每秒失去生命",
   die_in_one_hit: "受到一次伤害即死亡",
   beast_master_effect: "驯兽师宠物机制",
   boosted_wanted_item_tag: "提高宠物标签出现率",
@@ -94,6 +97,7 @@ const EFFECT_TEXT_LABELS = {
   EFFECT_LEVEL_UPGRADES_MODIFICATIONS: "升级属性选项",
   EFFECT_BEAST_MASTER_EFFECT: "驯兽师宠物机制",
   EFFECT_DIE_IN_ONE_HIT: "受到一次伤害即死亡",
+  EFFECT_HEAL_WHEN_DODGE: "闪避时治疗",
   EFFECT_WEAPON_SLOT_UPGRADES: "武器栏升级波次",
   EFFECT_ONE_WEAPON_SLOT_INITIAL_LIMIT: "初始武器栏限制",
   WOUNDED_ITEMS_EXPLANATION: "受伤者道具机制",
@@ -103,6 +107,9 @@ const EFFECT_TEXT_LABELS = {
   effect_no_weapons: "不能持有武器",
   effect_minimum_weapon_in_shop: "商店保底武器",
   effect_consumable_heal: "消耗品治疗",
+  effect_consumable_heal_over_time: "消耗品持续治疗",
+  effect_heal_when_pickup_gold: "拾取材料治疗概率",
+  effect_lose_hp_per_second: "每秒失去生命",
 };
 
 const BINARY_EFFECT_KEYS = new Set(["die_in_one_hit", "beast_master_effect"]);

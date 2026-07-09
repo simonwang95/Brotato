@@ -14,6 +14,7 @@ function resolveScenario(scenarioId) {
 }
 
 function resolveItemEffect(itemEffectId) {
+  if (itemEffectId && typeof itemEffectId === "object") return itemEffectId;
   const itemEffect = ITEM_EFFECTS[itemEffectId] ?? ITEM_EFFECTS.none;
   if (!itemEffect) throw new Error(`Unknown item effect id: ${itemEffectId}`);
   return itemEffect;
@@ -233,7 +234,7 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
 
   if (itemEffect.trigger === "crateMaterialBonus") {
     const extraMaterialPerCrate = Math.max(0, itemEffect.crateMaterialValue ?? 0);
-    const economyUtilityScore = extraMaterialPerCrate / 5;
+    const economyUtilityScore = extraMaterialPerCrate / 4;
 
     return {
       itemEffect,
@@ -262,6 +263,74 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
       savingsPercent,
       economyUtilityScore,
       economyLabel: "波次存钱潜力",
+    };
+  }
+
+  if (itemEffect.trigger === "onPickupHealChance") {
+    const chance = clamp((itemEffect.chance ?? 0) / 100, 0, 1);
+    const healAmount = Math.max(0, itemEffect.healAmount ?? 1);
+    const healingPerSecond = scenario.pickupRatePerSecond * chance * healAmount;
+    const sustainUtilityScore = healingPerSecond * 20;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: scenario.pickupRatePerSecond,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      chance,
+      healAmount,
+      healingPerSecond,
+      sustainUtilityScore,
+      sustainLabel: "拾取治疗期望",
+    };
+  }
+
+  if (itemEffect.trigger === "consumableHealBonus") {
+    const healBonus = Math.max(0, itemEffect.healBonus ?? 0);
+    const consumablePickupShare = clamp(itemEffect.consumablePickupShare ?? 0.25, 0, 1);
+    const triggerRate = scenario.pickupRatePerSecond * consumablePickupShare;
+    const healingPerSecond = triggerRate * healBonus;
+    const sustainUtilityScore = healingPerSecond * 8;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      healBonus,
+      consumablePickupShare,
+      healingPerSecond,
+      sustainUtilityScore,
+      sustainLabel: "消耗品治疗潜力",
+    };
+  }
+
+  if (itemEffect.trigger === "onDodgeHeal") {
+    const dodgeChance = clamp(normalizedStats.dodge / 100, 0, 0.6);
+    const chance = clamp((itemEffect.chance ?? 0) / 100, 0, 1);
+    const healAmount = Math.max(0, itemEffect.healAmount ?? 0);
+    const incomingHitPressure = scenario.killRateMultiplier * scenario.positioningStress;
+    const healingPerSecond = incomingHitPressure * dodgeChance * chance * healAmount;
+    const sustainUtilityScore = healingPerSecond * 6;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: incomingHitPressure,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      dodgeChance,
+      chance,
+      healAmount,
+      incomingHitPressure,
+      healingPerSecond,
+      sustainUtilityScore,
+      sustainLabel: "闪避治疗期望",
     };
   }
 

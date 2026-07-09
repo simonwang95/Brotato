@@ -479,6 +479,14 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     "lucky guide should explain Sifd pickup-chain utility",
   );
   assert.ok(
+    guide.keyItems.some(
+      ({ item, recommendationReasons }) =>
+        item.name === "Cute Monkey" &&
+        recommendationReasons.some((reason) => reason.includes("拾取治疗期望")),
+    ),
+    "lucky guide should surface official pickup-heal sustain candidates",
+  );
+  assert.ok(
     guide.statPriority.early.includes("总伤害 %"),
     "lucky guide should prioritize damage percent for item-trigger damage",
   );
@@ -583,6 +591,16 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
   assert.ok(
     guide.recommendedWeapons.every(({ routeTags }) => routeTags?.includes("Engineering")),
     "builder recommendations should carry route tags for preference scoring",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("ghost", "normal20", { officialCatalog });
+  const adrenaline = guide.keyItems.find(({ item }) => item.name === "Adrenaline");
+  assert.ok(adrenaline, "ghost guide should surface official dodge-heal sustain candidates");
+  assert.ok(
+    adrenaline.recommendationReasons.some((reason) => reason.includes("闪避治疗期望")),
+    "adrenaline should explain dodge-heal sustain utility",
   );
 }
 

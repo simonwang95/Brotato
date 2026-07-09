@@ -137,6 +137,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 收获成长道具：用官方 `harvesting_growth` 和角色目标收获中位数估算等效额外收获，不计入伤害 DPS。
 - 箱子经济道具：用官方 `item_box_gold` 估算每个箱子的额外材料潜力，不假设箱子掉落频率，也不计入伤害 DPS。
 - 波次存钱道具：用官方 `effect_gain_pct_gold_start_wave_limited` 估算波次开始材料百分比潜力，不假设具体持有材料数，也不计入伤害 DPS。
+- 续航触发道具：用官方 `heal_when_pickup_gold`、`consumable_heal` 和 `heal_on_dodge` 估算拾取治疗、消耗品治疗和闪避治疗期望，不计入伤害 DPS。
 - 移速和闪避：合成为有效规避率，用来估算承伤倍率。
 - 燃烧：用命中频率、施加概率和持续时间估算覆盖率，支持刷新和传播目标。
 - 诅咒：拆成敌人强度倍率和奖励倍率，并给出奖励修正清场评分。
@@ -152,6 +153,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 幽魂武器会读取官方 `effect_gain_stat_every_killed_enemies` 效果，在幽魂路线中解释击杀成长带来的后期属性滚雪球。
 - 骑士路线显式标记 `Blade`、`Medieval`、`Melee` 和 `Blunt`，用于让 Sword 的剑类/中世纪套装、Spiky Shield 的官方护甲缩放进入推荐理由。
 - Lucky 路线会读取官方武器 `scalingStats` 中的 `stat_luck`，用于解释 Lute、Flute 这类幸运缩放武器为什么适合高幸运路线。
+- 官方关键道具补充展示手写条目外的前 12 个候选；新增候选仍必须通过路线标签、目标属性或官方效果模型命中，不会只凭名称进入推荐。
 
 当前特殊道具先支持：
 
@@ -165,6 +167,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - `Piggy Bank（存钱罐）`
 - `Baby Gecko（壁虎宝宝）`
 - `Sifd's Relic（Sifd的圣物）`
+- 官方 `heal_when_pickup_gold`、`consumable_heal`、`heal_on_dodge` 动态续航模型，例如 `Cute Monkey（萌萌猴）`、`Lemonade（柠檬水）`、`Weird Food（奇怪的食物）`、`Jerky（干肉条）`、`Adrenaline（肾上腺素）`
 
 仍待校准：
 

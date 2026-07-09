@@ -52,6 +52,10 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   item_box_gold: "harvesting",
   effect_gain_pct_gold_start_wave_limited: "harvesting",
   stat_luck: "luck",
+  consumable_heal: "hpRegen",
+  consumable_heal_over_time: "hpRegen",
+  heal_when_pickup_gold: "hpRegen",
+  heal_on_dodge: "hpRegen",
   stat_all: "damagePercent",
   stat_damage: "damagePercent",
   enemy_percent_damage_taken: "damagePercent",
@@ -569,6 +573,15 @@ function scoreMechanicFit(entry, plan) {
   const hasLuckScaling = (entry.official.records ?? []).some((record) =>
     (record.stats?.scalingStats ?? []).some((scaling) => scaling.stat === "stat_luck"),
   );
+  const hasPickupHealing = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) => effect.key === "heal_when_pickup_gold"),
+  );
+  const hasSustainTrigger = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) =>
+      ["consumable_heal", "consumable_heal_over_time"].includes(effect.key) ||
+      effect.customKey === "heal_on_dodge",
+    ),
+  );
   const reasons = [];
   let score = 0;
 
@@ -603,6 +616,17 @@ function scoreMechanicFit(entry, plan) {
   if (planStats.has("armor") && hasArmorScaling) {
     score += 3;
     reasons.push("机制修正：官方护甲缩放适合骑士防御转输出");
+  }
+  if (
+    (planStats.has("hpRegen") || planStats.has("lifeSteal") || planStats.has("maxHp")) &&
+    hasSustainTrigger
+  ) {
+    score += 2;
+    reasons.push("机制修正：官方续航触发补足生存阈值");
+  }
+  if (planStats.has("luck") && hasPickupHealing) {
+    score += 3;
+    reasons.push("机制修正：拾取治疗跟随高拾取路线");
   }
 
   return { score, reasons };
@@ -713,12 +737,16 @@ function bestWeaponScenarioModel(entry, plan, mode) {
 function itemScenarioModel(entry, plan, mode) {
   if (!entry.item || !entry.official?.found) return null;
 
-  const itemEffectId = ITEM_EFFECT_NAME_KEYS[entry.official.nameKey];
-  if (!itemEffectId) return null;
+  const itemEffect = itemEffectForEntry(entry);
+  if (!itemEffect) return null;
 
   const scenarioId = scenarioIdForEntry(entry, mode);
-  const result = calculateItemEffectDps(representativeStats(plan), scenarioId, itemEffectId);
-  return { scenarioId, itemEffectId, result };
+  const result = calculateItemEffectDps(representativeStats(plan), scenarioId, itemEffect);
+  return {
+    scenarioId,
+    itemEffectId: typeof itemEffect === "string" ? itemEffect : itemEffect.id,
+    result,
+  };
 }
 
 function scoreScenarioModel(entry, plan, mode) {
@@ -760,6 +788,19 @@ function scoreScenarioModel(entry, plan, mode) {
       };
     }
 
+    if (itemModel.result.sustainUtilityScore) {
+      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.sustainUtilityScore)));
+      const sustainLabel = itemModel.result.sustainLabel ?? "续航潜力";
+      return {
+        score,
+        reasons: [
+          `场景模型：${itemModel.result.scenario.name}${sustainLabel} +${itemModel.result.healingPerSecond.toFixed(
+            2,
+          )} 生命/秒`,
+        ],
+      };
+    }
+
     const score = Math.min(8, Math.max(0, Math.round(itemModel.result.dps / 12)));
     return {
       score,
@@ -772,6 +813,65 @@ function scoreScenarioModel(entry, plan, mode) {
   }
 
   return { score: 0, reasons: [] };
+}
+
+function officialEffects(official) {
+  return (official?.records ?? []).flatMap((record) => record.effects ?? []);
+}
+
+function itemEffectForEntry(entry) {
+  const staticItemEffectId = ITEM_EFFECT_NAME_KEYS[entry.official.nameKey];
+  if (staticItemEffectId) return staticItemEffectId;
+
+  const effects = officialEffects(entry.official);
+  const baseEffect = {
+    id: `official:${entry.official.nameKey}`,
+    name: entry.item.name,
+    cnName: entry.item.cnName,
+  };
+  const pickupHeal = effects.find(
+    (effect) => effect.key === "heal_when_pickup_gold" && effect.value > 0,
+  );
+  if (pickupHeal) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:pickup-heal`,
+      trigger: "onPickupHealChance",
+      chance: pickupHeal.value,
+      healAmount: 1,
+      description: "按官方拾取材料治疗概率估算续航潜力；不计入伤害 DPS。",
+    };
+  }
+
+  const dodgeHeal = effects.find(
+    (effect) => effect.customKey === "heal_on_dodge" && effect.value > 0,
+  );
+  if (dodgeHeal) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:dodge-heal`,
+      trigger: "onDodgeHeal",
+      chance: dodgeHeal.chance ?? 100,
+      healAmount: dodgeHeal.value,
+      description: "按官方闪避治疗概率和角色目标闪避估算续航潜力；不计入伤害 DPS。",
+    };
+  }
+
+  const consumableHeal = effects.find(
+    (effect) => effect.key === "consumable_heal" && effect.value > 0,
+  );
+  if (consumableHeal) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:consumable-heal`,
+      trigger: "consumableHealBonus",
+      healBonus: consumableHeal.value,
+      consumablePickupShare: 0.25,
+      description: "按官方消耗品治疗加成估算续航潜力；不计入伤害 DPS。",
+    };
+  }
+
+  return null;
 }
 
 function formatEconomyUtilityValue(result, fallbackScore) {
@@ -1010,7 +1110,7 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
   );
   const keyItems = filterAndSort(itemPool, resolvedOptions, plan, mode).slice(
     0,
-    visibleRecommendationLimit(itemPool, manualItems.length, 10),
+    visibleRecommendationLimit(itemPool, manualItems.length, 12),
   );
 
   return {

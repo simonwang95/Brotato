@@ -170,7 +170,7 @@ function closeTo(actual, expected, message) {
   const bag = calculateItemEffectDps(baseStats, "normalWave", "bag");
 
   closeTo(bag.extraMaterialPerCrate, 15, "bag uses official crate material value");
-  closeTo(bag.economyUtilityScore, 3, "crate material bonus produces economy utility");
+  closeTo(bag.economyUtilityScore, 3.75, "crate material bonus produces economy utility");
 }
 
 {
@@ -185,6 +185,46 @@ function closeTo(actual, expected, message) {
 
   closeTo(sifdsRelic.pickupMultiplier, 2, "sifd's relic models full pickup attraction");
   closeTo(sifdsRelic.pickupUtilityScore, 8, "full attraction has strong normal-wave utility");
+}
+
+{
+  const pickupHeal = calculateItemEffectDps(baseStats, "swarm", {
+    id: "official:pickup-heal",
+    trigger: "onPickupHealChance",
+    chance: 8,
+    healAmount: 1,
+  });
+
+  closeTo(pickupHeal.healingPerSecond, 0.12, "pickup healing uses pickup rate and chance");
+  closeTo(pickupHeal.sustainUtilityScore, 2.4, "pickup healing produces sustain utility");
+}
+
+{
+  const consumableHeal = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:consumable-heal",
+    trigger: "consumableHealBonus",
+    healBonus: 2,
+    consumablePickupShare: 0.25,
+  });
+
+  closeTo(
+    consumableHeal.healingPerSecond,
+    0.4,
+    "consumable healing uses estimated consumable pickup share",
+  );
+  closeTo(consumableHeal.sustainUtilityScore, 3.2, "consumable healing produces sustain utility");
+}
+
+{
+  const dodgeHeal = calculateItemEffectDps({ ...baseStats, dodge: 60 }, "normalWave", {
+    id: "official:dodge-heal",
+    trigger: "onDodgeHeal",
+    chance: 50,
+    healAmount: 5,
+  });
+
+  closeTo(dodgeHeal.healingPerSecond, 1.5, "dodge healing uses dodge target and trigger chance");
+  closeTo(dodgeHeal.sustainUtilityScore, 9, "dodge healing produces sustain utility");
 }
 
 {
