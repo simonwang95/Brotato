@@ -924,7 +924,7 @@ function bestWeaponScenarioModel(entry, plan, mode) {
 function itemScenarioModel(entry, plan, mode) {
   if (!entry.item || !entry.official?.found) return null;
 
-  const itemEffect = itemEffectForEntry(entry);
+  const itemEffect = itemEffectForEntry({ ...entry, plan });
   if (!itemEffect) return null;
   if (
     itemEffect.trigger === "customGrowthPotential" &&
@@ -1041,6 +1041,23 @@ function scoreScenarioModel(entry, plan, mode) {
       };
     }
 
+    if (itemModel.result.endWaveGrowthUtilityScore) {
+      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.endWaveGrowthUtilityScore)));
+      const labels = [
+        ...new Set(
+          (itemModel.result.statGains ?? []).map((gain) => STAT_LABELS[gain.statId] ?? gain.statId),
+        ),
+      ];
+      return {
+        score,
+        reasons: [
+          `场景模型：${itemModel.result.scenario.name}每波成长 ${labels.join(" / ")} +${itemModel.result.totalPerWaveGain.toFixed(
+            0,
+          )}/波`,
+        ],
+      };
+    }
+
     const score = Math.min(8, Math.max(0, Math.round(itemModel.result.dps / 12)));
     return {
       score,
@@ -1091,6 +1108,28 @@ function chanceDamageEffectForEntry(baseEffect, effect) {
     luckScaling: planStat === "luck" ? scaledValue : 0,
     statScaling: statScalingFromEffect(effect),
     description: "按官方 chance_stat_damage_effect 字段估算触发伤害。",
+  };
+}
+
+function endWaveStatGrowthEffectForEntry(baseEffect, effects, plan) {
+  const planStats = collectPlanStats(plan);
+  const statGains = effects
+    .filter((effect) => effect.customKey === "stats_end_of_wave" && effect.value > 0)
+    .map((effect) => ({
+      statId: OFFICIAL_STAT_TO_PLAN_STAT[effect.key],
+      value: Number(effect.value ?? 0),
+    }))
+    .filter((gain) => gain.statId && gain.value > 0 && planStats.has(gain.statId));
+
+  if (!statGains.length) return null;
+
+  return {
+    ...baseEffect,
+    id: `${baseEffect.id}:end-wave-growth`,
+    trigger: "endWaveStatGrowth",
+    statGains,
+    wavesRemaining: 8,
+    description: "按官方每波结束属性成长估算后续波次的累计收益；不计入直接 DPS。",
   };
 }
 
@@ -1235,6 +1274,9 @@ function itemEffectForEntry(entry) {
       description: "按官方锁定物品诅咒概率估算商店强化潜力；不计入伤害 DPS。",
     };
   }
+
+  const endWaveGrowth = endWaveStatGrowthEffectForEntry(baseEffect, effects, entry.plan);
+  if (endWaveGrowth) return endWaveGrowth;
 
   const harvestingGrowth = effects.find(
     (effect) => effect.key === "harvesting_growth" && effect.value > 0,

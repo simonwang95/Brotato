@@ -614,6 +614,14 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     "builder should include Robot Arm for engineering scaling",
   );
   assert.ok(
+    guide.keyItems.some(
+      ({ item, recommendationReasons }) =>
+        item.name === "Robot Arm" &&
+        recommendationReasons.some((reason) => reason.includes("每波成长 工程学 +3/波")),
+    ),
+    "builder robot arm recommendation should explain official end-wave engineering growth",
+  );
+  assert.ok(
     guide.recommendedWeapons.every(({ routeTags }) => routeTags?.includes("Engineering")),
     "builder recommendations should carry route tags for preference scoring",
   );

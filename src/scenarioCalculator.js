@@ -400,6 +400,32 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "endWaveStatGrowth") {
+    const wavesRemaining = Math.max(1, toNumber(itemEffect.wavesRemaining ?? 8, 8));
+    const statGains = Array.isArray(itemEffect.statGains) ? itemEffect.statGains : [];
+    const totalPerWaveGain = statGains.reduce(
+      (sum, gain) => sum + Math.max(0, toNumber(gain.value ?? 0, 0)),
+      0,
+    );
+    const projectedStatGain = totalPerWaveGain * wavesRemaining;
+    const endWaveGrowthUtilityScore = projectedStatGain * 0.4;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      statGains,
+      wavesRemaining,
+      totalPerWaveGain,
+      projectedStatGain,
+      endWaveGrowthUtilityScore,
+      economyLabel: "每波成长潜力",
+    };
+  }
+
   if (itemEffect.trigger === "harvestingGrowth") {
     const growthPercent = Math.max(0, itemEffect.growthPercent ?? 0);
     const extraHarvesting = Math.max(0, normalizedStats.harvesting) * (growthPercent / 100);

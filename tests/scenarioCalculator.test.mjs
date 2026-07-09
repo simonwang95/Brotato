@@ -273,6 +273,22 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const endWaveGrowth = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:end-wave-growth",
+    trigger: "endWaveStatGrowth",
+    wavesRemaining: 8,
+    statGains: [
+      { statId: "meleeDamage", value: 3 },
+      { statId: "engineering", value: 3 },
+    ],
+  });
+
+  closeTo(endWaveGrowth.totalPerWaveGain, 6, "end-wave growth sums positive official stat gains");
+  closeTo(endWaveGrowth.projectedStatGain, 48, "end-wave growth projects remaining waves");
+  closeTo(endWaveGrowth.endWaveGrowthUtilityScore, 19.2, "end-wave growth produces utility score");
+}
+
+{
   const crown = calculateItemEffectDps(
     {
       ...baseStats,
