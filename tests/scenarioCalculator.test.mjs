@@ -240,6 +240,26 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const peacock = calculateItemEffectDps(
+    {
+      ...baseStats,
+      harvesting: 150,
+    },
+    "normalWave",
+    {
+      id: "official:next-wave-xp",
+      trigger: "nextWaveXpSurge",
+      xpGainPercent: 100,
+      enemyDamagePercent: 50,
+    },
+  );
+
+  closeTo(peacock.riskMultiplier, 1.5, "next-wave xp applies enemy risk");
+  closeTo(peacock.economyMultiplier, 1.35, "next-wave xp scales with economy route stats");
+  closeTo(peacock.economyUtilityScore, 11.25, "next-wave xp produces risk-adjusted utility");
+}
+
+{
   const dynamite = calculateItemEffectDps(baseStats, "swarm", {
     id: "official:explosion-amplifier",
     trigger: "explosionAmplifier",

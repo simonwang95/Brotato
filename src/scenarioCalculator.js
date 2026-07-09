@@ -312,6 +312,37 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "nextWaveXpSurge") {
+    const xpGainPercent = Math.max(0, itemEffect.xpGainPercent ?? 0);
+    const enemyHealthPercent = Math.max(0, itemEffect.enemyHealthPercent ?? 0);
+    const enemyDamagePercent = Math.max(0, itemEffect.enemyDamagePercent ?? 0);
+    const enemySpeedPercent = Math.max(0, itemEffect.enemySpeedPercent ?? 0);
+    const riskMultiplier =
+      1 + enemyHealthPercent / 100 + enemyDamagePercent / 100 + enemySpeedPercent / 150;
+    const economyMultiplier =
+      1 +
+      clamp(normalizedStats.harvesting / 150, 0, 1) * 0.35 +
+      clamp(normalizedStats.luck / 250, 0, 1) * 0.2;
+    const economyUtilityScore = (xpGainPercent / 8 / riskMultiplier) * economyMultiplier;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      xpGainPercent,
+      enemyHealthPercent,
+      enemyDamagePercent,
+      enemySpeedPercent,
+      riskMultiplier,
+      economyMultiplier,
+      economyUtilityScore,
+      economyLabel: "下一波经验潜力",
+    };
+  }
+
   if (itemEffect.trigger === "explosionAmplifier") {
     const explosionDamagePercent = Math.max(0, itemEffect.explosionDamagePercent ?? 0);
     const explosionSizePercent = Math.max(0, itemEffect.explosionSizePercent ?? 0);

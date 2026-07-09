@@ -348,6 +348,49 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     coupon?.recommendationReasons.some((reason) => reason.includes("商店效率潜力 物品折扣 5%")),
     "farmer coupon recommendation should explain official shop discount utility",
   );
+
+  const nextWaveCatalog = JSON.parse(JSON.stringify(officialCatalog));
+  const nextWaveLocalization = JSON.parse(JSON.stringify(officialLocalization));
+  nextWaveCatalog.records.push({
+    id: "item_test_next_xp",
+    kind: "item",
+    sourcePackage: "base",
+    nameKey: "ITEM_TEST_NEXT_XP",
+    tier: 0,
+    value: 1,
+    unlockedByDefault: true,
+    canBeLooted: true,
+    setPaths: [],
+    effects: [
+      {
+        key: "xp_gain",
+        textKey: "effect_stat_next_wave",
+        value: 100,
+        customKey: "stats_next_wave",
+      },
+      {
+        key: "enemy_damage",
+        textKey: "effect_stat_next_wave",
+        value: 50,
+        customKey: "stats_next_wave",
+      },
+    ],
+  });
+  nextWaveLocalization.entries.ITEM_TEST_NEXT_XP = {
+    enName: "Test Next Xp",
+    cnName: "测试下一波经验",
+  };
+  const nextWaveGuide = generateStrategyGuide("farmer", "normal20", {
+    officialCatalog: nextWaveCatalog,
+    officialLocalization: nextWaveLocalization,
+  });
+  const nextWaveXp = nextWaveGuide.keyItems.find(({ item }) => item.name === "Test Next Xp");
+  assert.ok(
+    nextWaveXp?.recommendationReasons.some((reason) =>
+      reason.includes("下一波经验潜力 XP +100% / 敌人伤害 +50%"),
+    ),
+    "farmer should explain official next-wave xp effects as risk-adjusted economy utility",
+  );
 }
 
 {

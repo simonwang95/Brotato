@@ -1223,6 +1223,28 @@ function shopEfficiencyEffectForEntry(baseEffect, effects, plan) {
   };
 }
 
+function nextWaveXpSurgeEffectForEntry(baseEffect, effects, plan) {
+  const planStats = collectPlanStats(plan);
+  const nextWaveEffects = effects.filter((effect) => effect.customKey === "stats_next_wave");
+  const statValue = (key) =>
+    nextWaveEffects
+      .filter((effect) => effect.key === key)
+      .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  const xpGainPercent = Math.max(0, statValue("xp_gain"));
+  if (!xpGainPercent || !planStats.has("harvesting")) return null;
+
+  return {
+    ...baseEffect,
+    id: `${baseEffect.id}:next-wave-xp`,
+    trigger: "nextWaveXpSurge",
+    xpGainPercent,
+    enemyHealthPercent: Math.max(0, statValue("enemy_health")),
+    enemyDamagePercent: Math.max(0, statValue("enemy_damage")),
+    enemySpeedPercent: Math.max(0, statValue("enemy_speed")),
+    description: "按官方下一波经验加成和敌人风险字段估算短期升级收益；不计入直接 DPS。",
+  };
+}
+
 function itemEffectForEntry(entry) {
   const effects = officialEffects(entry.official);
   const baseEffect = {
@@ -1374,6 +1396,9 @@ function itemEffectForEntry(entry) {
   const endWaveGrowth = endWaveStatGrowthEffectForEntry(baseEffect, effects, entry.plan);
   if (endWaveGrowth) return endWaveGrowth;
 
+  const nextWaveXpSurge = nextWaveXpSurgeEffectForEntry(baseEffect, effects, entry.plan);
+  if (nextWaveXpSurge) return nextWaveXpSurge;
+
   const harvestingGrowth = effects.find(
     (effect) => effect.key === "harvesting_growth" && effect.value > 0,
   );
@@ -1505,6 +1530,14 @@ function formatEconomyUtilityValue(result, fallbackScore) {
   }
   if (Number.isFinite(result.savingsPercent)) {
     return `+${result.savingsPercent.toFixed(0)}%/波`;
+  }
+  if (Number.isFinite(result.xpGainPercent)) {
+    const risks = [
+      result.enemyHealthPercent ? `敌人生命 +${result.enemyHealthPercent.toFixed(0)}%` : "",
+      result.enemyDamagePercent ? `敌人伤害 +${result.enemyDamagePercent.toFixed(0)}%` : "",
+      result.enemySpeedPercent ? `敌人速度 +${result.enemySpeedPercent.toFixed(0)}%` : "",
+    ].filter(Boolean);
+    return [`XP +${result.xpGainPercent.toFixed(0)}%`, ...risks].join(" / ");
   }
   if (
     Number.isFinite(result.itemDiscountPercent) ||

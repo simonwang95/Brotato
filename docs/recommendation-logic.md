@@ -68,11 +68,12 @@
 - 稀有度和价格会作为可得性修正：低阶低价条目更适合前中期成型；高阶高价条目在普通通关中更保守，在无尽后期可保留成长价值。
 - 官方效果或武器缩放命中角色属性优先级/第 20 关目标时，会得到数值协同加分。
 - 官方武器记录会转换为 `scenario model` 输入，用角色目标面板中位数估算普通清怪、无尽怪潮或 Boss 单体的有效清场分。该分数用于排序和解释，但权重低于手写主线。
-- 支持的触发道具会用 `calculateItemEffectDps` 估算场景 DPS、经济/成长收益或续航潜力。推荐器会优先从官方 effect 字段动态生成模型：`chance_stat_damage_effect` 会按 `dmg_when_death` / `dmg_when_pickup_gold` / `dmg_on_dodge` 区分击杀、拾取和闪避触发伤害，`gold_on_crit_kill`、`chance_double_gold`、`instant_gold_attracting`、`harvesting_growth`、`item_box_gold`、`effect_gain_pct_gold_start_wave_limited`、`stats_end_of_wave`、`piercing`、`pierce_on_crit`、`items_price`、`free_rerolls`、`reroll_price` 会分别生成暴击材料、拾取双倍材料、拾取频率、收获成长、箱子材料、波次存钱、每波属性成长、贯通覆盖、暴击贯通覆盖和商店效率模型；手写 `ITEM_EFFECTS` 只作为静态计算器兜底。
+- 支持的触发道具会用 `calculateItemEffectDps` 估算场景 DPS、经济/成长收益或续航潜力。推荐器会优先从官方 effect 字段动态生成模型：`chance_stat_damage_effect` 会按 `dmg_when_death` / `dmg_when_pickup_gold` / `dmg_on_dodge` 区分击杀、拾取和闪避触发伤害，`gold_on_crit_kill`、`chance_double_gold`、`instant_gold_attracting`、`harvesting_growth`、`item_box_gold`、`effect_gain_pct_gold_start_wave_limited`、`stats_end_of_wave`、`stats_next_wave`、`piercing`、`pierce_on_crit`、`items_price`、`free_rerolls`、`reroll_price` 会分别生成暴击材料、拾取双倍材料、拾取频率、收获成长、箱子材料、波次存钱、每波属性成长、下一波经验、贯通覆盖、暴击贯通覆盖和商店效率模型；手写 `ITEM_EFFECTS` 只作为静态计算器兜底。
 - 官方 `custom_arg` 的 `EFFECT_GAIN_STAT_FOR_EVERY*` 类道具会进入保守的“官方自定义成长潜力”模型。推荐器只使用静态目录里能可靠抽到的缩放来源，例如 `Power Generator` 随移速、`Pearl` 随幸运、`Stone Skin` 随护甲放大；最终获得哪项属性仍藏在子资源里，图鉴和推荐理由都不会把它伪装成已完全解码的精确公式。
 - 自定义成长潜力只在角色属性优先级明确重视该缩放来源、且第 20 关目标达到最低阈值时加分。这样 Speedy 会解释 `Power Generator` 的移速成长，Lucky 的高幸运路线可以吸收幸运来源，但普通角色不会因为都有一点移速目标而泛化推荐发电机。
 - 官方道具补充候选默认展示手写关键道具外的前 16 个高分候选，让 `Crown`、`Bag`、`Adrenaline`、`Cute Monkey`、`Dangerous Bunny` 这类非手写但强协同的经济或续航道具能进入对应路线推荐。
 - 每波结束属性成长只会在正向属性命中角色目标时加分。例如 `Robot Arm（机械臂）` 的官方 `stats_end_of_wave` 会在 Builder 工程路线解释为工程学每波成长；同一条目里的负面生命成长不会变成推荐加分。
+- 下一波经验类道具从官方 `stats_next_wave` 里读取 `xp_gain`，再用同一批下一波敌人生命、伤害或速度字段做风险折扣。例如 `Peacock（孔雀）` 会输出“下一波经验潜力”，但只在收获路线中转成经济分；`Celery Tea（芹菜茶）` 同时有 `stats_end_of_wave` 时优先走长期每波成长解释，避免把短期冲刺写成长期收益。
 - 贯通类道具从官方 `piercing` 和 `pierce_on_crit` 字段生成覆盖潜力。例如 `Bandana（头巾）` 和 `Sharp Bullet（尖头子弹）` 会按场景直线目标数估算怪潮覆盖；`Eyepatch（眼罩）` 这类暴击贯通还会按角色目标暴击率折算。该分数是覆盖修正，不当作直接伤害 DPS。
 - 商店效率类道具从官方 `items_price`、`free_rerolls`、`reroll_price` 字段生成经济潜力。例如 `Coupon（优惠券）` 解释物品折扣，`Dangerous Bunny（危险兔子）` 解释免费刷新，`Spyglass（望远镜）` 解释刷新折扣；这些只在收获或幸运路线中转成场景分。
 - 拾取吸附类道具不会伪装成伤害 DPS，而是输出拾取频率收益。例如 `Baby Gecko` 和 `Sifd's Relic` 会按场景 `pickupRatePerSecond` 估算额外拾取机会，并给 Lucky 这类拾取触发路线机制加分。
