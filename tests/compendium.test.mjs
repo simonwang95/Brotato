@@ -68,6 +68,18 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
 }
 
 {
+  const blackFlag = compendium.items.find((entry) => entry.nameKey === "ITEM_BLACK_FLAG");
+  assert.ok(
+    blackFlag?.detailedAttributes.includes("T3 诅咒敌人击杀材料 +1"),
+    "Black Flag should expose localized curse-kill material attributes",
+  );
+  assert.ok(
+    blackFlag?.detailedAttributes.includes("T3 敌人数量 +10"),
+    "Black Flag should expose localized enemy-count risk attributes",
+  );
+}
+
+{
   const slingshot = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_SLINGSHOT");
   assert.ok(
     slingshot?.detailedAttributes.some((line) =>

@@ -118,6 +118,7 @@ export const STAT_LABELS = {
   speed: "移速 %",
   harvesting: "收获",
   luck: "幸运",
+  curse: "诅咒",
 };
 
 export const WEAPONS = {

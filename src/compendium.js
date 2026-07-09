@@ -36,6 +36,7 @@ const STAT_LABELS = {
   stat_hp_regeneration: "生命再生",
   stat_lifesteal: "生命窃取",
   stat_luck: "幸运",
+  stat_curse: "诅咒",
   stat_max_hp: "最大生命",
   stat_melee_damage: "近战伤害",
   stat_percent_damage: "伤害",
@@ -45,6 +46,10 @@ const STAT_LABELS = {
   stat_all: "全属性",
   enemy_damage: "敌人伤害",
   enemy_health: "敌人生命",
+  enemy_gold_drops: "敌人材料掉落",
+  gold_on_cursed_enemy_kill: "诅咒敌人击杀材料",
+  curse_locked_items: "锁定物品诅咒概率",
+  number_of_enemies: "敌人数量",
   bounce_damage: "弹射伤害",
   damage_against_bosses: "对 Boss 伤害",
   explosion_damage: "爆炸伤害",
@@ -94,6 +99,8 @@ const EFFECT_TEXT_LABELS = {
   EFFECT_GAIN_STAT_FOR_EVERY_PERCENT_PLAYER_MISSING_HEALTH: "每点已损失生命百分比",
   EFFECT_GAIN_STAT_FOR_EVERY_TREE: "每棵树",
   EFFECT_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT: "每种不同属性",
+  EFFECT_GOLD_ON_CURSED_ENEMY_KILL: "诅咒敌人击杀材料",
+  EFFECT_CURSE_LOCKED_ITEMS: "锁定物品诅咒概率",
   EFFECT_LEVEL_UPGRADES_MODIFICATIONS: "升级属性选项",
   EFFECT_BEAST_MASTER_EFFECT: "驯兽师宠物机制",
   EFFECT_DIE_IN_ONE_HIT: "受到一次伤害即死亡",
@@ -110,6 +117,7 @@ const EFFECT_TEXT_LABELS = {
   effect_consumable_heal_over_time: "消耗品持续治疗",
   effect_heal_when_pickup_gold: "拾取材料治疗概率",
   effect_lose_hp_per_second: "每秒失去生命",
+  effect_enemy_gold_drops: "敌人材料掉落",
 };
 
 const BINARY_EFFECT_KEYS = new Set(["die_in_one_hit", "beast_master_effect"]);

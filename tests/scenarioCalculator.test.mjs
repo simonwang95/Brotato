@@ -153,6 +153,47 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const blackFlag = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:cursed-kill-material",
+    trigger: "cursedKillMaterial",
+    materialValue: 1,
+    curseGain: 5,
+    enemyCountPercent: 10,
+    enemyHealthPercent: 10,
+    enemyDamagePercent: 10,
+  });
+
+  closeTo(blackFlag.extraMaterialRate, 0.055, "cursed kill material uses curse share and enemy count");
+  assert.ok(
+    blackFlag.economyUtilityScore > 2,
+    "cursed kill material produces risk-adjusted economy utility",
+  );
+}
+
+{
+  const starfish = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:enemy-gold-drops",
+    trigger: "enemyGoldDropBonus",
+    goldDropBonusPercent: 20,
+    enemyDamagePercent: 15,
+  });
+
+  closeTo(starfish.extraMaterialRate, 0.2, "enemy gold drops use kill-rate scenario scaling");
+  assert.ok(starfish.economyUtilityScore > 3, "enemy gold drops produce risk-adjusted economy utility");
+}
+
+{
+  const fishHook = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:curse-shop-potential",
+    trigger: "curseShopPotential",
+    curseLockedChance: 20,
+    curseGain: 1,
+  });
+
+  closeTo(fishHook.economyUtilityScore, 3, "curse shop potential uses lock chance and curse gain");
+}
+
+{
   const crown = calculateItemEffectDps(
     {
       ...baseStats,

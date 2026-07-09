@@ -213,6 +213,77 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "cursedKillMaterial") {
+    const materialValue = Math.max(0, itemEffect.materialValue ?? 1);
+    const curseGain = Math.max(0, itemEffect.curseGain ?? 0);
+    const cursedEnemyShare = clamp((context.curseIntensity + curseGain) / 100, 0, 0.6);
+    const enemyCountMultiplier = 1 + Math.max(0, itemEffect.enemyCountPercent ?? 0) / 100;
+    const riskMultiplier =
+      1 +
+      Math.max(0, itemEffect.enemyHealthPercent ?? 0) / 100 +
+      Math.max(0, itemEffect.enemyDamagePercent ?? 0) / 100;
+    const triggerRate = scenario.killRateMultiplier * enemyCountMultiplier;
+    const extraMaterialRate = triggerRate * cursedEnemyShare * materialValue;
+    const economyUtilityScore = (extraMaterialRate * 24 + curseGain * 0.35) / riskMultiplier;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      materialValue,
+      curseGain,
+      cursedEnemyShare,
+      enemyCountMultiplier,
+      riskMultiplier,
+      extraMaterialRate,
+      economyUtilityScore,
+      economyLabel: "诅咒击杀材料潜力",
+    };
+  }
+
+  if (itemEffect.trigger === "enemyGoldDropBonus") {
+    const goldDropBonusPercent = Math.max(0, itemEffect.goldDropBonusPercent ?? 0);
+    const riskMultiplier = 1 + Math.max(0, itemEffect.enemyDamagePercent ?? 0) / 100;
+    const extraMaterialRate = scenario.killRateMultiplier * (goldDropBonusPercent / 100);
+    const economyUtilityScore = (extraMaterialRate * 20) / riskMultiplier;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: scenario.killRateMultiplier,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      goldDropBonusPercent,
+      riskMultiplier,
+      extraMaterialRate,
+      economyUtilityScore,
+      economyLabel: "敌人掉落材料潜力",
+    };
+  }
+
+  if (itemEffect.trigger === "curseShopPotential") {
+    const curseLockedChance = Math.max(0, itemEffect.curseLockedChance ?? 0);
+    const curseGain = Math.max(0, itemEffect.curseGain ?? 0);
+    const economyUtilityScore = curseLockedChance / 8 + curseGain * 0.5;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      curseLockedChance,
+      curseGain,
+      economyUtilityScore,
+      economyLabel: "锁定物品诅咒潜力",
+    };
+  }
+
   if (itemEffect.trigger === "harvestingGrowth") {
     const growthPercent = Math.max(0, itemEffect.growthPercent ?? 0);
     const extraHarvesting = Math.max(0, normalizedStats.harvesting) * (growthPercent / 100);

@@ -56,6 +56,11 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   consumable_heal_over_time: "hpRegen",
   heal_when_pickup_gold: "hpRegen",
   heal_on_dodge: "hpRegen",
+  stat_curse: "curse",
+  gold_on_cursed_enemy_kill: "harvesting",
+  enemy_gold_drops: "harvesting",
+  curse_locked_items: "curse",
+  number_of_enemies: "harvesting",
   stat_all: "damagePercent",
   stat_damage: "damagePercent",
   enemy_percent_damage_taken: "damagePercent",
@@ -213,6 +218,7 @@ function officialStatTags(official) {
   if (stats.includes("critChance")) tags.push("Precise");
   if (stats.includes("luck")) tags.push("Luck");
   if (stats.includes("harvesting")) tags.push("Economy");
+  if (stats.includes("curse")) tags.push("Curse");
   return tags;
 }
 
@@ -582,6 +588,14 @@ function scoreMechanicFit(entry, plan) {
       effect.customKey === "heal_on_dodge",
     ),
   );
+  const hasCurseEconomy = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) =>
+      ["gold_on_cursed_enemy_kill", "enemy_gold_drops", "curse_locked_items"].includes(effect.key),
+    ),
+  );
+  const hasCurseGain = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) => effect.key === "stat_curse" && effect.value > 0),
+  );
   const reasons = [];
   let score = 0;
 
@@ -628,8 +642,26 @@ function scoreMechanicFit(entry, plan) {
     score += 3;
     reasons.push("机制修正：拾取治疗跟随高拾取路线");
   }
+  if ((routeTags.has("economy") || planStats.has("harvesting")) && hasCurseEconomy) {
+    score += 3;
+    reasons.push("机制修正：诅咒经济把风险换成材料收益");
+  }
+  if (modeSupportsCurseRisk(planStats, routeTags) && hasCurseGain) {
+    score += 2;
+    reasons.push("机制修正：诅咒收益适合高输出或无尽路线");
+  }
 
   return { score, reasons };
+}
+
+function modeSupportsCurseRisk(planStats, routeTags) {
+  return (
+    planStats.has("damagePercent") ||
+    planStats.has("armor") ||
+    routeTags.has("economy") ||
+    routeTags.has("ranged") ||
+    routeTags.has("naval")
+  );
 }
 
 function scoreModeFit(entry, mode) {
@@ -868,6 +900,52 @@ function itemEffectForEntry(entry) {
       healBonus: consumableHeal.value,
       consumablePickupShare: 0.25,
       description: "按官方消耗品治疗加成估算续航潜力；不计入伤害 DPS。",
+    };
+  }
+
+  const statValue = (key) => effects.find((effect) => effect.key === key)?.value ?? 0;
+  const cursedKillGold = effects.find(
+    (effect) => effect.key === "gold_on_cursed_enemy_kill" && effect.value > 0,
+  );
+  if (cursedKillGold) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:cursed-kill-material`,
+      trigger: "cursedKillMaterial",
+      materialValue: cursedKillGold.value,
+      curseGain: statValue("stat_curse"),
+      enemyCountPercent: statValue("number_of_enemies"),
+      enemyHealthPercent: statValue("enemy_health"),
+      enemyDamagePercent: statValue("enemy_damage"),
+      description: "按官方诅咒击杀材料、诅咒值和敌人风险估算经济潜力；不计入伤害 DPS。",
+    };
+  }
+
+  const enemyGoldDrops = effects.find(
+    (effect) => effect.key === "enemy_gold_drops" && effect.value > 0,
+  );
+  if (enemyGoldDrops) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:enemy-gold-drops`,
+      trigger: "enemyGoldDropBonus",
+      goldDropBonusPercent: enemyGoldDrops.value,
+      enemyDamagePercent: statValue("enemy_damage"),
+      description: "按官方敌人材料掉落加成和敌人伤害风险估算经济潜力；不计入伤害 DPS。",
+    };
+  }
+
+  const curseLockedItems = effects.find(
+    (effect) => effect.key === "curse_locked_items" && effect.value > 0,
+  );
+  if (curseLockedItems) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:curse-shop-potential`,
+      trigger: "curseShopPotential",
+      curseLockedChance: curseLockedItems.value,
+      curseGain: statValue("stat_curse"),
+      description: "按官方锁定物品诅咒概率估算商店强化潜力；不计入伤害 DPS。",
     };
   }
 

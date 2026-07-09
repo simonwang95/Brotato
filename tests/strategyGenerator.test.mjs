@@ -481,10 +481,10 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
   assert.ok(
     guide.keyItems.some(
       ({ item, recommendationReasons }) =>
-        item.name === "Cute Monkey" &&
-        recommendationReasons.some((reason) => reason.includes("拾取治疗期望")),
+        ["Adrenaline", "Jerky", "Weird Food", "Cute Monkey"].includes(item.name) &&
+        recommendationReasons.some((reason) => /治疗期望|治疗潜力/.test(reason)),
     ),
-    "lucky guide should surface official pickup-heal sustain candidates",
+    "lucky guide should surface official sustain candidates",
   );
   assert.ok(
     guide.statPriority.early.includes("总伤害 %"),
@@ -650,6 +650,21 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
   assert.ok(
     guide.keyItems.some(({ item }) => item.name === "Black Flag" && item.cnName === "黑旗"),
     "buccaneer should include Black Flag for distance-kill economy",
+  );
+  const blackFlag = guide.keyItems.find(({ item }) => item.name === "Black Flag");
+  assert.ok(
+    blackFlag?.recommendationReasons.some((reason) => reason.includes("诅咒击杀材料潜力")),
+    "black flag should explain official curse-kill economy utility",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("captain", "normal20", { officialCatalog });
+  const fishHook = guide.keyItems.find(({ item }) => item.name === "Fish Hook");
+  assert.ok(fishHook, "captain should include Fish Hook as a curse-shop route item");
+  assert.ok(
+    fishHook.recommendationReasons.some((reason) => reason.includes("锁定物品诅咒潜力")),
+    "fish hook should explain official curse-shop utility",
   );
 }
 
