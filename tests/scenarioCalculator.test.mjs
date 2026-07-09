@@ -84,8 +84,8 @@ function closeTo(actual, expected, message) {
     "cyberball",
   );
 
-  closeTo(cyberball.expectedDamage, 21, "cyberball uses luck scaling");
-  closeTo(cyberball.dps, 7.875, "cyberball uses pickup rate and trigger chance");
+  closeTo(cyberball.expectedDamage, 5, "cyberball uses official 25% luck scaling");
+  closeTo(cyberball.dps, 1.75, "cyberball uses kill rate and trigger chance");
 }
 
 {
@@ -99,8 +99,8 @@ function closeTo(actual, expected, message) {
     "cyberball",
   );
 
-  closeTo(cyberball.modifiedExpectedDamage, 42, "item-trigger damage uses damage percent");
-  closeTo(cyberball.dps, 15.75, "damage percent increases cyberball dps");
+  closeTo(cyberball.modifiedExpectedDamage, 10, "item-trigger damage uses damage percent");
+  closeTo(cyberball.dps, 3.5, "damage percent increases cyberball dps");
 }
 
 {
@@ -115,6 +115,31 @@ function closeTo(actual, expected, message) {
 
   closeTo(beardedBaby.expectedDamage, 31, "bearded baby uses ranged damage scaling");
   closeTo(beardedBaby.dps, 43.4, "bearded baby uses kill-rate scenario scaling");
+}
+
+{
+  const riposte = calculateItemEffectDps(
+    {
+      ...baseStats,
+      dodge: 50,
+      meleeDamage: 20,
+    },
+    "normalWave",
+    {
+      id: "official:riposte",
+      trigger: "onDodgeDamage",
+      chance: 100,
+      baseDamage: 0,
+      luckScaling: 0,
+      statScaling: {
+        meleeDamage: 3,
+      },
+    },
+  );
+
+  closeTo(riposte.triggerRate, 0.5, "dodge damage uses incoming pressure and dodge chance");
+  closeTo(riposte.expectedDamage, 60, "dodge damage uses official stat scaling");
+  closeTo(riposte.dps, 30, "dodge damage produces trigger DPS");
 }
 
 {

@@ -521,12 +521,18 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  const dodgeDamageTriggerRate =
+    scenario.killRateMultiplier *
+    scenario.positioningStress *
+    clamp(normalizedStats.dodge / 100, 0, 0.6);
   const triggerRate =
     itemEffect.trigger === "onPickup"
       ? scenario.pickupRatePerSecond
       : itemEffect.trigger === "onKill"
         ? scenario.killRateMultiplier
-        : 0;
+        : itemEffect.trigger === "onDodgeDamage"
+          ? dodgeDamageTriggerRate
+          : 0;
   const chance = itemEffect.chance / 100;
   const statScalingDamage = Object.entries(itemEffect.statScaling ?? {}).reduce(
     (sum, [statId, scaling]) => sum + (normalizedStats[statId] ?? 0) * scaling,

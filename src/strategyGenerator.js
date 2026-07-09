@@ -729,7 +729,7 @@ function scoreMechanicFit(entry, plan) {
 
   if (planStats.has("luck") && officialStats.includes("luck")) {
     score += 3;
-    reasons.push("机制修正：幸运缩放贴合拾取触发路线");
+    reasons.push("机制修正：幸运缩放贴合触发伤害路线");
   }
   if (planStats.has("luck") && hasLuckScaling) {
     score += 3;
@@ -1059,16 +1059,54 @@ function officialEffects(official) {
   return (official?.records ?? []).flatMap((record) => record.effects ?? []);
 }
 
-function itemEffectForEntry(entry) {
-  const staticItemEffectId = ITEM_EFFECT_NAME_KEYS[entry.official.nameKey];
-  if (staticItemEffectId) return staticItemEffectId;
+function statScalingFromEffect(effect) {
+  const planStat = OFFICIAL_STAT_TO_PLAN_STAT[effect.key];
+  if (!planStat || planStat === "luck") return {};
+  return {
+    [planStat]: Math.max(0, Number(effect.value ?? 0)) / 100,
+  };
+}
 
+function chanceDamageEffectForEntry(baseEffect, effect) {
+  if (!/chance_stat_damage_effect\.gd$/.test(effect.scriptPath ?? "")) return null;
+  if (!["dmg_when_pickup_gold", "dmg_when_death", "dmg_on_dodge"].includes(effect.customKey)) {
+    return null;
+  }
+
+  const trigger =
+    effect.customKey === "dmg_when_pickup_gold"
+      ? "onPickup"
+      : effect.customKey === "dmg_when_death"
+        ? "onKill"
+        : "onDodgeDamage";
+  const planStat = OFFICIAL_STAT_TO_PLAN_STAT[effect.key];
+  const scaledValue = Math.max(0, Number(effect.value ?? 0)) / 100;
+
+  return {
+    ...baseEffect,
+    id: `${baseEffect.id}:${effect.customKey}`,
+    trigger,
+    chance: effect.chance ?? 100,
+    baseDamage: 0,
+    luckScaling: planStat === "luck" ? scaledValue : 0,
+    statScaling: statScalingFromEffect(effect),
+    description: "按官方 chance_stat_damage_effect 字段估算触发伤害。",
+  };
+}
+
+function itemEffectForEntry(entry) {
   const effects = officialEffects(entry.official);
   const baseEffect = {
     id: `official:${entry.official.nameKey}`,
     name: entry.item.name,
     cnName: entry.item.cnName,
   };
+  const staticItemEffectId = ITEM_EFFECT_NAME_KEYS[entry.official.nameKey];
+  const chanceDamageEffect = effects
+    .map((effect) => chanceDamageEffectForEntry(baseEffect, effect))
+    .find(Boolean);
+  if (chanceDamageEffect) return chanceDamageEffect;
+
   const pickupHeal = effects.find(
     (effect) => effect.key === "heal_when_pickup_gold" && effect.value > 0,
   );
@@ -1112,6 +1150,47 @@ function itemEffectForEntry(entry) {
   }
 
   const statValue = (key) => effects.find((effect) => effect.key === key)?.value ?? 0;
+  const critKillGold = effects.find(
+    (effect) => effect.key === "gold_on_crit_kill" && effect.value > 0,
+  );
+  if (critKillGold) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:crit-kill-material`,
+      trigger: "onCritKillMaterial",
+      chance: critKillGold.value,
+      materialValue: 1,
+      description: "按官方暴击击杀材料概率估算经济潜力；不计入伤害 DPS。",
+    };
+  }
+
+  const doubleGold = effects.find(
+    (effect) => effect.key === "chance_double_gold" && effect.value > 0,
+  );
+  if (doubleGold) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:pickup-material-bonus`,
+      trigger: "onPickupMaterialBonus",
+      chance: doubleGold.value,
+      materialValue: 1,
+      description: "按官方拾取双倍材料概率估算额外材料期望；不计入伤害 DPS。",
+    };
+  }
+
+  const pickupAttraction = effects.find(
+    (effect) => effect.key === "instant_gold_attracting" && effect.value > 0,
+  );
+  if (pickupAttraction) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:pickup-utility`,
+      trigger: "pickupUtility",
+      pickupAttraction: pickupAttraction.value,
+      description: "按官方材料吸附范围估算额外拾取节奏和触发机会。",
+    };
+  }
+
   const cursedKillGold = effects.find(
     (effect) => effect.key === "gold_on_cursed_enemy_kill" && effect.value > 0,
   );
@@ -1154,6 +1233,43 @@ function itemEffectForEntry(entry) {
       curseLockedChance: curseLockedItems.value,
       curseGain: statValue("stat_curse"),
       description: "按官方锁定物品诅咒概率估算商店强化潜力；不计入伤害 DPS。",
+    };
+  }
+
+  const harvestingGrowth = effects.find(
+    (effect) => effect.key === "harvesting_growth" && effect.value > 0,
+  );
+  if (harvestingGrowth) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:harvesting-growth`,
+      trigger: "harvestingGrowth",
+      growthPercent: harvestingGrowth.value,
+      description: "按官方收获成长百分比估算额外收获等效值；不计入伤害 DPS。",
+    };
+  }
+
+  const crateMaterial = effects.find((effect) => effect.key === "item_box_gold" && effect.value > 0);
+  if (crateMaterial) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:crate-material`,
+      trigger: "crateMaterialBonus",
+      crateMaterialValue: crateMaterial.value,
+      description: "按官方箱子材料奖励估算经济潜力；不计入伤害 DPS，也不假设箱子掉落频率。",
+    };
+  }
+
+  const startWaveSavings = effects.find(
+    (effect) => effect.textKey === "effect_gain_pct_gold_start_wave_limited" && effect.value > 0,
+  );
+  if (startWaveSavings) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:start-wave-savings`,
+      trigger: "startWaveSavings",
+      savingsPercent: startWaveSavings.value,
+      description: "按官方波次开始材料百分比收益估算经济潜力；不计入伤害 DPS。",
     };
   }
 
@@ -1233,6 +1349,8 @@ function itemEffectForEntry(entry) {
         "按官方自定义成长效果的缩放来源估算潜力；目标收益仍藏在 custom_arg 子资源中，不当作精确公式。",
     };
   }
+
+  if (staticItemEffectId) return staticItemEffectId;
 
   return null;
 }

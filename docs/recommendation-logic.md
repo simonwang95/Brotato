@@ -68,7 +68,7 @@
 - 稀有度和价格会作为可得性修正：低阶低价条目更适合前中期成型；高阶高价条目在普通通关中更保守，在无尽后期可保留成长价值。
 - 官方效果或武器缩放命中角色属性优先级/第 20 关目标时，会得到数值协同加分。
 - 官方武器记录会转换为 `scenario model` 输入，用角色目标面板中位数估算普通清怪、无尽怪潮或 Boss 单体的有效清场分。该分数用于排序和解释，但权重低于手写主线。
-- 支持的触发道具会用 `calculateItemEffectDps` 估算场景 DPS、经济/成长收益或续航潜力。当前重点覆盖 `Cyberball`、`Baby Elephant`、`Baby with a Beard` 这类幸运/拾取/击杀触发伤害，以及 `Hunting Trophy` 的暴击击杀材料收益、`Metal Detector` 的拾取双倍材料期望收益、`Crown` 的收获成长等效收益、`Bag` 的箱子材料潜力、`Piggy Bank` 的波次存钱潜力。
+- 支持的触发道具会用 `calculateItemEffectDps` 估算场景 DPS、经济/成长收益或续航潜力。推荐器会优先从官方 effect 字段动态生成模型：`chance_stat_damage_effect` 会按 `dmg_when_death` / `dmg_when_pickup_gold` / `dmg_on_dodge` 区分击杀、拾取和闪避触发伤害，`gold_on_crit_kill`、`chance_double_gold`、`instant_gold_attracting`、`harvesting_growth`、`item_box_gold`、`effect_gain_pct_gold_start_wave_limited` 会分别生成暴击材料、拾取双倍材料、拾取频率、收获成长、箱子材料和波次存钱模型；手写 `ITEM_EFFECTS` 只作为静态计算器兜底。
 - 官方 `custom_arg` 的 `EFFECT_GAIN_STAT_FOR_EVERY*` 类道具会进入保守的“官方自定义成长潜力”模型。推荐器只使用静态目录里能可靠抽到的缩放来源，例如 `Power Generator` 随移速、`Pearl` 随幸运、`Stone Skin` 随护甲放大；最终获得哪项属性仍藏在子资源里，图鉴和推荐理由都不会把它伪装成已完全解码的精确公式。
 - 自定义成长潜力只在角色属性优先级明确重视该缩放来源、且第 20 关目标达到最低阈值时加分。这样 Speedy 会解释 `Power Generator` 的移速成长，Lucky 的高幸运路线可以吸收幸运来源，但普通角色不会因为都有一点移速目标而泛化推荐发电机。
 - 官方道具补充候选默认展示手写关键道具外的前 12 个高分候选，让 `Crown`、`Bag`、`Adrenaline`、`Cute Monkey` 这类非手写但强协同的经济或续航道具能进入对应路线推荐。
@@ -76,7 +76,7 @@
 - 拾取治疗、消耗品治疗和闪避治疗会从官方效果 key 动态生成续航模型。例如 `Cute Monkey` 按拾取材料治疗概率估算，`Lemonade` / `Weird Food` / `Jerky` 按消耗品治疗加成估算，`Adrenaline` 按角色目标闪避与触发概率估算；这些只输出“治疗期望/续航潜力”，不计入伤害 DPS。
 - 诅咒经济和敌人风险道具会从官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items`、`stat_curse`、`number_of_enemies`、`enemy_health`、`enemy_damage` 组合出风险调整后的经济潜力。例如 `Black Flag` 会解释诅咒击杀材料潜力，`Fish Hook` 会解释锁定物品诅咒潜力；这些同样只作为经济/风险评分，不计入伤害 DPS。
 - 爆炸、燃烧和结构物支持道具会从官方 `explosion_damage`、`explosion_size`、`burning_spread`、`burning_enemy_hp_percent_damage`、`structure_attack_speed`、`structures_cooldown_reduction` 和 turret/structure 脚本路径生成覆盖潜力。例如 `Snake` 会解释燃烧覆盖，`Dynamite` 会解释爆炸覆盖，`Turret` 会解释结构物输出；由于官方资源里仍缺少完整炮塔/燃烧内部参数，这些是排序修正和解释，不当作精确 DPS。
-- 机制修正用于表达纯 DPS 不容易覆盖的价值。例如 Lucky 路线会额外重视幸运缩放，官方 `stat_luck` 武器缩放会被解释为高幸运路线收益，Lute 的百分比伤害会被视作能放大拾取/击杀触发收益；幽魂武器的官方击杀成长效果会给幽魂路线额外解释。
+- 机制修正用于表达纯 DPS 不容易覆盖的价值。例如 Lucky 路线会额外重视幸运缩放，官方 `stat_luck` 武器缩放会被解释为高幸运路线收益，Lute 的百分比伤害会被视作能放大拾取/击杀触发收益；`Cyberball` 会按官方 `dmg_when_death` 作为击杀触发、25% 幸运伤害估算，`Baby Elephant` 会按 `dmg_when_pickup_gold` 作为拾取触发估算；幽魂武器的官方击杀成长效果会给幽魂路线额外解释。
 - 官方候选会读取套装和效果资源。例如幽魂路线只会吸收幽魂套装补充项，避免普通近战武器仅凭近战缩放混入；骑士路线会更容易吸收剑类/中世纪/护甲相关武器。套装命中角色 `routeTags` 时会输出 `套装修正` 解释，官方护甲缩放武器会输出防御转输出的机制修正。
 - 无尽模式会小幅偏好成长、拾取、经济、幸运、弹射、贯通、范围和诅咒收益；20 关通关会小幅偏好稳定阈值。
 

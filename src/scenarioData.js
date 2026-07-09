@@ -80,12 +80,12 @@ export const ITEM_EFFECTS = {
     id: "cyberball",
     name: "Cyberball",
     cnName: "赛博球",
-    trigger: "onPickup",
+    trigger: "onKill",
     chance: 25,
-    baseDamage: 1,
-    luckScaling: 1,
+    baseDamage: 0,
+    luckScaling: 0.25,
     description:
-      "简化为拾取材料/消耗品时按概率触发，对随机目标造成随幸运成长的伤害。",
+      "按官方效果解析为击杀敌人时按概率触发，对随机目标造成 25% 幸运伤害。",
   },
   babyElephant: {
     id: "babyElephant",
@@ -93,10 +93,10 @@ export const ITEM_EFFECTS = {
     cnName: "象宝宝",
     trigger: "onPickup",
     chance: 25,
-    baseDamage: 1,
+    baseDamage: 0,
     luckScaling: 0.25,
     description:
-      "简化为拾取消耗品/材料触发的随机目标伤害，用于和赛博球同类估算。",
+      "按官方效果解析为拾取材料时按概率触发，对随机目标造成 25% 幸运伤害。",
   },
   babyWithABeard: {
     id: "babyWithABeard",
