@@ -69,6 +69,8 @@
 - 官方效果或武器缩放命中角色属性优先级/第 20 关目标时，会得到数值协同加分。
 - 官方武器记录会转换为 `scenario model` 输入，用角色目标面板中位数估算普通清怪、无尽怪潮或 Boss 单体的有效清场分。该分数用于排序和解释，但权重低于手写主线。
 - 支持的触发道具会用 `calculateItemEffectDps` 估算场景 DPS、经济/成长收益或续航潜力。当前重点覆盖 `Cyberball`、`Baby Elephant`、`Baby with a Beard` 这类幸运/拾取/击杀触发伤害，以及 `Hunting Trophy` 的暴击击杀材料收益、`Metal Detector` 的拾取双倍材料期望收益、`Crown` 的收获成长等效收益、`Bag` 的箱子材料潜力、`Piggy Bank` 的波次存钱潜力。
+- 官方 `custom_arg` 的 `EFFECT_GAIN_STAT_FOR_EVERY*` 类道具会进入保守的“官方自定义成长潜力”模型。推荐器只使用静态目录里能可靠抽到的缩放来源，例如 `Power Generator` 随移速、`Pearl` 随幸运、`Stone Skin` 随护甲放大；最终获得哪项属性仍藏在子资源里，图鉴和推荐理由都不会把它伪装成已完全解码的精确公式。
+- 自定义成长潜力只在角色属性优先级明确重视该缩放来源、且第 20 关目标达到最低阈值时加分。这样 Speedy 会解释 `Power Generator` 的移速成长，Lucky 的高幸运路线可以吸收幸运来源，但普通角色不会因为都有一点移速目标而泛化推荐发电机。
 - 官方道具补充候选默认展示手写关键道具外的前 12 个高分候选，让 `Crown`、`Bag`、`Adrenaline`、`Cute Monkey` 这类非手写但强协同的经济或续航道具能进入对应路线推荐。
 - 拾取吸附类道具不会伪装成伤害 DPS，而是输出拾取频率收益。例如 `Baby Gecko` 和 `Sifd's Relic` 会按场景 `pickupRatePerSecond` 估算额外拾取机会，并给 Lucky 这类拾取触发路线机制加分。
 - 拾取治疗、消耗品治疗和闪避治疗会从官方效果 key 动态生成续航模型。例如 `Cute Monkey` 按拾取材料治疗概率估算，`Lemonade` / `Weird Food` / `Jerky` 按消耗品治疗加成估算，`Adrenaline` 按角色目标闪避与触发概率估算；这些只输出“治疗期望/续航潜力”，不计入伤害 DPS。

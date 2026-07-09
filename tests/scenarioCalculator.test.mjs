@@ -230,6 +230,24 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const customGrowth = calculateItemEffectDps({ ...baseStats, speed: 80 }, "normalWave", {
+    id: "official:custom-growth",
+    trigger: "customGrowthPotential",
+    scaledPlanStat: "speed",
+    sourceLabel: "移速 %",
+    nbStatScaled: 1,
+    permStatsOnly: true,
+  });
+
+  closeTo(customGrowth.sourceUnits, 80, "custom growth uses the selected source stat");
+  closeTo(
+    customGrowth.customGrowthUtilityScore,
+    Math.log1p(80) * 1.4 * 1.15,
+    "custom growth potential is a conservative logarithmic utility",
+  );
+}
+
+{
   const crown = calculateItemEffectDps(
     {
       ...baseStats,

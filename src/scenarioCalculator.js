@@ -375,6 +375,31 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "customGrowthPotential") {
+    const scaledPlanStat = itemEffect.scaledPlanStat;
+    const sourceStatValue = Math.max(0, normalizedStats[scaledPlanStat] ?? 0);
+    const nbStatScaled = Math.max(1, Math.abs(toNumber(itemEffect.nbStatScaled ?? 1, 1)));
+    const sourceUnits = sourceStatValue / nbStatScaled;
+    const permanenceMultiplier = itemEffect.permStatsOnly ? 1.15 : 1;
+    const customGrowthUtilityScore = Math.log1p(sourceUnits) * 1.4 * permanenceMultiplier;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      scaledPlanStat,
+      sourceStatValue,
+      nbStatScaled,
+      sourceUnits,
+      permanenceMultiplier,
+      customGrowthUtilityScore,
+      utilityLabel: "官方自定义成长潜力",
+    };
+  }
+
   if (itemEffect.trigger === "harvestingGrowth") {
     const growthPercent = Math.max(0, itemEffect.growthPercent ?? 0);
     const extraHarvesting = Math.max(0, normalizedStats.harvesting) * (growthPercent / 100);

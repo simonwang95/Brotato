@@ -203,6 +203,24 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 }
 
 {
+  const guide = generateStrategyGuide("speedy", "normal20", { officialCatalog });
+  const powerGenerator = guide.keyItems.find(({ item }) => item.name === "Power Generator");
+  assert.ok(powerGenerator, "speedy should include Power Generator as a speed-scaling item");
+  assert.ok(
+    powerGenerator.recommendationReasons.some((reason) =>
+      reason.includes("官方自定义成长随移速"),
+    ),
+    "speedy power generator should explain official custom growth source",
+  );
+  assert.ok(
+    powerGenerator.recommendationReasons.some((reason) =>
+      reason.includes("官方自定义成长潜力"),
+    ),
+    "speedy power generator should expose scenario custom-growth utility",
+  );
+}
+
+{
   const guide = generateStrategyGuide("knight", "normal20", { officialCatalog });
   assert.equal(
     guide.recommendedWeapons[0].weapon.name,

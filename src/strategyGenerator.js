@@ -75,6 +75,9 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   structures_cooldown_reduction: "engineering",
   structures_can_crit: "engineering",
   xp_gain: "harvesting",
+  materials: "harvesting",
+  structure: "engineering",
+  burning_enemy: "elementalDamage",
 };
 
 const FOCUS_ROUTE_TAGS = new Set([
@@ -108,6 +111,44 @@ const ITEM_EFFECT_NAME_KEYS = {
   ITEM_PIGGY_BANK: "piggyBank",
   ITEM_BABY_GECKO: "babyGecko",
   ITEM_SIFDS_RELIC: "sifdsRelic",
+};
+
+const CUSTOM_GROWTH_TEXT_KEYS = new Set([
+  "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+  "EFFECT_GAIN_STAT_FOR_EVERY_PERM_STAT",
+  "EFFECT_GAIN_STAT_FOR_EVERY_PERCENT_PLAYER_MISSING_HEALTH",
+  "EFFECT_GAIN_STAT_FOR_EVERY_TREE",
+  "EFFECT_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT",
+]);
+
+const CUSTOM_GROWTH_SOURCE_LABELS = {
+  materials: "材料持有量",
+  structure: "结构物数量",
+  knockback: "击退",
+  burning_enemy: "燃烧敌人数量",
+  living_enemy: "存活敌人数量",
+  common_item: "不同普通道具数量",
+  legendary_item: "不同传奇道具数量",
+};
+
+const CUSTOM_GROWTH_MIN_SOURCE_VALUE = {
+  maxHp: 70,
+  hpRegen: 8,
+  lifeSteal: 12,
+  armor: 8,
+  dodge: 30,
+  damagePercent: 40,
+  attackSpeed: 40,
+  critChance: 25,
+  meleeDamage: 25,
+  rangedDamage: 25,
+  elementalDamage: 25,
+  engineering: 25,
+  range: 80,
+  speed: 25,
+  harvesting: 60,
+  luck: 80,
+  curse: 10,
 };
 
 export function getAvailableCharacters() {
@@ -522,18 +563,29 @@ function collectPlanStats(plan) {
   return new Set([...priorityStats, ...targetStats]);
 }
 
+function collectPlanPriorityStats(plan) {
+  return new Set(
+    Object.values(plan?.statPriority ?? {}).flatMap((priorities) =>
+      priorities.flatMap(expandPlanPriority),
+    ),
+  );
+}
+
 function collectOfficialStats(official) {
   const officialStatKeys = (official?.records ?? []).flatMap((record) => [
-    ...(record.effects ?? []).flatMap((effect) => [
-      effect.key,
-      effect.statDisplayed,
-      effect.statDisplayedName,
-      effect.statName,
-      effect.statScaled,
-      effect.textKey,
-      effect.customKey,
-      ...(effect.statsModified ?? []),
-    ]),
+    ...(record.effects ?? []).flatMap((effect) => {
+      const statKeys = [
+        effect.key,
+        effect.statDisplayed,
+        effect.statDisplayedName,
+        effect.statName,
+        effect.textKey,
+        effect.customKey,
+        ...(effect.statsModified ?? []),
+      ];
+      if (!isCustomGrowthEffect(effect)) statKeys.push(effect.statScaled);
+      return statKeys;
+    }),
     ...(record.stats?.scalingStats ?? []).map((scaling) => scaling.stat),
   ]);
 
@@ -542,6 +594,50 @@ function collectOfficialStats(official) {
       officialStatKeys.map((statKey) => OFFICIAL_STAT_TO_PLAN_STAT[statKey]).filter(Boolean),
     ),
   ];
+}
+
+function isCustomGrowthEffect(effect) {
+  return (
+    Boolean(effect?.statScaled) &&
+    (CUSTOM_GROWTH_TEXT_KEYS.has(effect.textKey) ||
+      /\/custom_arg\.gd$/.test(effect.scriptPath ?? ""))
+  );
+}
+
+function customGrowthSourceLabel(effect, planStat) {
+  return String(
+    CUSTOM_GROWTH_SOURCE_LABELS[effect.statScaled] ??
+    STAT_LABELS[planStat] ??
+    effect.statScaled,
+  ).replace(/\s+%/g, "%");
+}
+
+function resolveCustomGrowthEffect(effect) {
+  if (!isCustomGrowthEffect(effect)) return null;
+
+  const planStat = OFFICIAL_STAT_TO_PLAN_STAT[effect.statScaled] ?? null;
+  const nbStatScaled = Number(effect.nbStatScaled ?? 1);
+  return {
+    effect,
+    planStat,
+    nbStatScaled,
+    positiveScaling: nbStatScaled > 0,
+    sourceLabel: customGrowthSourceLabel(effect, planStat),
+  };
+}
+
+function collectCustomGrowthEffects(official) {
+  return officialEffects(official).map(resolveCustomGrowthEffect).filter(Boolean);
+}
+
+function isCustomGrowthRelevant(customGrowth, plan) {
+  if (!customGrowth?.positiveScaling || !customGrowth.planStat) return false;
+  if (!collectPlanPriorityStats(plan).has(customGrowth.planStat)) return false;
+
+  const stats = representativeStats(plan);
+  const sourceValue = Math.max(0, stats[customGrowth.planStat] ?? 0);
+  const minValue = CUSTOM_GROWTH_MIN_SOURCE_VALUE[customGrowth.planStat] ?? 20;
+  return sourceValue >= minValue;
 }
 
 function scoreOfficialStatSynergy(entry, plan) {
@@ -562,7 +658,9 @@ function scoreMechanicFit(entry, plan) {
   if (!entry.official?.found) return { score: 0, reasons: [] };
 
   const planStats = collectPlanStats(plan);
+  const planPriorityStats = collectPlanPriorityStats(plan);
   const officialStats = collectOfficialStats(entry.official);
+  const customGrowthEffects = collectCustomGrowthEffects(entry.official);
   const routeTags = new Set((entry.routeTags ?? []).map(normalizeTag));
   const weaponSetIds = new Set(
     entry.weapon ? inferWeaponSetIds(entry.weapon, entry.official).map(normalizeTag) : [],
@@ -696,6 +794,18 @@ function scoreMechanicFit(entry, plan) {
     reasons.push("机制修正：官方结构物效果强化工程输出");
   }
 
+  const customGrowthMatches = customGrowthEffects.filter(
+    (customGrowth) =>
+      planPriorityStats.has(customGrowth.planStat) && isCustomGrowthRelevant(customGrowth, plan),
+  );
+  if (customGrowthMatches.length) {
+    const labels = [
+      ...new Set(customGrowthMatches.map(({ sourceLabel }) => sourceLabel)),
+    ];
+    score += Math.min(4, 2 + customGrowthMatches.length);
+    reasons.push(`机制修正：官方自定义成长随${labels.join(" / ")}放大`);
+  }
+
   return { score, reasons };
 }
 
@@ -816,6 +926,18 @@ function itemScenarioModel(entry, plan, mode) {
 
   const itemEffect = itemEffectForEntry(entry);
   if (!itemEffect) return null;
+  if (
+    itemEffect.trigger === "customGrowthPotential" &&
+    !isCustomGrowthRelevant(
+      {
+        planStat: itemEffect.scaledPlanStat,
+        positiveScaling: true,
+      },
+      plan,
+    )
+  ) {
+    return null;
+  }
 
   const scenarioId = scenarioIdForEntry(entry, mode);
   const result = calculateItemEffectDps(representativeStats(plan), scenarioId, itemEffect);
@@ -902,6 +1024,20 @@ function scoreScenarioModel(entry, plan, mode) {
       return {
         score,
         reasons: [`场景模型：${itemModel.result.scenario.name}${utilityLabel} +${score}`],
+      };
+    }
+
+    if (itemModel.result.customGrowthUtilityScore) {
+      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.customGrowthUtilityScore)));
+      const utilityLabel = itemModel.result.utilityLabel ?? "官方自定义成长潜力";
+      const sourceLabel = itemModel.result.itemEffect.sourceLabel ?? itemModel.result.scaledPlanStat;
+      return {
+        score,
+        reasons: [
+          `场景模型：${itemModel.result.scenario.name}${utilityLabel} 随${sourceLabel} ${itemModel.result.sourceStatValue.toFixed(
+            0,
+          )} 放大`,
+        ],
       };
     }
 
@@ -1077,6 +1213,24 @@ function itemEffectForEntry(entry) {
       structuresCooldownReductionPercent: structureCooldownReduction,
       projectileBonus,
       description: "按官方结构物、结构攻速、结构冷却或投射物字段估算工程输出潜力；不计入直接 DPS。",
+    };
+  }
+
+  const customGrowth = effects
+    .map(resolveCustomGrowthEffect)
+    .filter(Boolean)
+    .find(({ planStat, positiveScaling }) => positiveScaling && planStat);
+  if (customGrowth) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:custom-growth`,
+      trigger: "customGrowthPotential",
+      scaledPlanStat: customGrowth.planStat,
+      sourceLabel: customGrowth.sourceLabel,
+      nbStatScaled: customGrowth.nbStatScaled,
+      permStatsOnly: customGrowth.effect.permStatsOnly === true,
+      description:
+        "按官方自定义成长效果的缩放来源估算潜力；目标收益仍藏在 custom_arg 子资源中，不当作精确公式。",
     };
   }
 
