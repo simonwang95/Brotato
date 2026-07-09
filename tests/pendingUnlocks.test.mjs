@@ -29,6 +29,7 @@ assert.match(
   assert.equal(chef?.characterCnName, "厨师");
   assert.equal(chef?.descriptionKey, "CHAL_BARBECUE_DESC");
   assert.equal(chef?.value, 25);
+  assert.equal(chef?.challengeIconPath, "res://items/all/campfire/campfire_icon.png");
   assert.match(chef?.verificationAction ?? "", /PHashTranslation/);
 }
 
@@ -37,6 +38,7 @@ assert.match(
   assert.equal(beastMaster?.strategyStatus, "official-only");
   assert.equal(beastMaster?.officialNameKey, "CHARACTER_BEAST_MASTER");
   assert.equal(beastMaster?.descriptionKey, "CHAL_PAWS_N_CLAWS_DESC");
+  assert.equal(beastMaster?.challengeIconPath, "res://items/challenges/beast_master_challenge.png");
 }
 
 const report = execFileSync("node", ["scripts/report-unlock-pending.mjs"], {

@@ -124,7 +124,7 @@ npm run extract:catalog
 npm run extract:unlocks
 ```
 
-生成文件在 `data/official-unlocks.json`。该脚本只读取安装包里的静态 `challenge` / achievement 资源，不读取玩家存档，因此不受本机已解锁进度影响。当前可稳定写入 44 条角色精确条件，其中 43 条来自原版 achievement CSV，`Buccaneer` 使用已验证的 `CHAL_STAT_DESC` 静态模板生成；仍待校验的 2 条原版后补挑战和 8 条 DLC 挑战会保留 `pendingReason` 与 `pendingEvidence`，其中包含 `challengeId`、`nameKey`、`descriptionKey`、`value`、`stat` 和 `additionalArgs`，方便继续解码 translation。角色图鉴会合并官方目录和策略层：当前展示 64 条官方角色记录，加上 `Giant / CHARACTER_GIANT` 这个已记录在 `data/official-character-catalog-gaps.json` 的策略层官方目录缺口。
+生成文件在 `data/official-unlocks.json`。该脚本只读取安装包里的静态 `challenge` / achievement 资源，不读取玩家存档，因此不受本机已解锁进度影响。当前可稳定写入 44 条角色精确条件，其中 43 条来自原版 achievement CSV，`Buccaneer` 使用已验证的 `CHAL_STAT_DESC` 静态模板生成；仍待校验的 2 条原版后补挑战和 8 条 DLC 挑战会保留 `pendingReason` 与 `pendingEvidence`，其中包含 `challengeId`、`nameKey`、`descriptionKey`、`value`、`stat`、`additionalArgs` 和 `challengeIconPath`，方便继续解码 translation 或按图标资源人工核验。角色图鉴会合并官方目录和策略层：当前展示 64 条官方角色记录，加上 `Giant / CHARACTER_GIANT` 这个已记录在 `data/official-character-catalog-gaps.json` 的策略层官方目录缺口。
 
 生成集中待校验清单：
 
@@ -132,7 +132,7 @@ npm run extract:unlocks
 npm run unlocks:pending
 ```
 
-生成文件在 `data/official-unlock-pending.json`，由 `data/official-unlocks.json` 里的 `pending-text` 记录派生，当前包含 10 条待核验解锁文本，并标注角色是否已进入攻略层、官方 `nameKey`、静态 challenge key、数值和阻塞原因。它同样只反映静态安装包数据，不读取本机存档。
+生成文件在 `data/official-unlock-pending.json`，由 `data/official-unlocks.json` 里的 `pending-text` 记录派生，当前包含 10 条待核验解锁文本，并标注角色是否已进入攻略层、官方 `nameKey`、静态 challenge key、数值、图标资源和阻塞原因。它同样只反映静态安装包数据，不读取本机存档。
 
 从本机安装包导出图鉴 WebP 图标：
 

@@ -86,6 +86,10 @@ function collectExtResources(block) {
   );
 }
 
+function challengeIconPath(extResources) {
+  return Object.values(extResources).find((resource) => resource.type === "Texture")?.path ?? null;
+}
+
 function parseCsv(text) {
   const rows = [];
   let row = [];
@@ -177,6 +181,7 @@ function extractCharacterUnlocks(packageFiles, sourcePackage, localizations = ne
     .map(([path, block]) => {
       const extResources = collectExtResources(block);
       const reward = extResources[getResourceRef(block, "reward")]?.path ?? null;
+      const iconPath = challengeIconPath(extResources);
       const characterId = characterIdFromResourcePath(reward);
       if (getNumber(block, "reward_type") !== 6 || !characterId) return null;
 
@@ -198,6 +203,7 @@ function extractCharacterUnlocks(packageFiles, sourcePackage, localizations = ne
                 number: getNumber(block, "number"),
                 stat: getString(block, "stat"),
                 additionalArgs: getLineValue(block, "additional_args"),
+                challengeIconPath: iconPath,
                 challengePath: path,
                 rewardPath: reward,
               },
@@ -216,6 +222,7 @@ function extractCharacterUnlocks(packageFiles, sourcePackage, localizations = ne
         number: getNumber(block, "number"),
         stat: getString(block, "stat"),
         additionalArgs: getLineValue(block, "additional_args"),
+        challengeIconPath: iconPath,
         title: localization.default?.title ?? null,
         description: localization.default?.description ?? null,
         zhTitle: localization["zh-Hans"]?.title ?? null,

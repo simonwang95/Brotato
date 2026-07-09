@@ -67,6 +67,7 @@ function buildPendingRecord(record) {
     number: record.number,
     stat: record.stat,
     additionalArgs: record.additionalArgs,
+    challengeIconPath: record.challengeIconPath ?? record.pendingEvidence?.challengeIconPath ?? null,
     challengePath: record.challengePath,
     rewardPath: record.rewardPath,
     extractionStatus: record.extractionStatus,

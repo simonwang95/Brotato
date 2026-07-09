@@ -258,7 +258,7 @@ npm run extract:localization
 npm run extract:unlocks
 ```
 
-该命令读取 base/DLC `.pck` 中的 challenge 资源，并用原版 `achievementLocalizations.csv` 连接挑战 ID、奖励角色和中英条件文本，生成 `data/official-unlocks.json`。它只读取静态安装包数据，不读取玩家存档，也不受本机解锁进度影响。当前有 44 条可直接确认文本：43 条来自原版 achievement CSV，`Buccaneer` 来自已验证的 `CHAL_STAT_DESC` 静态模板和 `pickup_range` stat 字段；其余 `pending-text` 记录会保留 `pendingReason` 与 `pendingEvidence`，包括 `challengeId`、`nameKey`、`descriptionKey`、`value`、`number`、`stat`、`additionalArgs`、challenge 路径和奖励路径，用于后续继续解码 translation 或人工核验。
+该命令读取 base/DLC `.pck` 中的 challenge 资源，并用原版 `achievementLocalizations.csv` 连接挑战 ID、奖励角色和中英条件文本，生成 `data/official-unlocks.json`。它只读取静态安装包数据，不读取玩家存档，也不受本机解锁进度影响。当前有 44 条可直接确认文本：43 条来自原版 achievement CSV，`Buccaneer` 来自已验证的 `CHAL_STAT_DESC` 静态模板和 `pickup_range` stat 字段；其余 `pending-text` 记录会保留 `pendingReason` 与 `pendingEvidence`，包括 `challengeId`、`nameKey`、`descriptionKey`、`value`、`number`、`stat`、`additionalArgs`、challenge 图标路径、challenge 路径和奖励路径，用于后续继续解码 translation 或人工核验。
 
 集中导出待校验解锁文本：
 
@@ -266,7 +266,7 @@ npm run extract:unlocks
 npm run unlocks:pending
 ```
 
-该命令不会重新读取安装包，而是从 `data/official-unlocks.json` 过滤 `pending-text`，生成 `data/official-unlock-pending.json`。当前清单包含 10 条待核验项：base 2 条、abyssalTerrors 8 条；其中 8 条已有攻略层角色，2 条是 official-only 角色。每条记录都保留官方角色 `nameKey`、静态 challenge key、数值、奖励路径和后续核验动作，方便继续解码 `PHashTranslation` 或人工核验。
+该命令不会重新读取安装包，而是从 `data/official-unlocks.json` 过滤 `pending-text`，生成 `data/official-unlock-pending.json`。当前清单包含 10 条待核验项：base 2 条、abyssalTerrors 8 条；其中 8 条已有攻略层角色，2 条是 official-only 角色。每条记录都保留官方角色 `nameKey`、静态 challenge key、数值、图标资源、奖励路径和后续核验动作，方便继续解码 `PHashTranslation` 或人工核验。
 
 角色图鉴会读取 `data/official-unlocks.json` 展示静态解锁证据。图鉴角色列表会合并官方目录角色和策略层角色；官方目录里存在但 `CHARACTER_GUIDES` 尚未维护的角色会标记为 official-only，只展示官方图片、特性和解锁证据，不生成攻略推荐。`pending-text` 的证据只能说明官方 challenge 资源和奖励角色已经定位，不能当作已确认条件文本；只有写入 `zhDescription` 的 `verified-static-text` 才能同步到 `src/strategyData.js` 的角色 `unlock` 文案。
 

@@ -30,7 +30,7 @@
 - `data/official-catalog.json` 先提供完整角色/武器/道具 `nameKey`、来源包、阶数、价格、套装和效果路径。
 - `data/official-localization.json` 维护 `nameKey -> 官方中文名`，由本机安装包的英文/中文 translation 资源合并生成。
 - `src/strategyData.js` 只维护当前策略会引用到的类型、定位、解锁说明和推荐理由。
-- `data/official-unlocks.json` 由 `npm run extract:unlocks` 从安装包静态 challenge / achievement 资源生成。该数据不读取玩家存档，不受本机解锁进度影响。已确认文本写入 `zhDescription`；未解码文本保留 `pendingReason` 和 `pendingEvidence`，其中包含 `challengeId`、`nameKey`、`descriptionKey`、`value`、`stat`、`additionalArgs`、challenge 路径和奖励路径。
+- `data/official-unlocks.json` 由 `npm run extract:unlocks` 从安装包静态 challenge / achievement 资源生成。该数据不读取玩家存档，不受本机解锁进度影响。已确认文本写入 `zhDescription`；未解码文本保留 `pendingReason` 和 `pendingEvidence`，其中包含 `challengeId`、`nameKey`、`descriptionKey`、`value`、`stat`、`additionalArgs`、challenge 图标路径、challenge 路径和奖励路径。
 - `data/official-unlock-pending.json` 由 `npm run unlocks:pending` 从 `data/official-unlocks.json` 的 `pending-text` 记录派生。它集中维护当前无法可靠解码的 10 条挑战文本，标明 source package、官方角色 key、是否已有攻略、challenge key、数值和后续核验动作。
 - `npm run localization:coverage` 用来检查官方图鉴里还有哪些角色、武器、道具没有进入本地化维护表。
 - `npm run extract:localization` 可以重新从本机安装包生成本地化表。部分英文 translation 条目不是明文，脚本里用 `manual-override` 对已从中文包确认的关键名称做校准。
