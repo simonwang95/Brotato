@@ -406,6 +406,13 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
       itemEffect.structuresCooldownReductionPercent ?? 0,
     );
     const projectileBonus = Math.max(0, itemEffect.projectileBonus ?? 0);
+    const structuresCanCrit = Boolean(itemEffect.structuresCanCrit);
+    const critChanceBonus = Math.max(0, itemEffect.critChanceBonus ?? 0);
+    const structureCritChance = structuresCanCrit
+      ? clamp((normalizedStats.critChance + critChanceBonus) / 100, 0, 1)
+      : 0;
+    const structureCritMultiplier = 1 + structureCritChance;
+    const structureCritUtility = structuresCanCrit ? structureCritChance * 20 : 0;
     const engineeringMultiplier = 1 + clamp(normalizedStats.engineering / 80, 0, 1.5);
     const densityMultiplier = clamp(scenario.averageTargetsInRange / 4, 0.5, 2);
     const structureUtilityScore =
@@ -413,6 +420,10 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
         structureAttackSpeedPercent / 10 +
         structuresCooldownReductionPercent / 8 +
         projectileBonus) *
+        structureCritMultiplier *
+        engineeringMultiplier *
+        densityMultiplier +
+      structureCritUtility *
       engineeringMultiplier *
       densityMultiplier;
 
@@ -427,10 +438,15 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
       structureAttackSpeedPercent,
       structuresCooldownReductionPercent,
       projectileBonus,
+      structuresCanCrit,
+      critChanceBonus,
+      structureCritChance,
+      structureCritMultiplier,
+      structureCritUtility,
       engineeringMultiplier,
       densityMultiplier,
       structureUtilityScore,
-      utilityLabel: "结构物输出潜力",
+      utilityLabel: structuresCanCrit ? "结构物暴击输出潜力" : "结构物输出潜力",
     };
   }
 

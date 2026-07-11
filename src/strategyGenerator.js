@@ -1033,9 +1033,12 @@ function scoreScenarioModel(entry, plan, mode) {
     if (itemModel.result.structureUtilityScore) {
       const score = Math.min(8, Math.max(0, Math.round(itemModel.result.structureUtilityScore / 2)));
       const utilityLabel = itemModel.result.utilityLabel ?? "结构物潜力";
+      const critDetail = itemModel.result.structuresCanCrit
+        ? `（${(itemModel.result.structureCritChance * 100).toFixed(0)}% 暴击率）`
+        : "";
       return {
         score,
-        reasons: [`场景模型：${itemModel.result.scenario.name}${utilityLabel} +${score}`],
+        reasons: [`场景模型：${itemModel.result.scenario.name}${utilityLabel}${critDetail} +${score}`],
       };
     }
 
@@ -1476,6 +1479,8 @@ function itemEffectForEntry(entry) {
     (effect) => effect.customKey === "structures_cooldown_reduction" && effect.value > 0,
   )?.value ?? 0;
   const projectileBonus = Math.max(0, statValue("projectiles"));
+  const structuresCanCrit = statValue("structures_can_crit") > 0;
+  const critChanceBonus = Math.max(0, statValue("stat_crit_chance"));
   const structureEffectCount = effects.filter((effect) =>
     /turret_effect|structure_effect|builder_turret_effect/.test(effect.scriptPath ?? ""),
   ).length;
@@ -1485,7 +1490,8 @@ function itemEffectForEntry(entry) {
     structureCooldownReduction > 0 ||
     projectileBonus > 0 ||
     structureEffectCount > 0 ||
-    treeTurrets > 0
+    treeTurrets > 0 ||
+    structuresCanCrit
   ) {
     return {
       ...baseEffect,
@@ -1495,7 +1501,9 @@ function itemEffectForEntry(entry) {
       structureAttackSpeedPercent: structureAttackSpeed,
       structuresCooldownReductionPercent: structureCooldownReduction,
       projectileBonus,
-      description: "按官方结构物、结构攻速、结构冷却或投射物字段估算工程输出潜力；不计入直接 DPS。",
+      structuresCanCrit,
+      critChanceBonus,
+      description: "按官方结构物、结构攻速、结构冷却、投射物或结构物暴击字段估算工程输出潜力；不计入直接 DPS。",
     };
   }
 

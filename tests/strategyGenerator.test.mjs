@@ -724,6 +724,21 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 }
 
 {
+  const guide = generateStrategyGuide("engineer", "normal20", {
+    officialCatalog,
+    preferenceId: "engineering",
+  });
+  const pileOfBooks = guide.keyItems.find(({ item }) => item.name === "Pile Of Books");
+  assert.ok(pileOfBooks, "engineer should surface Pile Of Books as official structure crit support");
+  assert.ok(
+    pileOfBooks.recommendationReasons.some((reason) =>
+      reason.includes("结构物暴击输出潜力（5% 暴击率）"),
+    ),
+    "pile of books should explain structure crit utility through the scenario model",
+  );
+}
+
+{
   const guide = generateStrategyGuide("artificer", "normal20", { officialCatalog });
   const dynamite = guide.keyItems.find(({ item }) => item.name === "Dynamite");
   assert.ok(dynamite, "artificer should include Dynamite as an explosion item");

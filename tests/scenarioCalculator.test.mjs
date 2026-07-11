@@ -296,6 +296,27 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const pileOfBooks = calculateItemEffectDps(
+    { ...baseStats, engineering: 40, critChance: 25 },
+    "normalWave",
+    {
+      id: "official:structure-crit-support",
+      trigger: "structureSupport",
+      structureCount: 1,
+      structureAttackSpeedPercent: 0,
+      structuresCooldownReductionPercent: 0,
+      projectileBonus: 0,
+      structuresCanCrit: true,
+      critChanceBonus: 5,
+    },
+  );
+
+  closeTo(pileOfBooks.structureCritChance, 0.3, "structure crit uses the plan and item crit chance");
+  closeTo(pileOfBooks.structureCritMultiplier, 1.3, "structure crit applies a 2x expected crit multiplier");
+  closeTo(pileOfBooks.structureUtilityScore, 12.9, "structure crit support scales with engineering");
+}
+
+{
   const bandana = calculateItemEffectDps(
     {
       ...baseStats,
