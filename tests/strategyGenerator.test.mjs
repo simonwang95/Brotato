@@ -568,6 +568,16 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     "lucky guide should surface official sustain candidates",
   );
   assert.ok(
+    guide.keyItems.some(
+      ({ item, recommendationReasons }) =>
+        item.name === "Jerky" &&
+        recommendationReasons.some((reason) =>
+          reason.includes("高密度怪潮 / 无尽消耗品治疗潜力 +2.63 生命/秒"),
+        ),
+    ),
+    "lucky jerky recommendation should include official over-time consumable healing",
+  );
+  assert.ok(
     guide.statPriority.early.includes("总伤害 %"),
     "lucky guide should prioritize damage percent for item-trigger damage",
   );

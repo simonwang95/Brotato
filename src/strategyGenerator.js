@@ -1286,17 +1286,21 @@ function itemEffectForEntry(entry) {
     };
   }
 
-  const consumableHeal = effects.find(
-    (effect) => effect.key === "consumable_heal" && effect.value > 0,
-  );
-  if (consumableHeal) {
+  const consumableHealBonus = effects
+    .filter((effect) => effect.key === "consumable_heal" && effect.value > 0)
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  const consumableHealOverTimeBonus = effects
+    .filter((effect) => effect.key === "consumable_heal_over_time" && effect.value > 0)
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  if (consumableHealBonus || consumableHealOverTimeBonus) {
     return {
       ...baseEffect,
       id: `${baseEffect.id}:consumable-heal`,
       trigger: "consumableHealBonus",
-      healBonus: consumableHeal.value,
+      healBonus: consumableHealBonus,
+      healOverTimeBonus: consumableHealOverTimeBonus,
       consumablePickupShare: 0.25,
-      description: "按官方消耗品治疗加成估算续航潜力；不计入伤害 DPS。",
+      description: "按官方消耗品即时治疗和持续治疗加成估算续航潜力；不计入伤害 DPS。",
     };
   }
 

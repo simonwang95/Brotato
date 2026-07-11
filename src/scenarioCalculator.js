@@ -592,9 +592,11 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
 
   if (itemEffect.trigger === "consumableHealBonus") {
     const healBonus = Math.max(0, itemEffect.healBonus ?? 0);
+    const healOverTimeBonus = Math.max(0, itemEffect.healOverTimeBonus ?? 0);
+    const totalHealBonus = healBonus + healOverTimeBonus;
     const consumablePickupShare = clamp(itemEffect.consumablePickupShare ?? 0.25, 0, 1);
     const triggerRate = scenario.pickupRatePerSecond * consumablePickupShare;
-    const healingPerSecond = triggerRate * healBonus;
+    const healingPerSecond = triggerRate * totalHealBonus;
     const sustainUtilityScore = healingPerSecond * 8;
 
     return {
@@ -605,6 +607,8 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
       dps: 0,
       rawDps: 0,
       healBonus,
+      healOverTimeBonus,
+      totalHealBonus,
       consumablePickupShare,
       healingPerSecond,
       sustainUtilityScore,

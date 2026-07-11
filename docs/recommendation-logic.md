@@ -77,7 +77,7 @@
 - 贯通类道具从官方 `piercing` 和 `pierce_on_crit` 字段生成覆盖潜力。例如 `Bandana（头巾）` 和 `Sharp Bullet（尖头子弹）` 会按场景直线目标数估算怪潮覆盖；`Eyepatch（眼罩）` 这类暴击贯通还会按角色目标暴击率折算。该分数是覆盖修正，不当作直接伤害 DPS。
 - 商店效率类道具从官方 `items_price`、`free_rerolls`、`reroll_price` 字段生成经济潜力。例如 `Coupon（优惠券）` 解释物品折扣，`Dangerous Bunny（危险兔子）` 解释免费刷新，`Spyglass（望远镜）` 解释刷新折扣；这些只在收获或幸运路线中转成场景分。
 - 拾取吸附类道具不会伪装成伤害 DPS，而是输出拾取频率收益。例如 `Baby Gecko` 和 `Sifd's Relic` 会按场景 `pickupRatePerSecond` 估算额外拾取机会，并给 Lucky 这类拾取触发路线机制加分。
-- 拾取治疗、消耗品治疗和闪避治疗会从官方效果 key 动态生成续航模型。例如 `Cute Monkey` 按拾取材料治疗概率估算，`Lemonade` / `Weird Food` / `Jerky` 按消耗品治疗加成估算，`Adrenaline` 按角色目标闪避与触发概率估算；这些只输出“治疗期望/续航潜力”，不计入伤害 DPS。
+- 拾取治疗、消耗品治疗和闪避治疗会从官方效果 key 动态生成续航模型。例如 `Cute Monkey` 按拾取材料治疗概率估算，`Lemonade` / `Weird Food` 按消耗品即时治疗估算，`Jerky` 会合并官方 `consumable_heal` 和 `consumable_heal_over_time`，`Adrenaline` 按角色目标闪避与触发概率估算；这些只输出“治疗期望/续航潜力”，不计入伤害 DPS。
 - 诅咒经济和敌人风险道具会从官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items`、`stat_curse`、`number_of_enemies`、`enemy_health`、`enemy_damage` 组合出风险调整后的经济潜力。例如 `Black Flag` 会解释诅咒击杀材料潜力，`Fish Hook` 会解释锁定物品诅咒潜力；这些同样只作为经济/风险评分，不计入伤害 DPS。
 - 爆炸、燃烧和结构物支持道具会从官方 `explosion_damage`、`explosion_size`、`burning_spread`、`burning_enemy_hp_percent_damage`、`structure_attack_speed`、`structures_cooldown_reduction` 和 turret/structure 脚本路径生成覆盖潜力。例如 `Snake` 会解释燃烧覆盖，`Dynamite` 会解释爆炸覆盖，`Turret` 会解释结构物输出；由于官方资源里仍缺少完整炮塔/燃烧内部参数，这些是排序修正和解释，不当作精确 DPS。
 - 机制修正用于表达纯 DPS 不容易覆盖的价值。例如 Lucky 路线会额外重视幸运缩放，官方 `stat_luck` 武器缩放会被解释为高幸运路线收益，Lute 的百分比伤害会被视作能放大拾取/击杀触发收益；`Cyberball` 会按官方 `dmg_when_death` 作为击杀触发、25% 幸运伤害估算，`Baby Elephant` 会按 `dmg_when_pickup_gold` 作为拾取触发估算；幽魂武器的官方击杀成长效果会给幽魂路线额外解释。

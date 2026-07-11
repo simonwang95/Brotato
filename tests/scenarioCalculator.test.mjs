@@ -432,6 +432,20 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const jerky = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:consumable-heal-over-time",
+    trigger: "consumableHealBonus",
+    healBonus: 3,
+    healOverTimeBonus: 4,
+    consumablePickupShare: 0.25,
+  });
+
+  closeTo(jerky.totalHealBonus, 7, "consumable healing combines instant and over-time values");
+  closeTo(jerky.healingPerSecond, 1.4, "consumable over-time healing contributes sustain");
+  closeTo(jerky.sustainUtilityScore, 11.2, "combined consumable healing produces sustain utility");
+}
+
+{
   const dodgeHeal = calculateItemEffectDps({ ...baseStats, dodge: 60 }, "normalWave", {
     id: "official:dodge-heal",
     trigger: "onDodgeHeal",

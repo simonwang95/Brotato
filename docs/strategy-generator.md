@@ -137,7 +137,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 收获成长道具：用官方 `harvesting_growth` 和角色目标收获中位数估算等效额外收获，不计入伤害 DPS。
 - 箱子经济道具：用官方 `item_box_gold` 估算每个箱子的额外材料潜力，不假设箱子掉落频率，也不计入伤害 DPS。
 - 波次存钱道具：用官方 `effect_gain_pct_gold_start_wave_limited` 估算波次开始材料百分比潜力，不假设具体持有材料数，也不计入伤害 DPS。
-- 续航触发道具：用官方 `heal_when_pickup_gold`、`consumable_heal` 和 `heal_on_dodge` 估算拾取治疗、消耗品治疗和闪避治疗期望，不计入伤害 DPS。
+- 续航触发道具：用官方 `heal_when_pickup_gold`、`consumable_heal`、`consumable_heal_over_time` 和 `heal_on_dodge` 估算拾取治疗、消耗品治疗、消耗品持续治疗和闪避治疗期望，不计入伤害 DPS。
 - 诅咒/风险经济道具：用官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items`、`stat_curse` 和敌人风险字段估算额外材料或商店诅咒潜力，不计入伤害 DPS。
 - 下一波经验道具：用官方 `stats_next_wave` 的 `xp_gain` 估算短期经验潜力，并用同组敌人生命、伤害或速度字段做风险折扣；只在收获路线中转成经济排序分。
 - 覆盖潜力道具：用官方 `explosion_damage`、`explosion_size`、`burning_spread`、`burning_enemy_hp_percent_damage`、`structure_attack_speed`、`structures_cooldown_reduction` 和结构物脚本路径估算爆炸、燃烧、结构物路线潜力；这类分数用于排序和解释，不作为精确 DPS。
@@ -177,7 +177,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 官方 `stats_next_wave` 动态下一波经验模型，例如 `Peacock（孔雀）`
 - 官方 `piercing` / `pierce_on_crit` 动态贯通覆盖模型，例如 `Bandana（头巾）`、`Sharp Bullet（尖头子弹）`、`Eyepatch（眼罩）`
 - 官方 `items_price` / `free_rerolls` / `reroll_price` 动态商店效率模型，例如 `Coupon（优惠券）`、`Dangerous Bunny（危险兔子）`、`Spyglass（望远镜）`
-- 官方 `heal_when_pickup_gold`、`consumable_heal`、`heal_on_dodge` 动态续航模型，例如 `Cute Monkey（萌萌猴）`、`Lemonade（柠檬水）`、`Weird Food（奇怪的食物）`、`Jerky（干肉条）`、`Adrenaline（肾上腺素）`
+- 官方 `heal_when_pickup_gold`、`consumable_heal`、`consumable_heal_over_time`、`heal_on_dodge` 动态续航模型，例如 `Cute Monkey（萌萌猴）`、`Lemonade（柠檬水）`、`Weird Food（奇怪的食物）`、`Jerky（干肉条）`、`Adrenaline（肾上腺素）`
 - 官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items` 动态风险经济模型，例如 `Black Flag（黑旗）`、`Fish Hook（鱼钩）`、`Starfish（海星）`
 - 官方爆炸/燃烧/结构物动态潜力模型，例如 `Dynamite（炸药）`、`Honey（蜂蜜）`、`Snake（蛇）`、`Eyes Surgery（眼部手术）`、`Turret（炮塔）`、`Clockwork Wasp（机械黄蜂）`
 - 官方 `EFFECT_GAIN_STAT_FOR_EVERY*` 自定义成长潜力模型，例如 `Power Generator（发电机）`、`Pearl（珍珠）`、`Stone Skin（石头皮肤）`、`Strange Book（奇怪之书）`。当前只解释缩放来源，不猜测未解码的目标收益。
