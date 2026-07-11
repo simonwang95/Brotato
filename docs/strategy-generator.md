@@ -137,7 +137,8 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 收获成长道具：用官方 `harvesting_growth` 和角色目标收获中位数估算等效额外收获，不计入伤害 DPS。
 - 箱子经济道具：用官方 `item_box_gold` 估算每个箱子的额外材料潜力，不假设箱子掉落频率，也不计入伤害 DPS。
 - 波次存钱道具：用官方 `effect_gain_pct_gold_start_wave_limited` 估算波次开始材料百分比潜力，不假设具体持有材料数，也不计入伤害 DPS。
-- 续航触发道具：用官方 `heal_when_pickup_gold`、`consumable_heal`、`consumable_heal_over_time` 和 `heal_on_dodge` 估算拾取治疗、消耗品治疗、消耗品持续治疗和闪避治疗期望，不计入伤害 DPS。
+- 续航触发道具：用官方 `heal_on_kill`、`heal_on_crit_kill`、`heal_when_pickup_gold`、`consumable_heal`、`consumable_heal_over_time` 和 `heal_on_dodge` 估算击杀、暴击击杀、拾取、消耗品即时/持续和闪避治疗期望，不计入伤害 DPS。
+- 水果掉落道具：用官方 `enemy_fruit_drops` 和场景击杀频率估算额外消耗品机会；静态目录没有水果治疗量时只输出消耗品/秒，不换算成生命/秒。
 - 诅咒/风险经济道具：用官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items`、`stat_curse` 和敌人风险字段估算额外材料或商店诅咒潜力，不计入伤害 DPS。
 - 下一波经验道具：用官方 `stats_next_wave` 的 `xp_gain` 估算短期经验潜力，并用同组敌人生命、伤害或速度字段做风险折扣；只在收获路线中转成经济排序分。
 - 条件伤害：用官方 `damage_against_bosses`、`bonus_damage_against_targets_above_hp` 和 `giant_crit_damage` 估算 Boss / 高生命目标潜力；高生命阶段按 Boss 50%、普通清怪 25%、怪潮 20% 的场景权重折算。`giant_crit_damage` 的生命伤害换算未可靠解码，因此只按官方原始值和角色目标暴击率排序，不当作精确 DPS。
@@ -179,7 +180,8 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 官方 Boss / 高生命条件伤害模型，例如 `Silver Bullet（银质子弹）`、`Small Fish（小鱼）`、`Giant Belt（巨型带）`、`Trident（三叉戟）`
 - 官方 `piercing` / `pierce_on_crit` 动态贯通覆盖模型，例如 `Bandana（头巾）`、`Sharp Bullet（尖头子弹）`、`Eyepatch（眼罩）`
 - 官方 `items_price` / `free_rerolls` / `reroll_price` 动态商店效率模型，例如 `Coupon（优惠券）`、`Dangerous Bunny（危险兔子）`、`Spyglass（望远镜）`
-- 官方 `heal_when_pickup_gold`、`consumable_heal`、`consumable_heal_over_time`、`heal_on_dodge` 动态续航模型，例如 `Cute Monkey（萌萌猴）`、`Lemonade（柠檬水）`、`Weird Food（奇怪的食物）`、`Jerky（干肉条）`、`Adrenaline（肾上腺素）`
+- 官方 `heal_on_kill`、`heal_on_crit_kill`、`heal_when_pickup_gold`、`consumable_heal`、`consumable_heal_over_time`、`heal_on_dodge` 动态续航模型，例如 `Goblet（高脚杯）`、`Tentacle（触手）`、`Cute Monkey（萌萌猴）`、`Lemonade（柠檬水）`、`Weird Food（奇怪的食物）`、`Jerky（干肉条）`、`Adrenaline（肾上腺素）`
+- 官方 `enemy_fruit_drops` 动态消耗品机会模型，例如 `Fruit Basket（果篮）`
 - 官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items` 动态风险经济模型，例如 `Black Flag（黑旗）`、`Fish Hook（鱼钩）`、`Starfish（海星）`
 - 官方爆炸/燃烧/结构物动态潜力模型，例如 `Dynamite（炸药）`、`Honey（蜂蜜）`、`Snake（蛇）`、`Eyes Surgery（眼部手术）`、`Turret（炮塔）`、`Clockwork Wasp（机械黄蜂）`、`Pile Of Books（书堆）`
 - 官方 `EFFECT_GAIN_STAT_FOR_EVERY*` 自定义成长潜力模型，例如 `Power Generator（发电机）`、`Pearl（珍珠）`、`Stone Skin（石头皮肤）`、`Strange Book（奇怪之书）`。当前只解释缩放来源，不猜测未解码的目标收益。

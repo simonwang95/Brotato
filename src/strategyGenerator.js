@@ -56,6 +56,9 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   consumable_heal_over_time: "hpRegen",
   heal_when_pickup_gold: "hpRegen",
   heal_on_dodge: "hpRegen",
+  heal_on_kill: "hpRegen",
+  heal_on_crit_kill: "hpRegen",
+  enemy_fruit_drops: "harvesting",
   stat_curse: "curse",
   gold_on_cursed_enemy_kill: "harvesting",
   enemy_gold_drops: "harvesting",
@@ -679,6 +682,7 @@ function scoreMechanicFit(entry, plan) {
 
   const planStats = collectPlanStats(plan);
   const planPriorityStats = collectPlanPriorityStats(plan);
+  const planText = [plan.stance, plan.avoid, ...(plan.rhythm ?? [])].join(" ");
   const officialStats = collectSynergisticOfficialStats(entry.official);
   const customGrowthEffects = collectCustomGrowthEffects(entry.official);
   const routeTags = new Set((entry.routeTags ?? []).map(normalizeTag));
@@ -721,9 +725,20 @@ function scoreMechanicFit(entry, plan) {
   );
   const hasSustainTrigger = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) =>
-      ["consumable_heal", "consumable_heal_over_time"].includes(effect.key) ||
+      [
+        "consumable_heal",
+        "consumable_heal_over_time",
+        "heal_on_kill",
+        "heal_on_crit_kill",
+      ].includes(effect.key) ||
       effect.customKey === "heal_on_dodge",
     ),
+  );
+  const hasCritKillHealing = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) => effect.key === "heal_on_crit_kill" && effect.value > 0),
+  );
+  const hasFruitDropBonus = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) => effect.key === "enemy_fruit_drops" && effect.value > 0),
   );
   const hasCurseEconomy = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) =>
@@ -808,6 +823,23 @@ function scoreMechanicFit(entry, plan) {
   ) {
     score += 2;
     reasons.push("机制修正：官方续航触发补足生存阈值");
+  }
+  if (planStats.has("critChance") && hasCritKillHealing) {
+    score += 3;
+    reasons.push("机制修正：暴击击杀治疗跟随高暴击路线");
+  }
+  if ((planStats.has("harvesting") || planStats.has("luck")) && hasFruitDropBonus) {
+    const explicitConsumableRoute = /消耗品|水果/.test(planText);
+    score += explicitConsumableRoute
+      ? 7
+      : planStats.has("harvesting") && planStats.has("luck")
+        ? 3
+        : 2;
+    reasons.push(
+      explicitConsumableRoute
+        ? "机制修正：额外水果掉落贴合明确消耗品路线"
+        : "机制修正：额外水果掉落贴合经济路线",
+    );
   }
   if (planStats.has("luck") && hasPickupHealing) {
     score += 3;
@@ -1054,6 +1086,21 @@ function scoreScenarioModel(entry, plan, mode) {
           `场景模型：${itemModel.result.scenario.name}${sustainLabel} +${itemModel.result.healingPerSecond.toFixed(
             2,
           )} 生命/秒`,
+        ],
+      };
+    }
+
+    if (itemModel.result.consumableOpportunityScore) {
+      const score = Math.min(
+        8,
+        Math.max(0, Math.round(itemModel.result.consumableOpportunityScore)),
+      );
+      return {
+        score,
+        reasons: [
+          `场景模型：${itemModel.result.scenario.name}${itemModel.result.utilityLabel} +${itemModel.result.extraConsumablesPerSecond.toFixed(
+            2,
+          )}/秒`,
         ],
       };
     }
@@ -1353,6 +1400,44 @@ function itemEffectForEntry(entry) {
       chance: dodgeHeal.chance ?? 100,
       healAmount: dodgeHeal.value,
       description: "按官方闪避治疗概率和角色目标闪避估算续航潜力；不计入伤害 DPS。",
+    };
+  }
+
+  const killHeal = effects.find(
+    (effect) => ["heal_on_kill", "heal_on_crit_kill"].includes(effect.key) && effect.value > 0,
+  );
+  if (killHeal) {
+    const critGated = killHeal.key === "heal_on_crit_kill";
+    const critChanceBonus = critGated
+      ? effects
+          .filter((effect) => effect.key === "stat_crit_chance" && effect.value > 0)
+          .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0)
+      : 0;
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:${critGated ? "crit-kill" : "kill"}-heal`,
+      trigger: "onKillHealChance",
+      chance: killHeal.value,
+      healAmount: 1,
+      critGated,
+      critChanceBonus,
+      description: critGated
+        ? "按官方暴击击杀治疗概率、自带暴击率和角色目标暴击率估算续航潜力；不计入伤害 DPS。"
+        : "按官方击杀治疗概率和场景击杀频率估算续航潜力；不计入伤害 DPS。",
+    };
+  }
+
+  const fruitDropBonus = effects
+    .filter((effect) => effect.key === "enemy_fruit_drops" && effect.value > 0)
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  if (fruitDropBonus) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:fruit-drop-bonus`,
+      trigger: "enemyFruitDropBonus",
+      fruitDropChancePercent: fruitDropBonus,
+      description:
+        "按官方敌人水果掉落值和场景击杀频率估算额外消耗品机会；不假定每个水果的治疗量。",
     };
   }
 

@@ -714,6 +714,53 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 }
 
 {
+  const guide = generateStrategyGuide("ogre", "normal20", { officialCatalog });
+  const goblet = guide.keyItems.find(({ item }) => item.name === "Goblet");
+  assert.ok(goblet, "ogre should retain Goblet as kill-heal sustain");
+  assert.ok(
+    goblet.recommendationReasons.some((reason) =>
+      reason.includes("击杀治疗期望 +0.15 生命/秒"),
+    ),
+    "goblet should explain official kill-heal chance through the scenario kill rate",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("crazy", "normal20", { officialCatalog });
+  const tentacle = guide.keyItems.find(({ item }) => item.name === "Tentacle");
+  assert.ok(tentacle, "high-crit routes should surface Tentacle from the official pool");
+  assert.ok(
+    tentacle.recommendationReasons.some((reason) =>
+      reason.includes("暴击击杀治疗期望 +0.14 生命/秒"),
+    ),
+    "tentacle should combine its crit bonus with the character target crit rate",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("druid", "normal20", { officialCatalog });
+  const fruitBasket = guide.keyItems.find(({ item }) => item.name === "Fruit Basket");
+  assert.ok(fruitBasket, "druid should surface Fruit Basket for its explicit consumable route");
+  assert.ok(
+    fruitBasket.recommendationReasons.some((reason) =>
+      reason.includes("额外消耗品机会 +0.01/秒"),
+    ),
+    "fruit basket should explain extra drops without inventing healing per second",
+  );
+  assert.ok(
+    fruitBasket.recommendationReasons.every(
+      (reason) => !/官方数值匹配角色目标：.*生命再生/.test(reason),
+    ),
+    "fruit basket negative regeneration must not count as positive stat synergy",
+  );
+  const farmerGuide = generateStrategyGuide("farmer", "normal20", { officialCatalog });
+  assert.ok(
+    farmerGuide.keyItems.every(({ item }) => item.name !== "Fruit Basket"),
+    "fruit basket should not displace stronger economy items without an explicit consumable route",
+  );
+}
+
+{
   const guide = generateStrategyGuide("engineer", "normal20", { officialCatalog });
   const turret = guide.keyItems.find(({ item }) => item.name === "Turret");
   assert.ok(turret, "engineer should include Turret as a structure item");

@@ -522,6 +522,45 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const goblet = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:kill-heal",
+    trigger: "onKillHealChance",
+    chance: 15,
+    healAmount: 1,
+    critGated: false,
+  });
+  const tentacle = calculateItemEffectDps(
+    { ...baseStats, critChance: 40 },
+    "normalWave",
+    {
+      id: "official:crit-kill-heal",
+      trigger: "onKillHealChance",
+      chance: 20,
+      healAmount: 1,
+      critGated: true,
+      critChanceBonus: 3,
+    },
+  );
+
+  closeTo(goblet.healingPerSecond, 0.15, "kill healing uses the scenario kill rate");
+  closeTo(goblet.sustainUtilityScore, 1.8, "kill healing produces sustain utility");
+  closeTo(tentacle.critChance, 0.43, "crit-kill healing includes the item's crit bonus");
+  closeTo(tentacle.healingPerSecond, 0.086, "crit-kill healing is gated by crit chance");
+  closeTo(tentacle.sustainUtilityScore, 1.032, "crit-kill healing stays conservative");
+}
+
+{
+  const fruitBasket = calculateItemEffectDps(baseStats, "swarm", {
+    id: "official:fruit-drop-bonus",
+    trigger: "enemyFruitDropBonus",
+    fruitDropChancePercent: 1,
+  });
+
+  closeTo(fruitBasket.extraConsumablesPerSecond, 0.014, "fruit drops follow the scenario kill rate");
+  closeTo(fruitBasket.consumableOpportunityScore, 0.7, "fruit drops add consumable opportunity");
+}
+
+{
   const result = calculateScenarioDps(
     baseStats,
     {

@@ -717,6 +717,57 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     };
   }
 
+  if (itemEffect.trigger === "onKillHealChance") {
+    const chance = clamp((itemEffect.chance ?? 0) / 100, 0, 1);
+    const healAmount = Math.max(0, itemEffect.healAmount ?? 1);
+    const critGated = Boolean(itemEffect.critGated);
+    const critChanceBonus = Math.max(0, itemEffect.critChanceBonus ?? 0);
+    const critChance = critGated
+      ? clamp((normalizedStats.critChance + critChanceBonus) / 100, 0, 1)
+      : 1;
+    const triggerRate = scenario.killRateMultiplier * critChance;
+    const healingPerSecond = triggerRate * chance * healAmount;
+    const sustainUtilityScore = healingPerSecond * 12;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      chance,
+      healAmount,
+      critGated,
+      critChanceBonus,
+      critChance,
+      healingPerSecond,
+      sustainUtilityScore,
+      sustainLabel: critGated ? "暴击击杀治疗期望" : "击杀治疗期望",
+    };
+  }
+
+  if (itemEffect.trigger === "enemyFruitDropBonus") {
+    const fruitDropChancePercent = Math.max(0, itemEffect.fruitDropChancePercent ?? 0);
+    const fruitDropChance = clamp(fruitDropChancePercent / 100, 0, 1);
+    const extraConsumablesPerSecond = scenario.killRateMultiplier * fruitDropChance;
+    const consumableOpportunityScore = extraConsumablesPerSecond * 50;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: scenario.killRateMultiplier,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      fruitDropChancePercent,
+      fruitDropChance,
+      extraConsumablesPerSecond,
+      consumableOpportunityScore,
+      utilityLabel: "额外消耗品机会",
+    };
+  }
+
   const dodgeDamageTriggerRate =
     scenario.killRateMultiplier *
     scenario.positioningStress *
