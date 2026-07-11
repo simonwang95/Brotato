@@ -73,7 +73,20 @@ export function calculateScenarioHitModel(stats, weapon, scenarioId, options = {
   const base = calculateWeaponDamage(stats, normalizedWeapon, options);
   const baseHitRate =
     base.attacksPerSecond * normalizedWeapon.quantity * normalizedWeapon.hitsPerAttack;
-  const delivery = calculateDeliveryModel(base, scenario, context);
+  const bossDamagePercent = scenario.id === "boss" ? normalizedWeapon.bossDamagePercent : 0;
+  const highHealthDamageUptime = clamp(scenario.highHealthDamageUptime ?? 0.25, 0, 1);
+  const highHealthDamagePercent = normalizedWeapon.highHealthDamagePercent;
+  const conditionalDamageBonusPercent =
+    bossDamagePercent + highHealthDamagePercent * highHealthDamageUptime;
+  const conditionalDamageMultiplier = 1 + conditionalDamageBonusPercent / 100;
+  const delivery = calculateDeliveryModel(
+    {
+      ...base,
+      expectedDamage: base.expectedDamage * conditionalDamageMultiplier,
+    },
+    scenario,
+    context,
+  );
 
   const lineExtraTargets = Math.max(0, scenario.averageLineTargets - 1);
   const nearbyExtraTargets = Math.max(0, scenario.averageTargetsInRange - 1);
@@ -88,13 +101,14 @@ export function calculateScenarioHitModel(stats, weapon, scenarioId, options = {
     normalizedWeapon.explosionDamageMultiplier;
 
   const contributionFromHits = (extraHits) =>
-    base.expectedDamage * baseHitRate * extraHits;
+    base.expectedDamage * baseHitRate * extraHits * conditionalDamageMultiplier;
 
   const rawPiercingDps = contributionFromHits(piercingExtraHits);
   const rawBounceDps = contributionFromHits(bounceExtraHits);
   const rawExplosionDps = contributionFromHits(explosionExtraHits);
   const rawExtraDps = rawPiercingDps + rawBounceDps + rawExplosionDps;
-  const rawScenarioWeaponDps = base.dps + rawExtraDps;
+  const rawBaseHitDps = base.dps * conditionalDamageMultiplier;
+  const rawScenarioWeaponDps = rawBaseHitDps + rawExtraDps;
   const piercingDps = rawPiercingDps * delivery.deliveryMultiplier;
   const bounceDps = rawBounceDps * delivery.deliveryMultiplier;
   const explosionDps = rawExplosionDps * delivery.deliveryMultiplier;
@@ -106,8 +120,13 @@ export function calculateScenarioHitModel(stats, weapon, scenarioId, options = {
     weapon: normalizedWeapon,
     base,
     baseHitRate,
-    baseHitDps: base.dps * delivery.deliveryMultiplier,
-    rawBaseHitDps: base.dps,
+    baseHitDps: rawBaseHitDps * delivery.deliveryMultiplier,
+    rawBaseHitDps,
+    bossDamagePercent,
+    highHealthDamagePercent,
+    highHealthDamageUptime,
+    conditionalDamageBonusPercent,
+    conditionalDamageMultiplier,
     piercingExtraHits,
     bounceExtraHits,
     explosionExtraHits,
@@ -340,6 +359,47 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
       economyMultiplier,
       economyUtilityScore,
       economyLabel: "下一波经验潜力",
+    };
+  }
+
+  if (itemEffect.trigger === "conditionalDamageSupport") {
+    const bossDamagePercent = Math.max(0, itemEffect.bossDamagePercent ?? 0);
+    const highHealthDamagePercent = Math.max(0, itemEffect.highHealthDamagePercent ?? 0);
+    const giantCritDamageValue = Math.max(0, itemEffect.giantCritDamageValue ?? 0);
+    const critChance = clamp(normalizedStats.critChance / 100, 0, 1);
+    const highHealthDamageUptime = clamp(scenario.highHealthDamageUptime ?? 0.25, 0, 1);
+    const effectiveBossDamagePercent = scenario.id === "boss" ? bossDamagePercent : 0;
+    const expectedHighHealthDamagePercent = highHealthDamagePercent * highHealthDamageUptime;
+    const bossDamageUtility = effectiveBossDamagePercent / 5;
+    const highHealthDamageUtility = expectedHighHealthDamagePercent / 5;
+    const giantCritUtility = scenario.id === "boss" ? (giantCritDamageValue * critChance) / 2 : 0;
+    const conditionalDamageUtilityScore =
+      bossDamageUtility + highHealthDamageUtility + giantCritUtility;
+    const utilityLabel = giantCritDamageValue
+      ? "暴击高生命目标潜力"
+      : bossDamagePercent
+        ? "Boss 条件伤害潜力"
+        : "高生命目标伤害潜力";
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      bossDamagePercent,
+      highHealthDamagePercent,
+      giantCritDamageValue,
+      critChance,
+      highHealthDamageUptime,
+      effectiveBossDamagePercent,
+      expectedHighHealthDamagePercent,
+      bossDamageUtility,
+      highHealthDamageUtility,
+      giantCritUtility,
+      conditionalDamageUtilityScore,
+      utilityLabel,
     };
   }
 

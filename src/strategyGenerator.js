@@ -67,6 +67,8 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   explosion_damage: "damagePercent",
   explosion_size: "damagePercent",
   damage_against_bosses: "damagePercent",
+  bonus_damage_against_targets_above_hp: "damagePercent",
+  giant_crit_damage: "critChance",
   burning_spread: "elementalDamage",
   burning_enemy_hp_percent_damage: "elementalDamage",
   burning_cooldown_reduction: "elementalDamage",
@@ -261,7 +263,7 @@ function officialSetTags(official) {
 }
 
 function officialStatTags(official) {
-  const stats = collectOfficialStats(official);
+  const stats = collectSynergisticOfficialStats(official);
   const tags = [];
   if (stats.includes("meleeDamage")) tags.push("Melee");
   if (stats.includes("rangedDamage")) tags.push("Ranged");
@@ -574,9 +576,10 @@ function collectPlanPriorityStats(plan) {
   );
 }
 
-function collectOfficialStats(official) {
-  const officialStatKeys = (official?.records ?? []).flatMap((record) => [
+function collectOfficialStatKeys(official, positiveOnly = false) {
+  return (official?.records ?? []).flatMap((record) => [
     ...(record.effects ?? []).flatMap((effect) => {
+      if (positiveOnly && Number.isFinite(effect.value) && effect.value < 0) return [];
       const statKeys = [
         effect.key,
         effect.statDisplayed,
@@ -589,14 +592,26 @@ function collectOfficialStats(official) {
       if (!isCustomGrowthEffect(effect)) statKeys.push(effect.statScaled);
       return statKeys;
     }),
-    ...(record.stats?.scalingStats ?? []).map((scaling) => scaling.stat),
+    ...(record.stats?.scalingStats ?? [])
+      .filter((scaling) => !positiveOnly || Number(scaling.value) > 0)
+      .map((scaling) => scaling.stat),
   ]);
+}
 
+function planStatsFromOfficialKeys(officialStatKeys) {
   return [
     ...new Set(
       officialStatKeys.map((statKey) => OFFICIAL_STAT_TO_PLAN_STAT[statKey]).filter(Boolean),
     ),
   ];
+}
+
+function collectOfficialStats(official) {
+  return planStatsFromOfficialKeys(collectOfficialStatKeys(official));
+}
+
+function collectSynergisticOfficialStats(official) {
+  return planStatsFromOfficialKeys(collectOfficialStatKeys(official, true));
 }
 
 function isCustomGrowthEffect(effect) {
@@ -647,7 +662,9 @@ function scoreOfficialStatSynergy(entry, plan) {
   if (!plan || !entry.official?.found) return { score: 0, reasons: [] };
 
   const planStats = collectPlanStats(plan);
-  const matchedStats = collectOfficialStats(entry.official).filter((statId) => planStats.has(statId));
+  const matchedStats = collectSynergisticOfficialStats(entry.official).filter((statId) =>
+    planStats.has(statId),
+  );
   if (!matchedStats.length) return { score: 0, reasons: [] };
 
   const labels = matchedStats.map((statId) => STAT_LABELS[statId] ?? statId);
@@ -662,7 +679,7 @@ function scoreMechanicFit(entry, plan) {
 
   const planStats = collectPlanStats(plan);
   const planPriorityStats = collectPlanPriorityStats(plan);
-  const officialStats = collectOfficialStats(entry.official);
+  const officialStats = collectSynergisticOfficialStats(entry.official);
   const customGrowthEffects = collectCustomGrowthEffects(entry.official);
   const routeTags = new Set((entry.routeTags ?? []).map(normalizeTag));
   const weaponSetIds = new Set(
@@ -671,6 +688,9 @@ function scoreMechanicFit(entry, plan) {
   const hasPickupAttraction = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) => effect.key === "instant_gold_attracting"),
   );
+  const hasPickupMaterialBonus = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) => effect.key === "chance_double_gold" && effect.value > 0),
+  );
   const hasHarvestingGrowth = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) => effect.key === "harvesting_growth"),
   );
@@ -678,6 +698,9 @@ function scoreMechanicFit(entry, plan) {
     (record.effects ?? []).some(
       (effect) => effect.textKey === "effect_gain_pct_gold_start_wave_limited",
     ),
+  );
+  const hasCrateEconomy = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) => effect.key === "item_box_gold" && effect.value > 0),
   );
   const hasShopEfficiency = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) =>
@@ -751,6 +774,10 @@ function scoreMechanicFit(entry, plan) {
     score += 3;
     reasons.push("机制修正：拾取吸附提高 Lucky 触发频率");
   }
+  if ((planStats.has("luck") || planStats.has("harvesting")) && hasPickupMaterialBonus) {
+    score += 2;
+    reasons.push("机制修正：拾取双倍材料贴合幸运或经济路线");
+  }
   if (planStats.has("harvesting") && hasHarvestingGrowth) {
     score += 3;
     reasons.push("机制修正：收获成长加速经济滚雪球");
@@ -758,6 +785,10 @@ function scoreMechanicFit(entry, plan) {
   if (planStats.has("harvesting") && hasStartWaveSavings) {
     score += 3;
     reasons.push("机制修正：波次存钱放大经济滚动");
+  }
+  if ((routeTags.has("economy") || planStats.has("harvesting")) && hasCrateEconomy) {
+    score += 2;
+    reasons.push("机制修正：箱子材料奖励贴合经济路线");
   }
   if ((routeTags.has("economy") || planStats.has("harvesting")) && hasShopEfficiency) {
     score += 2;
@@ -889,6 +920,10 @@ function calculatorWeaponFromRecord(record) {
       scaling[statId] += Number(scalingStat.value) * 100;
     }
   });
+  const effectValue = (key) =>
+    (record.effects ?? [])
+      .filter((effect) => effect.key === key && effect.value > 0)
+      .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
 
   return {
     name: record.nameKey,
@@ -907,6 +942,8 @@ function calculatorWeaponFromRecord(record) {
         : Math.max(0, 1 - stats.bounce_dmg_reduction),
     explosionTargets: stats.explosion_targets ?? 0,
     explosionDamageMultiplier: stats.explosion_damage_multiplier ?? 1,
+    bossDamagePercent: effectValue("damage_against_bosses"),
+    highHealthDamagePercent: effectValue("bonus_damage_against_targets_above_hp"),
     critChance: (stats.crit_chance ?? 0) * 100,
     critMultiplier: stats.crit_damage ?? 2,
     scaling,
@@ -951,7 +988,8 @@ function itemScenarioModel(entry, plan, mode) {
     return null;
   }
 
-  const scenarioId = scenarioIdForEntry(entry, mode);
+  const scenarioId =
+    itemEffect.trigger === "conditionalDamageSupport" ? "boss" : scenarioIdForEntry(entry, mode);
   const result = calculateItemEffectDps(representativeStats(plan), scenarioId, itemEffect);
   return {
     scenarioId,
@@ -965,13 +1003,21 @@ function scoreScenarioModel(entry, plan, mode) {
   if (weaponModel) {
     const score = Math.min(10, Math.max(0, Math.round(weaponModel.result.effectiveClearScore / 60)));
     const scenarioName = weaponModel.result.scenario.name;
+    const reasons = [
+      `场景模型：${scenarioName}有效清场 ${Math.round(
+        weaponModel.result.effectiveClearScore,
+      )}`,
+    ];
+    if (weaponModel.result.conditionalDamageBonusPercent > 0) {
+      reasons.push(
+        `条件伤害修正：${scenarioName}期望 +${weaponModel.result.conditionalDamageBonusPercent.toFixed(
+          1,
+        )}%`,
+      );
+    }
     return {
       score,
-      reasons: [
-        `场景模型：${scenarioName}有效清场 ${Math.round(
-          weaponModel.result.effectiveClearScore,
-        )}`,
-      ],
+      reasons,
     };
   }
 
@@ -1008,6 +1054,27 @@ function scoreScenarioModel(entry, plan, mode) {
           `场景模型：${itemModel.result.scenario.name}${sustainLabel} +${itemModel.result.healingPerSecond.toFixed(
             2,
           )} 生命/秒`,
+        ],
+      };
+    }
+
+    if (itemModel.result.itemEffect.trigger === "conditionalDamageSupport") {
+      const score = Math.min(
+        8,
+        Math.max(0, Math.round(itemModel.result.conditionalDamageUtilityScore)),
+      );
+      const result = itemModel.result;
+      const detail = result.giantCritDamageValue
+        ? `官方值 ${result.giantCritDamageValue.toFixed(0)} × 目标面板 ${(
+            result.critChance * 100
+          ).toFixed(0)}% 暴击率`
+        : result.bossDamagePercent
+          ? `+${result.bossDamagePercent.toFixed(0)}% 对 Boss`
+          : `+${result.highHealthDamagePercent.toFixed(0)}% 高生命条件`;
+      return {
+        score,
+        reasons: [
+          `场景模型：${result.scenario.name} · ${result.utilityLabel}（${detail}） +${score}`,
         ],
       };
     }
@@ -1346,6 +1413,30 @@ function itemEffectForEntry(entry) {
       trigger: "pickupUtility",
       pickupAttraction: pickupAttraction.value,
       description: "按官方材料吸附范围估算额外拾取节奏和触发机会。",
+    };
+  }
+
+  const bossDamagePercent = effects
+    .filter((effect) => effect.key === "damage_against_bosses" && effect.value > 0)
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  const highHealthDamagePercent = effects
+    .filter(
+      (effect) => effect.key === "bonus_damage_against_targets_above_hp" && effect.value > 0,
+    )
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  const giantCritDamageValue = effects
+    .filter((effect) => effect.key === "giant_crit_damage" && effect.value > 0)
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  if (bossDamagePercent || highHealthDamagePercent || giantCritDamageValue) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:conditional-damage-support`,
+      trigger: "conditionalDamageSupport",
+      bossDamagePercent,
+      highHealthDamagePercent,
+      giantCritDamageValue,
+      description:
+        "按官方 Boss、高生命目标或 giant_crit_damage 字段估算条件伤害潜力；未解码阈值与特殊生命伤害换算不写成精确 DPS。",
     };
   }
 

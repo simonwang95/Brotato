@@ -35,6 +35,8 @@ export const DEFAULT_WEAPON = {
   bounceDamageMultiplier: 0.5,
   explosionTargets: 0,
   explosionDamageMultiplier: 1,
+  bossDamagePercent: 0,
+  highHealthDamagePercent: 0,
   critChance: 0,
   critMultiplier: 2,
   scaling: {
@@ -122,6 +124,8 @@ export function normalizeWeapon(weapon = {}) {
       0,
       toNumber(merged.explosionDamageMultiplier, 1),
     ),
+    bossDamagePercent: Math.max(0, toNumber(merged.bossDamagePercent)),
+    highHealthDamagePercent: Math.max(0, toNumber(merged.highHealthDamagePercent)),
     critChance: toNumber(merged.critChance),
     critMultiplier: Math.max(1, toNumber(merged.critMultiplier, 2)),
     scaling: Object.fromEntries(

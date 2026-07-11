@@ -75,6 +75,22 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const result = calculateScenarioDps(
+    baseStats,
+    {
+      ...baseWeapon,
+      highHealthDamagePercent: 30,
+    },
+    "boss",
+    "none",
+    neutralDelivery,
+  );
+
+  closeTo(result.conditionalDamageBonusPercent, 15, "boss model weights above-health damage uptime");
+  closeTo(result.rawBaseHitDps, 115, "weapon conditional damage increases expected boss DPS");
+}
+
+{
   const cyberball = calculateItemEffectDps(
     {
       ...baseStats,
@@ -268,6 +284,33 @@ function closeTo(actual, expected, message) {
   });
 
   closeTo(dynamite.explosionUtilityScore, 2, "explosion utility scales with density and explosion damage");
+}
+
+{
+  const silverBullet = calculateItemEffectDps(baseStats, "boss", {
+    id: "official:boss-damage-support",
+    trigger: "conditionalDamageSupport",
+    bossDamagePercent: 25,
+  });
+  const smallFish = calculateItemEffectDps(baseStats, "boss", {
+    id: "official:high-health-damage-support",
+    trigger: "conditionalDamageSupport",
+    highHealthDamagePercent: 10,
+  });
+  const giantBelt = calculateItemEffectDps(
+    { ...baseStats, critChance: 40 },
+    "boss",
+    {
+      id: "official:giant-crit-support",
+      trigger: "conditionalDamageSupport",
+      giantCritDamageValue: 10,
+    },
+  );
+
+  closeTo(silverBullet.conditionalDamageUtilityScore, 5, "boss damage uses the official percent");
+  closeTo(smallFish.expectedHighHealthDamagePercent, 5, "high-health damage uses boss uptime");
+  closeTo(smallFish.conditionalDamageUtilityScore, 1, "high-health damage stays conservative");
+  closeTo(giantBelt.conditionalDamageUtilityScore, 2, "giant crit utility follows plan crit chance");
 }
 
 {

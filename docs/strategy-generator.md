@@ -140,6 +140,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 续航触发道具：用官方 `heal_when_pickup_gold`、`consumable_heal`、`consumable_heal_over_time` 和 `heal_on_dodge` 估算拾取治疗、消耗品治疗、消耗品持续治疗和闪避治疗期望，不计入伤害 DPS。
 - 诅咒/风险经济道具：用官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items`、`stat_curse` 和敌人风险字段估算额外材料或商店诅咒潜力，不计入伤害 DPS。
 - 下一波经验道具：用官方 `stats_next_wave` 的 `xp_gain` 估算短期经验潜力，并用同组敌人生命、伤害或速度字段做风险折扣；只在收获路线中转成经济排序分。
+- 条件伤害：用官方 `damage_against_bosses`、`bonus_damage_against_targets_above_hp` 和 `giant_crit_damage` 估算 Boss / 高生命目标潜力；高生命阶段按 Boss 50%、普通清怪 25%、怪潮 20% 的场景权重折算。`giant_crit_damage` 的生命伤害换算未可靠解码，因此只按官方原始值和角色目标暴击率排序，不当作精确 DPS。
 - 覆盖潜力道具：用官方 `explosion_damage`、`explosion_size`、`burning_spread`、`burning_enemy_hp_percent_damage`、`structure_attack_speed`、`structures_cooldown_reduction`、`structures_can_crit` 和结构物脚本路径估算爆炸、燃烧、结构物路线潜力；结构物可暴击时会合并角色目标暴击率与道具自带暴击率，按默认 2 倍暴击估算期望倍率。这类分数用于排序和解释，不作为精确 DPS。
 - 官方自定义成长道具：用 `EFFECT_GAIN_STAT_FOR_EVERY*` / `custom_arg.gd` 中可稳定读取的 `statScaled` 和 `nbStatScaled` 估算“随某项来源放大”的潜力，例如 `Power Generator（发电机）` 随移速来源放大。该模型使用对数效用和属性阈值，只作为排序修正；目标收益仍未从子资源完全解码，因此不写成精确属性加成。
 - 移速和闪避：合成为有效规避率，用来估算承伤倍率。
@@ -175,6 +176,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 官方 `dmg_on_dodge` 动态闪避触发伤害模型，例如 `Riposte（还击）`
 - 官方 `stats_end_of_wave` 动态每波成长模型，例如 `Robot Arm（机械臂）` 的工程学成长
 - 官方 `stats_next_wave` 动态下一波经验模型，例如 `Peacock（孔雀）`
+- 官方 Boss / 高生命条件伤害模型，例如 `Silver Bullet（银质子弹）`、`Small Fish（小鱼）`、`Giant Belt（巨型带）`、`Trident（三叉戟）`
 - 官方 `piercing` / `pierce_on_crit` 动态贯通覆盖模型，例如 `Bandana（头巾）`、`Sharp Bullet（尖头子弹）`、`Eyepatch（眼罩）`
 - 官方 `items_price` / `free_rerolls` / `reroll_price` 动态商店效率模型，例如 `Coupon（优惠券）`、`Dangerous Bunny（危险兔子）`、`Spyglass（望远镜）`
 - 官方 `heal_when_pickup_gold`、`consumable_heal`、`consumable_heal_over_time`、`heal_on_dodge` 动态续航模型，例如 `Cute Monkey（萌萌猴）`、`Lemonade（柠檬水）`、`Weird Food（奇怪的食物）`、`Jerky（干肉条）`、`Adrenaline（肾上腺素）`
@@ -185,6 +187,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 仍待校准：
 
 - 这些模型目前是可解释近似值，不等同于完整反编译公式。
+- `bonus_damage_against_targets_above_hp` 的精确生命阈值与 `giant_crit_damage` 对普通敌人、精英和 Boss 的换算仍需从脚本资源继续解码。
 - 后续需要从 `.pck` 资源里继续解析武器、道具、结构物和敌人的具体效果参数。
 
 ## 实现步骤

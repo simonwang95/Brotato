@@ -739,6 +739,60 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 }
 
 {
+  const guide = generateStrategyGuide("brawler", "normal20", { officialCatalog });
+  const silverBullet = guide.keyItems.find(({ item }) => item.name === "Silver Bullet");
+  const smallFish = guide.keyItems.find(({ item }) => item.name === "Small Fish");
+  assert.ok(silverBullet, "damage routes should surface Silver Bullet from the official pool");
+  assert.ok(smallFish, "damage routes should surface Small Fish from the official pool");
+  assert.ok(
+    silverBullet.recommendationReasons.some((reason) =>
+      reason.includes("Boss 条件伤害潜力（+25% 对 Boss）"),
+    ),
+    "silver bullet should explain its official boss damage value",
+  );
+  assert.ok(
+    smallFish.recommendationReasons.some((reason) =>
+      reason.includes("高生命目标伤害潜力（+10% 高生命条件）"),
+    ),
+    "small fish should explain its official high-health damage value",
+  );
+  assert.ok(
+    smallFish.recommendationReasons.every(
+      (reason) => !/官方数值匹配角色目标：.*攻速/.test(reason),
+    ),
+    "small fish negative attack speed must not count as positive stat synergy",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("wellRounded", "normal20", { officialCatalog });
+  const trident = guide.recommendedWeapons.find(({ weapon }) => weapon.name === "Trident");
+  assert.ok(trident, "official high-health weapon effects should remain in weapon candidates");
+  assert.ok(
+    trident.recommendationReasons.some((reason) =>
+      reason.includes("条件伤害修正：普通清怪期望 +12.5%"),
+    ),
+    "trident should explain weighted high-health conditional damage",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("giant", "normal20", { officialCatalog });
+  const giantBelt = guide.keyItems.find(({ item }) => item.name === "Giant Belt");
+  assert.ok(giantBelt, "giant should retain the manual Giant Belt recommendation");
+  assert.ok(
+    giantBelt.recommendationReasons.some((reason) =>
+      reason.includes("暴击高生命目标潜力（官方值 10 × 目标面板 0% 暴击率）"),
+    ),
+    "giant belt should expose the official raw value without inventing an HP-damage formula",
+  );
+  assert.ok(
+    giantBelt.recommendationReasons.every((reason) => !reason.includes("触发伤害 0 DPS")),
+    "zero modeled crit utility should not fall through to a misleading DPS explanation",
+  );
+}
+
+{
   const guide = generateStrategyGuide("artificer", "normal20", { officialCatalog });
   const dynamite = guide.keyItems.find(({ item }) => item.name === "Dynamite");
   assert.ok(dynamite, "artificer should include Dynamite as an explosion item");
