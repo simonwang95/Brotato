@@ -96,6 +96,12 @@ npm run start:static
 npm test
 ```
 
+检查全部武器/物品图鉴效果是否泄露内部脚本名或资源键：
+
+```bash
+npm run verify:effects
+```
+
 生成 Vercel 静态部署输出：
 
 ```bash

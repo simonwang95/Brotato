@@ -6,12 +6,18 @@ const catalog = JSON.parse(readFileSync("data/official-catalog.json", "utf8"));
 const localization = JSON.parse(readFileSync("data/official-localization.json", "utf8"));
 const unlocks = JSON.parse(readFileSync("data/official-unlocks.json", "utf8"));
 const compendium = buildCompendium(catalog, localization, unlocks);
+const RAW_CATALOG_EFFECT_PATTERN =
+  /\.gd\b|res:\/\/|\b(?:effect|item|stat|enemy|weapon)_[a-z0-9_]+\b|\[EMPTY\]|未解析|官方自定义收益|未知属性/i;
 
 function assertNoRawEffectArtifacts(entry) {
   assert.ok(
     entry?.traits.every((line) => !/custom_arg\.gd|effect\.gd/.test(line)),
     `${entry?.id ?? "character"} traits should not expose raw effect script filenames`,
   );
+}
+
+function catalogEffectLines(entry) {
+  return [...(entry.detailedAttributes ?? []), ...(entry.tierEffectLines ?? [])];
 }
 
 assert.equal(compendium.characters.length, 65, "character compendium should include official-only records and the maintained Giant gap");
@@ -23,6 +29,83 @@ assert.ok(
     .every((entry) => entry.cnName !== "待本地化"),
   "every official character compendium entry should use static Chinese localization",
 );
+
+{
+  const entries = [...compendium.weapons, ...compendium.items];
+  const effectLines = entries.flatMap(catalogEffectLines);
+  const rawEffectLines = effectLines.filter((line) => RAW_CATALOG_EFFECT_PATTERN.test(line));
+  const blankEffectLines = effectLines.filter((line) => /^T\d+\s*$/.test(line));
+
+  assert.equal(entries.length, 323, "effect audit should cover all 79 weapons and 244 items");
+  assert.ok(effectLines.length > 1_500, "effect audit should cover the complete rendered line set");
+  assert.deepEqual(rawEffectLines, [], "catalog effects should never expose internal resource keys");
+  assert.deepEqual(blankEffectLines, [], "catalog effects should never render empty tier rows");
+}
+
+{
+  const harpoon = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_HARPOON_GUN");
+  assert.ok(
+    harpoon?.tierEffectLines.includes(
+      "T2 命中时生成减速区域；减速幅度和持续时间待解码",
+    ),
+    "Harpoon Gun should explain its slow-zone mechanic without exposing effect_slow_in_zone",
+  );
+
+  const stick = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_STICK");
+  assert.ok(
+    stick?.tierEffectLines.includes("T1 每额外持有 1 件同名武器：该武器基础伤害 +4"),
+    "Stick should explain same-weapon stacking",
+  );
+
+  const grenadeLauncher = compendium.weapons.find(
+    (entry) => entry.nameKey === "WEAPON_GRENADE_LAUNCHER",
+  );
+  assert.ok(
+    grenadeLauncher?.tierEffectLines.includes("T2 命中时有 100% 概率爆炸"),
+    "explosive weapons should expose their parsed trigger chance",
+  );
+
+  const vorpalSword = compendium.weapons.find(
+    (entry) => entry.nameKey === "WEAPON_VORPAL_SWORD",
+  );
+  assert.ok(
+    vorpalSword?.tierEffectLines.includes("T2 命中时有 1% 概率直接秒杀目标"),
+    "Vorpal Sword should preserve the official percentage unit",
+  );
+}
+
+{
+  const axolotl = compendium.items.find((entry) => entry.nameKey === "ITEM_AXOLOTL");
+  assert.ok(
+    axolotl?.detailedAttributes.includes("T4 获得时：交换最高与最低的正面主属性"),
+    "Axolotl should expose the official stat-swap mechanic",
+  );
+
+  const goldfish = compendium.items.find((entry) => entry.nameKey === "ITEM_GOLDFISH");
+  assert.ok(
+    goldfish?.detailedAttributes.includes("T3 下次刷新后：该道具阶级 +1"),
+    "Goldfish should explain its next-reroll tier increase",
+  );
+
+  const mirror = compendium.items.find((entry) => entry.nameKey === "ITEM_MIRROR");
+  assert.ok(
+    mirror?.detailedAttributes.includes(
+      "T3 复制下一个从商店获得的道具（不能超过道具持有上限）",
+    ),
+    "Mirror should expose the official duplication rule",
+  );
+
+  const jellyshield = compendium.items.find((entry) => entry.nameKey === "ITEM_JELLYSHIELD");
+  assert.deepEqual(jellyshield?.detailedAttributes, [
+    "T3 生成水母盾宠物：环绕玩家移动并阻挡敌方投射物。",
+  ]);
+
+  const spyglass = compendium.items.find((entry) => entry.nameKey === "ITEM_SPYGLASS");
+  assert.ok(
+    spyglass?.detailedAttributes.includes("T2 商店刷新价格 -25%"),
+    "Spyglass should localize its reroll-price reduction",
+  );
+}
 
 {
   const lute = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_LUTE");
@@ -68,7 +151,9 @@ assert.ok(
   assert.equal(cyberball?.imageAssetPath, "data/assets/items/item_cyberball.webp");
   assert.match(cyberball?.strategyStatNote ?? "", /幸运拾取伤害/);
   assert.ok(
-    cyberball?.detailedAttributes.includes("T2 击杀敌人时：25% 概率，造成 25% 幸运 的伤害"),
+    cyberball?.detailedAttributes.includes(
+      "T2 击杀敌人时：25% 概率，造成相当于幸运 25% 的伤害",
+    ),
     "Cyberball should expose parsed trigger chance and luck scaling",
   );
 }
@@ -174,7 +259,7 @@ assert.ok(
   assert.ok(lucky?.traits.includes("幸运 +100"), "Lucky should show base luck trait");
   assert.ok(lucky?.traits.includes("幸运 获取 +25%"), "Lucky should show luck gain trait");
   assert.ok(
-    lucky?.traits.includes("拾取材料时：75% 概率，造成 15% 幸运 的伤害"),
+    lucky?.traits.includes("拾取材料时：75% 概率，造成相当于幸运 15% 的伤害"),
     "Lucky should show pickup damage trigger",
   );
 }

@@ -12,6 +12,7 @@
     "extract:unlocks": "node scripts/extract-official-unlocks.mjs --write",
     "unlocks:pending": "node scripts/report-unlock-pending.mjs --write",
     "verify:catalog": "node scripts/verify-strategy-catalog.mjs",
+    "verify:effects": "node scripts/verify-compendium-effects.mjs",
     "verify:unlocks": "node scripts/verify-unlocks.mjs",
     "verify:names": "node scripts/verify-official-names.mjs",
     "localization:coverage": "node scripts/report-localization-coverage.mjs",

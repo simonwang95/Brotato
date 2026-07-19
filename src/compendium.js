@@ -18,6 +18,7 @@ const SET_LABELS = {
   medical: "医疗",
   medieval: "中世纪",
   musical: "乐器",
+  naval: "海军",
   precise: "精准",
   primitive: "原始",
   support: "支援",
@@ -96,6 +97,12 @@ const STAT_LABELS = {
   min_weapon_tier: "最低武器阶级",
   no_ranged_weapons: "不能持有远程武器",
   stat_damage: "总伤害",
+  stat_levels: "角色等级",
+  enemy_speed: "敌人移速",
+  enemy_fruit_drops: "水果掉落概率",
+  hp_start_next_wave: "下一波起始生命",
+  item_box_gold: "箱子材料",
+  reroll_price: "商店刷新价格",
 };
 
 const PERCENT_STATS = new Set([
@@ -106,11 +113,41 @@ const PERCENT_STATS = new Set([
   "stat_percent_damage",
   "stat_speed",
   "dodge_cap",
+  "enemy_speed",
 ]);
 
 const EFFECT_TEXT_LABELS = {
   EFFECT_DEAL_DMG_WHEN_DEATH: "击杀敌人时",
+  EFFECT_DEAL_DMG_WHEN_DODGE: "闪避敌人攻击时",
   EFFECT_DEAL_DMG_WHEN_PICKUP_GOLD: "拾取材料时",
+  EFFECT_BROKEN_HOURGLASS: "沙漏已损坏，不再提供效果",
+  EFFECT_BROKEN_MIRROR: "镜子已复制一个道具",
+  EFFECT_DUPLICATE_ITEM: "复制下一个从商店获得的道具",
+  EFFECT_ENEMY_FRUIT_DROPS: "敌人掉落水果的概率提高",
+  EFFECT_ENEMY_PERCENT_DAMAGE_TAKEN_ONCE: "首次命中后提高目标受到的伤害",
+  EFFECT_GOLDFISH_USED: "金鱼已经使用，当前正在休息",
+  EFFECT_HOURGLASS: "将当前波次倒回",
+  EFFECT_HP_CAP_AT_CURRENT_VALUE: "最大生命上限锁定为当前值",
+  EFFECT_INCREASE_TIER_ON_REROLL: "下次刷新后提升道具阶级",
+  EFFECT_LOST_ON_HIT: "受到伤害时失去奖励",
+  EFFECT_NO_HIT_BOOST: "未受伤时基础伤害随时间提高",
+  EFFECT_ONE_SHOT_ON_HIT_EFFECT: "命中时有概率直接秒杀目标",
+  EFFECT_PET_BLAZEMANDER: "生成焰蜥蜴宠物",
+  EFFECT_PET_BONK_DOG: "生成 Bonk 狗宠物",
+  EFFECT_PET_BOT_O_MINE: "生成布雷机器人构筑物",
+  EFFECT_PET_CATLING_GUN: "生成猫特林机枪宠物",
+  EFFECT_PET_DOC_MOTH: "生成蛾医生宠物",
+  EFFECT_PET_JELLYSHIELD: "生成水母盾宠物",
+  EFFECT_PET_LOOTWORM: "生成搜刮虫虫宠物",
+  EFFECT_PET_RATZILLA: "生成鼠斯拉宠物",
+  EFFECT_PET_SCAPEGOAT: "生成替罪羔羊宠物",
+  EFFECT_PROJECTILES_ON_HIT: "命中时产生额外投射物",
+  EFFECT_SLOW_PROJECTILES_ON_HIT: "命中时产生减速投射物",
+  EFFECT_SPEED_CAP_AT_CURRENT_VALUE: "移速上限锁定为当前值",
+  EFFECT_SWAP_MAX_MIN_STAT_POS: "交换最高与最低的正面主属性",
+  EFFECT_TEMP_STATS_PER_INTERVAL: "定时获得临时属性",
+  EFFECT_WEAPON_SLOW_ON_HIT: "命中时减速敌人",
+  EFFECT_WEAPON_STACK: "同名武器叠加伤害",
   EFFECT_INCREASE_DAMAGE_RECEIVED: "使目标受到伤害提高",
   EFFECT_GAIN_STAT_FOR_FREE_WEAPON_SLOTS: "每个空武器栏",
   EFFECT_GAIN_STAT_FOR_EVERY_STAT: "每点属性",
@@ -138,6 +175,9 @@ const EFFECT_TEXT_LABELS = {
   effect_consumable_heal: "消耗品治疗",
   effect_consumable_heal_over_time: "消耗品持续治疗",
   effect_heal_when_pickup_gold: "拾取材料治疗概率",
+  effect_burn_chance: "攻击有概率施加燃烧",
+  effect_item_box_gold: "打开箱子获得材料",
+  effect_stat_next_wave: "下一波",
   effect_lose_hp_per_second: "每秒失去生命",
   effect_enemy_gold_drops: "敌人材料掉落",
   effect_chance_explode_on_hit: "命中爆炸",
@@ -157,6 +197,25 @@ const EFFECT_TEXT_LABELS = {
   effect_tyler: "泰勒",
   effect_wandering_bot: "流浪机器人",
   EFFECT_WHISTLE_SOUND: "哨声效果",
+};
+
+const PET_EFFECT_SUMMARIES = {
+  EFFECT_PET_BLAZEMANDER:
+    "生成焰蜥蜴宠物：进行普通攻击，并定期向四周发射燃烧投射物；具体伤害和间隔参数待解码。",
+  EFFECT_PET_BONK_DOG:
+    "生成 Bonk 狗宠物：进行普通攻击，并定期冲刺造成范围爆炸伤害；具体伤害和间隔参数待解码。",
+  EFFECT_PET_BOT_O_MINE:
+    "生成布雷机器人构筑物：发射子弹并定期生成地雷；具体伤害和间隔参数待解码。",
+  EFFECT_PET_CATLING_GUN:
+    "生成猫特林机枪宠物：发射子弹，靠近玩家或其他宠物时提高攻速；具体伤害参数待解码。",
+  EFFECT_PET_DOC_MOTH:
+    "生成蛾医生宠物：玩家处于其光环内时，生命再生和生命窃取属性翻倍。",
+  EFFECT_PET_JELLYSHIELD: "生成水母盾宠物：环绕玩家移动并阻挡敌方投射物。",
+  EFFECT_PET_LOOTWORM:
+    "生成搜刮虫虫宠物：收集材料并摧毁树木；拾取材料时有 10% 概率使其价值翻倍。",
+  EFFECT_PET_RATZILLA: "生成鼠斯拉宠物并攻击敌人；具体伤害参数待解码。",
+  EFFECT_PET_SCAPEGOAT:
+    "生成替罪羔羊宠物：代替玩家吸引敌人攻击；死亡后，玩家可站在旁边将其复活。",
 };
 
 const BINARY_EFFECT_KEYS = new Set([
@@ -278,6 +337,12 @@ function formatCustomScalingEffect(effect, trigger) {
   return `${trigger || `每 ${count} 点${scaled}`}：官方自定义收益`;
 }
 
+function formatFractionChance(value) {
+  if (!Number.isFinite(value)) return "概率未知";
+  const percentage = value <= 1 ? value * 100 : value;
+  return `${Number.isInteger(percentage) ? percentage : percentage.toFixed(1)}%`;
+}
+
 function formatTierSeries(records, getter, formatter = (value) => String(value)) {
   return records
     .filter((record) => getter(record) !== null && getter(record) !== undefined)
@@ -299,20 +364,282 @@ function formatScalingStats(stats) {
 function formatEffectDetail(effect) {
   const trigger = effectTextLabel(effect.textKey);
   const keyLabel = statLabel(effect.key);
+  const scriptPath = effect.scriptPath ?? "";
 
-  if (effect.scriptPath?.includes("gain_stat_every_killed_enemies_effect")) {
+  if (PET_EFFECT_SUMMARIES[effect.textKey]) {
+    return PET_EFFECT_SUMMARIES[effect.textKey];
+  }
+
+  if (scriptPath.endsWith("/pet_effect.gd") && !effect.textKey && !effect.key) {
+    return "";
+  }
+
+  if (scriptPath.includes("swap_max_min_stat_effect")) {
+    return "获得时：交换最高与最低的正面主属性";
+  }
+
+  if (scriptPath.includes("stat_cap_effect")) {
+    if (effect.key === "hp_cap") {
+      return "最大生命上限锁定为获得该物品时的当前值";
+    }
+    if (effect.key === "speed_cap") {
+      return "移速上限锁定为获得该物品时的当前值";
+    }
+  }
+
+  if (scriptPath.includes("exploding_effect")) {
+    const attackType = effect.key === "effect_explode_melee" ? "近战命中" : "命中";
+    return `${attackType}时有 ${formatFractionChance(effect.chance)} 概率爆炸`;
+  }
+
+  if (scriptPath.includes("burning_effect")) {
+    return "命中时施加燃烧；燃烧伤害参数待解码";
+  }
+
+  if (scriptPath.includes("slow_in_zone_effect")) {
+    return "命中时生成减速区域；减速幅度和持续时间待解码";
+  }
+
+  if (scriptPath.includes("projectiles_on_hit_effect")) {
+    const count = Number.isFinite(effect.value) ? effect.value : "若干";
+    if (effect.key === "effect_lightning_on_hit") {
+      return `命中时产生 ${count} 个闪电投射物；投射物伤害参数待解码`;
+    }
+    if (effect.key === "EFFECT_SLOW_PROJECTILES_ON_HIT") {
+      return `命中时产生 ${count} 个减速投射物；投射物伤害参数待解码`;
+    }
+    return `命中时产生 ${count} 个额外投射物；投射物伤害参数待解码`;
+  }
+
+  if (
+    scriptPath.includes("weapon_effect_with_sub_effect") ||
+    scriptPath.includes("effect_with_sub_effects")
+  ) {
+    return `每第 ${effect.value} 个投射物触发强化效果；具体强化参数待解码`;
+  }
+
+  if (scriptPath.includes("null_charm_effect")) {
+    return "命中低生命敌人时有概率使其受到魅惑；生命阈值、概率和持续时间待解码";
+  }
+
+  if (scriptPath.includes("null_double_value_effect")) {
+    if (effect.key === "bonus_damage_against_targets_above_hp") {
+      return `对高生命目标造成的伤害 ${signedNumber(
+        effect.value,
+      )}%；生命阈值待解码`;
+    }
+    if (effect.key === "bonus_damage_against_targets_below_hp") {
+      return `对低生命目标造成的伤害 ${signedNumber(
+        effect.value,
+      )}%；生命阈值待解码`;
+    }
+    if (effect.key === "bonus_current_health_damage") {
+      return `附加目标当前生命值 ${effect.value}% 的伤害`;
+    }
+    if (effect.key === "break_on_hit") {
+      return "命中时触发武器破损机制；具体概率和结果待解码";
+    }
+  }
+
+  if (scriptPath.includes("weapon_slow_on_hit_effect")) {
+    return `命中时减速敌人，效果随${statLabel(effect.stat)}提高（效果等级 ${signedNumber(
+      effect.value,
+    )}）`;
+  }
+
+  if (scriptPath.includes("weapon_stack_effect")) {
+    return `每额外持有 1 件同名武器：该武器基础伤害 ${signedNumber(effect.value)}`;
+  }
+
+  if (scriptPath.includes("one_shot_on_hit_effect")) {
+    return `命中时有 ${effect.value}% 概率直接秒杀目标`;
+  }
+
+  if (scriptPath.includes("player_no_hit_effect")) {
+    return `未受伤时基础伤害会随时间提高（每次 ${signedNumber(
+      effect.value,
+    )}）；受到伤害时重置`;
+  }
+
+  if (effect.key === "crit_on_hitting_burning_target") {
+    return "命中燃烧中的敌人时必定暴击";
+  }
+
+  if (effect.key === "reload_turrets_on_shoot") {
+    return "攻击时重置炮塔的攻击冷却";
+  }
+
+  if (effect.key === "reload_when_pickup_gold") {
+    return "拾取材料时重置该武器的攻击冷却";
+  }
+
+  if (effect.key === "bounce_on_crit") {
+    return `暴击时弹射 ${effect.value} 次`;
+  }
+
+  if (effect.key === "bounce") {
+    return `弹射次数 ${signedNumber(effect.value)}`;
+  }
+
+  if (effect.key === "pierce_on_crit") {
+    return `暴击时最多额外贯通 ${effect.value} 次`;
+  }
+
+  if (effect.key === "gold_on_crit_kill") {
+    return `暴击击杀敌人时有 ${effect.value}% 概率获得 1 材料`;
+  }
+
+  if (effect.key === "burn_chance") {
+    return "攻击有概率对敌人施加燃烧；触发概率待解码";
+  }
+
+  if (effect.textKey === "EFFECT_KNOCKBACK_AURA_PLURAL") {
+    return `每 ${effect.value} 秒击退附近的敌人`;
+  }
+
+  if (effect.textKey === "EFFECT_LOCK_CURRENT_WEAPONS") {
+    return "当前武器无法继续升级或回收";
+  }
+
+  if (effect.textKey === "EFFECT_START_WAVE_LESS_HP") {
+    return `每波开始时拥有最大生命值的 ${100 + effect.value}%`;
+  }
+
+  if (effect.textKey === "EFFECT_INSTANT_GOLD_ATTRACTING") {
+    return `${effect.value}% 概率立即吸收掉落的材料`;
+  }
+
+  if (effect.textKey === "EFFECT_FREE_SHOP_REROLL") {
+    return `每次商店免费刷新 ${effect.value} 次`;
+  }
+
+  if (effect.textKey === "EFFECT_ACCURACY") {
+    return `命中率 ${signedNumber(effect.value)}%`;
+  }
+
+  if (effect.textKey === "EFFECT_PROJECTILE" || effect.textKey === "EFFECT_PROJECTILES") {
+    return `投射物 ${signedNumber(effect.value)}`;
+  }
+
+  if (effect.textKey === "EFFECT_CANDY_BAG_BONUS") {
+    return `每波将 ${effect.value} 点属性随机分配到主要属性`;
+  }
+
+  if (effect.textKey === "EFFECT_EXTRA_ELITE_NEXT_WAVE_CHANCE") {
+    return `每波有 ${effect.value}% 概率额外生成 1 个精英`;
+  }
+
+  if (effect.textKey === "EFFECT_MINIMUM_WEAPON_COOLDOWN") {
+    return `武器攻击间隔最低为 ${formatCooldown(effect.value)}`;
+  }
+
+  if (effect.key === "bonus_damage_against_targets_above_hp") {
+    return `对高生命目标造成的伤害 ${signedNumber(effect.value)}%；生命阈值待解码`;
+  }
+
+  if (effect.key === "bonus_damage_against_targets_below_hp") {
+    return `对低生命目标造成的伤害 ${signedNumber(effect.value)}%；生命阈值待解码`;
+  }
+
+  if (effect.customKey === "increase_tier_on_reroll") {
+    return `下次刷新后：该道具阶级 ${signedNumber(effect.value)}`;
+  }
+
+  if (effect.customKey === "duplicate_item") {
+    return "复制下一个从商店获得的道具（不能超过道具持有上限）";
+  }
+
+  if (effect.customKey === "temp_stats_per_interval") {
+    return `每隔一段时间：${keyLabel} ${formatStatValue(
+      effect.key,
+      effect.value,
+    )}，持续到波次结束；间隔参数待解码`;
+  }
+
+  if (effect.customKey === "stats_next_wave") {
+    return `下一波：${keyLabel} ${formatStatValue(effect.key, effect.value)}`;
+  }
+
+  if (effect.customKey === "heal_on_dodge") {
+    const chance = Number.isFinite(effect.chance) ? `${effect.chance}% 概率` : "有概率";
+    return `闪避敌人攻击时：${chance}恢复 ${effect.value} 点生命`;
+  }
+
+  if (effect.customKey === "heal_on_kill" || effect.key === "heal_on_kill") {
+    return `击杀敌人时有 ${effect.value}% 概率恢复 1 点生命`;
+  }
+
+  if (effect.customKey === "heal_on_crit_kill" || effect.key === "heal_on_crit_kill") {
+    return `暴击击杀敌人时有 ${effect.value}% 概率恢复 1 点生命`;
+  }
+
+  if (effect.customKey === "explode_when_below_hp" || effect.key === "explode_when_below_hp") {
+    return "生命值低于阈值时触发爆炸；生命阈值、伤害和冷却参数待解码";
+  }
+
+  if (effect.customKey === "chance_double_gold" || effect.key === "chance_double_gold") {
+    return `拾取材料时有 ${effect.value}% 概率使其价值翻倍`;
+  }
+
+  if (effect.customKey === "harvesting_growth" || effect.key === "harvesting_growth") {
+    return `每波结束时，收获额外增长 ${signedNumber(effect.value)}%`;
+  }
+
+  if (
+    effect.customKey === "gain_pct_gold_start_wave" ||
+    effect.key === "gain_pct_gold_start_wave"
+  ) {
+    return `每波开始时材料增加 ${signedNumber(effect.value)}%（受官方上限限制）`;
+  }
+
+  if (effect.customKey === "hit_protection" || effect.key === "hit_protection") {
+    return `抵挡接下来受到的 ${effect.value} 次伤害`;
+  }
+
+  if (effect.customKey === "one_shot_trees" || effect.key === "one_shot_trees") {
+    return "一次攻击即可摧毁树木";
+  }
+
+  if (
+    effect.customKey === "extra_enemies_next_wave" ||
+    effect.key === "extra_enemies_next_wave"
+  ) {
+    return `下一波额外特殊敌人 ${signedNumber(effect.value)}`;
+  }
+
+  if (effect.customKey === "projectiles_on_death" || effect.key === "projectiles_on_death") {
+    return `敌人死亡时产生 ${effect.value} 个额外投射物；投射物伤害参数待解码`;
+  }
+
+  if (effect.customKey === "alien_eyes" || effect.key === "alien_eyes") {
+    return `周期性发射异形眼球投射物（官方参数 ${effect.value}）；伤害和频率待解码`;
+  }
+
+  if (effect.customKey === "remove_speed" || effect.key === "remove_speed") {
+    return `命中使敌人移速降低 ${effect.value}%；叠加上限待解码`;
+  }
+
+  if (effect.customKey === "hp_regen_bonus" || effect.key === "hp_regen_bonus") {
+    return "满足生命条件时生命再生效果加倍；触发条件待解码";
+  }
+
+  if (effect.customKey === "torture" || effect.key === "torture") {
+    return `启用固定治疗机制（官方治疗参数 ${effect.value}）；其他治疗限制待解码`;
+  }
+
+  if (scriptPath.includes("gain_stat_every_killed_enemies_effect")) {
     const threshold = Number.isFinite(effect.value) ? effect.value : "未知";
     const gain = Number.isFinite(effect.statNb) ? effect.statNb : 1;
     return `每用该武器击杀 ${threshold} 个敌人：${statLabel(effect.stat)} ${signedNumber(gain)}`;
   }
 
-  if (effect.scriptPath?.includes("class_bonus_effect")) {
+  if (scriptPath.includes("class_bonus_effect")) {
     const setLabel = setLabelFromId(effect.setId);
     const stat = statLabel(effect.statDisplayedName);
     return `${setLabel}套装：${stat} ${signedNumber(effect.value)}%`;
   }
 
-  if (effect.scriptPath?.includes("stat_gains_modification_effect")) {
+  if (scriptPath.includes("stat_gains_modification_effect")) {
     const stats = effect.statsModified?.length
       ? effect.statsModified.map(statLabel).join("、")
       : statLabel(effect.statDisplayed);
@@ -320,8 +647,8 @@ function formatEffectDetail(effect) {
   }
 
   if (
-    effect.scriptPath?.includes("gain_stat_for_every_stat_effect") ||
-    effect.scriptPath?.includes("custom_arg.gd")
+    scriptPath.includes("gain_stat_for_every_stat_effect") ||
+    scriptPath.includes("custom_arg.gd")
   ) {
     if (!effect.key) {
       return formatCustomScalingEffect(effect, trigger);
@@ -333,17 +660,69 @@ function formatEffectDetail(effect) {
     )} ${formatStatValue(effect.key, effect.value)}`;
   }
 
-  if (effect.scriptPath?.includes("chance_stat_damage_effect")) {
+  if (scriptPath.includes("chance_stat_damage_effect")) {
     const chance = Number.isFinite(effect.chance) ? `${effect.chance}% 概率` : "概率触发";
-    return `${trigger || "触发时"}：${chance}，造成 ${effect.value}% ${keyLabel} 的伤害`;
+    return `${trigger || "触发时"}：${chance}，造成相当于${keyLabel} ${effect.value}% 的伤害`;
   }
 
   if (effect.customKey === "enemy_percent_damage_taken") {
-    return `${trigger || "命中目标"} ${signedNumber(effect.value)}%`;
+    const firstHit = effect.textKey === "EFFECT_ENEMY_PERCENT_DAMAGE_TAKEN_ONCE" ? "首次" : "";
+    const damageType = scriptPath.includes("weapon_percent_damage_effect")
+      ? ""
+      : `以${keyLabel}`;
+    return `${firstHit}${damageType}命中后：目标受到伤害 ${signedNumber(
+      effect.value,
+    )}%；持续时间待解码`;
   }
 
   if (effect.key === "recycling_gains") {
     return `回收道具时额外材料 ${signedNumber(effect.value)}`;
+  }
+
+  if (effect.key === "item_box_gold") {
+    return `打开箱子时获得材料 ${signedNumber(effect.value)}`;
+  }
+
+  if (effect.key === "enemy_fruit_drops") {
+    return "敌人掉落水果的概率提高";
+  }
+
+  if (effect.key === "hp_start_next_wave") {
+    return `下一波开始时的生命值 ${signedNumber(effect.value)}%`;
+  }
+
+  if (effect.key === "pickup_range") {
+    return `拾取范围 ${signedNumber(effect.value)}%`;
+  }
+
+  if (effect.key === "piercing") {
+    return `贯通次数 ${signedNumber(effect.value)}`;
+  }
+
+  if (effect.key === "piercing_damage") {
+    return `贯通伤害 ${signedNumber(effect.value)}%`;
+  }
+
+  if (effect.key === "gold_drops") {
+    return `材料掉落 ${signedNumber(effect.value)}%`;
+  }
+
+  if (effect.key === "trees") {
+    return `每波生成的树木 ${signedNumber(effect.value)}`;
+  }
+
+  if (effect.key === "bouncing") {
+    return `弹射次数 ${signedNumber(effect.value)}`;
+  }
+
+  if (effect.key === "giant_crit_damage") {
+    return `暴击触发高生命目标额外伤害（官方参数 ${signedNumber(
+      effect.value,
+    )}）；生命伤害换算待解码`;
+  }
+
+  if (effect.key === "reroll_price") {
+    return `商店刷新价格 ${signedNumber(effect.value)}%`;
   }
 
   if (effect.customKey === "extra_item_in_crate") {
@@ -374,6 +753,11 @@ function formatEffectDetail(effect) {
     if (effect.customKey === "stats_end_of_wave") {
       return `${trigger || "每波结束"}：${keyLabel} ${value}`;
     }
+    if (keyLabel === effect.key) {
+      return trigger
+        ? `${trigger}${Number.isFinite(effect.value) && effect.value !== 0 ? ` ${signedNumber(effect.value)}` : ""}`
+        : "官方特殊效果；具体参数待解码";
+    }
     if (trigger === keyLabel) return `${keyLabel} ${value}`;
     return trigger && trigger !== effect.textKey
       ? `${trigger}：${keyLabel} ${value}`
@@ -381,19 +765,19 @@ function formatEffectDetail(effect) {
   }
 
   if (effect.customKey) {
-    return `${effect.customKey} ${signedNumber(effect.value)}`;
+    return trigger || "官方特殊效果；具体参数待解码";
   }
 
   if (trigger) return trigger;
 
-  return effect.scriptPath ? effect.scriptPath.split("/").at(-1) : "未解析效果";
+  return effect.scriptPath ? "官方特殊效果；具体参数待解码" : "效果参数待解码";
 }
 
 function buildEffectLines(records) {
   const lines = records.flatMap((record) =>
-    (record.effects ?? []).map((effect) => {
+    (record.effects ?? []).flatMap((effect) => {
       const label = formatEffectDetail(effect);
-      return `T${record.tier + 1} ${label}`;
+      return label ? [`T${record.tier + 1} ${label}`] : [];
     }),
   );
   return unique(lines);
