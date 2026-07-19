@@ -123,6 +123,10 @@
 - `Druid（德鲁伊）`：收获、消耗品和成长循环。
 - `Hiker（徒步旅行者）`：行走经济和高移速路线。
 - `Buccaneer（海盗）`：海军远程和距离击杀经济；已用 `CHAL_STAT_DESC` 静态模板确认达到 100% 拾取范围后解锁。
+- `Baby（宝宝）`：低持有上限与高频武器轮换路线。
+- `Technomage（科技法师）`：元素伤害与结构物联动路线。
+- `Vagabond（浪客）`：套装切换和多路线适配。
+- `Vampire（吸血鬼）`：生命消耗、治疗与伤害转换路线。
 
 DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 会映射 DLC challenge 奖励角色，并按 Godot `OptimizedTranslation` 的双哈希查表规则读取未压缩简中消息。当前 54 条静态角色挑战均已得到 verified-static-text；8 个已有攻略的 DLC 解锁条件已同步到策略层。`Beast Master` 和 `Wounded` 仍是 official-only 图鉴条目，但现在会显示精确静态条件，而不是 pending 证据；是否新增其攻略模板与文本可信度分开处理。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`，保留为策略层待校验候选。
 
