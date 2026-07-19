@@ -136,6 +136,9 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 拾取经济道具：用官方 `chance_double_gold` 触发值和场景拾取频率估算额外材料/秒，不计入伤害 DPS。
 - 收获成长道具：用官方 `harvesting_growth` 和角色目标收获中位数估算等效额外收获，不计入伤害 DPS。
 - 箱子经济道具：用官方 `item_box_gold` 估算每个箱子的额外材料潜力，不假设箱子掉落频率，也不计入伤害 DPS。
+- 回收经济道具：用官方 `recycling_gains` 估算每次回收的额外材料，保留“材料/次”单位，不假设一局回收次数。
+- 箱子额外道具：用官方 `extra_item_in_crate` 概率换算单箱期望；随机道具和同名道具分别标注，不假设一局箱子数或道具价格。
+- 战利品外星人：`extra_loot_aliens_next_wave` 保留下一波固定数量；`loot_alien_chance` 只计算出现机会，并用 `loot_alien_speed` 作追逐风险折扣，不换算成虚构材料/秒。
 - 波次存钱道具：用官方 `effect_gain_pct_gold_start_wave_limited` 估算波次开始材料百分比潜力，不假设具体持有材料数，也不计入伤害 DPS。
 - 续航触发道具：用官方 `heal_on_kill`、`heal_on_crit_kill`、`heal_when_pickup_gold`、`consumable_heal`、`consumable_heal_over_time` 和 `heal_on_dodge` 估算击杀、暴击击杀、拾取、消耗品即时/持续和闪避治疗期望，不计入伤害 DPS。
 - 水果掉落道具：用官方 `enemy_fruit_drops` 和场景击杀频率估算额外消耗品机会；静态目录没有水果治疗量时只输出消耗品/秒，不换算成生命/秒。
@@ -159,8 +162,8 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 幽魂武器会读取官方 `effect_gain_stat_every_killed_enemies` 效果，在幽魂路线中解释击杀成长带来的后期属性滚雪球。
 - 骑士路线显式标记 `Blade`、`Medieval`、`Melee` 和 `Blunt`，用于让 Sword 的剑类/中世纪套装、Spiky Shield 的官方护甲缩放进入推荐理由。
 - Lucky 路线会读取官方武器 `scalingStats` 中的 `stat_luck`，用于解释 Lute、Flute 这类幸运缩放武器为什么适合高幸运路线。
-- 官方关键道具补充展示手写条目外的前 16 个候选；新增候选仍必须通过路线标签、目标属性或官方效果模型命中，不会只凭名称进入推荐。
-- 官方道具效果会优先从静态 effect 字段生成模型：`chance_stat_damage_effect` 会按 `customKey` 区分击杀、拾取或闪避触发伤害，`gold_on_crit_kill`、`chance_double_gold`、`instant_gold_attracting`、`harvesting_growth`、`item_box_gold`、波次存钱模板、`stats_end_of_wave`、`stats_next_wave`、`piercing`、`pierce_on_crit`、`items_price`、`free_rerolls` 和 `reroll_price` 会生成经济/拾取/每波成长/下一波经验/贯通覆盖/商店效率模型；`Cyberball` 因此按官方 `dmg_when_death` 作为击杀触发、25% 幸运伤害估算。
+- 官方关键道具补充展示手写条目外的前 20 个候选；新增候选仍必须通过路线标签、目标属性或官方效果模型命中，不会只凭名称进入推荐。
+- 官方道具效果会优先从静态 effect 字段生成模型：`chance_stat_damage_effect` 会按 `customKey` 区分击杀、拾取或闪避触发伤害，`gold_on_crit_kill`、`chance_double_gold`、`instant_gold_attracting`、`harvesting_growth`、`item_box_gold`、`recycling_gains`、`extra_item_in_crate`、`loot_alien_chance`、`extra_loot_aliens_next_wave`、波次存钱模板、`stats_end_of_wave`、`stats_next_wave`、`piercing`、`pierce_on_crit`、`items_price`、`free_rerolls` 和 `reroll_price` 会生成经济/拾取/每波成长/下一波经验/贯通覆盖/商店效率模型；`Cyberball` 因此按官方 `dmg_when_death` 作为击杀触发、25% 幸运伤害估算。
 
 当前特殊道具先支持：
 
@@ -182,6 +185,8 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 官方 `items_price` / `free_rerolls` / `reroll_price` 动态商店效率模型，例如 `Coupon（优惠券）`、`Dangerous Bunny（危险兔子）`、`Spyglass（望远镜）`
 - 官方 `heal_on_kill`、`heal_on_crit_kill`、`heal_when_pickup_gold`、`consumable_heal`、`consumable_heal_over_time`、`heal_on_dodge` 动态续航模型，例如 `Goblet（高脚杯）`、`Tentacle（触手）`、`Cute Monkey（萌萌猴）`、`Lemonade（柠檬水）`、`Weird Food（奇怪的食物）`、`Jerky（干肉条）`、`Adrenaline（肾上腺素）`
 - 官方 `enemy_fruit_drops` 动态消耗品机会模型，例如 `Fruit Basket（果篮）`
+- 官方 `recycling_gains`、`extra_item_in_crate` 动态回收/箱子机会模型，例如 `Recycling Machine（回收装置）`、`Treasure Map（藏宝图）`、`Pearl（珍珠）`
+- 官方 `loot_alien_chance`、`extra_loot_aliens_next_wave` 动态战利品外星人模型，例如 `Whistle（哨子）`、`Lure（鱼饵）`
 - 官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items` 动态风险经济模型，例如 `Black Flag（黑旗）`、`Fish Hook（鱼钩）`、`Starfish（海星）`
 - 官方爆炸/燃烧/结构物动态潜力模型，例如 `Dynamite（炸药）`、`Honey（蜂蜜）`、`Snake（蛇）`、`Eyes Surgery（眼部手术）`、`Turret（炮塔）`、`Clockwork Wasp（机械黄蜂）`、`Pile Of Books（书堆）`
 - 官方 `EFFECT_GAIN_STAT_FOR_EVERY*` 自定义成长潜力模型，例如 `Power Generator（发电机）`、`Pearl（珍珠）`、`Stone Skin（石头皮肤）`、`Strange Book（奇怪之书）`。当前只解释缩放来源，不猜测未解码的目标收益。

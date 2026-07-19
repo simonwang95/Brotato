@@ -50,6 +50,10 @@ const OFFICIAL_STAT_TO_PLAN_STAT = {
   stat_harvesting: "harvesting",
   harvesting_growth: "harvesting",
   item_box_gold: "harvesting",
+  recycling_gains: "harvesting",
+  extra_item_in_crate: "harvesting",
+  loot_alien_chance: "harvesting",
+  extra_loot_aliens_next_wave: "harvesting",
   effect_gain_pct_gold_start_wave_limited: "harvesting",
   stat_luck: "luck",
   consumable_heal: "hpRegen",
@@ -706,6 +710,19 @@ function scoreMechanicFit(entry, plan) {
   const hasCrateEconomy = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) => effect.key === "item_box_gold" && effect.value > 0),
   );
+  const hasRecycleEconomy = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) => effect.key === "recycling_gains" && effect.value > 0),
+  );
+  const hasCrateItemOpportunity = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some(
+      (effect) => effect.customKey === "extra_item_in_crate" && effect.value > 0,
+    ),
+  );
+  const hasLootAlienOpportunity = (entry.official.records ?? []).some((record) =>
+    (record.effects ?? []).some((effect) =>
+      ["loot_alien_chance", "extra_loot_aliens_next_wave"].includes(effect.key),
+    ),
+  );
   const hasShopEfficiency = (entry.official.records ?? []).some((record) =>
     (record.effects ?? []).some((effect) =>
       ["free_rerolls", "items_price", "reroll_price"].includes(effect.key),
@@ -804,6 +821,21 @@ function scoreMechanicFit(entry, plan) {
   if ((routeTags.has("economy") || planStats.has("harvesting")) && hasCrateEconomy) {
     score += 2;
     reasons.push("机制修正：箱子材料奖励贴合经济路线");
+  }
+  if ((routeTags.has("economy") || planStats.has("harvesting")) && hasRecycleEconomy) {
+    score += 3;
+    reasons.push("机制修正：单次回收额外材料贴合经济路线");
+  }
+  if ((routeTags.has("economy") || planStats.has("harvesting")) && hasCrateItemOpportunity) {
+    score += 3;
+    reasons.push("机制修正：箱子额外道具机会贴合经济路线");
+  }
+  if (
+    (routeTags.has("economy") || planStats.has("harvesting") || planStats.has("luck")) &&
+    hasLootAlienOpportunity
+  ) {
+    score += 3;
+    reasons.push("机制修正：战利品外星人提高额外资源机会");
   }
   if ((routeTags.has("economy") || planStats.has("harvesting")) && hasShopEfficiency) {
     score += 2;
@@ -1170,16 +1202,31 @@ function scoreScenarioModel(entry, plan, mode) {
     }
 
     if (itemModel.result.customGrowthUtilityScore) {
-      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.customGrowthUtilityScore)));
+      const score = Math.min(
+        8,
+        Math.max(
+          0,
+          Math.round(
+            itemModel.result.customGrowthUtilityScore +
+              (itemModel.result.crateItemUtilityScore ?? 0),
+          ),
+        ),
+      );
       const utilityLabel = itemModel.result.utilityLabel ?? "官方自定义成长潜力";
       const sourceLabel = itemModel.result.itemEffect.sourceLabel ?? itemModel.result.scaledPlanStat;
+      const reasons = [
+        `场景模型：${itemModel.result.scenario.name}${utilityLabel} 随${sourceLabel} ${itemModel.result.sourceStatValue.toFixed(
+          0,
+        )} 放大`,
+      ];
+      if (itemModel.result.expectedExtraItemsPerCrate > 0) {
+        reasons.push(
+          `场景模型：每箱 ${itemModel.result.expectedExtraItemsPerCrate.toFixed(2)} 个${itemModel.result.extraItemKind}期望`,
+        );
+      }
       return {
         score,
-        reasons: [
-          `场景模型：${itemModel.result.scenario.name}${utilityLabel} 随${sourceLabel} ${itemModel.result.sourceStatValue.toFixed(
-            0,
-          )} 放大`,
-        ],
+        reasons,
       };
     }
 
@@ -1362,8 +1409,22 @@ function nextWaveXpSurgeEffectForEntry(baseEffect, effects, plan) {
   };
 }
 
+function crateItemOpportunityFromEffects(effects) {
+  const effect = effects.find(
+    (candidate) => candidate.customKey === "extra_item_in_crate" && candidate.value > 0,
+  );
+  if (!effect) return null;
+
+  return {
+    extraItemChancePercent: Number(effect.value ?? 0),
+    extraItemKind:
+      effect.textKey === "EFFECT_EXTRA_RANDOM_ITEM_IN_CRATE" ? "随机道具" : "同名道具",
+  };
+}
+
 function itemEffectForEntry(entry) {
   const effects = officialEffects(entry.official);
+  const crateItemOpportunity = crateItemOpportunityFromEffects(effects);
   const baseEffect = {
     id: `official:${entry.official.nameKey}`,
     name: entry.item.name,
@@ -1606,6 +1667,69 @@ function itemEffectForEntry(entry) {
     };
   }
 
+  const recycleMaterial = effects.find(
+    (effect) => effect.key === "recycling_gains" && effect.value > 0,
+  );
+  if (recycleMaterial) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:recycle-material`,
+      trigger: "recycleMaterialBonus",
+      extraMaterialPerRecycle: recycleMaterial.value,
+      description:
+        "按官方回收道具额外材料字段估算单次回收价值；不假设一局的回收次数。",
+    };
+  }
+
+  if (crateItemOpportunity) {
+    const customGrowth = effects
+      .map(resolveCustomGrowthEffect)
+      .filter(Boolean)
+      .find(({ planStat, positiveScaling }) => positiveScaling && planStat);
+    if (!customGrowth) {
+      return {
+        ...baseEffect,
+        id: `${baseEffect.id}:crate-item-opportunity`,
+        trigger: "crateItemOpportunity",
+        ...crateItemOpportunity,
+        description:
+          "按官方每箱额外道具概率计算单箱期望；不假设一局的箱子数量或道具价值。",
+      };
+    }
+  }
+
+  const lootAlienChancePercent = effects
+    .filter((effect) => effect.key === "loot_alien_chance" && effect.value > 0)
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  if (lootAlienChancePercent) {
+    const lootAlienSpeedPercent = effects
+      .filter((effect) => effect.key === "loot_alien_speed" && effect.value > 0)
+      .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:loot-alien-opportunity`,
+      trigger: "lootAlienOpportunity",
+      lootAlienChancePercent,
+      lootAlienSpeedPercent,
+      description:
+        "按官方战利品外星人出现概率估算资源机会，并用其额外移速作追逐风险折扣；不假设每局触发次数。",
+    };
+  }
+
+  const extraLootAliensNextWave = effects
+    .filter((effect) => effect.key === "extra_loot_aliens_next_wave" && effect.value > 0)
+    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
+  if (extraLootAliensNextWave) {
+    return {
+      ...baseEffect,
+      id: `${baseEffect.id}:next-wave-loot-aliens`,
+      trigger: "nextWaveLootAliens",
+      extraLootAliensNextWave,
+      description:
+        "按官方下一波额外战利品外星人数估算资源机会；不把掉落内容换算成精确材料。",
+    };
+  }
+
   const startWaveSavings = effects.find(
     (effect) => effect.textKey === "effect_gain_pct_gold_start_wave_limited" && effect.value > 0,
   );
@@ -1696,8 +1820,9 @@ function itemEffectForEntry(entry) {
       sourceLabel: customGrowth.sourceLabel,
       nbStatScaled: customGrowth.nbStatScaled,
       permStatsOnly: customGrowth.effect.permStatsOnly === true,
+      ...(crateItemOpportunity ?? {}),
       description:
-        "按官方自定义成长效果的缩放来源估算潜力；目标收益仍藏在 custom_arg 子资源中，不当作精确公式。",
+        "按官方自定义成长效果的缩放来源估算潜力；若同时存在箱子额外道具字段，会单独计算单箱期望。目标成长收益仍藏在 custom_arg 子资源中，不当作精确公式。",
     };
   }
 
@@ -1715,6 +1840,21 @@ function formatEconomyUtilityValue(result, fallbackScore) {
   }
   if (Number.isFinite(result.extraMaterialPerCrate)) {
     return `+${result.extraMaterialPerCrate.toFixed(0)}/箱`;
+  }
+  if (Number.isFinite(result.extraMaterialPerRecycle)) {
+    return `+${result.extraMaterialPerRecycle.toFixed(0)}/次`;
+  }
+  if (Number.isFinite(result.expectedExtraItemsPerCrate)) {
+    return `+${result.expectedExtraItemsPerCrate.toFixed(2)} ${result.extraItemKind}/箱`;
+  }
+  if (Number.isFinite(result.lootAlienChancePercent)) {
+    const speedRisk = result.lootAlienSpeedPercent
+      ? ` / 移速 +${result.lootAlienSpeedPercent.toFixed(0)}%`
+      : "";
+    return `+${result.lootAlienChancePercent.toFixed(0)}%${speedRisk}`;
+  }
+  if (Number.isFinite(result.extraLootAliensNextWave)) {
+    return `+${result.extraLootAliensNextWave.toFixed(0)}`;
   }
   if (Number.isFinite(result.savingsPercent)) {
     return `+${result.savingsPercent.toFixed(0)}%/波`;
@@ -1963,7 +2103,7 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
   );
   const keyItems = filterAndSort(itemPool, resolvedOptions, plan, mode).slice(
     0,
-    visibleRecommendationLimit(itemPool, manualItems.length, 16),
+    visibleRecommendationLimit(itemPool, manualItems.length, 20),
   );
 
   return {

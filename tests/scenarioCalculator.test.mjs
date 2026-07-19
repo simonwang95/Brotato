@@ -454,6 +454,99 @@ function closeTo(actual, expected, message) {
 }
 
 {
+  const recyclingMachine = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:recycling-machine",
+    trigger: "recycleMaterialBonus",
+    extraMaterialPerRecycle: 35,
+  });
+
+  closeTo(
+    recyclingMachine.extraMaterialPerRecycle,
+    35,
+    "recycling bonus should preserve the official per-recycle material value",
+  );
+  closeTo(
+    recyclingMachine.economyUtilityScore,
+    4.375,
+    "recycling bonus should produce bounded economy utility without assuming recycle frequency",
+  );
+}
+
+{
+  const treasureMap = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:treasure-map",
+    trigger: "crateItemOpportunity",
+    extraItemChancePercent: 20,
+    extraItemKind: "随机道具",
+  });
+
+  closeTo(
+    treasureMap.expectedExtraItemsPerCrate,
+    0.2,
+    "crate item chance should convert to a per-crate expected item count",
+  );
+  closeTo(
+    treasureMap.economyUtilityScore,
+    4,
+    "crate item opportunity should score the official per-crate probability",
+  );
+}
+
+{
+  const pearl = calculateItemEffectDps(
+    {
+      ...baseStats,
+      luck: 100,
+    },
+    "normalWave",
+    {
+      id: "official:pearl",
+      trigger: "customGrowthPotential",
+      scaledPlanStat: "luck",
+      nbStatScaled: 10,
+      permStatsOnly: true,
+      extraItemChancePercent: 3,
+      extraItemKind: "同名道具",
+    },
+  );
+
+  assert.ok(pearl.customGrowthUtilityScore > 0, "pearl should retain its luck-growth utility");
+  closeTo(
+    pearl.expectedExtraItemsPerCrate,
+    0.03,
+    "pearl should retain its separate official crate probability",
+  );
+  closeTo(pearl.crateItemUtilityScore, 0.6, "pearl crate chance should add bounded utility");
+}
+
+{
+  const whistle = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:whistle",
+    trigger: "lootAlienOpportunity",
+    lootAlienChancePercent: 50,
+    lootAlienSpeedPercent: 20,
+  });
+
+  closeTo(whistle.chaseRiskMultiplier, 0.8, "loot alien speed should discount chase value");
+  closeTo(
+    whistle.economyUtilityScore,
+    2,
+    "loot alien chance should stay an opportunity score rather than fake material income",
+  );
+}
+
+{
+  const lure = calculateItemEffectDps(baseStats, "normalWave", {
+    id: "official:lure",
+    trigger: "nextWaveLootAliens",
+    extraLootAliensNextWave: 2,
+  });
+
+  closeTo(lure.extraLootAliensNextWave, 2, "lure should preserve the official next-wave count");
+  closeTo(lure.economyUtilityScore, 4, "next-wave loot aliens should produce bounded utility");
+}
+
+{
   const piggyBank = calculateItemEffectDps(baseStats, "normalWave", "piggyBank");
 
   closeTo(piggyBank.savingsPercent, 8, "piggy bank uses official savings percent");

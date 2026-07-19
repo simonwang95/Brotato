@@ -87,6 +87,11 @@ const STAT_LABELS = {
   item_lootworm: "战利品虫",
   item_tardigrade: "水熊虫",
   item_turret: "炮塔",
+  item_pearl: "珍珠",
+  recycling_gains: "回收额外材料",
+  loot_alien_chance: "战利品外星人出现概率",
+  loot_alien_speed: "战利品外星人移速",
+  extra_loot_aliens_next_wave: "下一波战利品外星人",
 };
 
 const PERCENT_STATS = new Set([
@@ -146,6 +151,7 @@ const EFFECT_TEXT_LABELS = {
   effect_garden: "花园",
   effect_tyler: "泰勒",
   effect_wandering_bot: "流浪机器人",
+  EFFECT_WHISTLE_SOUND: "哨声效果",
 };
 
 const BINARY_EFFECT_KEYS = new Set(["die_in_one_hit", "beast_master_effect"]);
@@ -316,6 +322,28 @@ function formatEffectDetail(effect) {
 
   if (effect.customKey === "enemy_percent_damage_taken") {
     return `${trigger || "命中目标"} ${signedNumber(effect.value)}%`;
+  }
+
+  if (effect.key === "recycling_gains") {
+    return `回收道具时额外材料 ${signedNumber(effect.value)}`;
+  }
+
+  if (effect.customKey === "extra_item_in_crate") {
+    const itemLabel =
+      effect.textKey === "EFFECT_EXTRA_RANDOM_ITEM_IN_CRATE" ? "随机道具" : keyLabel;
+    return `每个箱子：${effect.value}% 概率额外获得${itemLabel}`;
+  }
+
+  if (effect.key === "loot_alien_chance") {
+    return `战利品外星人出现概率 ${signedNumber(effect.value)}%`;
+  }
+
+  if (effect.key === "loot_alien_speed") {
+    return `战利品外星人移速 ${signedNumber(effect.value)}%`;
+  }
+
+  if (effect.key === "extra_loot_aliens_next_wave") {
+    return `下一波战利品外星人 ${signedNumber(effect.value)}`;
   }
 
   if (effect.key) {

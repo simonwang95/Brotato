@@ -42,6 +42,17 @@ function calculateOverflowLoss(expectedDamage, averageEnemyHp, wasteWeight) {
   return clamp(wastedShare * wasteWeight, 0, 0.85);
 }
 
+function calculateCrateItemOpportunity(itemEffect) {
+  const extraItemChancePercent = Math.max(0, toNumber(itemEffect.extraItemChancePercent, 0));
+  const expectedExtraItemsPerCrate = extraItemChancePercent / 100;
+  return {
+    extraItemChancePercent,
+    expectedExtraItemsPerCrate,
+    extraItemKind: itemEffect.extraItemKind ?? "随机道具",
+    crateItemUtilityScore: expectedExtraItemsPerCrate * 20,
+  };
+}
+
 function calculateDeliveryModel(base, scenario, context) {
   const averageEnemyHp = context.averageEnemyHp > 0 ? context.averageEnemyHp : scenario.averageEnemyHp;
   const enemyArmorMultiplier = calculateArmorDamageMultiplier(context.enemyArmor);
@@ -548,6 +559,7 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     const sourceUnits = sourceStatValue / nbStatScaled;
     const permanenceMultiplier = itemEffect.permStatsOnly ? 1.15 : 1;
     const customGrowthUtilityScore = Math.log1p(sourceUnits) * 1.4 * permanenceMultiplier;
+    const crateItemOpportunity = calculateCrateItemOpportunity(itemEffect);
 
     return {
       itemEffect,
@@ -562,6 +574,7 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
       sourceUnits,
       permanenceMultiplier,
       customGrowthUtilityScore,
+      ...crateItemOpportunity,
       utilityLabel: "官方自定义成长潜力",
     };
   }
@@ -625,6 +638,77 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
       extraMaterialPerCrate,
       economyUtilityScore,
       economyLabel: "箱子材料潜力",
+    };
+  }
+
+  if (itemEffect.trigger === "recycleMaterialBonus") {
+    const extraMaterialPerRecycle = Math.max(0, itemEffect.extraMaterialPerRecycle ?? 0);
+    const economyUtilityScore = extraMaterialPerRecycle / 8;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      extraMaterialPerRecycle,
+      economyUtilityScore,
+      economyLabel: "单次回收额外材料",
+    };
+  }
+
+  if (itemEffect.trigger === "crateItemOpportunity") {
+    const crateItemOpportunity = calculateCrateItemOpportunity(itemEffect);
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      ...crateItemOpportunity,
+      economyUtilityScore: crateItemOpportunity.crateItemUtilityScore,
+      economyLabel: "箱子额外道具期望",
+    };
+  }
+
+  if (itemEffect.trigger === "lootAlienOpportunity") {
+    const lootAlienChancePercent = Math.max(0, itemEffect.lootAlienChancePercent ?? 0);
+    const lootAlienSpeedPercent = Math.max(0, itemEffect.lootAlienSpeedPercent ?? 0);
+    const chaseRiskMultiplier = clamp(1 - lootAlienSpeedPercent / 100, 0.5, 1);
+    const economyUtilityScore = (lootAlienChancePercent / 20) * chaseRiskMultiplier;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      lootAlienChancePercent,
+      lootAlienSpeedPercent,
+      chaseRiskMultiplier,
+      economyUtilityScore,
+      economyLabel: "战利品外星人机会",
+    };
+  }
+
+  if (itemEffect.trigger === "nextWaveLootAliens") {
+    const extraLootAliensNextWave = Math.max(0, itemEffect.extraLootAliensNextWave ?? 0);
+    const economyUtilityScore = extraLootAliensNextWave * 2;
+
+    return {
+      itemEffect,
+      scenario,
+      triggerRate: 0,
+      expectedDamage: 0,
+      dps: 0,
+      rawDps: 0,
+      extraLootAliensNextWave,
+      economyUtilityScore,
+      economyLabel: "下一波战利品外星人",
     };
   }
 

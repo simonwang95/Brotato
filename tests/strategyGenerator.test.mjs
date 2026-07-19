@@ -327,6 +327,30 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 }
 
 {
+  const guide = generateStrategyGuide("entrepreneur", "normal20", { officialCatalog });
+  const treasureMap = guide.keyItems.find(({ item }) => item.name === "Treasure Map");
+  assert.ok(treasureMap, "entrepreneur should surface Treasure Map from the official DLC item pool");
+  assert.ok(
+    treasureMap.recommendationReasons.some((reason) =>
+      reason.includes("箱子额外道具期望 +0.20 随机道具/箱"),
+    ),
+    "treasure map should explain its official per-crate random-item expectation",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("curious", "normal20", { officialCatalog });
+  const whistle = guide.keyItems.find(({ item }) => item.name === "Whistle");
+  assert.ok(whistle, "curious should surface Whistle from the official DLC item pool");
+  assert.ok(
+    whistle.recommendationReasons.some((reason) =>
+      reason.includes("战利品外星人机会 +50% / 移速 +20%"),
+    ),
+    "whistle should explain both official opportunity and chase-speed risk fields",
+  );
+}
+
+{
   const guide = generateStrategyGuide("farmer", "normal20", { officialCatalog });
   const crown = guide.keyItems.find(({ item }) => item.name === "Crown");
   assert.ok(crown, "farmer guide should surface Crown from the official item candidate pool");
@@ -350,6 +374,22 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
   assert.ok(
     piggyBank?.recommendationReasons.some((reason) => reason.includes("波次存钱潜力")),
     "farmer piggy bank recommendation should explain start-wave savings utility",
+  );
+  const recyclingMachine = guide.keyItems.find(
+    ({ item }) => item.name === "Recycling Machine",
+  );
+  assert.ok(
+    recyclingMachine?.recommendationReasons.some((reason) =>
+      reason.includes("单次回收额外材料 +35/次"),
+    ),
+    "farmer should surface official per-recycle material value without treating it as a percent",
+  );
+  const lure = guide.keyItems.find(({ item }) => item.name === "Lure");
+  assert.ok(
+    lure?.recommendationReasons.some((reason) =>
+      reason.includes("下一波战利品外星人 +2"),
+    ),
+    "farmer should explain the official fixed next-wave loot-alien count",
   );
   const coupon = guide.keyItems.find(({ item }) => item.name === "Coupon");
   assert.ok(
@@ -398,6 +438,24 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
       reason.includes("下一波经验潜力 XP +100% / 敌人伤害 +50%"),
     ),
     "farmer should explain official next-wave xp effects as risk-adjusted economy utility",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("lucky", "normal20", { officialCatalog });
+  const pearl = guide.keyItems.find(({ item }) => item.name === "Pearl");
+  assert.ok(pearl, "lucky should surface Pearl from the official DLC item pool");
+  assert.ok(
+    pearl.recommendationReasons.some((reason) =>
+      reason.includes("官方自定义成长潜力 随幸运"),
+    ),
+    "pearl should retain its official luck-growth explanation",
+  );
+  assert.ok(
+    pearl.recommendationReasons.some((reason) =>
+      reason.includes("每箱 0.03 个同名道具期望"),
+    ),
+    "pearl should separately explain its official three-percent crate opportunity",
   );
 }
 
@@ -607,8 +665,27 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     "base-only DLC input should hide Lute",
   );
   assert.ok(
+    guide.keyItems.every(({ item }) => !["Pearl", "Whistle", "Treasure Map"].includes(item.name)),
+    "base-only input should hide DLC economy candidates",
+  );
+  assert.ok(
     guide.recommendedWeapons.some(({ weapon }) => weapon.name === "Slingshot"),
     "base-only Lucky guide should keep base-game alternatives",
+  );
+}
+
+{
+  const guide = generateStrategyGuide("farmer", "normal20", {
+    officialCatalog,
+    unlockOptionId: "defaultOnly",
+  });
+  assert.ok(
+    guide.keyItems.some(({ item }) => item.name === "Recycling Machine"),
+    "default-only input should keep the default-pool Recycling Machine",
+  );
+  assert.ok(
+    guide.keyItems.every(({ item }) => !["Pearl", "Lure", "Treasure Map"].includes(item.name)),
+    "default-only input should hide locked economy candidates",
   );
 }
 

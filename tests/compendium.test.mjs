@@ -68,6 +68,38 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
 }
 
 {
+  const recyclingMachine = compendium.items.find(
+    (entry) => entry.nameKey === "ITEM_RECYCLING_MACHINE",
+  );
+  assert.ok(
+    recyclingMachine?.detailedAttributes.includes("T2 回收道具时额外材料 +35"),
+    "recycling machine should expose the localized per-recycle material effect",
+  );
+
+  const pearl = compendium.items.find((entry) => entry.nameKey === "ITEM_PEARL");
+  assert.ok(
+    pearl?.detailedAttributes.includes("T2 每个箱子：3% 概率额外获得珍珠"),
+    "pearl should expose its specific per-crate chance",
+  );
+
+  const treasureMap = compendium.items.find((entry) => entry.nameKey === "ITEM_TREASURE_MAP");
+  assert.ok(
+    treasureMap?.detailedAttributes.includes("T2 每个箱子：20% 概率额外获得随机道具"),
+    "treasure map should expose its random-item crate chance",
+  );
+
+  const whistle = compendium.items.find((entry) => entry.nameKey === "ITEM_WHISTLE");
+  assert.ok(
+    whistle?.detailedAttributes.includes("T1 战利品外星人出现概率 +50%"),
+    "whistle should expose the localized loot-alien chance",
+  );
+  assert.ok(
+    whistle?.detailedAttributes.includes("T1 战利品外星人移速 +20%"),
+    "whistle should expose the chase-speed downside separately",
+  );
+}
+
+{
   const blackFlag = compendium.items.find((entry) => entry.nameKey === "ITEM_BLACK_FLAG");
   assert.ok(
     blackFlag?.detailedAttributes.includes("T3 诅咒敌人击杀材料 +1"),
