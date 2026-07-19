@@ -65,6 +65,12 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     "lucky should expose Chinese name and archetype",
   );
   assert.ok(
+    characters.some(
+      (character) => character.id === "technomage" && character.cnHint === "科技法师，元素结构",
+    ),
+    "technomage should use the verified static Chinese character name",
+  );
+  assert.ok(
     characters.some((character) => character.id === "chunky" && character.cnHint === "大壮，生命坦克"),
     "chunky should expose Chinese name and archetype",
   );

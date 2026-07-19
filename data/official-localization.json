@@ -11,8 +11,8 @@
   ],
   "summary": {
     "total": 387,
-    "localized": 367,
-    "missing": 20,
+    "localized": 387,
+    "missing": 0,
     "byKind": {
       "weapon": {
         "total": 79,
@@ -24,21 +24,20 @@
       },
       "character": {
         "total": 64,
-        "localized": 44
+        "localized": 64
       }
     },
     "bySource": {
-      "missing": 20,
-      "translation-join": 227,
-      "manual-override": 140
+      "translation-key": 386,
+      "manual-override": 1
     }
   },
   "entries": {
     "CHARACTER_APPRENTICE": {
       "kind": "character",
       "enName": "Apprentice",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "学徒",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -47,7 +46,7 @@
       "kind": "character",
       "enName": "Arms Dealer",
       "cnName": "军火商",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -55,8 +54,8 @@
     "CHARACTER_ARTIFICER": {
       "kind": "character",
       "enName": "Artificer",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "技工",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -65,7 +64,7 @@
       "kind": "character",
       "enName": "Baby",
       "cnName": "宝宝",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -73,8 +72,8 @@
     "CHARACTER_BEAST_MASTER": {
       "kind": "character",
       "enName": "Beast Master",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "驯兽师",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -83,7 +82,7 @@
       "kind": "character",
       "enName": "Brawler",
       "cnName": "斗士",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -92,7 +91,7 @@
       "kind": "character",
       "enName": "Buccaneer",
       "cnName": "海盗",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -101,7 +100,7 @@
       "kind": "character",
       "enName": "Builder",
       "cnName": "建造者",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -110,7 +109,7 @@
       "kind": "character",
       "enName": "Bull",
       "cnName": "公牛",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -119,7 +118,7 @@
       "kind": "character",
       "enName": "Captain",
       "cnName": "船长",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -128,7 +127,7 @@
       "kind": "character",
       "enName": "Chef",
       "cnName": "厨师",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -137,7 +136,7 @@
       "kind": "character",
       "enName": "Chunky",
       "cnName": "大壮",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -146,7 +145,7 @@
       "kind": "character",
       "enName": "Crazy",
       "cnName": "狂人",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -154,8 +153,8 @@
     "CHARACTER_CREATURE": {
       "kind": "character",
       "enName": "Creature",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "生物",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -164,7 +163,7 @@
       "kind": "character",
       "enName": "Cryptid",
       "cnName": "神秘生物",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -172,8 +171,8 @@
     "CHARACTER_CURIOUS": {
       "kind": "character",
       "enName": "Curious",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "好奇之人",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -182,7 +181,7 @@
       "kind": "character",
       "enName": "Cyborg",
       "cnName": "赛博格",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -191,7 +190,7 @@
       "kind": "character",
       "enName": "Demon",
       "cnName": "恶魔",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -200,7 +199,7 @@
       "kind": "character",
       "enName": "Diver",
       "cnName": "潜水员",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -209,7 +208,7 @@
       "kind": "character",
       "enName": "Doctor",
       "cnName": "医生",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -218,7 +217,7 @@
       "kind": "character",
       "enName": "Druid",
       "cnName": "德鲁伊",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -227,7 +226,7 @@
       "kind": "character",
       "enName": "Dwarf",
       "cnName": "矮人",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -235,8 +234,8 @@
     "CHARACTER_ENGINEER": {
       "kind": "character",
       "enName": "Engineer",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "工程师",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -244,8 +243,8 @@
     "CHARACTER_ENTREPRENEUR": {
       "kind": "character",
       "enName": "Entrepreneur",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "企业家",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -254,7 +253,7 @@
       "kind": "character",
       "enName": "Explorer",
       "cnName": "探险家",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -263,7 +262,7 @@
       "kind": "character",
       "enName": "Farmer",
       "cnName": "农夫",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -271,8 +270,8 @@
     "CHARACTER_FISHERMAN": {
       "kind": "character",
       "enName": "Fisherman",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "渔夫",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -280,8 +279,8 @@
     "CHARACTER_GANGSTER": {
       "kind": "character",
       "enName": "Gangster",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "匪徒",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -289,8 +288,8 @@
     "CHARACTER_GENERALIST": {
       "kind": "character",
       "enName": "Generalist",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "博学家",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -299,7 +298,7 @@
       "kind": "character",
       "enName": "Ghost",
       "cnName": "幽灵",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -307,8 +306,8 @@
     "CHARACTER_GLADIATOR": {
       "kind": "character",
       "enName": "Gladiator",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "角斗士",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -317,7 +316,7 @@
       "kind": "character",
       "enName": "Glutton",
       "cnName": "暴食",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -326,7 +325,7 @@
       "kind": "character",
       "enName": "Golem",
       "cnName": "魔像",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -335,7 +334,7 @@
       "kind": "character",
       "enName": "Hiker",
       "cnName": "徒步旅行者",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -343,8 +342,8 @@
     "CHARACTER_HUNTER": {
       "kind": "character",
       "enName": "Hunter",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "猎人",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -353,7 +352,7 @@
       "kind": "character",
       "enName": "Jack",
       "cnName": "杰克",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -362,7 +361,7 @@
       "kind": "character",
       "enName": "King",
       "cnName": "国王",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -371,7 +370,7 @@
       "kind": "character",
       "enName": "Knight",
       "cnName": "骑士",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -380,7 +379,7 @@
       "kind": "character",
       "enName": "Lich",
       "cnName": "巫妖",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -389,7 +388,7 @@
       "kind": "character",
       "enName": "Loud",
       "cnName": "大嗓门",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -398,7 +397,7 @@
       "kind": "character",
       "enName": "Lucky",
       "cnName": "幸运星",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -407,7 +406,7 @@
       "kind": "character",
       "enName": "Mage",
       "cnName": "法师",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -415,8 +414,8 @@
     "CHARACTER_MASOCHIST": {
       "kind": "character",
       "enName": "Masochist",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "受虐狂",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -425,7 +424,7 @@
       "kind": "character",
       "enName": "Multitasker",
       "cnName": "多面手",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -434,7 +433,7 @@
       "kind": "character",
       "enName": "Mutant",
       "cnName": "异变体",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -443,7 +442,7 @@
       "kind": "character",
       "enName": "Ogre",
       "cnName": "食人魔",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -452,16 +451,16 @@
       "kind": "character",
       "enName": "Old",
       "cnName": "老叟",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
     },
     "CHARACTER_ONE_ARM": {
       "kind": "character",
-      "enName": "One Arm",
-      "cnName": null,
-      "source": "missing",
+      "enName": "One-Armed",
+      "cnName": "独臂",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -470,7 +469,7 @@
       "kind": "character",
       "enName": "Pacifist",
       "cnName": "和平主义者",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -479,7 +478,7 @@
       "kind": "character",
       "enName": "Ranger",
       "cnName": "游侠",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -488,7 +487,7 @@
       "kind": "character",
       "enName": "Renegade",
       "cnName": "叛徒",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -496,8 +495,8 @@
     "CHARACTER_ROMANTIC": {
       "kind": "character",
       "enName": "Romantic",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "浪漫之人",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -506,7 +505,7 @@
       "kind": "character",
       "enName": "Sailor",
       "cnName": "水手",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -515,7 +514,7 @@
       "kind": "character",
       "enName": "Saver",
       "cnName": "节俭者",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -524,7 +523,7 @@
       "kind": "character",
       "enName": "Sick",
       "cnName": "病人",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -533,7 +532,7 @@
       "kind": "character",
       "enName": "Soldier",
       "cnName": "士兵",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -542,7 +541,7 @@
       "kind": "character",
       "enName": "Speedy",
       "cnName": "飞毛腿",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -550,8 +549,8 @@
     "CHARACTER_STREAMER": {
       "kind": "character",
       "enName": "Streamer",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "网络主播",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -559,8 +558,8 @@
     "CHARACTER_TECHNOMAGE": {
       "kind": "character",
       "enName": "Technomage",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "科技法师",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -569,7 +568,7 @@
       "kind": "character",
       "enName": "Vagabond",
       "cnName": "流浪汉",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -578,7 +577,7 @@
       "kind": "character",
       "enName": "Vampire",
       "cnName": "吸血鬼",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -586,8 +585,8 @@
     "CHARACTER_WELL_ROUNDED": {
       "kind": "character",
       "enName": "Well Rounded",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "全能者",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -595,8 +594,8 @@
     "CHARACTER_WILDLING": {
       "kind": "character",
       "enName": "Wildling",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "野人",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -604,8 +603,8 @@
     "CHARACTER_WOUNDED": {
       "kind": "character",
       "enName": "Wounded",
-      "cnName": null,
-      "source": "missing",
+      "cnName": "伤者",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -614,7 +613,7 @@
       "kind": "item",
       "enName": "Acid",
       "cnName": "酸液",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -623,7 +622,7 @@
       "kind": "item",
       "enName": "Adrenaline",
       "cnName": "肾上腺素",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -632,7 +631,7 @@
       "kind": "item",
       "enName": "Alien Baby",
       "cnName": "幼年异形",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -641,7 +640,7 @@
       "kind": "item",
       "enName": "Alien Eyes",
       "cnName": "异形眼球",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -650,7 +649,7 @@
       "kind": "item",
       "enName": "Alien Magic",
       "cnName": "外星魔法",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -659,7 +658,7 @@
       "kind": "item",
       "enName": "Alien Tongue",
       "cnName": "异形之舌",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -668,7 +667,7 @@
       "kind": "item",
       "enName": "Alien Worm",
       "cnName": "异形虫",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -677,7 +676,7 @@
       "kind": "item",
       "enName": "Alloy",
       "cnName": "合金",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -686,7 +685,7 @@
       "kind": "item",
       "enName": "Anvil",
       "cnName": "铁砧",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -695,7 +694,7 @@
       "kind": "item",
       "enName": "Ashes",
       "cnName": "灰烬",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -704,7 +703,7 @@
       "kind": "item",
       "enName": "Axolotl",
       "cnName": "蝾螈",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -713,7 +712,7 @@
       "kind": "item",
       "enName": "Baby Elephant",
       "cnName": "象宝宝",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -722,7 +721,7 @@
       "kind": "item",
       "enName": "Baby Gecko",
       "cnName": "壁虎宝宝",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -731,7 +730,7 @@
       "kind": "item",
       "enName": "Baby Squid",
       "cnName": "鱿鱼宝宝",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -740,7 +739,7 @@
       "kind": "item",
       "enName": "Baby With A Beard",
       "cnName": "长胡子的婴儿",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -749,7 +748,7 @@
       "kind": "item",
       "enName": "Bag",
       "cnName": "背包",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -758,7 +757,7 @@
       "kind": "item",
       "enName": "Bait",
       "cnName": "诱饵",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -767,7 +766,7 @@
       "kind": "item",
       "enName": "Ball And Chain",
       "cnName": "链球",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -776,7 +775,7 @@
       "kind": "item",
       "enName": "Bandana",
       "cnName": "头巾",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -785,7 +784,7 @@
       "kind": "item",
       "enName": "Banner",
       "cnName": "旗帜",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -794,7 +793,7 @@
       "kind": "item",
       "enName": "Barnacle",
       "cnName": "藤壶",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -803,7 +802,7 @@
       "kind": "item",
       "enName": "Barricade",
       "cnName": "路障",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -812,7 +811,7 @@
       "kind": "item",
       "enName": "Bat",
       "cnName": "蝙蝠",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -821,7 +820,7 @@
       "kind": "item",
       "enName": "Bean Teacher",
       "cnName": "豆老师",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -830,7 +829,7 @@
       "kind": "item",
       "enName": "Beanie",
       "cnName": "无檐小便帽",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -839,7 +838,7 @@
       "kind": "item",
       "enName": "Big Arms",
       "cnName": "巨臂",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -848,7 +847,7 @@
       "kind": "item",
       "enName": "Black Belt",
       "cnName": "黑带",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -857,7 +856,7 @@
       "kind": "item",
       "enName": "Black Flag",
       "cnName": "黑旗",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -866,7 +865,7 @@
       "kind": "item",
       "enName": "Blazemander",
       "cnName": "焰蜥蜴",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -875,7 +874,7 @@
       "kind": "item",
       "enName": "Blindfold",
       "cnName": "眼罩",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -884,7 +883,7 @@
       "kind": "item",
       "enName": "Blood Donation",
       "cnName": "献血",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -893,7 +892,7 @@
       "kind": "item",
       "enName": "Blood Leech",
       "cnName": "血蛭",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -902,7 +901,7 @@
       "kind": "item",
       "enName": "Bloody Hand",
       "cnName": "血淋淋的手",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -911,7 +910,7 @@
       "kind": "item",
       "enName": "Boiling Water",
       "cnName": "沸水",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -920,7 +919,7 @@
       "kind": "item",
       "enName": "Bone Dice",
       "cnName": "骨骰",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -929,7 +928,7 @@
       "kind": "item",
       "enName": "Bonk Dog",
       "cnName": "Bonk狗",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -938,16 +937,16 @@
       "kind": "item",
       "enName": "Book",
       "cnName": "书本",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
     },
     "ITEM_BOT_O_MINE": {
       "kind": "item",
-      "enName": "Bot O Mine",
-      "cnName": "地雷机器人",
-      "source": "manual-override",
+      "enName": "Bot-O-Mine",
+      "cnName": "布雷机器人",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -956,7 +955,7 @@
       "kind": "item",
       "enName": "Bowler Hat",
       "cnName": "圆顶礼帽",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -965,7 +964,7 @@
       "kind": "item",
       "enName": "Boxing Glove",
       "cnName": "拳击手套",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -974,7 +973,7 @@
       "kind": "item",
       "enName": "Broken Hourglass",
       "cnName": "破损沙漏",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -983,7 +982,7 @@
       "kind": "item",
       "enName": "Broken Mirror",
       "cnName": "破碎的镜子",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -991,8 +990,8 @@
     "ITEM_BROKEN_MOUTH": {
       "kind": "item",
       "enName": "Broken Mouth",
-      "cnName": "破嘴",
-      "source": "manual-override",
+      "cnName": "裂口",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1001,7 +1000,7 @@
       "kind": "item",
       "enName": "Builder Turret",
       "cnName": "建造者的炮塔",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1010,7 +1009,7 @@
       "kind": "item",
       "enName": "Butterfly",
       "cnName": "蝴蝶",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1019,7 +1018,7 @@
       "kind": "item",
       "enName": "Cake",
       "cnName": "蛋糕",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1028,7 +1027,7 @@
       "kind": "item",
       "enName": "Campfire",
       "cnName": "篝火",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1037,7 +1036,7 @@
       "kind": "item",
       "enName": "Candle",
       "cnName": "蜡烛",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1046,7 +1045,7 @@
       "kind": "item",
       "enName": "Candy Bag",
       "cnName": "糖果袋",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1055,7 +1054,7 @@
       "kind": "item",
       "enName": "Cape",
       "cnName": "斗篷",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1063,8 +1062,8 @@
     "ITEM_CATLING_GUN": {
       "kind": "item",
       "enName": "Catling Gun",
-      "cnName": "双枪猫",
-      "source": "manual-override",
+      "cnName": "猫特林机枪",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1073,7 +1072,7 @@
       "kind": "item",
       "enName": "Cauldron",
       "cnName": "大锅",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1082,7 +1081,7 @@
       "kind": "item",
       "enName": "Celery Tea",
       "cnName": "芹菜茶",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1091,7 +1090,7 @@
       "kind": "item",
       "enName": "Chameleon",
       "cnName": "变色龙",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1100,7 +1099,7 @@
       "kind": "item",
       "enName": "Charcoal",
       "cnName": "木炭",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1109,7 +1108,7 @@
       "kind": "item",
       "enName": "Claw Tree",
       "cnName": "利爪树",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1118,7 +1117,7 @@
       "kind": "item",
       "enName": "Clockwork Wasp",
       "cnName": "机械黄蜂",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1127,7 +1126,7 @@
       "kind": "item",
       "enName": "Clover",
       "cnName": "三叶草",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1136,7 +1135,7 @@
       "kind": "item",
       "enName": "Coffee",
       "cnName": "咖啡",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1145,7 +1144,7 @@
       "kind": "item",
       "enName": "Cog",
       "cnName": "齿轮",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1154,7 +1153,7 @@
       "kind": "item",
       "enName": "Coil",
       "cnName": "线圈",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1163,7 +1162,7 @@
       "kind": "item",
       "enName": "Community Support",
       "cnName": "社区支持",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1172,7 +1171,7 @@
       "kind": "item",
       "enName": "Compass",
       "cnName": "指南针",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1181,7 +1180,7 @@
       "kind": "item",
       "enName": "Coral",
       "cnName": "珊瑚",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1190,7 +1189,7 @@
       "kind": "item",
       "enName": "Corrupted Shard",
       "cnName": "被腐蚀的碎片",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1199,7 +1198,7 @@
       "kind": "item",
       "enName": "Coupon",
       "cnName": "优惠券",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1208,7 +1207,7 @@
       "kind": "item",
       "enName": "Crown",
       "cnName": "王冠",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1217,7 +1216,7 @@
       "kind": "item",
       "enName": "Crystal",
       "cnName": "水晶",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1226,7 +1225,7 @@
       "kind": "item",
       "enName": "Cute Monkey",
       "cnName": "萌萌猴",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1235,7 +1234,7 @@
       "kind": "item",
       "enName": "Cyberball",
       "cnName": "赛博球",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1244,7 +1243,7 @@
       "kind": "item",
       "enName": "Cyclops Worm",
       "cnName": "独眼虫",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1253,7 +1252,7 @@
       "kind": "item",
       "enName": "Dangerous Bunny",
       "cnName": "危险的兔子",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1262,7 +1261,7 @@
       "kind": "item",
       "enName": "Decomposing Flesh",
       "cnName": "腐肉",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1271,7 +1270,7 @@
       "kind": "item",
       "enName": "Defective Steroids",
       "cnName": "有缺陷的增强剂",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1280,7 +1279,7 @@
       "kind": "item",
       "enName": "Diploma",
       "cnName": "执照",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1289,7 +1288,7 @@
       "kind": "item",
       "enName": "Doc Moth",
       "cnName": "蛾医生",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1298,7 +1297,7 @@
       "kind": "item",
       "enName": "Duct Tape",
       "cnName": "胶带",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1307,7 +1306,7 @@
       "kind": "item",
       "enName": "Dynamite",
       "cnName": "炸药",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1316,7 +1315,7 @@
       "kind": "item",
       "enName": "Energy Bracelet",
       "cnName": "能量手环",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1325,16 +1324,16 @@
       "kind": "item",
       "enName": "Esty’s Couch",
       "cnName": "Esty的沙发",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
     },
     "ITEM_EVIL_HAT": {
       "kind": "item",
-      "enName": "Evil Hat",
-      "cnName": "邪恶帽子",
-      "source": "manual-override",
+      "enName": "Gobbler’s Hat",
+      "cnName": "吞吞怪之帽",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1343,7 +1342,7 @@
       "kind": "item",
       "enName": "Exoskeleton",
       "cnName": "外骨骼",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1352,7 +1351,7 @@
       "kind": "item",
       "enName": "Explosive Shells",
       "cnName": "爆裂弹",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1361,7 +1360,7 @@
       "kind": "item",
       "enName": "Extra Stomach",
       "cnName": "另一个胃",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1370,7 +1369,7 @@
       "kind": "item",
       "enName": "Eyepatch",
       "cnName": "海盗眼罩 ",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1379,7 +1378,7 @@
       "kind": "item",
       "enName": "Eyes Surgery",
       "cnName": "眼部手术",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1388,7 +1387,7 @@
       "kind": "item",
       "enName": "Fairy",
       "cnName": "小精灵",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1397,7 +1396,7 @@
       "kind": "item",
       "enName": "Feather",
       "cnName": "羽毛",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1406,7 +1405,7 @@
       "kind": "item",
       "enName": "Fertilizer",
       "cnName": "肥料",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1415,7 +1414,7 @@
       "kind": "item",
       "enName": "Fin",
       "cnName": "鳍",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1424,7 +1423,7 @@
       "kind": "item",
       "enName": "Fish Hook",
       "cnName": "鱼钩",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1433,7 +1432,7 @@
       "kind": "item",
       "enName": "Focus",
       "cnName": "焦点",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1442,7 +1441,7 @@
       "kind": "item",
       "enName": "Fresh Meat",
       "cnName": "鲜肉",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1451,7 +1450,7 @@
       "kind": "item",
       "enName": "Fried Rice",
       "cnName": "炒饭",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1459,8 +1458,8 @@
     "ITEM_FROZEN_HEART": {
       "kind": "item",
       "enName": "Frozen Heart",
-      "cnName": "冰冷之心",
-      "source": "manual-override",
+      "cnName": "冰冻的心",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1469,7 +1468,7 @@
       "kind": "item",
       "enName": "Fruit Basket",
       "cnName": "果篮",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1478,7 +1477,7 @@
       "kind": "item",
       "enName": "Fuel Tank",
       "cnName": "燃料箱",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1487,7 +1486,7 @@
       "kind": "item",
       "enName": "Gambling Token",
       "cnName": "赌博筹码",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1496,7 +1495,7 @@
       "kind": "item",
       "enName": "Garden",
       "cnName": "花园",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1505,7 +1504,7 @@
       "kind": "item",
       "enName": "Gentle Alien",
       "cnName": "外星绅士",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1514,7 +1513,7 @@
       "kind": "item",
       "enName": "Ghost Outfit",
       "cnName": "幽灵服",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1523,7 +1522,7 @@
       "kind": "item",
       "enName": "Giant Belt",
       "cnName": "巨型带",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1532,7 +1531,7 @@
       "kind": "item",
       "enName": "Glass Cannon",
       "cnName": "玻璃大炮",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1541,7 +1540,7 @@
       "kind": "item",
       "enName": "Glasses",
       "cnName": "眼镜",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1550,7 +1549,7 @@
       "kind": "item",
       "enName": "Gnome",
       "cnName": "地精",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1559,7 +1558,7 @@
       "kind": "item",
       "enName": "Goat Skull",
       "cnName": "山羊头骨",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1568,7 +1567,7 @@
       "kind": "item",
       "enName": "Goblet",
       "cnName": "高脚杯",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1577,7 +1576,7 @@
       "kind": "item",
       "enName": "Goldfish",
       "cnName": "金鱼",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1586,7 +1585,7 @@
       "kind": "item",
       "enName": "Goldfish Used",
       "cnName": "休息的金鱼",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1595,7 +1594,7 @@
       "kind": "item",
       "enName": "Greek Fire",
       "cnName": "希腊火",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1604,7 +1603,7 @@
       "kind": "item",
       "enName": "Grind’s Magical Leaf",
       "cnName": "Grind的魔法绿叶",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1613,7 +1612,7 @@
       "kind": "item",
       "enName": "Gummy Berserker",
       "cnName": "软糖狂战士",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1622,7 +1621,7 @@
       "kind": "item",
       "enName": "Handcuffs",
       "cnName": "手铐",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1631,7 +1630,7 @@
       "kind": "item",
       "enName": "Head Injury",
       "cnName": "头部创伤",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1640,7 +1639,7 @@
       "kind": "item",
       "enName": "Heavy Bullets",
       "cnName": "重型子弹",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1649,7 +1648,7 @@
       "kind": "item",
       "enName": "Hedgehog",
       "cnName": "刺猬",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1658,7 +1657,7 @@
       "kind": "item",
       "enName": "Helmet",
       "cnName": "头盔",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1667,7 +1666,7 @@
       "kind": "item",
       "enName": "Honey",
       "cnName": "蜂蜜",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1676,7 +1675,7 @@
       "kind": "item",
       "enName": "Hourglass",
       "cnName": "沙漏",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1685,7 +1684,7 @@
       "kind": "item",
       "enName": "Hunting Trophy",
       "cnName": "狩猎战利品",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1694,7 +1693,7 @@
       "kind": "item",
       "enName": "Ice Cube",
       "cnName": "冰块",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1703,7 +1702,7 @@
       "kind": "item",
       "enName": "Improved Tools",
       "cnName": "改进工具",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1712,7 +1711,7 @@
       "kind": "item",
       "enName": "Injection",
       "cnName": "注射剂",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1720,8 +1719,8 @@
     "ITEM_INSANITY": {
       "kind": "item",
       "enName": "Insanity",
-      "cnName": "疯狂",
-      "source": "manual-override",
+      "cnName": "精神异常",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1730,7 +1729,7 @@
       "kind": "item",
       "enName": "Jelly",
       "cnName": "果冻",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1739,7 +1738,7 @@
       "kind": "item",
       "enName": "Jellyshield",
       "cnName": "水母盾",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1748,16 +1747,16 @@
       "kind": "item",
       "enName": "Jerky",
       "cnName": "干肉条",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
     },
     "ITEM_JETPACK": {
       "kind": "item",
-      "enName": "Jetpack",
+      "enName": "Jet Pack",
       "cnName": "喷气背包",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1766,7 +1765,7 @@
       "kind": "item",
       "enName": "Knot",
       "cnName": "结",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1775,7 +1774,7 @@
       "kind": "item",
       "enName": "Kraken’s Eye",
       "cnName": "克拉肯的眼睛",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1784,7 +1783,7 @@
       "kind": "item",
       "enName": "Landmines",
       "cnName": "地雷",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1793,7 +1792,7 @@
       "kind": "item",
       "enName": "Lantern",
       "cnName": "灯笼",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1802,7 +1801,7 @@
       "kind": "item",
       "enName": "Leather Vest",
       "cnName": "皮革背心",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1811,7 +1810,7 @@
       "kind": "item",
       "enName": "Lemonade",
       "cnName": "柠檬水",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1820,7 +1819,7 @@
       "kind": "item",
       "enName": "Lens",
       "cnName": "镜片",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1829,7 +1828,7 @@
       "kind": "item",
       "enName": "Lighthouse",
       "cnName": "灯塔",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1838,7 +1837,7 @@
       "kind": "item",
       "enName": "Little Frog",
       "cnName": "小青蛙",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1847,7 +1846,7 @@
       "kind": "item",
       "enName": "Little Muscley Dude",
       "cnName": "肌肉小子",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1856,7 +1855,7 @@
       "kind": "item",
       "enName": "Lootworm",
       "cnName": "搜刮虫虫",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1865,7 +1864,7 @@
       "kind": "item",
       "enName": "Lost Duck",
       "cnName": "失落鸭鸭",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1874,7 +1873,7 @@
       "kind": "item",
       "enName": "Lucky Charm",
       "cnName": "护身符",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1883,7 +1882,7 @@
       "kind": "item",
       "enName": "Lucky Coin",
       "cnName": "幸运硬币",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1892,7 +1891,7 @@
       "kind": "item",
       "enName": "Lumberjack Shirt",
       "cnName": "伐木工人衬衫",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1901,7 +1900,7 @@
       "kind": "item",
       "enName": "Lure",
       "cnName": "鱼饵 ",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1910,7 +1909,7 @@
       "kind": "item",
       "enName": "Mammoth",
       "cnName": "猛犸",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1918,8 +1917,8 @@
     "ITEM_MASTERY": {
       "kind": "item",
       "enName": "Mastery",
-      "cnName": "精通",
-      "source": "manual-override",
+      "cnName": "精湛技艺",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1928,7 +1927,7 @@
       "kind": "item",
       "enName": "Medal",
       "cnName": "勋章",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1937,7 +1936,7 @@
       "kind": "item",
       "enName": "Medikit",
       "cnName": "急救包",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1946,7 +1945,7 @@
       "kind": "item",
       "enName": "Metal Detector",
       "cnName": "金属探测器",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1955,7 +1954,7 @@
       "kind": "item",
       "enName": "Metal Plate",
       "cnName": "金属板",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1964,7 +1963,7 @@
       "kind": "item",
       "enName": "Mirror",
       "cnName": "镜子",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -1973,7 +1972,7 @@
       "kind": "item",
       "enName": "Missile",
       "cnName": "导弹",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1982,7 +1981,7 @@
       "kind": "item",
       "enName": "Mouse",
       "cnName": "老鼠",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -1991,7 +1990,7 @@
       "kind": "item",
       "enName": "Mushroom",
       "cnName": "蘑菇",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2000,7 +1999,7 @@
       "kind": "item",
       "enName": "Mutation",
       "cnName": "异变",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2009,7 +2008,7 @@
       "kind": "item",
       "enName": "Nail",
       "cnName": "钉子",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2018,7 +2017,7 @@
       "kind": "item",
       "enName": "Night Goggles",
       "cnName": "夜视镜",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2027,7 +2026,7 @@
       "kind": "item",
       "enName": "Octopus",
       "cnName": "章鱼",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2036,7 +2035,7 @@
       "kind": "item",
       "enName": "Padding",
       "cnName": "护垫",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2045,7 +2044,7 @@
       "kind": "item",
       "enName": "Panda",
       "cnName": "熊猫",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2054,7 +2053,7 @@
       "kind": "item",
       "enName": "Peaceful Bee",
       "cnName": "和平蜜蜂",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2063,7 +2062,7 @@
       "kind": "item",
       "enName": "Peacock",
       "cnName": "孔雀",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2072,7 +2071,7 @@
       "kind": "item",
       "enName": "Pearl",
       "cnName": "珍珠",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2081,7 +2080,7 @@
       "kind": "item",
       "enName": "Pencil",
       "cnName": "铅笔",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2090,7 +2089,7 @@
       "kind": "item",
       "enName": "Penguin",
       "cnName": "企鹅",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2099,16 +2098,16 @@
       "kind": "item",
       "enName": "Piggy Bank",
       "cnName": "猪猪存钱罐",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
     },
     "ITEM_PILE_OF_BOOKS": {
       "kind": "item",
-      "enName": "Pile Of Books",
-      "cnName": "书堆",
-      "source": "manual-override",
+      "enName": "Pile of Books",
+      "cnName": "一堆书",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2117,7 +2116,7 @@
       "kind": "item",
       "enName": "Plant",
       "cnName": "植物",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2126,7 +2125,7 @@
       "kind": "item",
       "enName": "Plastic Explosive",
       "cnName": "塑性炸药",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2135,7 +2134,7 @@
       "kind": "item",
       "enName": "Pocket Factory",
       "cnName": "口袋工厂",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2144,7 +2143,7 @@
       "kind": "item",
       "enName": "Poisonous Tonic",
       "cnName": "毒性补品",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2153,7 +2152,7 @@
       "kind": "item",
       "enName": "Potato",
       "cnName": "土豆",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2162,7 +2161,7 @@
       "kind": "item",
       "enName": "Potion",
       "cnName": "再生药水",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2171,7 +2170,7 @@
       "kind": "item",
       "enName": "Power Generator",
       "cnName": "发电机",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2180,7 +2179,7 @@
       "kind": "item",
       "enName": "Propeller Hat",
       "cnName": "螺旋桨帽",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2189,7 +2188,7 @@
       "kind": "item",
       "enName": "Pumpkin",
       "cnName": "南瓜",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2197,8 +2196,8 @@
     "ITEM_RATZILLA": {
       "kind": "item",
       "enName": "Ratzilla",
-      "cnName": "碰碰狗",
-      "source": "manual-override",
+      "cnName": "鼠斯拉",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2207,7 +2206,7 @@
       "kind": "item",
       "enName": "Recycling Machine",
       "cnName": "回收装置",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2216,7 +2215,7 @@
       "kind": "item",
       "enName": "Reinforced Steel",
       "cnName": "强化钢",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2234,7 +2233,7 @@
       "kind": "item",
       "enName": "Ricochet",
       "cnName": "跳弹",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2242,8 +2241,8 @@
     "ITEM_RIP_AND_TEAR": {
       "kind": "item",
       "enName": "Rip And Tear",
-      "cnName": "撕裂",
-      "source": "manual-override",
+      "cnName": "狂怒",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2252,7 +2251,7 @@
       "kind": "item",
       "enName": "Riposte",
       "cnName": "反击",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2261,7 +2260,7 @@
       "kind": "item",
       "enName": "Ritual",
       "cnName": "仪式",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2270,7 +2269,7 @@
       "kind": "item",
       "enName": "Robot Arm",
       "cnName": "机械臂",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2279,7 +2278,7 @@
       "kind": "item",
       "enName": "Sad Tomato",
       "cnName": "悲伤的番茄",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2288,7 +2287,7 @@
       "kind": "item",
       "enName": "Saltwater",
       "cnName": "盐水",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2297,7 +2296,7 @@
       "kind": "item",
       "enName": "Scapegoat",
       "cnName": "替罪羔羊",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2306,7 +2305,7 @@
       "kind": "item",
       "enName": "Scar",
       "cnName": "疤痕",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2315,7 +2314,7 @@
       "kind": "item",
       "enName": "Scared Sausage",
       "cnName": "害怕的香肠",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2324,7 +2323,7 @@
       "kind": "item",
       "enName": "Scarf",
       "cnName": "围巾",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2333,7 +2332,7 @@
       "kind": "item",
       "enName": "Scope",
       "cnName": "瞄准镜",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2342,7 +2341,7 @@
       "kind": "item",
       "enName": "Seashell",
       "cnName": "海贝壳",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2351,7 +2350,7 @@
       "kind": "item",
       "enName": "Shackles",
       "cnName": "镣铐",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2360,7 +2359,7 @@
       "kind": "item",
       "enName": "Shady Potion",
       "cnName": "阴影药水",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2369,7 +2368,7 @@
       "kind": "item",
       "enName": "Sharp Bullet",
       "cnName": "尖头子弹",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2378,7 +2377,7 @@
       "kind": "item",
       "enName": "Shmoop",
       "cnName": "休穆糖",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2387,7 +2386,7 @@
       "kind": "item",
       "enName": "Sifd’s Relic",
       "cnName": "Sifd的圣物",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2396,7 +2395,7 @@
       "kind": "item",
       "enName": "Silver Bullet",
       "cnName": "银质子弹",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2405,7 +2404,7 @@
       "kind": "item",
       "enName": "Small Fish",
       "cnName": "小鱼",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2414,7 +2413,7 @@
       "kind": "item",
       "enName": "Small Magazine",
       "cnName": "小型弹匣",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2423,7 +2422,7 @@
       "kind": "item",
       "enName": "Snail",
       "cnName": "蜗牛",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2432,7 +2431,7 @@
       "kind": "item",
       "enName": "Snake",
       "cnName": "蛇",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2441,7 +2440,7 @@
       "kind": "item",
       "enName": "Snowball",
       "cnName": "雪球",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2450,7 +2449,7 @@
       "kind": "item",
       "enName": "Spicy Sauce",
       "cnName": "辣酱",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2459,7 +2458,7 @@
       "kind": "item",
       "enName": "Spider",
       "cnName": "蜘蛛",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2468,7 +2467,7 @@
       "kind": "item",
       "enName": "Spyglass",
       "cnName": "望远镜",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2477,7 +2476,7 @@
       "kind": "item",
       "enName": "Starfish",
       "cnName": "海星",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2486,7 +2485,7 @@
       "kind": "item",
       "enName": "Statue",
       "cnName": "雕像",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2495,7 +2494,7 @@
       "kind": "item",
       "enName": "Stone Skin",
       "cnName": "石头皮肤",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2504,7 +2503,7 @@
       "kind": "item",
       "enName": "Strange Book",
       "cnName": "奇怪之书",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2513,7 +2512,7 @@
       "kind": "item",
       "enName": "Sunglasses",
       "cnName": "墨镜",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2522,7 +2521,7 @@
       "kind": "item",
       "enName": "Sunken Bell",
       "cnName": "沉钟",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2531,7 +2530,7 @@
       "kind": "item",
       "enName": "Tardigrade",
       "cnName": "水熊虫",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2540,7 +2539,7 @@
       "kind": "item",
       "enName": "Tentacle",
       "cnName": "触手",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2549,7 +2548,7 @@
       "kind": "item",
       "enName": "Terrified Onion",
       "cnName": "惊恐的洋葱",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2558,7 +2557,7 @@
       "kind": "item",
       "enName": "Toolbox",
       "cnName": "工具箱",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2567,7 +2566,7 @@
       "kind": "item",
       "enName": "Torture",
       "cnName": "拷问",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2576,7 +2575,7 @@
       "kind": "item",
       "enName": "Toxic Sludge",
       "cnName": "毒污泥",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2585,7 +2584,7 @@
       "kind": "item",
       "enName": "Tractor",
       "cnName": "拖拉机",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2594,7 +2593,7 @@
       "kind": "item",
       "enName": "Treasure Map",
       "cnName": "藏宝图",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2603,7 +2602,7 @@
       "kind": "item",
       "enName": "Tree",
       "cnName": "树木",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2612,7 +2611,7 @@
       "kind": "item",
       "enName": "Triangle Of Power",
       "cnName": "三角之力",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2621,7 +2620,7 @@
       "kind": "item",
       "enName": "Turret",
       "cnName": "炮塔",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2630,7 +2629,7 @@
       "kind": "item",
       "enName": "Turret Flame",
       "cnName": "燃烧炮塔",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2639,7 +2638,7 @@
       "kind": "item",
       "enName": "Turret Healing",
       "cnName": "医疗炮塔",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2648,7 +2647,7 @@
       "kind": "item",
       "enName": "Turret Laser",
       "cnName": "激光炮塔",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2657,7 +2656,7 @@
       "kind": "item",
       "enName": "Turret Rocket",
       "cnName": "爆炸炮塔",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2666,7 +2665,7 @@
       "kind": "item",
       "enName": "Tyler",
       "cnName": "泰勒",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2675,7 +2674,7 @@
       "kind": "item",
       "enName": "Ugly Tooth",
       "cnName": "丑牙",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2684,7 +2683,7 @@
       "kind": "item",
       "enName": "Vigilante Ring",
       "cnName": "义警戒指",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2693,7 +2692,7 @@
       "kind": "item",
       "enName": "Wandering Bot",
       "cnName": "流浪机器人",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2702,7 +2701,7 @@
       "kind": "item",
       "enName": "Warrior Helmet",
       "cnName": "士兵头盔",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2711,7 +2710,7 @@
       "kind": "item",
       "enName": "Weird Food",
       "cnName": "奇怪的食物",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2720,7 +2719,7 @@
       "kind": "item",
       "enName": "Weird Ghost",
       "cnName": "奇怪的幽灵",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2729,7 +2728,7 @@
       "kind": "item",
       "enName": "Wheat",
       "cnName": "小麦",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2738,7 +2737,7 @@
       "kind": "item",
       "enName": "Wheelbarrow",
       "cnName": "独轮车",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2747,7 +2746,7 @@
       "kind": "item",
       "enName": "Whetstone",
       "cnName": "磨刀石",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2756,7 +2755,7 @@
       "kind": "item",
       "enName": "Whistle",
       "cnName": "哨子",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2765,16 +2764,16 @@
       "kind": "item",
       "enName": "White Flag",
       "cnName": "白旗",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
     },
     "ITEM_WILL_O_THE_WISP": {
       "kind": "item",
-      "enName": "Will O The Wisp",
+      "enName": "Will-o’-Wisp",
       "cnName": "鬼火",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2783,7 +2782,7 @@
       "kind": "item",
       "enName": "Wings",
       "cnName": "翅膀",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2792,7 +2791,7 @@
       "kind": "item",
       "enName": "Wisdom",
       "cnName": "智慧",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2801,7 +2800,7 @@
       "kind": "item",
       "enName": "Wolf Helmet",
       "cnName": "野狼头盔",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2810,7 +2809,7 @@
       "kind": "weapon",
       "enName": "Anchor",
       "cnName": "锚",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2819,7 +2818,7 @@
       "kind": "weapon",
       "enName": "Blunderbuss",
       "cnName": "喇叭枪",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2828,7 +2827,7 @@
       "kind": "weapon",
       "enName": "Brick",
       "cnName": "砖块",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2837,7 +2836,7 @@
       "kind": "weapon",
       "enName": "Cacti Club",
       "cnName": "刺棍",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2846,7 +2845,7 @@
       "kind": "weapon",
       "enName": "Captain’s Sword",
       "cnName": "船长的剑",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2855,7 +2854,7 @@
       "kind": "weapon",
       "enName": "Chain Gun",
       "cnName": "链枪",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2864,7 +2863,7 @@
       "kind": "weapon",
       "enName": "Chainsaw",
       "cnName": "电锯",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -2873,7 +2872,7 @@
       "kind": "weapon",
       "enName": "Chopper",
       "cnName": "砍刀",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2882,7 +2881,7 @@
       "kind": "weapon",
       "enName": "Circular Saw",
       "cnName": "圆锯",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2891,7 +2890,7 @@
       "kind": "weapon",
       "enName": "Claw",
       "cnName": "利爪",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2900,7 +2899,7 @@
       "kind": "weapon",
       "enName": "Crossbow",
       "cnName": "十字弓",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2909,16 +2908,16 @@
       "kind": "weapon",
       "enName": "Thief Dagger",
       "cnName": "盗贼匕首",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
     },
     "WEAPON_DEXTROYER": {
       "kind": "weapon",
-      "enName": "Dextroyer",
+      "enName": "DEX-troyer",
       "cnName": "DEX终结者",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2927,7 +2926,7 @@
       "kind": "weapon",
       "enName": "Double Barrel Shotgun",
       "cnName": "双管霰弹枪",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2936,7 +2935,7 @@
       "kind": "weapon",
       "enName": "Drill",
       "cnName": "钻机",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2945,7 +2944,7 @@
       "kind": "weapon",
       "enName": "Excalibur",
       "cnName": "王者之剑",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2954,7 +2953,7 @@
       "kind": "weapon",
       "enName": "Fighting Stick",
       "cnName": "短木棍",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2963,7 +2962,7 @@
       "kind": "weapon",
       "enName": "Fireball",
       "cnName": "火球",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2972,7 +2971,7 @@
       "kind": "weapon",
       "enName": "Fist",
       "cnName": "拳",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2981,7 +2980,7 @@
       "kind": "weapon",
       "enName": "Flamethrower",
       "cnName": "喷火器",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2990,7 +2989,7 @@
       "kind": "weapon",
       "enName": "Flaming Brass Knuckles",
       "cnName": "烈焰黄铜指虎",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -2999,7 +2998,7 @@
       "kind": "weapon",
       "enName": "Flute",
       "cnName": "长笛",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3008,7 +3007,7 @@
       "kind": "weapon",
       "enName": "Gatling Laser",
       "cnName": "加特林激光",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3017,7 +3016,7 @@
       "kind": "weapon",
       "enName": "Ghost Axe",
       "cnName": "幽魂斧",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3026,7 +3025,7 @@
       "kind": "weapon",
       "enName": "Ghost Flint",
       "cnName": "幽魂燧石",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3035,7 +3034,7 @@
       "kind": "weapon",
       "enName": "Ghost Scepter",
       "cnName": "幽魂节杖",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3044,7 +3043,7 @@
       "kind": "weapon",
       "enName": "Grenade Launcher",
       "cnName": "榴弹发射器",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3053,7 +3052,7 @@
       "kind": "weapon",
       "enName": "Hammer",
       "cnName": "铁锤",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3062,7 +3061,7 @@
       "kind": "weapon",
       "enName": "Hand",
       "cnName": "掌",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3071,7 +3070,7 @@
       "kind": "weapon",
       "enName": "Harpoon Gun",
       "cnName": "鱼叉枪",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3080,16 +3079,16 @@
       "kind": "weapon",
       "enName": "Hatchet",
       "cnName": "短斧",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
     },
     "WEAPON_HIKING_STICK": {
       "kind": "weapon",
-      "enName": "Hiking Stick",
+      "enName": "Hiking Pole",
       "cnName": "登山杖",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3098,7 +3097,7 @@
       "kind": "weapon",
       "enName": "Icicle",
       "cnName": "冰锥",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3107,7 +3106,7 @@
       "kind": "weapon",
       "enName": "Javelin",
       "cnName": "标枪",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3115,8 +3114,8 @@
     "WEAPON_JOUSTING_LANCE": {
       "kind": "weapon",
       "enName": "Jousting Lance",
-      "cnName": "骑枪",
-      "source": "manual-override",
+      "cnName": "长矛",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3125,7 +3124,7 @@
       "kind": "weapon",
       "enName": "Knife",
       "cnName": "小刀",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3134,7 +3133,7 @@
       "kind": "weapon",
       "enName": "Brass Knuckles",
       "cnName": "黄铜指虎",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3143,7 +3142,7 @@
       "kind": "weapon",
       "enName": "Laser Gun",
       "cnName": "激光枪",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3152,7 +3151,7 @@
       "kind": "weapon",
       "enName": "Lightning Shiv",
       "cnName": "雷光刀",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3161,7 +3160,7 @@
       "kind": "weapon",
       "enName": "Lute",
       "cnName": "琉特琴",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3170,7 +3169,7 @@
       "kind": "weapon",
       "enName": "Mace",
       "cnName": "狼牙棒",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3179,7 +3178,7 @@
       "kind": "weapon",
       "enName": "Medical Gun",
       "cnName": "医疗枪",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3188,7 +3187,7 @@
       "kind": "weapon",
       "enName": "Minigun",
       "cnName": "加特林机枪",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3197,7 +3196,7 @@
       "kind": "weapon",
       "enName": "Nuclear Launcher",
       "cnName": "核弹发射器",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3206,7 +3205,7 @@
       "kind": "weapon",
       "enName": "Obliterator",
       "cnName": "毁灭者",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3215,7 +3214,7 @@
       "kind": "weapon",
       "enName": "Particle Accelerator",
       "cnName": "粒子加速器",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3224,7 +3223,7 @@
       "kind": "weapon",
       "enName": "Pistol",
       "cnName": "手枪",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3233,7 +3232,7 @@
       "kind": "weapon",
       "enName": "Plank",
       "cnName": "木板",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3242,7 +3241,7 @@
       "kind": "weapon",
       "enName": "Plasma Sledgehammer",
       "cnName": "等离子大锤",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3251,7 +3250,7 @@
       "kind": "weapon",
       "enName": "Potato Thrower",
       "cnName": "土豆发射器",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3260,7 +3259,7 @@
       "kind": "weapon",
       "enName": "Power Fist",
       "cnName": "强拳",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3269,7 +3268,7 @@
       "kind": "weapon",
       "enName": "Pruner",
       "cnName": "修枝剪刀",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3278,7 +3277,7 @@
       "kind": "weapon",
       "enName": "Rail Gun",
       "cnName": "磁轨炮",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3287,7 +3286,7 @@
       "kind": "weapon",
       "enName": "Revolver",
       "cnName": "左轮手枪",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3296,7 +3295,7 @@
       "kind": "weapon",
       "enName": "Rock",
       "cnName": "石头",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3305,7 +3304,7 @@
       "kind": "weapon",
       "enName": "Rocket Launcher",
       "cnName": "火箭筒",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3314,7 +3313,7 @@
       "kind": "weapon",
       "enName": "Scissors",
       "cnName": "剪刀",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3323,7 +3322,7 @@
       "kind": "weapon",
       "enName": "Screwdriver",
       "cnName": "螺丝刀",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3332,7 +3331,7 @@
       "kind": "weapon",
       "enName": "Scythe",
       "cnName": "大镰",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3341,7 +3340,7 @@
       "kind": "weapon",
       "enName": "Sharp Tooth",
       "cnName": "尖牙",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3350,7 +3349,7 @@
       "kind": "weapon",
       "enName": "Shredder",
       "cnName": "粉碎者",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3359,7 +3358,7 @@
       "kind": "weapon",
       "enName": "Shuriken",
       "cnName": "手里剑",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3368,7 +3367,7 @@
       "kind": "weapon",
       "enName": "Sickle",
       "cnName": "镰刀",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3377,7 +3376,7 @@
       "kind": "weapon",
       "enName": "Slingshot",
       "cnName": "弹弓",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3386,7 +3385,7 @@
       "kind": "weapon",
       "enName": "SMG",
       "cnName": "冲锋枪",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3395,7 +3394,7 @@
       "kind": "weapon",
       "enName": "Sniper Gun",
       "cnName": "狙击手枪",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3404,7 +3403,7 @@
       "kind": "weapon",
       "enName": "Spear",
       "cnName": "矛",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3413,7 +3412,7 @@
       "kind": "weapon",
       "enName": "Spiky Shield",
       "cnName": "尖刺盾",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3422,7 +3421,7 @@
       "kind": "weapon",
       "enName": "Spoon",
       "cnName": "勺子",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3431,7 +3430,7 @@
       "kind": "weapon",
       "enName": "Stick",
       "cnName": "树枝",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3440,7 +3439,7 @@
       "kind": "weapon",
       "enName": "Sword",
       "cnName": "剑",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3449,7 +3448,7 @@
       "kind": "weapon",
       "enName": "Taser",
       "cnName": "电击枪",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3458,7 +3457,7 @@
       "kind": "weapon",
       "enName": "Thunder Sword",
       "cnName": "雷剑",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3467,7 +3466,7 @@
       "kind": "weapon",
       "enName": "Torch",
       "cnName": "火把",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3476,7 +3475,7 @@
       "kind": "weapon",
       "enName": "Trident",
       "cnName": "三叉戟",
-      "source": "manual-override",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3485,7 +3484,7 @@
       "kind": "weapon",
       "enName": "Vorpal Sword",
       "cnName": "斩首剑",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3494,7 +3493,7 @@
       "kind": "weapon",
       "enName": "Wand",
       "cnName": "魔杖",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]
@@ -3503,7 +3502,7 @@
       "kind": "weapon",
       "enName": "War Hammer",
       "cnName": "战锤",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "abyssalTerrors"
       ]
@@ -3512,7 +3511,7 @@
       "kind": "weapon",
       "enName": "Wrench",
       "cnName": "扳手",
-      "source": "translation-join",
+      "source": "translation-key",
       "sourcePackages": [
         "base"
       ]

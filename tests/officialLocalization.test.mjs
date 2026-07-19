@@ -13,23 +13,31 @@ assert.equal(
   localization.summary.byKind.item.total,
   "official localization should cover all item names",
 );
+assert.equal(localization.summary.localized, localization.summary.total);
+assert.equal(localization.summary.missing, 0);
+assert.equal(localization.summary.bySource["translation-key"], 386);
+assert.equal(localization.summary.bySource["manual-override"], 1);
+assert.ok(
+  Object.values(localization.entries).every((entry) => entry.cnName),
+  "every official catalog name key should have a verified Chinese name",
+);
 assert.equal(localization.summary.byKind.character.total, 64);
 assert.equal(
   localization.summary.byKind.character.localized,
-  44,
-  "official character localization should track confirmed names without hiding gaps",
+  64,
+  "official character localization should cover every catalog key from static translations",
 );
 
 {
   const weapon = localization.entries.WEAPON_GHOST_SCEPTER;
   assert.equal(weapon.cnName, "幽魂节杖");
-  assert.equal(weapon.source, "manual-override");
+  assert.equal(weapon.source, "translation-key");
 }
 
 {
   const weapon = localization.entries.WEAPON_RAIL_GUN;
   assert.equal(weapon.cnName, "磁轨炮");
-  assert.equal(weapon.source, "translation-join");
+  assert.equal(weapon.source, "translation-key");
 }
 
 {
@@ -40,13 +48,31 @@ assert.equal(
 {
   const character = localization.entries.CHARACTER_BABY;
   assert.equal(character.cnName, "宝宝");
-  assert.equal(character.source, "translation-join");
+  assert.equal(character.source, "translation-key");
 }
 
 {
   const character = localization.entries.CHARACTER_BEAST_MASTER;
-  assert.equal(character.cnName, null);
-  assert.equal(character.source, "missing");
+  assert.equal(character.cnName, "驯兽师");
+  assert.equal(character.source, "translation-key");
+}
+
+{
+  const character = localization.entries.CHARACTER_WOUNDED;
+  assert.equal(character.cnName, "伤者");
+  assert.equal(character.source, "translation-key");
+}
+
+{
+  const item = localization.entries.ITEM_CATLING_GUN;
+  assert.equal(item.cnName, "猫特林机枪");
+  assert.equal(item.source, "translation-key");
+}
+
+{
+  const fallback = localization.entries.ITEM_RETROMATIONS_HOODIE;
+  assert.equal(fallback.cnName, "Retromation的连帽衫");
+  assert.equal(fallback.source, "manual-override");
 }
 
 console.log("official localization tests passed");

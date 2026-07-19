@@ -188,7 +188,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 官方 `recycling_gains`、`extra_item_in_crate` 动态回收/箱子机会模型，例如 `Recycling Machine（回收装置）`、`Treasure Map（藏宝图）`、`Pearl（珍珠）`
 - 官方 `loot_alien_chance`、`extra_loot_aliens_next_wave` 动态战利品外星人模型，例如 `Whistle（哨子）`、`Lure（鱼饵）`
 - 官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items` 动态风险经济模型，例如 `Black Flag（黑旗）`、`Fish Hook（鱼钩）`、`Starfish（海星）`
-- 官方爆炸/燃烧/结构物动态潜力模型，例如 `Dynamite（炸药）`、`Honey（蜂蜜）`、`Snake（蛇）`、`Eyes Surgery（眼部手术）`、`Turret（炮塔）`、`Clockwork Wasp（机械黄蜂）`、`Pile Of Books（书堆）`
+- 官方爆炸/燃烧/结构物动态潜力模型，例如 `Dynamite（炸药）`、`Honey（蜂蜜）`、`Snake（蛇）`、`Eyes Surgery（眼部手术）`、`Turret（炮塔）`、`Clockwork Wasp（机械黄蜂）`、`Pile of Books（一堆书）`
 - 官方 `EFFECT_GAIN_STAT_FOR_EVERY*` 自定义成长潜力模型，例如 `Power Generator（发电机）`、`Pearl（珍珠）`、`Stone Skin（石头皮肤）`、`Strange Book（奇怪之书）`。当前只解释缩放来源，不猜测未解码的目标收益。
 
 仍待校准：
@@ -270,7 +270,7 @@ npm run extract:catalog
 npm run extract:localization
 ```
 
-该命令会读取原版和深海魔怪 DLC 的 `PHashTranslation` 资源，把英文/中文 translation 按哈希合并，生成 `data/official-localization.json`。如果英文 translation 中某些条目不是明文，脚本会使用已从中文资源确认过的 `manual-override`。
+该命令会读取原版和深海魔怪 DLC 的 `PHashTranslation` 资源，以官方 `nameKey` 按 Godot 两阶段哈希规则分别查询英文和简中消息，生成 `data/official-localization.json`。只接受未压缩 UTF-8 消息；当前 387 个名称全部覆盖，其中 386 个简中名来自 `translation-key`，仅 Retromation 连帽衫使用已从中文资源确认过的 `manual-override`。
 
 从安装包提取角色解锁挑战映射：
 
@@ -319,4 +319,4 @@ npm run verify:catalog
 npm run localization:coverage
 ```
 
-该命令会把官方目录中的唯一角色/武器/道具 `nameKey` 与 `data/official-localization.json` 对齐，列出尚未本地化维护的图鉴条目。当前武器和物品已满覆盖，角色名覆盖 44/64；后续推荐、截图识别和最优解评分都应共用这份名称数据。
+该命令会把官方目录中的唯一角色/武器/道具 `nameKey` 与 `data/official-localization.json` 对齐，列出尚未本地化维护的图鉴条目。当前角色、武器和物品均已满覆盖；后续推荐、截图识别和最优解评分都应共用这份名称数据。

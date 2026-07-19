@@ -644,7 +644,7 @@ export function buildCharacterCompendium(catalog, localization, unlocks) {
         unlockStatus: unlockVerified ? "已抽取静态条件" : "待补精确条件",
         unlockEvidenceStatus: unlockRecord?.extractionStatus ?? "missing",
         unlockEvidenceLines: buildUnlockEvidenceLines(unlockRecord),
-        summary: "官方角色目录已抽取；策略路线、中文名和攻略模板仍待维护。",
+        summary: "官方角色目录和中文名已抽取；策略路线与攻略模板仍待维护。",
         traits: buildCharacterTraitLines(official),
         officialFound: true,
         officialOnly: true,

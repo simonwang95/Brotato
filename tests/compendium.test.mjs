@@ -17,6 +17,12 @@ function assertNoRawEffectArtifacts(entry) {
 assert.equal(compendium.characters.length, 65, "character compendium should include official-only records and the maintained Giant gap");
 assert.equal(compendium.weapons.length, 79, "weapon compendium should group all official weapons");
 assert.equal(compendium.items.length, 244, "item compendium should group all official items");
+assert.ok(
+  compendium.characters
+    .filter((entry) => entry.officialFound)
+    .every((entry) => entry.cnName !== "待本地化"),
+  "every official character compendium entry should use static Chinese localization",
+);
 
 {
   const lute = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_LUTE");
@@ -191,7 +197,7 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
 {
   const wounded = compendium.characters.find((entry) => entry.id === "wounded");
   assert.equal(wounded?.officialOnly, true);
-  assert.equal(wounded?.cnName, "待本地化");
+  assert.equal(wounded?.cnName, "伤者");
   assert.equal(wounded?.unlockStatus, "已抽取静态条件");
   assert.equal(wounded?.unlockEvidenceStatus, "verified-static-text");
   assert.ok(wounded?.traits.includes("受到一次伤害即死亡"));
@@ -206,6 +212,7 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
 
 {
   const beastMaster = compendium.characters.find((entry) => entry.id === "beastMaster");
+  assert.equal(beastMaster?.cnName, "驯兽师");
   assert.equal(beastMaster?.unlockStatus, "已抽取静态条件");
   assert.ok(
     beastMaster?.unlockEvidenceLines.some((line) => line.includes("解锁猫特林机枪")),

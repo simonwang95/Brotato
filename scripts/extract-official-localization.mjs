@@ -1,5 +1,9 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, join } from "node:path";
+import {
+  getUncompressedOptimizedMessage,
+  parseOptimizedTranslation,
+} from "./optimized-translation.mjs";
 
 const defaultInstallDir =
   "***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato";
@@ -48,13 +52,13 @@ const CHINESE_NAME_OVERRIDES = {
   ITEM_BLINDFOLD: "眼罩",
   ITEM_BLOOD_DONATION: "献血",
   ITEM_BOILING_WATER: "沸水",
-  ITEM_BOT_O_MINE: "地雷机器人",
+  ITEM_BOT_O_MINE: "布雷机器人",
   ITEM_BROKEN_HOURGLASS: "破损沙漏",
-  ITEM_BROKEN_MOUTH: "破嘴",
+  ITEM_BROKEN_MOUTH: "裂口",
   ITEM_BUILDER_TURRET: "建造者的炮塔",
   ITEM_BUTTERFLY: "蝴蝶",
   ITEM_CANDLE: "蜡烛",
-  ITEM_CATLING_GUN: "双枪猫",
+  ITEM_CATLING_GUN: "猫特林机枪",
   ITEM_CELERY_TEA: "芹菜茶",
   ITEM_CHAMELEON: "变色龙",
   ITEM_CHARCOAL: "木炭",
@@ -66,14 +70,14 @@ const CHINESE_NAME_OVERRIDES = {
   ITEM_DEFECTIVE_STEROIDS: "有缺陷的增强剂",
   ITEM_DECOMPOSING_FLESH: "腐肉",
   ITEM_ENERGY_BRACELET: "能量手环",
-  ITEM_EVIL_HAT: "邪恶帽子",
+  ITEM_EVIL_HAT: "吞吞怪之帽",
   ITEM_EYES_SURGERY: "眼部手术",
   ITEM_FERTILIZER: "肥料",
   ITEM_EXPLOSIVE_SHELLS: "爆裂弹",
   ITEM_EXTRA_STOMACH: "另一个胃",
   ITEM_FEATHER: "羽毛",
   ITEM_FRIED_RICE: "炒饭",
-  ITEM_FROZEN_HEART: "冰冷之心",
+  ITEM_FROZEN_HEART: "冰冻的心",
   ITEM_GENTLE_ALIEN: "外星绅士",
   ITEM_GHOST_OUTFIT: "幽灵服",
   ITEM_GLASS_CANNON: "玻璃大炮",
@@ -84,7 +88,7 @@ const CHINESE_NAME_OVERRIDES = {
   ITEM_HOURGLASS: "沙漏",
   ITEM_HUNTING_TROPHY: "狩猎战利品",
   ITEM_IMPROVED_TOOLS: "改进工具",
-  ITEM_INSANITY: "疯狂",
+  ITEM_INSANITY: "精神异常",
   ITEM_JELLYSHIELD: "水母盾",
   ITEM_JETPACK: "喷气背包",
   ITEM_LANDMINES: "地雷",
@@ -95,7 +99,7 @@ const CHINESE_NAME_OVERRIDES = {
   ITEM_LUCKY_CHARM: "护身符",
   ITEM_LUCKY_COIN: "幸运硬币",
   ITEM_LUMBERJACK_SHIRT: "伐木工人衬衫",
-  ITEM_MASTERY: "精通",
+  ITEM_MASTERY: "精湛技艺",
   ITEM_METAL_DETECTOR: "金属探测器",
   ITEM_METAL_PLATE: "金属板",
   ITEM_MISSILE: "导弹",
@@ -105,17 +109,17 @@ const CHINESE_NAME_OVERRIDES = {
   ITEM_PADDING: "护垫",
   ITEM_PEACOCK: "孔雀",
   ITEM_PEACEFUL_BEE: "和平蜜蜂",
-  ITEM_PILE_OF_BOOKS: "书堆",
+  ITEM_PILE_OF_BOOKS: "一堆书",
   ITEM_PLASTIC_EXPLOSIVE: "塑性炸药",
   ITEM_POISONOUS_TONIC: "毒性补品",
   ITEM_POTION: "再生药水",
   ITEM_POWER_GENERATOR: "发电机",
   ITEM_PROPELLER_HAT: "螺旋桨帽",
-  ITEM_RATZILLA: "碰碰狗",
+  ITEM_RATZILLA: "鼠斯拉",
   ITEM_RECYCLING_MACHINE: "回收装置",
   ITEM_REINFORCED_STEEL: "强化钢",
   ITEM_RETROMATIONS_HOODIE: "Retromation的连帽衫",
-  ITEM_RIP_AND_TEAR: "撕裂",
+  ITEM_RIP_AND_TEAR: "狂怒",
   ITEM_RIPOSTE: "反击",
   ITEM_ROBOT_ARM: "机械臂",
   ITEM_SALTWATER: "盐水",
@@ -158,7 +162,7 @@ const CHINESE_NAME_OVERRIDES = {
   WEAPON_GRENADE_LAUNCHER: "榴弹发射器",
   WEAPON_HARPOON_GUN: "鱼叉枪",
   WEAPON_HIKING_STICK: "登山杖",
-  WEAPON_JOUSTING_LANCE: "骑枪",
+  WEAPON_JOUSTING_LANCE: "长矛",
   WEAPON_LASER_GUN: "激光枪",
   WEAPON_MEDICAL_GUN: "医疗枪",
   WEAPON_NUCLEAR_LAUNCHER: "核弹发射器",
@@ -203,74 +207,15 @@ function readPck(path) {
   return { path, buffer, files };
 }
 
-function parseTranslation(pck, locale) {
+function parseKeyedTranslation(pck, locale) {
   const entry = pck.files.find((file) =>
     file.path.endsWith(`translations.${locale}.translation`),
   );
-  if (!entry) return new Map();
+  if (!entry) return null;
 
-  const data = pck.buffer.subarray(entry.dataOffset, entry.dataOffset + entry.size);
-  const classOffset = data.indexOf(Buffer.from("PHashTranslation\0"), 100);
-  if (classOffset === -1) {
-    throw new Error(`Missing PHashTranslation object in ${entry.path}`);
-  }
-
-  let offset = classOffset + "PHashTranslation\0".length;
-  const propertyCount = data.readUInt32LE(offset);
-  offset += 4;
-  const properties = {};
-
-  for (let propertyIndex = 0; propertyIndex < propertyCount; propertyIndex += 1) {
-    const nameIndex = data.readUInt32LE(offset);
-    offset += 4;
-    const type = data.readUInt32LE(offset);
-    offset += 4;
-
-    if (type === 5) {
-      const byteLength = data.readUInt32LE(offset);
-      properties[nameIndex] = data
-        .subarray(offset + 4, offset + 4 + byteLength)
-        .toString("utf8")
-        .replace(/\0+$/, "");
-      offset += 4 + byteLength;
-    } else if (type === 32) {
-      const length = data.readUInt32LE(offset);
-      offset += 4;
-      properties[nameIndex] = Array.from({ length }, (_, index) =>
-        data.readInt32LE(offset + index * 4),
-      );
-      offset += length * 4;
-    } else if (type === 31) {
-      const byteLength = data.readUInt32LE(offset);
-      offset += 4;
-      properties[nameIndex] = data.subarray(offset, offset + byteLength);
-      offset += byteLength;
-    } else {
-      throw new Error(`Unsupported translation property type ${type} in ${entry.path}`);
-    }
-  }
-
-  const hashTable = properties[4];
-  const bucketTable = properties[5];
-  const stringPool = properties[6];
-  const messages = new Map();
-
-  new Set(hashTable.filter((value) => value >= 0)).forEach((bucketOffset) => {
-    const bucketSize = bucketTable[bucketOffset];
-    for (let index = 0; index < bucketSize; index += 1) {
-      const entryOffset = bucketOffset + 2 + index * 4;
-      const hash = bucketTable[entryOffset];
-      const stringOffset = bucketTable[entryOffset + 1];
-      const byteLength = bucketTable[entryOffset + 2];
-      const raw = stringPool.subarray(stringOffset, stringOffset + byteLength);
-      const value = raw.toString("utf8").replace(/\0+$/, "");
-      if (!value.includes("\uFFFD")) {
-        messages.set(hash, value);
-      }
-    }
-  });
-
-  return messages;
+  return parseOptimizedTranslation(
+    pck.buffer.subarray(entry.dataOffset, entry.dataOffset + entry.size),
+  );
 }
 
 function catalogKeys(catalog) {
@@ -315,21 +260,6 @@ function displayNameFromKey(nameKey) {
   return words.join(" ");
 }
 
-function buildEnglishToChineseMap(packages) {
-  const result = new Map();
-
-  packages.forEach((sourcePackage) => {
-    const english = parseTranslation(sourcePackage, "en");
-    const chinese = parseTranslation(sourcePackage, "zh");
-    english.forEach((englishValue, hash) => {
-      const chineseValue = chinese.get(hash);
-      if (chineseValue) result.set(englishValue, chineseValue);
-    });
-  });
-
-  return result;
-}
-
 const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
 const loadedPackages = packageInputs
   .filter((input) => existsSync(input.path))
@@ -340,20 +270,41 @@ if (!loadedPackages.length) {
   process.exit(1);
 }
 
-const englishToChinese = buildEnglishToChineseMap(loadedPackages);
+const keyedTranslations = new Map(
+  loadedPackages.map((sourcePackage) => [
+    sourcePackage.id,
+    {
+      en: parseKeyedTranslation(sourcePackage, "en"),
+      zh: parseKeyedTranslation(sourcePackage, "zh"),
+    },
+  ]),
+);
 const entries = {};
 
 catalogKeys(catalog).forEach((entry) => {
-  const enName = displayNameFromKey(entry.nameKey);
-  const autoCnName = englishToChinese.get(enName);
+  const directName = (locale) => {
+    for (const sourcePackage of entry.sourcePackages) {
+      const translation = keyedTranslations.get(sourcePackage)?.[locale];
+      const value = getUncompressedOptimizedMessage(translation, entry.nameKey);
+      if (value) return value;
+    }
+    return null;
+  };
+  const directEnName = directName("en");
+  const directCnName = directName("zh");
+  const enName = directEnName ?? displayNameFromKey(entry.nameKey);
   const manualCnName = CHINESE_NAME_OVERRIDES[entry.nameKey];
-  const cnName = manualCnName ?? autoCnName ?? null;
+  const cnName = directCnName ?? manualCnName ?? null;
 
   entries[entry.nameKey] = {
     kind: entry.kind,
     enName,
     cnName,
-    source: manualCnName ? "manual-override" : autoCnName ? "translation-join" : "missing",
+    source: directCnName
+      ? "translation-key"
+      : manualCnName
+        ? "manual-override"
+        : "missing",
     sourcePackages: entry.sourcePackages,
   };
 });

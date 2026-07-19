@@ -33,8 +33,8 @@
 - `data/official-unlocks.json` 由 `npm run extract:unlocks` 从安装包静态 challenge / achievement 资源生成。该数据不读取玩家存档，不受本机解锁进度影响。原版 CSV 未覆盖的描述会按 `descriptionKey` 查询简中 `PHashTranslation`，并用 challenge 的 `value`、`stat`、`additional_args` 展开占位符。当前 54 条记录全部有 `verified-static-text` 简中条件。
 - `data/official-unlock-pending.json` 由 `npm run unlocks:pending` 从 `data/official-unlocks.json` 的 `pending-text` 记录派生。当前清单为 0 条；后续新增但无法可靠读取的文本仍会保留 source package、官方角色 key、攻略维护状态、challenge key、数值和核验动作。
 - `npm run localization:coverage` 用来检查官方图鉴里还有哪些角色、武器、道具没有进入本地化维护表。
-- `npm run extract:localization` 可以重新从本机安装包生成本地化表。部分英文 translation 条目不是明文，脚本里用 `manual-override` 对已从中文包确认的关键名称做校准。
-- 当前本地化表已覆盖官方目录里的 79 个武器、244 个物品和 44/64 个角色。后续如果官方目录新增条目，未确认名称要继续留在覆盖率报告中，不要凭直觉填入。
+- `npm run extract:localization` 可以重新从本机安装包生成本地化表。脚本优先用官方 `nameKey` 按 Godot 双哈希规则直接查询未压缩简中消息，不再用跨语言内部哈希碰撞做名称 join；当前 386 条来自 `translation-key`，仅 `ITEM_RETROMATIONS_HOODIE` 使用已确认的 `manual-override`。
+- 当前本地化表已覆盖官方目录里的 79 个武器、244 个物品和 64/64 个角色。后续如果官方目录新增条目，无法可靠读取的名称要继续留在覆盖率报告中，不要凭直觉填入。
 - 角色图鉴特性来自官方目录里的 stat/effect key。目录抽取器只从最终 `[resource]` 读取主效果字段，避免把前置 `[sub_resource]` 的 `arg_key/arg_value` 当成主效果；可稳定读取的 `key/value/statScaled/nbStatScaled/stat/statNb` 会精确格式化，仍无法解释的内部参数才保守显示。
 - `npm run verify:unlocks` 用来校验策略层的默认解锁、需解锁和掉落池文案是否与官方目录状态冲突。待校验角色会同时输出静态 challenge key 和 pending 阻塞原因；脚本也会反向列出已抽到但策略层未维护的官方角色解锁记录。角色图鉴会展示这些 official-only 角色，但攻略推荐仍只使用已维护路线的 `CHARACTER_GUIDES`。`Giant / CHARACTER_GIANT` 当前是记录在 `data/official-character-catalog-gaps.json` 的官方角色目录缺口，校验时单独列入 `Audited catalog gaps`，不按普通 warning 或映射失败处理。
 
@@ -83,7 +83,7 @@
 - 回收与箱子道具保持各自的官方计量单位：`Recycling Machine（回收装置）` 的 `recycling_gains=35` 解释为每次回收额外 35 材料，不当作 35%；`Treasure Map（藏宝图）` 的 20% 和 `Pearl（珍珠）` 的 3% 分别换算成每箱 `0.20` 个随机道具与 `0.03` 个同名道具期望，不假设一局箱子数。珍珠仍同时保留官方永久幸运成长潜力。
 - 战利品外星人道具使用静态机会分，不伪造材料/秒。`Lure（鱼饵）` 保留下一波 `+2` 个的官方计数；`Whistle（哨子）` 使用 `loot_alien_chance=50`，并用 `loot_alien_speed=20` 作追逐风险折扣。安装包能确认战利品外星人有掉落资源，但没有为推荐器提供稳定的每局触发次数，因此理由只展示机会、数量和风险字段。
 - 诅咒经济和敌人风险道具会从官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items`、`stat_curse`、`number_of_enemies`、`enemy_health`、`enemy_damage` 组合出风险调整后的经济潜力。例如 `Black Flag` 会解释诅咒击杀材料潜力，`Fish Hook` 会解释锁定物品诅咒潜力；这些同样只作为经济/风险评分，不计入伤害 DPS。
-- 爆炸、燃烧和结构物支持道具会从官方 `explosion_damage`、`explosion_size`、`burning_spread`、`burning_enemy_hp_percent_damage`、`structure_attack_speed`、`structures_cooldown_reduction`、`structures_can_crit` 和 turret/structure 脚本路径生成覆盖潜力。例如 `Snake` 会解释燃烧覆盖，`Dynamite` 会解释爆炸覆盖，`Turret` 会解释结构物输出；`Pile Of Books（书堆）` 会把角色目标暴击率与自带暴击率合并，按默认 2 倍暴击估算结构物期望倍率。由于官方资源里仍缺少完整炮塔/燃烧内部参数，这些是排序修正和解释，不当作精确 DPS。
+- 爆炸、燃烧和结构物支持道具会从官方 `explosion_damage`、`explosion_size`、`burning_spread`、`burning_enemy_hp_percent_damage`、`structure_attack_speed`、`structures_cooldown_reduction`、`structures_can_crit` 和 turret/structure 脚本路径生成覆盖潜力。例如 `Snake` 会解释燃烧覆盖，`Dynamite` 会解释爆炸覆盖，`Turret` 会解释结构物输出；`Pile of Books（一堆书）` 会把角色目标暴击率与自带暴击率合并，按默认 2 倍暴击估算结构物期望倍率。由于官方资源里仍缺少完整炮塔/燃烧内部参数，这些是排序修正和解释，不当作精确 DPS。
 - 机制修正用于表达纯 DPS 不容易覆盖的价值。例如 Lucky 路线会额外重视幸运缩放，官方 `stat_luck` 武器缩放会被解释为高幸运路线收益，Lute 的百分比伤害会被视作能放大拾取/击杀触发收益；`Cyberball` 会按官方 `dmg_when_death` 作为击杀触发、25% 幸运伤害估算，`Baby Elephant` 会按 `dmg_when_pickup_gold` 作为拾取触发估算。幽魂斧、幽魂燧石和幽魂节杖分别读取官方 `stat/stat_nb`，按逐阶每 `20/18/16/12` 次该武器击杀获得 `+1` 总伤害、攻速或最大生命，并换算为每 100 次该武器击杀约 `+5.0` 到 `+8.3`；模型不猜每波有多少击杀归属于某一把武器。
 - 官方候选会读取套装、效果和当前角色资源。例如幽魂路线只会吸收幽魂套装补充项，避免普通近战武器仅凭近战缩放混入；骑士路线会读取官方“每 1 护甲 `+2` 近战伤害”，按目标护甲量化所有近战武器的角色联动，并执行“不能持有远程武器”过滤。Sword 仍依靠手写主线、剑类/中世纪双套装和 T2 起步保持骑士首选，而不是把护甲转换误写成剑本身的缩放。
 - 官方属性协同只把正值或无符号的机制字段当作正向匹配；例如 `Small Fish` 的 `-3%` 攻速和 `Metal Detector（金属探测器）` 的 `-5%` 总伤害不会再产生攻速/伤害协同分。袋子和金属探测器分别通过箱子材料、拾取双倍材料的真实机制获得经济路线分。

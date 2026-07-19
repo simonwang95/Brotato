@@ -3851,7 +3851,7 @@ export const CHARACTER_GUIDES = {
   technomage: {
     id: "technomage",
     name: "Technomage",
-    cnHint: "待本地化，元素结构",
+    cnHint: "科技法师，元素结构",
     unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
     summary:
       "官方目录显示 Technomage 从结构物和元素伤害获得收益，并降低近战/远程伤害成长，适合元素与工程混合路线。",
