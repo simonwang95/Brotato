@@ -88,6 +88,14 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     ["technomage", /10 元素伤害.*3 个构筑物/],
     ["vagabond", /6 把不同武器/],
     ["vampire", /40% 生命窃取/],
+    ["chef", /至少 25 个敌人处于燃烧状态/],
+    ["diver", /超过 700 范围的 1000 个敌人/],
+    ["druid", /第 20 波.*250 个消耗品/],
+    ["dwarf", /近战攻击击中至少 25 个敌人/],
+    ["gangster", /单个商店中刷新 10 次/],
+    ["hiker", /行走 20000 步/],
+    ["ogre", /单次攻击.*1000 伤害/],
+    ["romantic", /0 诅咒完成一场比赛/],
   ];
 
   verifiedOfficialGuides.forEach(([characterId, unlockPattern]) => {
@@ -404,9 +412,11 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 {
   assert.deepEqual(
     officialUnlocks.summary.pendingBySourcePackage,
-    { base: 2, abyssalTerrors: 8 },
-    "pending unlock text should be tracked by source package",
+    {},
+    "all currently extracted character unlock descriptions should be verified static text",
   );
+  assert.equal(officialUnlocks.summary.verifiedStaticText, 54);
+  assert.equal(officialUnlocks.summary.pendingText, 0);
   const buccaneerUnlock = officialUnlocks.records.find((record) => record.characterId === "buccaneer");
   const buccaneer = getAvailableCharacters().find((character) => character.id === "buccaneer");
   assert.equal(buccaneerUnlock?.descriptionKey, "CHAL_STAT_DESC");
@@ -418,9 +428,9 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
   assert.equal(chefUnlock?.challengeId, "chal_barbecue");
   assert.equal(chefUnlock?.descriptionKey, "CHAL_BARBECUE_DESC");
   assert.equal(chefUnlock?.value, 25);
-  assert.equal(chefUnlock?.extractionStatus, "pending-text");
-  assert.match(chefUnlock?.pendingReason ?? "", /PHashTranslation/);
-  assert.equal(chefUnlock?.pendingEvidence?.rewardPath, "res://dlcs/dlc_1/characters/chef/chef_data.tres");
+  assert.equal(chefUnlock?.zhDescription, "同时让至少25个敌人处于燃烧状态");
+  assert.equal(chefUnlock?.extractionStatus, "verified-static-text");
+  assert.equal(chefUnlock?.pendingReason, undefined);
 }
 
 {

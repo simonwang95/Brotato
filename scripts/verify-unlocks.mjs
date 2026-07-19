@@ -178,11 +178,12 @@ function auditUnmaintainedUnlockRecord(record) {
   );
   const officialKey = catalogRecord?.nameKey ?? "未匹配官方角色目录";
   const pendingReason = record.pendingReason ? `；${record.pendingReason}` : "";
+  const verifiedText = record.zhDescription ? `；官方静态条件：${record.zhDescription}` : "";
 
   return {
     errors: [],
     warnings: [
-      `official-unlock:${record.characterId} 官方静态解锁记录未进入策略层；官方角色 ${officialKey}；静态挑战 ${record.challengeId} / ${record.descriptionKey}，value=${record.value}${pendingReason}`,
+      `official-unlock:${record.characterId} 官方静态解锁记录未进入策略层；官方角色 ${officialKey}；静态挑战 ${record.challengeId} / ${record.descriptionKey}，value=${record.value}${verifiedText}${pendingReason}`,
     ],
   };
 }

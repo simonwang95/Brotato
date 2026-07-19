@@ -139,19 +139,25 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
   const wounded = compendium.characters.find((entry) => entry.id === "wounded");
   assert.equal(wounded?.officialOnly, true);
   assert.equal(wounded?.cnName, "待本地化");
-  assert.equal(wounded?.unlockEvidenceStatus, "pending-text");
+  assert.equal(wounded?.unlockStatus, "已抽取静态条件");
+  assert.equal(wounded?.unlockEvidenceStatus, "verified-static-text");
   assert.ok(wounded?.traits.includes("受到一次伤害即死亡"));
   assert.ok(wounded?.traits.includes("起始物品：水熊虫 +1"));
   assert.ok(wounded?.traits.includes("受伤者道具机制"));
   assertNoRawEffectArtifacts(wounded);
   assert.ok(
-    wounded?.unlockEvidenceLines.some((line) => line.includes("CHAL_DIFFICULTY_NIGHTMARE_1_DESC")),
-    "official-only pending characters should keep static challenge evidence",
+    wounded?.unlockEvidenceLines.some((line) => line.includes("在噩梦难度下赢得一局游戏")),
+    "official-only characters should expose verified static challenge text",
   );
 }
 
 {
   const beastMaster = compendium.characters.find((entry) => entry.id === "beastMaster");
+  assert.equal(beastMaster?.unlockStatus, "已抽取静态条件");
+  assert.ok(
+    beastMaster?.unlockEvidenceLines.some((line) => line.includes("解锁猫特林机枪")),
+    "beast master should expose verified static challenge text",
+  );
   assert.ok(beastMaster?.traits.includes("不能持有武器"));
   assert.ok(beastMaster?.traits.includes("每 1 点永久宠物：官方自定义收益"));
   assert.ok(beastMaster?.traits.includes("驯兽师宠物机制"));
@@ -193,15 +199,11 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
 
 {
   const chef = compendium.characters.find((entry) => entry.id === "chef");
-  assert.equal(chef?.unlockStatus, "待补精确条件");
-  assert.equal(chef?.unlockEvidenceStatus, "pending-text");
+  assert.equal(chef?.unlockStatus, "已维护条件");
+  assert.equal(chef?.unlockEvidenceStatus, "verified-static-text");
   assert.ok(
-    chef?.unlockEvidenceLines.some((line) => line.includes("CHAL_BARBECUE_DESC")),
-    "pending DLC unlocks should expose static challenge keys",
-  );
-  assert.ok(
-    chef?.unlockEvidenceLines.some((line) => line.includes("PHashTranslation")),
-    "pending DLC unlocks should explain why the text is not promoted",
+    chef?.unlockEvidenceLines.some((line) => line.includes("同时让至少25个敌人处于燃烧状态")),
+    "verified DLC unlocks should expose the static simplified-Chinese condition",
   );
 }
 

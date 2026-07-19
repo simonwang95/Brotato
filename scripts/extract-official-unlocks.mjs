@@ -1,5 +1,9 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, join } from "node:path";
+import {
+  getUncompressedOptimizedMessage,
+  parseOptimizedTranslation,
+} from "./optimized-translation.mjs";
 
 const defaultInstallDir =
   "***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato";
@@ -9,13 +13,14 @@ const outputPath = process.env.BROTATO_UNLOCKS_OUTPUT || "data/official-unlocks.
 const basePackagePath = join(installDir, "Brotato.app/Contents/Resources/Brotato.pck");
 const dlcPackagePath = join(installDir, "BrotatoAbyssalTerrors.pck");
 const pendingTextReason =
-  "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。";
+  "已定位静态 challenge 奖励和翻译 key，但当前未能从 PHashTranslation 可靠读取简中描述；保留待人工核验或后续解码。";
 
 const STAT_LABELS = {
   pickup_range: { en: "% Pickup Range", zh: "%拾取范围" },
   stat_armor: { en: "Armor", zh: "护甲" },
   stat_attack_speed: { en: "% Attack Speed", zh: "%攻击速度" },
   stat_crit_chance: { en: "% Crit Chance", zh: "%暴击率" },
+  stat_curse: { en: "Curse", zh: "诅咒" },
   stat_dodge: { en: "% Dodge", zh: "%闪避" },
   stat_elemental_damage: { en: "Elemental Damage", zh: "元素伤害" },
   stat_engineering: { en: "Engineering", zh: "工程学" },
@@ -54,7 +59,7 @@ function readPck(path) {
     const size = Number(buffer.readBigUInt64LE(offset));
     offset += 8;
     offset += 16;
-    files.set(resourcePath, buffer.subarray(dataOffset, dataOffset + size).toString("utf8"));
+    files.set(resourcePath, buffer.subarray(dataOffset, dataOffset + size));
   }
 
   return files;
@@ -138,11 +143,11 @@ function characterIdFromResourcePath(path) {
 }
 
 function challengeLocalizations(baseFiles) {
-  const csv = baseFiles.get("res://tools/output/achievementLocalizations.csv");
-  if (!csv) return new Map();
+  const csvResource = baseFiles.get("res://tools/output/achievementLocalizations.csv");
+  if (!csvResource) return new Map();
 
   const result = new Map();
-  parseCsv(csv).forEach((row) => {
+  parseCsv(csvResource.toString("utf8")).forEach((row) => {
     if (row.locale !== "default" && row.locale !== "zh-Hans") return;
     const entry = result.get(row.name) ?? {};
     entry[row.locale] = {
@@ -152,6 +157,73 @@ function challengeLocalizations(baseFiles) {
     result.set(row.name, entry);
   });
   return result;
+}
+
+function optimizedTranslations(packageFiles) {
+  const loadLocale = (locale) => {
+    const entry = [...packageFiles.entries()].find(([path]) =>
+      path.endsWith(`translations.${locale}.translation`),
+    );
+    return entry ? parseOptimizedTranslation(entry[1]) : null;
+  };
+
+  return {
+    default: loadLocale("en"),
+    "zh-Hans": loadLocale("zh"),
+  };
+}
+
+function parseAdditionalArgs(block) {
+  const raw = getLineValue(block, "additional_args");
+  if (!raw) return [];
+
+  return [...raw.matchAll(/"([^"]*)"|(-?\d+(?:\.\d+)?)/g)].map(
+    ([, stringValue, numberValue]) => stringValue ?? numberValue,
+  );
+}
+
+function translatedArgument(translation, value) {
+  const key = String(value ?? "");
+  return getUncompressedOptimizedMessage(translation, key) ?? key;
+}
+
+function formatChallengeText(text, block, locale, translation) {
+  if (!text) return null;
+
+  const stat = getString(block, "stat");
+  const statLabel = stat
+    ? getUncompressedOptimizedMessage(translation, stat.toUpperCase()) ??
+      STAT_LABELS[stat]?.[locale === "zh-Hans" ? "zh" : "en"] ??
+      stat
+    : "";
+  const args = [
+    String(getNumber(block, "value") ?? ""),
+    statLabel,
+    ...parseAdditionalArgs(block).map((value) => translatedArgument(translation, value)),
+  ];
+
+  return text.replace(/\{(\d+)\}/g, (placeholder, rawIndex) => {
+    const index = Number(rawIndex);
+    return args[index] ?? placeholder;
+  });
+}
+
+function optimizedLocalizationForChallenge(block, translations) {
+  const nameKey = getString(block, "name");
+  const descriptionKey = getString(block, "description");
+  const localized = {};
+
+  [
+    ["default", translations.default],
+    ["zh-Hans", translations["zh-Hans"]],
+  ].forEach(([locale, translation]) => {
+    const title = getUncompressedOptimizedMessage(translation, nameKey);
+    const rawDescription = getUncompressedOptimizedMessage(translation, descriptionKey);
+    const description = formatChallengeText(rawDescription, block, locale, translation);
+    if (title || description) localized[locale] = { title, description };
+  });
+
+  return Object.keys(localized).length ? localized : null;
 }
 
 function templateLocalizationForChallenge(block) {
@@ -175,10 +247,16 @@ function templateLocalizationForChallenge(block) {
   };
 }
 
-function extractCharacterUnlocks(packageFiles, sourcePackage, localizations = new Map()) {
+function extractCharacterUnlocks(
+  packageFiles,
+  sourcePackage,
+  localizations = new Map(),
+  translations = optimizedTranslations(packageFiles),
+) {
   return [...packageFiles.entries()]
     .filter(([path]) => path.includes("/challenges/") && path.endsWith(".tres"))
-    .map(([path, block]) => {
+    .map(([path, resource]) => {
+      const block = resource.toString("utf8");
       const extResources = collectExtResources(block);
       const reward = extResources[getResourceRef(block, "reward")]?.path ?? null;
       const iconPath = challengeIconPath(extResources);
@@ -187,7 +265,10 @@ function extractCharacterUnlocks(packageFiles, sourcePackage, localizations = ne
 
       const challengeId = getString(block, "my_id");
       const localization =
-        localizations.get(challengeId) ?? templateLocalizationForChallenge(block) ?? {};
+        localizations.get(challengeId) ??
+        optimizedLocalizationForChallenge(block, translations) ??
+        templateLocalizationForChallenge(block) ??
+        {};
       const extractionStatus = localization["zh-Hans"]?.description
         ? "verified-static-text"
         : "pending-text";

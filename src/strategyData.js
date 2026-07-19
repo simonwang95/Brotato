@@ -843,7 +843,7 @@ const defaultSourceNotes = [
 const dlcSourceNotes = [
   ...defaultSourceNotes,
   "本机深海魔怪 DLC 安装包确认角色中文名、DLC 武器/道具中文名和官方目录来源。",
-  "DLC 角色机制与解锁条件仍在逐条校验中，当前先提供可运行的路线模板。",
+  "DLC 角色解锁条件来自本机安装包的静态 challenge 与简中 PHashTranslation；角色机制仍在逐条校验。",
 ];
 
 const VERIFIED_CHARACTER_UNLOCKS = {
@@ -891,6 +891,14 @@ const VERIFIED_CHARACTER_UNLOCKS = {
   vampire: "官方 Progress 静态数据：达到 40% 生命窃取后解锁。",
   wildling: "官方 Progress 静态数据：累计击杀 10000 名敌人后解锁。",
   buccaneer: "官方 Progress 静态数据：达到 100% 拾取范围后解锁。",
+  chef: "官方 Progress 静态数据：同时让至少 25 个敌人处于燃烧状态后解锁。",
+  diver: "官方 Progress 静态数据：击杀距离角色超过 700 范围的 1000 个敌人后解锁。",
+  druid: "官方 Progress 静态数据：到第 20 波袭击结束时收集 250 个消耗品后解锁。",
+  dwarf: "官方 Progress 静态数据：使用近战攻击击中至少 25 个敌人后解锁。",
+  gangster: "官方 Progress 静态数据：在单个商店中刷新 10 次后解锁。",
+  hiker: "官方 Progress 静态数据：总计行走 20000 步后解锁。",
+  ogre: "官方 Progress 静态数据：单次攻击对敌人造成 1000 伤害后解锁。",
+  romantic: "官方 Progress 静态数据：以 0 诅咒完成一场比赛后解锁。",
   giant:
     "深海魔怪 DLC/策略层候选；当前 base+DLC 官方角色资源未包含 CHARACTER_GIANT，具体挑战条件待校验。",
 };
@@ -3360,7 +3368,7 @@ export const CHARACTER_GUIDES = {
     id: "chef",
     name: "Chef",
     cnHint: "厨师，消耗品燃烧",
-    unlock: "深海魔怪 DLC 角色；官方目录显示需解锁，具体挑战条件待校验。",
+    unlock: VERIFIED_CHARACTER_UNLOCKS.chef,
     summary: "厨师适合消耗品、燃烧和回复路线。拾取水果不只是回血，也能成为输出节奏的一部分。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3397,7 +3405,7 @@ export const CHARACTER_GUIDES = {
     id: "diver",
     name: "Diver",
     cnHint: "潜水员，海军近距远程",
-    unlock: "深海魔怪 DLC 角色；官方目录显示需解锁，具体挑战条件待校验。",
+    unlock: VERIFIED_CHARACTER_UNLOCKS.diver,
     summary: "潜水员适合海军、近距远程和拾取节奏。需要在安全距离、移速和范围之间找到平衡。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3509,7 +3517,7 @@ export const CHARACTER_GUIDES = {
     id: "ogre",
     name: "Ogre",
     cnHint: "食人魔，受击爆发近战",
-    unlock: "深海魔怪 DLC 角色；官方目录显示需解锁，具体挑战条件待校验。",
+    unlock: VERIFIED_CHARACTER_UNLOCKS.ogre,
     summary: "食人魔适合重型、钝器和高生命近战。路线重点是把受压环境转成范围清怪，而不是无脑吃伤。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3546,7 +3554,7 @@ export const CHARACTER_GUIDES = {
     id: "dwarf",
     name: "Dwarf",
     cnHint: "矮人，钝器重型成长",
-    unlock: "深海魔怪 DLC 角色；官方目录显示需解锁，具体挑战条件待校验。",
+    unlock: VERIFIED_CHARACTER_UNLOCKS.dwarf,
     summary: "矮人适合钝器、工具和重型近战。路线要把升级、护甲和近战缩放捆在一起，避免只拿慢武器没有成长。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3620,7 +3628,7 @@ export const CHARACTER_GUIDES = {
     id: "gangster",
     name: "Gangster",
     cnHint: "匪徒，商店风险经济",
-    unlock: "深海魔怪 DLC 角色；官方目录显示需解锁，具体挑战条件待校验。",
+    unlock: VERIFIED_CHARACTER_UNLOCKS.gangster,
     summary: "匪徒围绕商店风险和快速变现。推荐用枪械或精准武器保证击杀速度，再用经济道具滚雪球。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3657,7 +3665,7 @@ export const CHARACTER_GUIDES = {
     id: "romantic",
     name: "Romantic",
     cnHint: "浪漫之人，魅惑乐器",
-    unlock: "深海魔怪 DLC 角色；官方目录显示需解锁，具体挑战条件待校验。",
+    unlock: VERIFIED_CHARACTER_UNLOCKS.romantic,
     summary: "浪漫之人适合乐器、远程控制和魅惑相关路线。它需要用安全距离和触发频率把控制转成输出窗口。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3694,7 +3702,7 @@ export const CHARACTER_GUIDES = {
     id: "druid",
     name: "Druid",
     cnHint: "德鲁伊，消耗品成长",
-    unlock: "深海魔怪 DLC 角色；官方目录显示需解锁，具体挑战条件待校验。",
+    unlock: VERIFIED_CHARACTER_UNLOCKS.druid,
     summary: "德鲁伊适合收获、消耗品和辅助近战。路线要让水果、升级和经济形成循环，再补真实输出。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3731,7 +3739,7 @@ export const CHARACTER_GUIDES = {
     id: "hiker",
     name: "Hiker",
     cnHint: "徒步旅行者，行走经济",
-    unlock: "深海魔怪 DLC 角色；官方目录显示需解锁，具体挑战条件待校验。",
+    unlock: VERIFIED_CHARACTER_UNLOCKS.hiker,
     summary: "徒步旅行者围绕移动、步数和经济收益。核心不是跑得越快越好，而是边走位边保持稳定击杀。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({

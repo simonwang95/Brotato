@@ -124,7 +124,7 @@ npm run extract:catalog
 npm run extract:unlocks
 ```
 
-生成文件在 `data/official-unlocks.json`。该脚本只读取安装包里的静态 `challenge` / achievement 资源，不读取玩家存档，因此不受本机已解锁进度影响。当前可稳定写入 44 条角色精确条件，其中 43 条来自原版 achievement CSV，`Buccaneer` 使用已验证的 `CHAL_STAT_DESC` 静态模板生成；仍待校验的 2 条原版后补挑战和 8 条 DLC 挑战会保留 `pendingReason` 与 `pendingEvidence`，其中包含 `challengeId`、`nameKey`、`descriptionKey`、`value`、`stat`、`additionalArgs` 和 `challengeIconPath`，方便继续解码 translation 或按图标资源人工核验。角色图鉴会合并官方目录和策略层：当前展示 64 条官方角色记录，加上 `Giant / CHARACTER_GIANT` 这个已记录在 `data/official-character-catalog-gaps.json` 的策略层官方目录缺口。
+生成文件在 `data/official-unlocks.json`。该脚本只读取安装包里的静态 `challenge` / achievement 资源，不读取玩家存档，因此不受本机已解锁进度影响。当前 54 条角色奖励映射都已写入精确简中条件：43 条来自原版 achievement CSV，另 11 条通过 Godot `OptimizedTranslation` 的双哈希表按 `descriptionKey` 直接读取安装包简中 `PHashTranslation`，并按 challenge 的 `value`、`stat`、`additional_args` 展开占位符。解析模块只接受未压缩 UTF-8 消息；不能可靠读取的文本仍会降级为 `pending-text`，不会猜测。角色图鉴会合并官方目录和策略层：当前展示 64 条官方角色记录，加上 `Giant / CHARACTER_GIANT` 这个已记录在 `data/official-character-catalog-gaps.json` 的策略层官方目录缺口。
 
 生成集中待校验清单：
 
@@ -132,7 +132,7 @@ npm run extract:unlocks
 npm run unlocks:pending
 ```
 
-生成文件在 `data/official-unlock-pending.json`，由 `data/official-unlocks.json` 里的 `pending-text` 记录派生，当前包含 10 条待核验解锁文本，并标注角色是否已进入攻略层、官方 `nameKey`、静态 challenge key、数值、图标资源和阻塞原因。它同样只反映静态安装包数据，不读取本机存档。
+生成文件在 `data/official-unlock-pending.json`，由 `data/official-unlocks.json` 里的 `pending-text` 记录派生。当前清单为 0 条；如果后续游戏版本新增无法可靠读取的挑战文本，脚本仍会保留角色攻略状态、官方 `nameKey`、静态 challenge key、数值、图标资源和阻塞原因。它同样只反映静态安装包数据，不读取本机存档。
 
 从本机安装包导出图鉴 WebP 图标：
 
@@ -159,7 +159,7 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 
 ## 后续目标
 
-二期攻略生成器已经接入原版 44 个角色和深海魔怪 DLC 15 个角色。武器/物品图鉴本地化已覆盖当前官方目录，角色名本地化当前覆盖 44/64；下一步会继续补全角色精确挑战条件，并把更多武器/道具参数接入数值模型。
+二期攻略生成器已经接入原版 44 个角色和深海魔怪 DLC 15 个角色。武器/物品图鉴本地化已覆盖当前官方目录，54 条已抽取角色挑战均有精确简中条件，角色名本地化当前覆盖 44/64；下一步会继续补角色名称与策略模板，并把更多武器/道具参数接入数值模型。
 
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。
@@ -178,6 +178,6 @@ Vercel 部署清单见 [docs/vercel-deployment.md](docs/vercel-deployment.md)。
 npm run verify:unlocks
 ```
 
-精确挑战条件已开始从安装包静态 Progress / achievement / challenge 资源抽取。`data/official-unlocks.json` 当前记录 54 条角色奖励映射，其中 44 条带有可直接解析的中英挑战文本；剩余 `pending-text` 按来源分为 base 2 条、abyssalTerrors 8 条，并保留静态翻译 key、挑战数值、奖励路径和阻塞原因。`npm run unlocks:pending` 会把这些待核验项集中写入 `data/official-unlock-pending.json`，当前 10 条中 8 条已有攻略层角色、2 条为 official-only。`npm run verify:unlocks` 还会反向报告已抽到但策略层尚未维护的官方角色解锁记录，当前为 2 条，并细分为 verified-static-text 0 条、pending-text 2 条，确保没有已验证文本被遗漏。已审计的策略层目录缺口会单独列入 `Audited catalog gaps`，避免和真正待处理 warning 混在一起。`Baby`、`Technomage`、`Vagabond`、`Vampire`、`Buccaneer` 已用 verified-static-text 解锁记录进入攻略层；`Beast Master` 和 `Wounded` 仍作为 official-only 角色展示静态 challenge 证据和官方特性，但不生成攻略推荐。DLC challenge 资源能稳定映射奖励角色，`CHAL_STAT_DESC` 这类通用静态模板已可生成条件文本；其余描述文本仍需继续解码 `PHashTranslation` 的 key->文本映射，因此继续保守标注为待校验。`Giant / CHARACTER_GIANT` 当前不在 base+DLC 官方角色目录中，依据记录在 `data/official-character-catalog-gaps.json`，项目把它保留为策略层待校验候选，而不是凭名称强行映射。
+精确挑战条件来自安装包静态 Progress / achievement / challenge 资源。`data/official-unlocks.json` 当前记录 54 条角色奖励映射，全部带有 `verified-static-text` 简中条件；原版 CSV 未覆盖的后补挑战与 DLC challenge 会用静态 `descriptionKey` 查询简中 `PHashTranslation`，再按 challenge 脚本规定的参数顺序展开占位符。`npm run unlocks:pending` 仍会维护无法可靠读取的新条目，当前输出 0 条。`npm run verify:unlocks` 反向报告已抽到但策略层尚未维护的官方角色解锁记录：当前 2 条均为 verified-static-text、0 条 pending-text。已审计的策略层目录缺口会单独列入 `Audited catalog gaps`，避免和真正待处理 warning 混在一起。`Chef`、`Diver`、`Ogre`、`Dwarf`、`Gangster`、`Romantic`、`Druid`、`Hiker` 已把解析结果同步到攻略层；`Beast Master` 和 `Wounded` 仍作为 official-only 角色展示精确静态条件和官方特性，但尚不生成攻略推荐。`Giant / CHARACTER_GIANT` 当前不在 base+DLC 官方角色目录中，依据记录在 `data/official-character-catalog-gaps.json`，项目把它保留为策略层待校验候选，而不是凭名称强行映射。
 
 这不依赖当前电脑的存档解锁进度。安装包 `.pck` 是静态游戏数据；本机进度只会影响游戏内或存档里“你已经解锁了什么”，不会改变仓库中由安装包提取出的官方目录字段。除非后续改为读取存档或游戏 UI 截图，否则本机是否已经全解锁不会影响这些脚本的结果。

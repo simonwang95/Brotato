@@ -13,8 +13,8 @@ assert.match(
 );
 assert.match(
   output,
-  /Unmaintained unlock detail: verified-static-text 0, pending-text 2, other 0\./,
-  "unlock verifier should prove no verified static unlock text remains unmaintained",
+  /Unmaintained unlock detail: verified-static-text 2, pending-text 0, other 0\./,
+  "unlock verifier should distinguish verified official-only characters from pending text",
 );
 assert.match(
   output,
@@ -38,13 +38,13 @@ assert.doesNotMatch(
 );
 assert.match(
   output,
-  /official-unlock:beastMaster .*CHARACTER_BEAST_MASTER.*CHAL_PAWS_N_CLAWS_DESC/,
-  "beast master static unlock evidence should not be hidden",
+  /official-unlock:beastMaster .*CHARACTER_BEAST_MASTER.*CHAL_PAWS_N_CLAWS_DESC.*官方静态条件：解锁猫特林机枪/,
+  "beast master verified static unlock text should not be hidden",
 );
 assert.match(
   output,
-  /official-unlock:wounded .*CHARACTER_WOUNDED.*CHAL_DIFFICULTY_NIGHTMARE_1_DESC/,
-  "wounded static unlock evidence should not be hidden",
+  /official-unlock:wounded .*CHARACTER_WOUNDED.*CHAL_DIFFICULTY_NIGHTMARE_1_DESC.*官方静态条件：在噩梦难度下赢得一局游戏/,
+  "wounded verified static unlock text should not be hidden",
 );
 assert.doesNotMatch(
   output,

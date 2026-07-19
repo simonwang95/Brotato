@@ -12,12 +12,9 @@
   "note": "Static install-package data only. This does not read save files and is not affected by local unlock progress.",
   "summary": {
     "total": 54,
-    "verifiedStaticText": 44,
-    "pendingText": 10,
-    "pendingBySourcePackage": {
-      "base": 2,
-      "abyssalTerrors": 8
-    }
+    "verifiedStaticText": 54,
+    "pendingText": 0,
+    "pendingBySourcePackage": {}
   },
   "records": [
     {
@@ -109,24 +106,11 @@
       "stat": "",
       "additionalArgs": "[  ]",
       "challengeIconPath": "res://items/challenges/beast_master_challenge.png",
-      "title": null,
+      "title": "Paws ’n’ Claws Crew",
       "description": null,
-      "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_paws_n_claws",
-        "nameKey": "CHAL_PAWS_N_CLAWS",
-        "descriptionKey": "CHAL_PAWS_N_CLAWS_DESC",
-        "value": 3,
-        "number": 0,
-        "stat": "",
-        "additionalArgs": "[  ]",
-        "challengeIconPath": "res://items/challenges/beast_master_challenge.png",
-        "challengePath": "res://challenges/chal_paws_n_claws.tres",
-        "rewardPath": "res://items/characters/beast_master/beast_master_data.tres"
-      }
+      "zhTitle": "爪爪肉球帮",
+      "zhDescription": "解锁猫特林机枪、Bonk狗、布雷机器人、焰蜥蜴和搜刮虫虫物品",
+      "extractionStatus": "verified-static-text"
     },
     {
       "characterId": "bull",
@@ -882,24 +866,11 @@
       "stat": "",
       "additionalArgs": "[  ]",
       "challengeIconPath": "res://ui/menus/run/difficulty_selection/difficulty_icons/nightmare.png",
-      "title": null,
+      "title": "Nightmare",
       "description": null,
-      "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_difficulty_6",
-        "nameKey": "DIFFICULTY_NIGHTMARE_1",
-        "descriptionKey": "CHAL_DIFFICULTY_NIGHTMARE_1_DESC",
-        "value": 6,
-        "number": 6,
-        "stat": "",
-        "additionalArgs": "[  ]",
-        "challengeIconPath": "res://ui/menus/run/difficulty_selection/difficulty_icons/nightmare.png",
-        "challengePath": "res://challenges/chal_difficulty_6_data.tres",
-        "rewardPath": "res://items/characters/wounded/wounded_data.tres"
-      }
+      "zhTitle": "噩梦",
+      "zhDescription": "在噩梦难度下赢得一局游戏",
+      "extractionStatus": "verified-static-text"
     },
     {
       "characterId": "buccaneer",
@@ -916,7 +887,7 @@
       "challengeIconPath": "res://dlcs/dlc_1/items/eyepatch/eyepatch_icon.png",
       "title": null,
       "description": "Reach 100 % Pickup Range",
-      "zhTitle": null,
+      "zhTitle": "盲目贪婪",
       "zhDescription": "达到100%拾取范围",
       "extractionStatus": "verified-static-text"
     },
@@ -933,24 +904,11 @@
       "stat": "",
       "additionalArgs": "[  ]",
       "challengeIconPath": "res://items/all/campfire/campfire_icon.png",
-      "title": null,
+      "title": "Barbecue",
       "description": null,
-      "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_barbecue",
-        "nameKey": "CHAL_BARBECUE",
-        "descriptionKey": "CHAL_BARBECUE_DESC",
-        "value": 25,
-        "number": 0,
-        "stat": "",
-        "additionalArgs": "[  ]",
-        "challengeIconPath": "res://items/all/campfire/campfire_icon.png",
-        "challengePath": "res://dlcs/dlc_1/challenges/barbecue_data.tres",
-        "rewardPath": "res://dlcs/dlc_1/characters/chef/chef_data.tres"
-      }
+      "zhTitle": "烧烤活动",
+      "zhDescription": "同时让至少25个敌人处于燃烧状态",
+      "extractionStatus": "verified-static-text"
     },
     {
       "characterId": "diver",
@@ -967,22 +925,9 @@
       "challengeIconPath": "res://dlcs/dlc_1/items/lantern/lantern_icon.png",
       "title": null,
       "description": null,
-      "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_cautious",
-        "nameKey": "CHAL_CAUTIOUS",
-        "descriptionKey": "CHAL_CAUTIOUS_DESC",
-        "value": 1000,
-        "number": 0,
-        "stat": "",
-        "additionalArgs": "[ 700 ]",
-        "challengeIconPath": "res://dlcs/dlc_1/items/lantern/lantern_icon.png",
-        "challengePath": "res://dlcs/dlc_1/challenges/cautious_data.tres",
-        "rewardPath": "res://dlcs/dlc_1/characters/diver/diver_data.tres"
-      }
+      "zhTitle": "谨慎",
+      "zhDescription": "击杀距离你超过700范围的1000个敌人",
+      "extractionStatus": "verified-static-text"
     },
     {
       "characterId": "druid",
@@ -999,22 +944,9 @@
       "challengeIconPath": "res://items/all/clover/clover_icon.png",
       "title": null,
       "description": null,
-      "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_herbalist",
-        "nameKey": "CHAL_HERBALIST",
-        "descriptionKey": "CHAL_HERBALIST_DESC",
-        "value": 250,
-        "number": 0,
-        "stat": "",
-        "additionalArgs": "[  ]",
-        "challengeIconPath": "res://items/all/clover/clover_icon.png",
-        "challengePath": "res://dlcs/dlc_1/challenges/herbalist_data.tres",
-        "rewardPath": "res://dlcs/dlc_1/characters/druid/druid_data.tres"
-      }
+      "zhTitle": "草药师",
+      "zhDescription": "到第20波袭击结束时收集250个消耗品",
+      "extractionStatus": "verified-static-text"
     },
     {
       "characterId": "dwarf",
@@ -1031,22 +963,9 @@
       "challengeIconPath": "res://items/all/wolf_helmet/wolf_helmet_icon.png",
       "title": null,
       "description": null,
-      "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_unstoppable_force",
-        "nameKey": "CHAL_UNSTOPPABLE_FORCE",
-        "descriptionKey": "CHAL_UNSTOPPABLE_FORCE_DESC",
-        "value": 25,
-        "number": 0,
-        "stat": "",
-        "additionalArgs": "[  ]",
-        "challengeIconPath": "res://items/all/wolf_helmet/wolf_helmet_icon.png",
-        "challengePath": "res://dlcs/dlc_1/challenges/unstoppable_force_data.tres",
-        "rewardPath": "res://dlcs/dlc_1/characters/dwarf/dwarf_data.tres"
-      }
+      "zhTitle": "不可阻挡之力",
+      "zhDescription": "使用近战攻击击中至少25个敌人",
+      "extractionStatus": "verified-static-text"
     },
     {
       "characterId": "gangster",
@@ -1061,24 +980,11 @@
       "stat": "",
       "additionalArgs": "[  ]",
       "challengeIconPath": "res://dlcs/dlc_1/items/bone_dice/bone_dice_icon.png",
-      "title": null,
+      "title": "Unlucky",
       "description": null,
-      "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_unlucky",
-        "nameKey": "CHAL_UNLUCKY",
-        "descriptionKey": "CHAL_UNLUCKY_DESC",
-        "value": 10,
-        "number": 0,
-        "stat": "",
-        "additionalArgs": "[  ]",
-        "challengeIconPath": "res://dlcs/dlc_1/items/bone_dice/bone_dice_icon.png",
-        "challengePath": "res://dlcs/dlc_1/challenges/unlucky_data.tres",
-        "rewardPath": "res://dlcs/dlc_1/characters/gangster/gangster_data.tres"
-      }
+      "zhTitle": "倒霉",
+      "zhDescription": "在单个商店中刷新10次",
+      "extractionStatus": "verified-static-text"
     },
     {
       "characterId": "hiker",
@@ -1095,22 +1001,9 @@
       "challengeIconPath": "res://items/all/decomposing_flesh/decomposing_flesh_icon.png",
       "title": null,
       "description": null,
-      "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_smelly_feet",
-        "nameKey": "CHAL_SMELLY_FEET",
-        "descriptionKey": "CHAL_SMELLY_FEET_DESC",
-        "value": 20000,
-        "number": 0,
-        "stat": "",
-        "additionalArgs": "[  ]",
-        "challengeIconPath": "res://items/all/decomposing_flesh/decomposing_flesh_icon.png",
-        "challengePath": "res://dlcs/dlc_1/challenges/smelly_feet_data.tres",
-        "rewardPath": "res://dlcs/dlc_1/characters/hiker/hiker_data.tres"
-      }
+      "zhTitle": "臭脚",
+      "zhDescription": "总计行走20000步",
+      "extractionStatus": "verified-static-text"
     },
     {
       "characterId": "ogre",
@@ -1125,24 +1018,11 @@
       "stat": "",
       "additionalArgs": "[  ]",
       "challengeIconPath": "res://items/all/big_arms/big_arms_icon.png",
-      "title": null,
+      "title": "Overkill",
       "description": null,
-      "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_overkill",
-        "nameKey": "CHAL_OVERKILL",
-        "descriptionKey": "CHAL_OVERKILL_DESC",
-        "value": 1000,
-        "number": 0,
-        "stat": "",
-        "additionalArgs": "[  ]",
-        "challengeIconPath": "res://items/all/big_arms/big_arms_icon.png",
-        "challengePath": "res://dlcs/dlc_1/challenges/overkill_data.tres",
-        "rewardPath": "res://dlcs/dlc_1/characters/ogre/ogre_data.tres"
-      }
+      "zhTitle": "过度杀戮",
+      "zhDescription": "单次攻击对敌人造成1000伤害",
+      "extractionStatus": "verified-static-text"
     },
     {
       "characterId": "romantic",
@@ -1159,22 +1039,9 @@
       "challengeIconPath": "res://dlcs/dlc_1/items/mirror/mirror_icon.png",
       "title": null,
       "description": null,
-      "zhTitle": null,
-      "zhDescription": null,
-      "extractionStatus": "pending-text",
-      "pendingReason": "已定位静态 challenge 奖励和翻译 key，但当前未能可靠解码 PHashTranslation 的 key->文本映射；保留待人工核验或后续解码。",
-      "pendingEvidence": {
-        "challengeId": "chal_uncorrupted",
-        "nameKey": "CHAL_UNCORRUPTED",
-        "descriptionKey": "CHAL_UNCORRUPTED_DESC",
-        "value": 0,
-        "number": 0,
-        "stat": "stat_curse",
-        "additionalArgs": "[  ]",
-        "challengeIconPath": "res://dlcs/dlc_1/items/mirror/mirror_icon.png",
-        "challengePath": "res://dlcs/dlc_1/challenges/uncorrupted_data.tres",
-        "rewardPath": "res://dlcs/dlc_1/characters/romantic/romantic_data.tres"
-      }
+      "zhTitle": "未被腐蚀",
+      "zhDescription": "以0诅咒完成一场比赛",
+      "extractionStatus": "verified-static-text"
     }
   ]
 }
