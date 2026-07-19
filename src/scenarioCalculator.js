@@ -856,7 +856,7 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     scenario.killRateMultiplier *
     scenario.positioningStress *
     clamp(normalizedStats.dodge / 100, 0, 0.6);
-  const triggerRate =
+  const baseTriggerRate =
     itemEffect.trigger === "onPickup"
       ? scenario.pickupRatePerSecond
       : itemEffect.trigger === "onKill"
@@ -864,6 +864,8 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
         : itemEffect.trigger === "onDodgeDamage"
           ? dodgeDamageTriggerRate
           : 0;
+  const triggerRate =
+    baseTriggerRate * Math.max(0, Number(itemEffect.triggerRateMultiplier ?? 1));
   const chance = itemEffect.chance / 100;
   const statScalingDamage = Object.entries(itemEffect.statScaling ?? {}).reduce(
     (sum, [statId, scaling]) => sum + (normalizedStats[statId] ?? 0) * scaling,
@@ -890,6 +892,53 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
     rawDps,
     dps,
   };
+}
+
+export function calculatePickupTriggerInteraction(
+  stats,
+  scenarioId,
+  triggerEffect,
+  modifiers = {},
+) {
+  const normalizedStats = normalizeStats(stats);
+  const luckGainMultiplier = Math.max(
+    0,
+    1 + Number(modifiers.luckGainPercent ?? 0) / 100,
+  );
+  const rawLuckDelta = Number(modifiers.luck ?? 0);
+  const luckDelta = rawLuckDelta > 0 ? rawLuckDelta * luckGainMultiplier : rawLuckDelta;
+  const damagePercentDelta = Number(modifiers.damagePercent ?? 0);
+  const pickupAttraction = Math.max(0, Number(modifiers.pickupAttraction ?? 0));
+  const base = calculateItemEffectDps(normalizedStats, scenarioId, triggerEffect);
+  const modified = calculateItemEffectDps(
+    {
+      ...normalizedStats,
+      luck: normalizedStats.luck + luckDelta,
+      damagePercent: normalizedStats.damagePercent + damagePercentDelta,
+    },
+    scenarioId,
+    {
+      ...triggerEffect,
+      triggerRateMultiplier: 1 + pickupAttraction / 100,
+    },
+  );
+
+  return {
+    scenario: modified.scenario,
+    baseDps: base.dps,
+    modifiedDps: modified.dps,
+    incrementalDps: modified.dps - base.dps,
+    luckDelta,
+    damagePercentDelta,
+    pickupAttraction,
+  };
+}
+
+export function calculateKillGrowthPer100Kills(killsRequired, statGain = 1) {
+  const threshold = Number(killsRequired);
+  const gain = Number(statGain);
+  if (!Number.isFinite(threshold) || threshold <= 0 || !Number.isFinite(gain)) return 0;
+  return (100 / threshold) * gain;
 }
 
 export function calculateBurningDps(stats, weapon, scenarioId, options = {}) {

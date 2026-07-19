@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import {
   calculateItemEffectDps,
+  calculateKillGrowthPer100Kills,
+  calculatePickupTriggerInteraction,
   calculateScenarioDps,
 } from "../src/scenarioCalculator.js";
 
@@ -72,6 +74,85 @@ function closeTo(actual, expected, message) {
 
   closeTo(result.explosionExtraHits, 3, "explosion targets are capped by nearby targets");
   closeTo(result.explosionDps, 300, "explosion extra targets add expected damage");
+}
+
+{
+  closeTo(
+    calculateKillGrowthPer100Kills(20, 1),
+    5,
+    "tier-one ethereal growth converts its static threshold to gains per 100 weapon kills",
+  );
+  closeTo(
+    calculateKillGrowthPer100Kills(12, 1),
+    100 / 12,
+    "tier-four ethereal growth keeps the exact static kill threshold",
+  );
+  assert.equal(
+    calculateKillGrowthPer100Kills(0, 1),
+    0,
+    "invalid kill thresholds do not fabricate growth",
+  );
+}
+
+{
+  const pickupEffect = {
+    id: "character:lucky:pickup-damage",
+    trigger: "onPickup",
+    chance: 75,
+    baseDamage: 0,
+    luckScaling: 0.15,
+    statScaling: {},
+  };
+  const relic = calculatePickupTriggerInteraction(
+    {
+      ...baseStats,
+      luck: 250,
+      damagePercent: 77.5,
+    },
+    "normalWave",
+    pickupEffect,
+    {
+      pickupAttraction: 100,
+      luckGainPercent: 25,
+    },
+  );
+  closeTo(relic.baseDps, 39.9375, "Lucky static pickup trigger uses official chance and luck scaling");
+  closeTo(
+    relic.incrementalDps,
+    39.9375,
+    "full pickup attraction doubles the scenario pickup-trigger opportunity",
+  );
+
+  const charm = calculatePickupTriggerInteraction(
+    {
+      ...baseStats,
+      luck: 250,
+      damagePercent: 77.5,
+    },
+    "normalWave",
+    pickupEffect,
+    {
+      luck: 30,
+      luckGainPercent: 25,
+    },
+  );
+  closeTo(charm.luckDelta, 37.5, "Lucky official +25% luck gains amplify item luck");
+  closeTo(charm.incrementalDps, 5.990625, "item luck reports marginal pickup-trigger DPS");
+
+  const luckPenalty = calculatePickupTriggerInteraction(
+    {
+      ...baseStats,
+      luck: 250,
+      damagePercent: 77.5,
+    },
+    "normalWave",
+    pickupEffect,
+    {
+      luck: -10,
+      luckGainPercent: 25,
+    },
+  );
+  closeTo(luckPenalty.luckDelta, -10, "luck-gain bonuses do not amplify negative luck modifiers");
 }
 
 {

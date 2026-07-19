@@ -135,6 +135,27 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
 }
 
 {
+  const expectedGrowth = new Map([
+    ["WEAPON_GHOST_AXE", "T1 每用该武器击杀 20 个敌人：总伤害 +1"],
+    ["WEAPON_GHOST_FLINT", "T1 每用该武器击杀 20 个敌人：攻速 +1"],
+    ["WEAPON_GHOST_SCEPTER", "T1 每用该武器击杀 20 个敌人：最大生命 +1"],
+  ]);
+  expectedGrowth.forEach((line, nameKey) => {
+    const weapon = compendium.weapons.find((entry) => entry.nameKey === nameKey);
+    assert.ok(
+      weapon?.detailedAttributes.includes(line),
+      `${nameKey} should expose the exact official kill-growth stat and threshold`,
+    );
+    assert.ok(
+      weapon?.detailedAttributes.some((attribute) =>
+        attribute.includes("T4 每用该武器击杀 12 个敌人"),
+      ),
+      `${nameKey} should expose the official tier-four kill threshold`,
+    );
+  });
+}
+
+{
   const lucky = compendium.characters.find((entry) => entry.id === "lucky");
   assert.equal(lucky?.cnName, "幸运星");
   assert.match(lucky?.unlock, /300 材料/);
@@ -191,25 +212,33 @@ assert.equal(compendium.items.length, 244, "item compendium should group all off
     "beast master should expose verified static challenge text",
   );
   assert.ok(beastMaster?.traits.includes("不能持有武器"));
-  assert.ok(beastMaster?.traits.includes("每 1 点永久宠物：官方自定义收益"));
+  assert.ok(beastMaster?.traits.includes("每 1 点永久宠物：移速 +2%"));
   assert.ok(beastMaster?.traits.includes("驯兽师宠物机制"));
   assert.ok(beastMaster?.traits.includes("提高宠物标签出现率 +1"));
   assertNoRawEffectArtifacts(beastMaster);
 }
 
 {
+  const knight = compendium.characters.find((entry) => entry.id === "knight");
+  assert.ok(knight?.traits.includes("每 1 点护甲：近战伤害 +2"));
+  assert.ok(knight?.traits.includes("不能持有远程武器"));
+  assert.ok(knight?.traits.includes("最低武器阶级：T2"));
+  assertNoRawEffectArtifacts(knight);
+}
+
+{
   const technomage = compendium.characters.find((entry) => entry.id === "technomage");
   assert.ok(technomage?.traits.includes("起始物品：炮塔 +2"));
-  assert.ok(technomage?.traits.includes("每 1 点永久元素伤害：官方自定义收益"));
-  assert.ok(technomage?.traits.includes("每 1 点结构物：官方自定义收益"));
+  assert.ok(technomage?.traits.includes("每 1 点永久元素伤害：结构物攻速 +5"));
+  assert.ok(technomage?.traits.includes("每 1 点结构物：元素伤害 +2"));
   assertNoRawEffectArtifacts(technomage);
 }
 
 {
   const vampire = compendium.characters.find((entry) => entry.id === "vampire");
-  assert.ok(vampire?.traits.includes("每 1 点已损失生命百分比：官方自定义收益"));
-  assert.ok(vampire?.traits.includes("每 3 点已损失生命百分比：官方自定义收益"));
-  assert.ok(vampire?.traits.includes("每 5 点已损失生命百分比：官方自定义收益"));
+  assert.ok(vampire?.traits.includes("每 1 点永久已损失生命百分比：总伤害 +2%"));
+  assert.ok(vampire?.traits.includes("每 3 点已损失生命百分比：生命窃取 +1%"));
+  assert.ok(vampire?.traits.includes("每 5 点永久已损失生命百分比：护甲 +1"));
   assert.ok(vampire?.traits.includes("消耗品治疗 -100"));
   assertNoRawEffectArtifacts(vampire);
 }

@@ -159,10 +159,10 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 评分按角色第 20 关目标面板的中位数估算，不读取存档或当前局面。
 - 普通通关默认看 `normalWave`，无尽或覆盖类武器看 `swarm`，高生命/Boss 说明看 `boss`。
 - 场景分只作为排序修正；手写主路线、解锁/掉落、稀有度、价格、套装适配和机制修正仍保留解释权重。
-- 幽魂武器会读取官方 `effect_gain_stat_every_killed_enemies` 效果，在幽魂路线中解释击杀成长带来的后期属性滚雪球。
-- 骑士路线显式标记 `Blade`、`Medieval`、`Melee` 和 `Blunt`，用于让 Sword 的剑类/中世纪套装、Spiky Shield 的官方护甲缩放进入推荐理由。
-- Lucky 路线会读取官方武器 `scalingStats` 中的 `stat_luck`，用于解释 Lute、Flute 这类幸运缩放武器为什么适合高幸运路线。
-- 官方关键道具补充展示手写条目外的前 20 个候选；新增候选仍必须通过路线标签、目标属性或官方效果模型命中，不会只凭名称进入推荐。
+- 幽魂武器会读取官方 `effect_gain_stat_every_killed_enemies`、`stat` 和 `stat_nb`，把逐阶 `20/18/16/12` 次该武器击杀换算为每 100 杀 `+5.0` 到 `+8.3` 的永久属性；不假设每波击杀归属。
+- 骑士路线显式标记 `Blade`、`Medieval`、`Melee` 和 `Blunt`，并读取角色官方“每 1 护甲 `+2` 近战伤害”与禁用远程武器效果。Sword 的双套装与 T2 起步、Spiky Shield 的武器护甲缩放仍分别解释。
+- Lucky 路线会读取官方武器 `scalingStats` 中的 `stat_luck`，用于解释 Lute、Flute 这类幸运缩放武器；角色自身的 75% 拾取触发、15% 幸运伤害和幸运获取 `+25%` 会与候选幸运、总伤害、拾取吸附合并为边际 DPS。
+- 官方关键道具补充展示手写条目外的前 24 个候选；新增候选仍必须通过路线标签、目标属性或官方效果模型命中，不会只凭名称进入推荐。
 - 官方道具效果会优先从静态 effect 字段生成模型：`chance_stat_damage_effect` 会按 `customKey` 区分击杀、拾取或闪避触发伤害，`gold_on_crit_kill`、`chance_double_gold`、`instant_gold_attracting`、`harvesting_growth`、`item_box_gold`、`recycling_gains`、`extra_item_in_crate`、`loot_alien_chance`、`extra_loot_aliens_next_wave`、波次存钱模板、`stats_end_of_wave`、`stats_next_wave`、`piercing`、`pierce_on_crit`、`items_price`、`free_rerolls` 和 `reroll_price` 会生成经济/拾取/每波成长/下一波经验/贯通覆盖/商店效率模型；`Cyberball` 因此按官方 `dmg_when_death` 作为击杀触发、25% 幸运伤害估算。
 
 当前特殊道具先支持：
@@ -258,8 +258,11 @@ npm run extract:catalog
 - `canBeLooted`
 - `setPaths`
 - `effectPaths`
+- 主效果的 `key`、`value`、`customKey`、缩放字段
+- 击杀成长效果的目标 `stat` 与单次成长 `statNb`
 
 生成文件 `data/official-catalog.json` 是后续批量补全武器、道具和解锁信息的基础。
+抽取器会把 Godot 资源最后的 `[resource]` 视为主效果，只把 `[sub_resource]` 当参数来源，避免 `arg_key/arg_value` 覆盖真实主字段。`npm run extract:catalog` 会在目录生成后自动运行资产提取，恢复每条记录的本地 `imageAssetPath`；需要只刷新图片时仍可单独运行 `npm run extract:assets`。
 
 从安装包提取官方中文名称：
 
@@ -287,7 +290,7 @@ npm run unlocks:pending
 
 角色图鉴会读取 `data/official-unlocks.json` 展示静态解锁证据。图鉴角色列表会合并官方目录角色和策略层角色；官方目录里存在但 `CHARACTER_GUIDES` 尚未维护的角色会标记为 official-only，只展示官方图片、特性和解锁证据，不生成攻略推荐。只有写入 `zhDescription` 的 `verified-static-text` 才能同步到 `src/strategyData.js` 的角色 `unlock` 文案；`pending-text` 仍只能证明 challenge 与奖励映射已定位。
 
-角色特性展示同样遵守可信边界：`src/compendium.js` 会把已知官方 stat/effect key 翻译成中文，把起始物品、二元机制、掉落/宠物标签等静态字段展示出来；如果效果仍依赖未展开的官方 `custom_arg` SubResource，则只显示“官方自定义收益”。这表示资源已定位，但具体内部收益尚未可靠解析，不能直接用于攻略评分或精确解锁文案。
+角色特性展示同样遵守可信边界：`src/compendium.js` 会把已知官方 stat/effect key 翻译成中文，把起始物品、二元机制、掉落/宠物标签和主资源中明确的自定义成长公式展示出来；如果主资源仍未给出收益目标、只能定位到未展开的 SubResource 参数，则只显示“官方自定义收益”。这表示资源已定位，但具体内部收益尚未可靠解析，不能直接用于精确评分或解锁文案。
 
 `npm run verify:unlocks` 会同时检查反向覆盖：如果安装包里已有角色奖励映射，但 `src/strategyData.js` 还没有维护对应角色，脚本会输出 `official-unlock:*` warning，并输出未维护记录中 verified-static-text、pending-text 和其他状态的细分计数。当前 `oneArm` 会通过别名映射到策略层的 `oneArmed`；8 个原先待补文本的 DLC 攻略角色已经同步精确条件。剩余 2 条 warning 是 `Beast Master` 和 `Wounded`：两者均已有 verified-static-text，但尚未维护攻略模板，因此继续作为 official-only 图鉴角色。
 

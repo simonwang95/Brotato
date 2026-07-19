@@ -9,8 +9,13 @@ import {
   UNLOCK_OPTIONS,
   WEAPONS,
 } from "./strategyData.js";
-import { summarizeOfficialRecords } from "./officialCatalog.js";
-import { calculateItemEffectDps, calculateScenarioDps } from "./scenarioCalculator.js";
+import { summarizeOfficialRecords, toOfficialNameKey } from "./officialCatalog.js";
+import {
+  calculateItemEffectDps,
+  calculateKillGrowthPer100Kills,
+  calculatePickupTriggerInteraction,
+  calculateScenarioDps,
+} from "./scenarioCalculator.js";
 
 const WEAPON_SET_LABELS = {
   blade: "剑类",
@@ -30,6 +35,10 @@ const WEAPON_SET_LABELS = {
   support: "辅助",
   tool: "工具",
   unarmed: "徒手",
+};
+
+const CHARACTER_NAME_KEY_OVERRIDES = {
+  oneArmed: "CHARACTER_ONE_ARM",
 };
 
 const OFFICIAL_STAT_TO_PLAN_STAT = {
@@ -430,6 +439,14 @@ function resolveOptions(options) {
   };
 }
 
+function findOfficialCharacterRecord(catalog, character) {
+  const nameKey =
+    CHARACTER_NAME_KEY_OVERRIDES[character.id] ?? toOfficialNameKey("CHARACTER", character.name);
+  return (catalog?.records ?? []).find(
+    (record) => record.kind === "character" && record.nameKey === nameKey,
+  );
+}
+
 function entryAllowedByOptions(entry, options) {
   const { official } = entry;
   if (!official?.found) return true;
@@ -446,6 +463,19 @@ function entryAllowedByOptions(entry, options) {
   }
 
   return true;
+}
+
+function entryAllowedByCharacter(entry, plan) {
+  if (!entry.weapon || !plan?.officialCharacter) return true;
+  const noRangedWeapons = officialCharacterEffects(plan).some(
+    (effect) => effect.key === "no_ranged_weapons" && Number(effect.value) > 0,
+  );
+  if (!noRangedWeapons) return true;
+
+  const weaponTypes = entry.official.records
+    .map((record) => record.weaponType)
+    .filter((weaponType) => Number.isFinite(weaponType));
+  return !weaponTypes.length || weaponTypes.some((weaponType) => weaponType === 0);
 }
 
 function normalizeTag(tag) {
@@ -592,6 +622,7 @@ function collectOfficialStatKeys(official, positiveOnly = false) {
         effect.statDisplayed,
         effect.statDisplayedName,
         effect.statName,
+        effect.stat,
         effect.textKey,
         effect.customKey,
         ...(effect.statsModified ?? []),
@@ -653,6 +684,35 @@ function resolveCustomGrowthEffect(effect) {
 
 function collectCustomGrowthEffects(official) {
   return officialEffects(official).map(resolveCustomGrowthEffect).filter(Boolean);
+}
+
+function officialCharacterEffects(plan) {
+  return plan?.officialCharacter?.effects ?? [];
+}
+
+function killGrowthOpportunity(entry) {
+  const effects = officialEffects(entry.official).filter(
+    (effect) =>
+      effect.key === "effect_gain_stat_every_killed_enemies" &&
+      Number(effect.value) > 0 &&
+      effect.stat,
+  );
+  if (!effects.length) return null;
+
+  const stat = effects[0].stat;
+  const statGain = Math.max(0, ...effects.map((effect) => Number(effect.statNb ?? 1)));
+  const gainsPer100Kills = effects.map((effect) =>
+    calculateKillGrowthPer100Kills(effect.value, effect.statNb ?? 1),
+  );
+
+  return {
+    stat,
+    statGain,
+    minKillsRequired: Math.min(...effects.map((effect) => Number(effect.value))),
+    maxKillsRequired: Math.max(...effects.map((effect) => Number(effect.value))),
+    minGainPer100Kills: Math.min(...gainsPer100Kills),
+    maxGainPer100Kills: Math.max(...gainsPer100Kills),
+  };
 }
 
 function isCustomGrowthRelevant(customGrowth, plan) {
@@ -728,9 +788,7 @@ function scoreMechanicFit(entry, plan) {
       ["free_rerolls", "items_price", "reroll_price"].includes(effect.key),
     ),
   );
-  const hasKillGrowth = (entry.official.records ?? []).some((record) =>
-    (record.effects ?? []).some((effect) => effect.key === "effect_gain_stat_every_killed_enemies"),
-  );
+  const killGrowth = killGrowthOpportunity(entry);
   const hasArmorScaling = (entry.official.records ?? []).some((record) =>
     (record.stats?.scalingStats ?? []).some((scaling) => scaling.stat === "stat_armor"),
   );
@@ -804,7 +862,7 @@ function scoreMechanicFit(entry, plan) {
   }
   if (planStats.has("luck") && hasPickupAttraction) {
     score += 3;
-    reasons.push("机制修正：拾取吸附提高 Lucky 触发频率");
+    reasons.push("机制修正：拾取吸附提高拾取触发频率");
   }
   if ((planStats.has("luck") || planStats.has("harvesting")) && hasPickupMaterialBonus) {
     score += 2;
@@ -841,9 +899,17 @@ function scoreMechanicFit(entry, plan) {
     score += 2;
     reasons.push("机制修正：官方商店效率降低成型成本");
   }
-  if ((routeTags.has("ethereal") || weaponSetIds.has("ethereal")) && hasKillGrowth) {
-    score += 3;
-    reasons.push("机制修正：幽魂击杀成长适合后期属性滚雪球");
+  if ((routeTags.has("ethereal") || weaponSetIds.has("ethereal")) && killGrowth) {
+    const growthScore = Math.min(8, Math.max(3, Math.round(killGrowth.minGainPer100Kills)));
+    const stat = STAT_LABELS[OFFICIAL_STAT_TO_PLAN_STAT[killGrowth.stat]] ?? killGrowth.stat;
+    score += growthScore;
+    reasons.push(
+      `幽魂击杀成长：每 100 次该武器击杀约 +${killGrowth.minGainPer100Kills.toFixed(
+        1,
+      )}-${killGrowth.maxGainPer100Kills.toFixed(1)} ${stat}（逐阶每 ${
+        killGrowth.maxKillsRequired
+      }-${killGrowth.minKillsRequired} 杀 +${killGrowth.statGain}）`,
+    );
   }
   if (planStats.has("armor") && hasArmorScaling) {
     score += 3;
@@ -914,6 +980,114 @@ function scoreMechanicFit(entry, plan) {
   }
 
   return { score, reasons };
+}
+
+function sumStaticItemEffect(entry, key) {
+  return officialEffects(entry.official)
+    .filter(
+      (effect) =>
+        effect.key === key &&
+        effect.scriptPath === "res://items/global/effect.gd" &&
+        Number.isFinite(effect.value),
+    )
+    .reduce((sum, effect) => sum + Number(effect.value), 0);
+}
+
+function scoreCharacterInteraction(entry, plan, mode) {
+  const characterEffects = officialCharacterEffects(plan);
+  if (!characterEffects.length) return { score: 0, reasons: [] };
+
+  if (entry.weapon) {
+    const armorConversion = characterEffects.find(
+      (effect) =>
+        effect.textKey === "EFFECT_GAIN_STAT_FOR_EVERY_STAT" &&
+        effect.key === "stat_melee_damage" &&
+        effect.statScaled === "stat_armor" &&
+        Number(effect.value) > 0 &&
+        Number(effect.nbStatScaled) > 0,
+    );
+    const isMeleeWeapon = entry.official.records.some((record) => record.weaponType === 0);
+    if (armorConversion && isMeleeWeapon) {
+      const armor = Math.max(0, representativeStats(plan).armor ?? 0);
+      const convertedMeleeDamage =
+        Math.floor(armor / armorConversion.nbStatScaled) * armorConversion.value;
+      return {
+        score: Math.min(6, Math.max(1, Math.round(convertedMeleeDamage / 10))),
+        reasons: [
+          `角色联动：目标护甲 ${armor.toFixed(0)} 按官方每 ${
+            armorConversion.nbStatScaled
+          } 护甲 +${armorConversion.value} 近战伤害，约 +${convertedMeleeDamage.toFixed(0)}`,
+        ],
+      };
+    }
+    return { score: 0, reasons: [] };
+  }
+
+  if (!entry.item) return { score: 0, reasons: [] };
+  const pickupDamage = characterEffects.find(
+    (effect) =>
+      effect.customKey === "dmg_when_pickup_gold" &&
+      /chance_stat_damage_effect\.gd$/.test(effect.scriptPath ?? "") &&
+      Number(effect.value) > 0,
+  );
+  if (!pickupDamage) return { score: 0, reasons: [] };
+
+  const luck = sumStaticItemEffect(entry, "stat_luck");
+  const damagePercent = sumStaticItemEffect(entry, "stat_percent_damage");
+  const pickupAttraction = Math.max(0, sumStaticItemEffect(entry, "instant_gold_attracting"));
+  if (!luck && !damagePercent && !pickupAttraction) return { score: 0, reasons: [] };
+
+  const luckGainPercent = characterEffects
+    .filter(
+      (effect) =>
+        effect.key === "effect_increase_stat_gains" &&
+        effect.statsModified?.includes("stat_luck") &&
+        Number(effect.value) > 0,
+    )
+    .reduce((sum, effect) => sum + Number(effect.value), 0);
+  const interaction = calculatePickupTriggerInteraction(
+    representativeStats(plan),
+    mode?.id === "endless" ? "swarm" : "normalWave",
+    {
+      id: `character:${plan.characterId}:pickup-damage`,
+      trigger: "onPickup",
+      chance: pickupDamage.chance ?? 100,
+      baseDamage: 0,
+      luckScaling: Number(pickupDamage.value) / 100,
+      statScaling: {},
+    },
+    {
+      luck,
+      luckGainPercent,
+      damagePercent,
+      pickupAttraction,
+    },
+  );
+  if (Math.abs(interaction.incrementalDps) < 0.05) return { score: 0, reasons: [] };
+
+  const detail = [
+    luck ? `幸运 ${luck > 0 ? "+" : ""}${luck} × ${(1 + luckGainPercent / 100).toFixed(2)}` : "",
+    damagePercent
+      ? `总伤害 ${damagePercent > 0 ? "+" : ""}${damagePercent}%`
+      : "",
+    pickupAttraction ? `拾取吸附 +${pickupAttraction}%` : "",
+  ]
+    .filter(Boolean)
+    .join(" / ");
+  const rawScore = interaction.incrementalDps / 8;
+  const score =
+    interaction.incrementalDps > 0
+      ? Math.min(8, Math.max(1, Math.round(rawScore)))
+      : Math.max(-4, Math.min(-1, Math.round(rawScore)));
+
+  return {
+    score,
+    reasons: [
+      `角色联动：幸运星官方拾取伤害 ${
+        interaction.incrementalDps > 0 ? "+" : ""
+      }${interaction.incrementalDps.toFixed(1)} DPS（${detail}）`,
+    ],
+  };
 }
 
 function modeSupportsCurseRisk(planStats, routeTags) {
@@ -1934,6 +2108,9 @@ function scoreRecommendation(entry, preference, plan, mode) {
   const mechanicFit = scoreMechanicFit(entry, plan);
   reasons.push(...mechanicFit.reasons);
 
+  const characterInteraction = scoreCharacterInteraction(entry, plan, mode);
+  reasons.push(...characterInteraction.reasons);
+
   const modeFit = scoreModeFit(entry, mode);
   reasons.push(...modeFit.reasons);
 
@@ -1953,6 +2130,7 @@ function scoreRecommendation(entry, preference, plan, mode) {
       setFit.score +
       officialStatSynergy.score +
       mechanicFit.score +
+      characterInteraction.score +
       modeFit.score +
       scenarioModel.score,
     reasons,
@@ -1970,13 +2148,15 @@ function sortByRecommendationScore(entries, preference, plan, mode) {
     .map(({ entry, scoring }) => ({
       ...entry,
       recommendationScore: scoring.score,
-      recommendationReasons: scoring.reasons.slice(0, 10),
+      recommendationReasons: scoring.reasons.slice(0, 12),
     }));
 }
 
 function filterAndSort(entries, options, plan, mode) {
   return sortByRecommendationScore(
-    entries.filter((entry) => entryAllowedByOptions(entry, options)),
+    entries.filter(
+      (entry) => entryAllowedByOptions(entry, options) && entryAllowedByCharacter(entry, plan),
+    ),
     options.preference,
     plan,
     mode,
@@ -2088,22 +2268,29 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
   if (!plan) {
     throw new Error(`Missing ${modeId} plan for ${character.name}`);
   }
+  const scoringPlan = {
+    ...plan,
+    characterId,
+    officialCharacter: findOfficialCharacterRecord(options.officialCatalog, character),
+  };
 
   const manualWeapons = plan.recommendedWeapons.map((entry) =>
     resolveWeapon(entry, options.officialCatalog),
   );
   const manualItems = plan.keyItems.map((entry) => resolveItem(entry, options.officialCatalog));
   const weaponPool = options.officialCatalog
-    ? expandOfficialWeaponPool(manualWeapons, options, plan)
+    ? expandOfficialWeaponPool(manualWeapons, options, scoringPlan)
     : manualWeapons;
-  const itemPool = options.officialCatalog ? expandOfficialItemPool(manualItems, options, plan) : manualItems;
-  const recommendedWeapons = filterAndSort(weaponPool, resolvedOptions, plan, mode).slice(
+  const itemPool = options.officialCatalog
+    ? expandOfficialItemPool(manualItems, options, scoringPlan)
+    : manualItems;
+  const recommendedWeapons = filterAndSort(weaponPool, resolvedOptions, scoringPlan, mode).slice(
     0,
     visibleRecommendationLimit(weaponPool, manualWeapons.length, 5),
   );
-  const keyItems = filterAndSort(itemPool, resolvedOptions, plan, mode).slice(
+  const keyItems = filterAndSort(itemPool, resolvedOptions, scoringPlan, mode).slice(
     0,
-    visibleRecommendationLimit(itemPool, manualItems.length, 20),
+    visibleRecommendationLimit(itemPool, manualItems.length, 24),
   );
 
   return {

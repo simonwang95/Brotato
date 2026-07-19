@@ -165,28 +165,33 @@ function parseWeaponStats(path, block) {
 function parseEffectDetail(path, block) {
   if (!path || !block) return null;
   const extResources = collectExtResources(block);
-  const scriptRef = getResourceRef(block, "script");
+  const resourceBlock = block.match(/\[resource\]\s*([\s\S]*)$/)?.[1] ?? block;
+  const scriptRef = getResourceRef(resourceBlock, "script");
+  const stat = getString(resourceBlock, "stat");
+  const statNb = getNumber(resourceBlock, "stat_nb");
 
   return {
     path,
     scriptPath: extResources[scriptRef]?.path ?? null,
-    key: getString(block, "key"),
-    textKey: getString(block, "text_key"),
-    value: getNumber(block, "value"),
-    customKey: getString(block, "custom_key"),
-    storageMethod: getNumber(block, "storage_method"),
-    effectSign: getNumber(block, "effect_sign"),
-    chance: getNumber(block, "chance"),
-    trackingText: getString(block, "tracking_text"),
-    customArgs: getLineValue(block, "custom_args"),
-    setId: getString(block, "set_id"),
-    statDisplayedName: getString(block, "stat_displayed_name"),
-    statName: getString(block, "stat_name"),
-    statDisplayed: getString(block, "stat_displayed"),
-    statsModified: getArrayStrings(block, "stats_modified"),
-    nbStatScaled: getNumber(block, "nb_stat_scaled"),
-    statScaled: getString(block, "stat_scaled"),
-    permStatsOnly: getBoolean(block, "perm_stats_only"),
+    key: getString(resourceBlock, "key"),
+    textKey: getString(resourceBlock, "text_key"),
+    value: getNumber(resourceBlock, "value"),
+    customKey: getString(resourceBlock, "custom_key"),
+    storageMethod: getNumber(resourceBlock, "storage_method"),
+    effectSign: getNumber(resourceBlock, "effect_sign"),
+    chance: getNumber(resourceBlock, "chance"),
+    trackingText: getString(resourceBlock, "tracking_text"),
+    customArgs: getLineValue(resourceBlock, "custom_args"),
+    setId: getString(resourceBlock, "set_id"),
+    statDisplayedName: getString(resourceBlock, "stat_displayed_name"),
+    statName: getString(resourceBlock, "stat_name"),
+    statDisplayed: getString(resourceBlock, "stat_displayed"),
+    statsModified: getArrayStrings(resourceBlock, "stats_modified"),
+    nbStatScaled: getNumber(resourceBlock, "nb_stat_scaled"),
+    statScaled: getString(resourceBlock, "stat_scaled"),
+    ...(stat ? { stat } : {}),
+    ...(Number.isFinite(statNb) ? { statNb } : {}),
+    permStatsOnly: getBoolean(resourceBlock, "perm_stats_only"),
   };
 }
 

@@ -252,6 +252,18 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     ),
     "Sword recommendation should explain tier availability",
   );
+  assert.ok(
+    guide.recommendedWeapons[0].recommendationReasons.some((reason) =>
+      reason.includes("目标护甲 19 按官方每 1 护甲 +2 近战伤害，约 +38"),
+    ),
+    "Sword recommendation should quantify Knight's official armor conversion",
+  );
+  assert.ok(
+    guide.recommendedWeapons.every(({ official }) =>
+      official.records.every((record) => record.weaponType !== 1),
+    ),
+    "Knight's official no-ranged rule should remove ranged weapon candidates",
+  );
   const spikyShield = guide.recommendedWeapons.find(({ weapon }) => weapon.name === "Spiky Shield");
   assert.ok(
     spikyShield,
@@ -530,6 +542,19 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     ),
     "ghost weapons should explain official kill-growth mechanics",
   );
+  const growthReasons = Object.fromEntries(
+    guide.recommendedWeapons.slice(0, 3).map(({ weapon, recommendationReasons }) => [
+      weapon.name,
+      recommendationReasons.find((reason) => reason.includes("幽魂击杀成长")),
+    ]),
+  );
+  assert.match(growthReasons["Ghost Axe"] ?? "", /\+5\.0-8\.3 总伤害 %/);
+  assert.match(growthReasons["Ghost Flint"] ?? "", /\+5\.0-8\.3 攻速 %/);
+  assert.match(growthReasons["Ghost Scepter"] ?? "", /\+5\.0-8\.3 最大生命/);
+  assert.ok(
+    Object.values(growthReasons).every((reason) => reason?.includes("逐阶每 20-12 杀 +1")),
+    "ethereal growth should retain the official T1-T4 kill thresholds",
+  );
 }
 
 {
@@ -623,9 +648,21 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     guide.keyItems.some(
       ({ item, recommendationReasons }) =>
         item.name === "Sifd's Relic" &&
-        recommendationReasons.some((reason) => reason.includes("拾取吸附提高 Lucky 触发频率")),
+        recommendationReasons.some((reason) =>
+          reason.includes("幸运星官方拾取伤害 +161.4 DPS（拾取吸附 +100%）"),
+        ),
     ),
-    "lucky guide should explain Sifd pickup-chain utility",
+    "lucky guide should quantify Sifd pickup-chain utility against the official character passive",
+  );
+  assert.ok(
+    guide.keyItems.some(
+      ({ item, recommendationReasons }) =>
+        item.name === "Lucky Charm" &&
+        recommendationReasons.some((reason) =>
+          reason.includes("幸运 +30 × 1.25"),
+        ),
+    ),
+    "lucky guide should apply the official +25% luck-gain modifier to item luck",
   );
   assert.ok(
     guide.keyItems.some(

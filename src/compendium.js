@@ -39,7 +39,7 @@ const STAT_LABELS = {
   stat_curse: "诅咒",
   stat_max_hp: "最大生命",
   stat_melee_damage: "近战伤害",
-  stat_percent_damage: "伤害",
+  stat_percent_damage: "总伤害",
   stat_ranged_damage: "远程伤害",
   stat_range: "范围",
   stat_speed: "移速",
@@ -92,6 +92,10 @@ const STAT_LABELS = {
   loot_alien_chance: "战利品外星人出现概率",
   loot_alien_speed: "战利品外星人移速",
   extra_loot_aliens_next_wave: "下一波战利品外星人",
+  dodge_cap: "闪避上限",
+  min_weapon_tier: "最低武器阶级",
+  no_ranged_weapons: "不能持有远程武器",
+  stat_damage: "总伤害",
 };
 
 const PERCENT_STATS = new Set([
@@ -101,6 +105,7 @@ const PERCENT_STATS = new Set([
   "stat_lifesteal",
   "stat_percent_damage",
   "stat_speed",
+  "dodge_cap",
 ]);
 
 const EFFECT_TEXT_LABELS = {
@@ -154,7 +159,11 @@ const EFFECT_TEXT_LABELS = {
   EFFECT_WHISTLE_SOUND: "哨声效果",
 };
 
-const BINARY_EFFECT_KEYS = new Set(["die_in_one_hit", "beast_master_effect"]);
+const BINARY_EFFECT_KEYS = new Set([
+  "beast_master_effect",
+  "die_in_one_hit",
+  "no_ranged_weapons",
+]);
 
 const CHARACTER_NAME_KEY_OVERRIDES = {
   oneArmed: "CHARACTER_ONE_ARM",
@@ -291,6 +300,12 @@ function formatEffectDetail(effect) {
   const trigger = effectTextLabel(effect.textKey);
   const keyLabel = statLabel(effect.key);
 
+  if (effect.scriptPath?.includes("gain_stat_every_killed_enemies_effect")) {
+    const threshold = Number.isFinite(effect.value) ? effect.value : "未知";
+    const gain = Number.isFinite(effect.statNb) ? effect.statNb : 1;
+    return `每用该武器击杀 ${threshold} 个敌人：${statLabel(effect.stat)} ${signedNumber(gain)}`;
+  }
+
   if (effect.scriptPath?.includes("class_bonus_effect")) {
     const setLabel = setLabelFromId(effect.setId);
     const stat = statLabel(effect.statDisplayedName);
@@ -312,7 +327,10 @@ function formatEffectDetail(effect) {
       return formatCustomScalingEffect(effect, trigger);
     }
     const scaled = statLabel(effect.statScaled);
-    return `${trigger || `每 ${effect.nbStatScaled ?? 1} ${scaled}`}：${statLabel(effect.key)} ${signedNumber(effect.value)}%`;
+    const permanent = effect.permStatsOnly ? "永久" : "";
+    return `每 ${effect.nbStatScaled ?? 1} 点${permanent}${scaled}：${statLabel(
+      effect.key,
+    )} ${formatStatValue(effect.key, effect.value)}`;
   }
 
   if (effect.scriptPath?.includes("chance_stat_damage_effect")) {
@@ -348,6 +366,7 @@ function formatEffectDetail(effect) {
 
   if (effect.key) {
     const value = formatStatValue(effect.key, effect.value);
+    if (effect.key === "min_weapon_tier") return `最低武器阶级：T${effect.value + 1}`;
     if (effect.customKey === "starting_weapon") return `起始武器：${effect.key}`;
     if (effect.customKey === "starting_item") return `起始物品：${keyLabel} ${signedNumber(effect.value)}`;
     if (BINARY_EFFECT_KEYS.has(effect.key)) return keyLabel;
