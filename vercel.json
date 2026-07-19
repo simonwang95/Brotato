@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/parse-screenshot.js": {
-      "maxDuration": 1200
+      "maxDuration": 300
     }
   },
   "headers": [

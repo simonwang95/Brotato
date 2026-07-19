@@ -82,12 +82,18 @@ ${selectedCharacterLine}
 }
 
 export function buildAiConfig(env) {
+  const requestedTimeoutSeconds = numberFromEnv(env.OCR_TIMEOUT_SECONDS, 1200);
+  const timeoutSeconds =
+    env.VERCEL === "1" || env.VERCEL_ENV
+      ? Math.min(requestedTimeoutSeconds, 285)
+      : requestedTimeoutSeconds;
+
   return {
     apiKey: env.API_KEY,
     apiUrl: env.API_URL,
     model: env.MODEL,
     maxTokens: numberFromEnv(env.MAX_TOKENS, 4000),
-    timeoutMs: numberFromEnv(env.OCR_TIMEOUT_SECONDS, 1200) * 1000,
+    timeoutMs: timeoutSeconds * 1000,
     useResponseFormatJson: String(env.USE_RESPONSE_FORMAT_JSON || "").toLowerCase() === "true",
   };
 }

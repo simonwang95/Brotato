@@ -41,7 +41,8 @@
 - Output Directory：`public`。
 - Install Command：不需要依赖时可留空；如果 Vercel 要求安装，默认 `npm install` 也可以。
 - Node.js Version：建议 20.x 或更高。
-- `vercel.json` 已为 `api/parse-screenshot.js` 设置 `maxDuration: 1200`，用于给视觉 OCR 留出响应时间；`OCR_TIMEOUT_SECONDS` 默认也是 1200。
+- `vercel.json` 为 `api/parse-screenshot.js` 设置 `maxDuration: 300`，兼容当前 Vercel 套餐限制。
+- `OCR_TIMEOUT_SECONDS` 本地默认是 1200；在 Vercel 环境中会自动限制为最多 285 秒，为函数返回错误和清理请求预留 15 秒。
 
 ## 本地验证
 

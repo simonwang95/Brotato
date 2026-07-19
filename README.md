@@ -82,6 +82,8 @@ USE_RESPONSE_FORMAT_JSON="false"
 
 `env.local` 是本机配置文件，不提交；仓库里保留 `env.local.example` 作为模板。LM Studio 对 `response_format` 支持不稳定，默认不要开启 JSON mode；如果换成明确支持 JSON mode 的 OpenAI 兼容服务，再把 `USE_RESPONSE_FORMAT_JSON` 设为 `true`。
 
+本地 OCR 默认最多等待 1200 秒。Vercel 部署受函数时长限制，程序会自动把线上等待时间限制为 285 秒，并在 300 秒的平台截止时间前返回。
+
 截图解析目前只做右侧属性栏 OCR，输出属性名和数字，再由前端映射到角色面板。只看静态页面时仍可用：
 
 ```bash
