@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { buildCompendium } from "../src/compendium.js";
+import { buildCompendium, formatEffectDetail } from "../src/compendium.js";
 
 const catalog = JSON.parse(readFileSync("data/official-catalog.json", "utf8"));
 const localization = JSON.parse(readFileSync("data/official-localization.json", "utf8"));
@@ -14,6 +14,12 @@ const internalArtifactPattern =
 
 const issues = [];
 let renderedLineCount = 0;
+const decodingIndex = new Map(
+  (decoding.records ?? []).map((record) => [
+    `${record.kind}:${record.recordId}:${record.resourcePath}`,
+    record,
+  ]),
+);
 
 for (const record of decoding.records ?? []) {
   const catalogRecord = (catalog.records ?? []).find(
@@ -25,6 +31,22 @@ for (const record of decoding.records ?? []) {
   }
   if (!record.resourcePath || !record.effectKey || !record.impactScope) {
     issues.push(`decoding manifest entry is incomplete: ${record.kind}:${record.nameKey}`);
+  }
+  if (effect && record.displayText !== formatEffectDetail(effect)) {
+    issues.push(`decoding manifest display text is stale: ${record.kind}:${record.nameKey}:${record.resourcePath}`);
+  }
+}
+
+for (const catalogRecord of catalog.records ?? []) {
+  for (const effect of catalogRecord.effects ?? []) {
+    const displayText = formatEffectDetail(effect);
+    if (!/待解码|未知/.test(displayText)) continue;
+    const key = `${catalogRecord.kind}:${catalogRecord.id}:${effect.path}`;
+    if (!decodingIndex.has(key)) {
+      issues.push(
+        `pending display effect is missing from decoding manifest: ${catalogRecord.kind}:${catalogRecord.nameKey}:${effect.path}`,
+      );
+    }
   }
 }
 

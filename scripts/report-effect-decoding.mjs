@@ -1,13 +1,33 @@
 import { readFileSync, writeFileSync } from "node:fs";
+import { formatEffectDetail } from "../src/compendium.js";
 
 const catalogPath = process.env.BROTATO_CATALOG_PATH || "data/official-catalog.json";
 const outputPath = process.env.BROTATO_EFFECT_DECODING_OUTPUT || "data/official-effect-decoding.json";
 const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
+const pendingDisplayPattern = /待解码|未知/;
+
+function petHasStaticDamageParameters(effect) {
+  const related = effect.relatedResources ?? {};
+  return [
+    [related.weapon_stats, related.weapon_stats?.cooldown],
+    [related.ranged_weapon_stats, related.ranged_weapon_stats?.cooldown],
+    [related.explosion_effect?.stats, related.explosion_effect?.stats?.cooldown],
+    [related.landmine_effect_stat?.stats, related.landmine_effect_stat?.spawn_cooldown],
+  ].some(([stats, cooldownFrames]) => stats?.damage > 0 && cooldownFrames > 0);
+}
+
+function groupValue(group, field, effect) {
+  const value = group[field];
+  return typeof value === "function" ? value(effect) : value;
+}
 
 const groups = [
   {
     id: "pet-static-parameters",
-    status: "decoded-static-parameters",
+    status: (effect) =>
+      petHasStaticDamageParameters(effect)
+        ? "decoded-static-parameters"
+        : "partial-static-decode",
     impactScope: "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
     matches: (effect) => /^EFFECT_PET_/.test(effect.textKey ?? ""),
   },
@@ -40,10 +60,22 @@ const groups = [
     status: "pending-runtime-decode",
     impactScope: "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
     matches: (effect) =>
-      /null_double_value_effect/.test(effect.scriptPath ?? "") ||
       ["bonus_damage_against_targets_above_hp", "bonus_damage_against_targets_below_hp"].includes(
         effect.key,
       ),
+  },
+  {
+    id: "periodic-sub-effect",
+    status: "pending-runtime-decode",
+    impactScope: "周期性强化/子效果触发；静态资源只确认触发计数，具体子效果参数仍需解码。",
+    matches: (effect) =>
+      /weapon_effect_with_sub_effect|effect_with_sub_effects/.test(effect.scriptPath ?? ""),
+  },
+  {
+    id: "break-on-hit",
+    status: "pending-runtime-decode",
+    impactScope: "命中时的武器破损机制；触发概率和破损结果仍需从运行时脚本确认。",
+    matches: (effect) => effect.key === "break_on_hit",
   },
   {
     id: "giant-belt",
@@ -64,12 +96,20 @@ const groups = [
 const records = [];
 for (const catalogRecord of catalog.records ?? []) {
   for (const effect of catalogRecord.effects ?? []) {
-    const group = groups.find(({ matches }) => matches(effect));
-    if (!group) continue;
+    const displayText = formatEffectDetail(effect);
+    const hasPendingDisplay = pendingDisplayPattern.test(displayText);
+    const matchedGroup = groups.find(({ matches }) => matches(effect));
+    if (!matchedGroup && !hasPendingDisplay) continue;
+    const group = matchedGroup ?? {
+      id: "unclassified-runtime-effect",
+      status: "pending-runtime-decode",
+      impactScope:
+        "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+    };
     records.push({
       group: group.id,
-      status: group.status,
-      impactScope: group.impactScope,
+      status: groupValue(group, "status", effect),
+      impactScope: groupValue(group, "impactScope", effect),
       kind: catalogRecord.kind,
       nameKey: catalogRecord.nameKey,
       recordId: catalogRecord.id,
@@ -81,6 +121,8 @@ for (const catalogRecord of catalog.records ?? []) {
       chance: effect.chance,
       customKey: effect.customKey || null,
       customArgs: effect.customArgs,
+      displayText,
+      hasPendingDisplay,
       effectParameters: effect.effectParameters ?? {},
       relatedResources: effect.relatedResources ?? {},
     });
@@ -106,7 +148,7 @@ const output = {
   generatedFrom: catalogPath,
   sourceMetadata: catalog.sourceMetadata ?? null,
   note:
-    "这是官方静态效果解码边界清单。decoded-static-parameters 仅表示主资源/SubResource 参数已读取；partial 或 pending 项不能直接当作精确 DPS。",
+    "这是官方静态效果解码边界清单。所有图鉴中仍显示待解码/未知的效果都必须进入清单；decoded-static-parameters 仅表示可用的主资源/SubResource 参数已读取，partial 或 pending 项不能直接当作精确 DPS。",
   summary,
   records,
 };

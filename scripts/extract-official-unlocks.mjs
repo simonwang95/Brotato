@@ -16,6 +16,16 @@ const dlcPackagePath = join(installDir, "BrotatoAbyssalTerrors.pck");
 const pendingTextReason =
   "已定位静态 challenge 奖励和翻译 key，但当前未能从 PHashTranslation 可靠读取简中描述；保留待人工核验或后续解码。";
 
+const VERIFIED_STATIC_TEXT_CORRECTIONS = {
+  chal_hungry: {
+    zhDescription: "在一局游戏中拾取 20 个消耗品",
+    expectedRawZhDescription: "在比赛期间回捡起20把武器",
+    expectedDefaultDescription: "Pick up 20 consumables during a run",
+    reason:
+      "安装包 achievementLocalizations.csv 的简中描述把 consumables 写成了武器，与同一静态记录的英文条件冲突。",
+  },
+};
+
 const STAT_LABELS = {
   pickup_range: { en: "% Pickup Range", zh: "%拾取范围" },
   stat_armor: { en: "Armor", zh: "护甲" },
@@ -270,7 +280,16 @@ function extractCharacterUnlocks(
         optimizedLocalizationForChallenge(block, translations) ??
         templateLocalizationForChallenge(block) ??
         {};
-      const extractionStatus = localization["zh-Hans"]?.description
+      const rawZhDescription = localization["zh-Hans"]?.description ?? null;
+      const correctionCandidate = VERIFIED_STATIC_TEXT_CORRECTIONS[challengeId] ?? null;
+      const textCorrection =
+        correctionCandidate &&
+        rawZhDescription === correctionCandidate.expectedRawZhDescription &&
+        localization.default?.description === correctionCandidate.expectedDefaultDescription
+          ? correctionCandidate
+          : null;
+      const zhDescription = textCorrection?.zhDescription ?? rawZhDescription;
+      const extractionStatus = zhDescription
         ? "verified-static-text"
         : "pending-text";
       const pendingFields =
@@ -308,8 +327,17 @@ function extractCharacterUnlocks(
         title: localization.default?.title ?? null,
         description: localization.default?.description ?? null,
         zhTitle: localization["zh-Hans"]?.title ?? null,
-        zhDescription: localization["zh-Hans"]?.description ?? null,
+        zhDescription,
         extractionStatus,
+        ...(textCorrection
+          ? {
+              textCorrection: {
+                reason: textCorrection.reason,
+                rawZhDescription,
+                defaultDescription: localization.default?.description ?? null,
+              },
+            }
+          : {}),
         ...pendingFields,
       };
     })

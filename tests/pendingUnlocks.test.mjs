@@ -8,6 +8,12 @@ const pending = JSON.parse(readFileSync("data/official-unlock-pending.json", "ut
 assert.equal(unlocks.sourceMetadata.productVersion, "1.1.12.0.beta-3");
 assert.equal(unlocks.sourceMetadata.packages.length, 2);
 
+const glutton = unlocks.records.find((record) => record.characterId === "glutton");
+assert.equal(glutton?.description, "Pick up 20 consumables during a run");
+assert.equal(glutton?.zhDescription, "在一局游戏中拾取 20 个消耗品");
+assert.match(glutton?.textCorrection?.reason ?? "", /consumables.*武器/);
+assert.equal(glutton?.textCorrection?.rawZhDescription, "在比赛期间回捡起20把武器");
+
 const sourcePendingRecords = unlocks.records.filter(
   (record) => record.extractionStatus === "pending-text",
 );

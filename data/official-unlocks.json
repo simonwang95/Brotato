@@ -1,7 +1,7 @@
 {
   "sourceMetadata": {
-    "extractorVersion": "brotato-static-extractors@3",
-    "extractedAt": "2026-08-06T06:45:22.683Z",
+    "extractorVersion": "brotato-static-extractors@4",
+    "extractedAt": "2026-08-06T07:17:16.073Z",
     "productVersion": "1.1.12.0.beta-3",
     "productVersionEvidence": "Brotato.app/Contents/Info.plist:CFBundleShortVersionString",
     "packages": [
@@ -415,8 +415,13 @@
       "title": "Hungry",
       "description": "Pick up 20 consumables during a run",
       "zhTitle": "饥饿",
-      "zhDescription": "在比赛期间回捡起20把武器",
-      "extractionStatus": "verified-static-text"
+      "zhDescription": "在一局游戏中拾取 20 个消耗品",
+      "extractionStatus": "verified-static-text",
+      "textCorrection": {
+        "reason": "安装包 achievementLocalizations.csv 的简中描述把 consumables 写成了武器，与同一静态记录的英文条件冲突。",
+        "rawZhDescription": "在比赛期间回捡起20把武器",
+        "defaultDescription": "Pick up 20 consumables during a run"
+      }
     },
     {
       "characterId": "golem",

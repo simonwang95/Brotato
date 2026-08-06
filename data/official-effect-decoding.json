@@ -21,26 +21,109 @@
     ],
     "evidenceBoundary": "仅使用安装包、Brotato.app/Contents/Info.plist 和仓库静态数据；不读取玩家存档或本机解锁进度。"
   },
-  "note": "这是官方静态效果解码边界清单。decoded-static-parameters 仅表示主资源/SubResource 参数已读取；partial 或 pending 项不能直接当作精确 DPS。",
+  "note": "这是官方静态效果解码边界清单。所有图鉴中仍显示待解码/未知的效果都必须进入清单；decoded-static-parameters 仅表示可用的主资源/SubResource 参数已读取，partial 或 pending 项不能直接当作精确 DPS。",
   "summary": {
-    "total": 102,
+    "total": 128,
     "byGroup": {
+      "break-on-hit": 4,
       "burning": 19,
       "charm": 4,
       "extra-projectiles": 13,
       "giant-belt": 1,
-      "high-low-health-threshold": 18,
+      "high-low-health-threshold": 8,
+      "periodic-sub-effect": 6,
       "pet-static-parameters": 9,
       "slow-zone": 7,
-      "structure-internal-parameters": 31
+      "structure-internal-parameters": 31,
+      "unclassified-runtime-effect": 26
     },
     "byStatus": {
-      "partial-static-decode": 63,
-      "pending-runtime-decode": 30,
-      "decoded-static-parameters": 9
+      "pending-runtime-decode": 56,
+      "partial-static-decode": 67,
+      "decoded-static-parameters": 5
     }
   },
   "records": [
+    {
+      "group": "break-on-hit",
+      "status": "pending-runtime-decode",
+      "impactScope": "命中时的武器破损机制；触发概率和破损结果仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_BRICK",
+      "recordId": "weapon_brick_1",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/1/brick_effect_0.tres",
+      "effectKey": "break_on_hit",
+      "textKey": "effect_break_on_hit",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "命中时触发武器破损机制；具体概率和结果待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "break-on-hit",
+      "status": "pending-runtime-decode",
+      "impactScope": "命中时的武器破损机制；触发概率和破损结果仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_BRICK",
+      "recordId": "weapon_brick_2",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/2/brick_2_effect_0.tres",
+      "effectKey": "break_on_hit",
+      "textKey": "effect_break_on_hit",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "命中时触发武器破损机制；具体概率和结果待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "break-on-hit",
+      "status": "pending-runtime-decode",
+      "impactScope": "命中时的武器破损机制；触发概率和破损结果仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_BRICK",
+      "recordId": "weapon_brick_3",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/3/brick_3_effect_0.tres",
+      "effectKey": "break_on_hit",
+      "textKey": "effect_break_on_hit",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "命中时触发武器破损机制；具体概率和结果待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "break-on-hit",
+      "status": "pending-runtime-decode",
+      "impactScope": "命中时的武器破损机制；触发概率和破损结果仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_BRICK",
+      "recordId": "weapon_brick_4",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/4/brick_4_effect_0.tres",
+      "effectKey": "break_on_hit",
+      "textKey": "effect_break_on_hit",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "命中时触发武器破损机制；具体概率和结果待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
     {
       "group": "burning",
       "status": "partial-static-decode",
@@ -56,6 +139,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 3 伤害，持续 5 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -89,6 +174,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 4 伤害，持续 6 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -122,6 +209,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 5 伤害，持续 8 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -155,6 +244,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 1 伤害，持续 3 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -188,6 +279,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 3 伤害，持续 5 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -221,6 +314,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 5 伤害，持续 8 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -254,6 +349,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 10 伤害，持续 5 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -287,6 +384,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 15 伤害，持续 6 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -320,6 +419,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 18 伤害，持续 7 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -353,6 +454,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 8 伤害，持续 8 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -386,6 +489,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 10 伤害，持续 10 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -419,6 +524,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 3 伤害，持续 3 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -452,6 +559,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 5 伤害，持续 5 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -485,6 +594,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 8 伤害，持续 6 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -518,6 +629,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 12 伤害，持续 9 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -551,6 +664,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 3 伤害，持续 3 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -584,6 +699,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 5 伤害，持续 5 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -617,6 +734,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 8 伤害，持续 6 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -650,6 +769,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时施加燃烧；每跳 12 伤害，持续 9 秒，概率 100%，缩放 100% 元素伤害；传播/跳数参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "burning_data": {
@@ -683,6 +804,8 @@
       "chance": null,
       "customKey": "charm_on_hit",
       "customArgs": "[  ]",
+      "displayText": "命中低生命敌人时有概率使其受到魅惑；生命阈值、概率和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -701,6 +824,8 @@
       "chance": null,
       "customKey": "charm_on_hit",
       "customArgs": "[  ]",
+      "displayText": "命中低生命敌人时有概率使其受到魅惑；生命阈值、概率和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -719,6 +844,8 @@
       "chance": null,
       "customKey": "charm_on_hit",
       "customArgs": "[  ]",
+      "displayText": "命中低生命敌人时有概率使其受到魅惑；生命阈值、概率和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -737,6 +864,8 @@
       "chance": null,
       "customKey": "charm_on_hit",
       "customArgs": "[  ]",
+      "displayText": "命中低生命敌人时有概率使其受到魅惑；生命阈值、概率和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -755,6 +884,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 3 个额外投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -796,6 +927,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 4 个额外投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -837,6 +970,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 5 个额外投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -878,6 +1013,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 6 个额外投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -919,6 +1056,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 1 个闪电投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -960,6 +1099,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 1 个闪电投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1001,6 +1142,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 1 个闪电投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1042,6 +1185,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 1 个闪电投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1083,6 +1228,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 1 个闪电投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1124,6 +1271,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 5 个额外投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1165,6 +1314,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 8 个额外投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1206,6 +1357,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 2 个减速投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1247,6 +1400,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时产生 4 个减速投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1288,6 +1443,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "暴击触发高生命目标额外伤害（官方参数 +10）；生命伤害换算待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -1306,186 +1463,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
-      "effectParameters": {},
-      "relatedResources": {}
-    },
-    {
-      "group": "high-low-health-threshold",
-      "status": "pending-runtime-decode",
-      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
-      "kind": "weapon",
-      "nameKey": "WEAPON_BRICK",
-      "recordId": "weapon_brick_1",
-      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/1/brick_effect_0.tres",
-      "effectKey": "break_on_hit",
-      "textKey": "effect_break_on_hit",
-      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
-      "value": 1,
-      "chance": null,
-      "customKey": null,
-      "customArgs": "[  ]",
-      "effectParameters": {},
-      "relatedResources": {}
-    },
-    {
-      "group": "high-low-health-threshold",
-      "status": "pending-runtime-decode",
-      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
-      "kind": "weapon",
-      "nameKey": "WEAPON_BRICK",
-      "recordId": "weapon_brick_2",
-      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/2/brick_2_effect_0.tres",
-      "effectKey": "break_on_hit",
-      "textKey": "effect_break_on_hit",
-      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
-      "value": 1,
-      "chance": null,
-      "customKey": null,
-      "customArgs": "[  ]",
-      "effectParameters": {},
-      "relatedResources": {}
-    },
-    {
-      "group": "high-low-health-threshold",
-      "status": "pending-runtime-decode",
-      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
-      "kind": "weapon",
-      "nameKey": "WEAPON_BRICK",
-      "recordId": "weapon_brick_3",
-      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/3/brick_3_effect_0.tres",
-      "effectKey": "break_on_hit",
-      "textKey": "effect_break_on_hit",
-      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
-      "value": 1,
-      "chance": null,
-      "customKey": null,
-      "customArgs": "[  ]",
-      "effectParameters": {},
-      "relatedResources": {}
-    },
-    {
-      "group": "high-low-health-threshold",
-      "status": "pending-runtime-decode",
-      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
-      "kind": "weapon",
-      "nameKey": "WEAPON_BRICK",
-      "recordId": "weapon_brick_4",
-      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/4/brick_4_effect_0.tres",
-      "effectKey": "break_on_hit",
-      "textKey": "effect_break_on_hit",
-      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
-      "value": 1,
-      "chance": null,
-      "customKey": null,
-      "customArgs": "[  ]",
-      "effectParameters": {},
-      "relatedResources": {}
-    },
-    {
-      "group": "high-low-health-threshold",
-      "status": "pending-runtime-decode",
-      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
-      "kind": "weapon",
-      "nameKey": "WEAPON_CHAINSAW",
-      "recordId": "weapon_chainsaw_3",
-      "resourcePath": "res://dlcs/dlc_1/weapons/melee/chainsaw/3/chainsaw_3_effect_0.tres",
-      "effectKey": "bonus_current_health_damage",
-      "textKey": "effect_bonus_current_health_damage",
-      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
-      "value": 10,
-      "chance": null,
-      "customKey": null,
-      "customArgs": "[  ]",
-      "effectParameters": {},
-      "relatedResources": {}
-    },
-    {
-      "group": "high-low-health-threshold",
-      "status": "pending-runtime-decode",
-      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
-      "kind": "weapon",
-      "nameKey": "WEAPON_CHAINSAW",
-      "recordId": "weapon_chainsaw_4",
-      "resourcePath": "res://dlcs/dlc_1/weapons/melee/chainsaw/4/chainsaw_4_effect_0.tres",
-      "effectKey": "bonus_current_health_damage",
-      "textKey": "effect_bonus_current_health_damage",
-      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
-      "value": 20,
-      "chance": null,
-      "customKey": null,
-      "customArgs": "[  ]",
-      "effectParameters": {},
-      "relatedResources": {}
-    },
-    {
-      "group": "high-low-health-threshold",
-      "status": "pending-runtime-decode",
-      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
-      "kind": "weapon",
-      "nameKey": "WEAPON_HIKING_STICK",
-      "recordId": "weapon_hiking_stick_1",
-      "resourcePath": "res://dlcs/dlc_1/weapons/melee/hiking_stick/1/hiking_stick_effect_0.tres",
-      "effectKey": "stat_range",
-      "textKey": "EFFECT_STAT_ON_EVERY_STEP",
-      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
-      "value": 1,
-      "chance": null,
-      "customKey": "gain_stat_for_every_step_after_equip",
-      "customArgs": "[  ]",
-      "effectParameters": {},
-      "relatedResources": {}
-    },
-    {
-      "group": "high-low-health-threshold",
-      "status": "pending-runtime-decode",
-      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
-      "kind": "weapon",
-      "nameKey": "WEAPON_HIKING_STICK",
-      "recordId": "weapon_hiking_stick_2",
-      "resourcePath": "res://dlcs/dlc_1/weapons/melee/hiking_stick/2/hiking_stick_2_effect_0.tres",
-      "effectKey": "stat_range",
-      "textKey": "EFFECT_STAT_ON_EVERY_STEP",
-      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
-      "value": 1,
-      "chance": null,
-      "customKey": "gain_stat_for_every_step_after_equip",
-      "customArgs": "[  ]",
-      "effectParameters": {},
-      "relatedResources": {}
-    },
-    {
-      "group": "high-low-health-threshold",
-      "status": "pending-runtime-decode",
-      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
-      "kind": "weapon",
-      "nameKey": "WEAPON_HIKING_STICK",
-      "recordId": "weapon_hiking_stick_3",
-      "resourcePath": "res://dlcs/dlc_1/weapons/melee/hiking_stick/3/hiking_stick_3_effect_0.tres",
-      "effectKey": "stat_range",
-      "textKey": "EFFECT_STAT_ON_EVERY_STEP",
-      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
-      "value": 1,
-      "chance": null,
-      "customKey": "gain_stat_for_every_step_after_equip",
-      "customArgs": "[  ]",
-      "effectParameters": {},
-      "relatedResources": {}
-    },
-    {
-      "group": "high-low-health-threshold",
-      "status": "pending-runtime-decode",
-      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
-      "kind": "weapon",
-      "nameKey": "WEAPON_HIKING_STICK",
-      "recordId": "weapon_hiking_stick_4",
-      "resourcePath": "res://dlcs/dlc_1/weapons/melee/hiking_stick/4/hiking_stick_4_effect_0.tres",
-      "effectKey": "stat_range",
-      "textKey": "EFFECT_STAT_ON_EVERY_STEP",
-      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
-      "value": 1,
-      "chance": null,
-      "customKey": "gain_stat_for_every_step_after_equip",
-      "customArgs": "[  ]",
+      "displayText": "对高生命目标造成的伤害 +10%；生命阈值待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -1504,6 +1483,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "对低生命目标造成的伤害 +20%；生命阈值待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -1522,6 +1503,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "对低生命目标造成的伤害 +30%；生命阈值待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -1540,6 +1523,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "对低生命目标造成的伤害 +40%；生命阈值待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -1558,6 +1543,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "对低生命目标造成的伤害 +50%；生命阈值待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -1576,6 +1563,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "对高生命目标造成的伤害 +30%；生命阈值待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -1594,6 +1583,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "对高生命目标造成的伤害 +40%；生命阈值待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -1612,6 +1603,128 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "对高生命目标造成的伤害 +50%；生命阈值待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "periodic-sub-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "周期性强化/子效果触发；静态资源只确认触发计数，具体子效果参数仍需解码。",
+      "kind": "character",
+      "nameKey": "CHARACTER_BUILDER",
+      "recordId": "character_builder",
+      "resourcePath": "res://dlcs/dlc_1/characters/builder/effects/builder_effect_1.tres",
+      "effectKey": "convert_bonus_gold",
+      "textKey": "EFFECT_CONVERT_BONUS_GOLD_TWO",
+      "scriptPath": "res://effects/items/effect_with_sub_effects.gd",
+      "value": 5,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[ SubResource( 1 ), SubResource( 2 ) ]",
+      "displayText": "每第 5 个投射物触发强化效果；具体强化参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "periodic-sub-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "周期性强化/子效果触发；静态资源只确认触发计数，具体子效果参数仍需解码。",
+      "kind": "item",
+      "nameKey": "ITEM_SEASHELL",
+      "recordId": "item_seashell",
+      "resourcePath": "res://dlcs/dlc_1/items/seashell/effects/seashell_effect_0.tres",
+      "effectKey": "modify_every_x_projectile",
+      "textKey": "EFFECT_MODIFY_EVERY_X_PROJECTILE",
+      "scriptPath": "res://effects/items/effect_with_sub_effects.gd",
+      "value": 5,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[ SubResource( 1 ), SubResource( 2 ) ]",
+      "displayText": "每第 5 个投射物触发强化效果；具体强化参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "periodic-sub-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "周期性强化/子效果触发；静态资源只确认触发计数，具体子效果参数仍需解码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_JAVELIN",
+      "recordId": "weapon_javelin_1",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_effect_0.tres",
+      "effectKey": "modify_every_x_projectile",
+      "textKey": "EFFECT_WEAPON_MODIFY_EVERY_X_PROJECTILE",
+      "scriptPath": "res://effects/weapons/weapon_effect_with_sub_effect.gd",
+      "value": 5,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[ SubResource( 1 ), SubResource( 2 ) ]",
+      "displayText": "每第 5 个投射物触发强化效果；具体强化参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "periodic-sub-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "周期性强化/子效果触发；静态资源只确认触发计数，具体子效果参数仍需解码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_JAVELIN",
+      "recordId": "weapon_javelin_2",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/javelin/2/javelin_2_effect_0.tres",
+      "effectKey": "modify_every_x_projectile",
+      "textKey": "EFFECT_WEAPON_MODIFY_EVERY_X_PROJECTILE",
+      "scriptPath": "res://effects/weapons/weapon_effect_with_sub_effect.gd",
+      "value": 4,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[ SubResource( 1 ), SubResource( 2 ) ]",
+      "displayText": "每第 4 个投射物触发强化效果；具体强化参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "periodic-sub-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "周期性强化/子效果触发；静态资源只确认触发计数，具体子效果参数仍需解码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_JAVELIN",
+      "recordId": "weapon_javelin_3",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/javelin/3/javelin_3_effect_0.tres",
+      "effectKey": "modify_every_x_projectile",
+      "textKey": "EFFECT_WEAPON_MODIFY_EVERY_X_PROJECTILE_THIRD",
+      "scriptPath": "res://effects/weapons/weapon_effect_with_sub_effect.gd",
+      "value": 3,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[ SubResource( 1 ), SubResource( 2 ) ]",
+      "displayText": "每第 3 个投射物触发强化效果；具体强化参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "periodic-sub-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "周期性强化/子效果触发；静态资源只确认触发计数，具体子效果参数仍需解码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_JAVELIN",
+      "recordId": "weapon_javelin_4",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/javelin/4/javelin_4_effect_0.tres",
+      "effectKey": "modify_every_x_projectile",
+      "textKey": "EFFECT_WEAPON_MODIFY_EVERY_X_PROJECTILE_SECOND",
+      "scriptPath": "res://effects/weapons/weapon_effect_with_sub_effect.gd",
+      "value": 2,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[ SubResource( 1 ), SubResource( 2 ) ]",
+      "displayText": "每第 2 个投射物触发强化效果；具体强化参数待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -1630,6 +1743,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "生成焰蜥蜴宠物：进行普通攻击，并定期向四周发射燃烧投射物; 近战伤害 1，近战间隔 22帧 (0.37秒)，缩放 1% 元素伤害；远程伤害 1，远程间隔 240帧 (4.00秒)，缩放 1% 元素伤害；燃烧 3/跳，持续 5 秒，概率 100%。",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1702,6 +1817,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "生成 Bonk 狗宠物：进行普通攻击，并定期冲刺造成范围爆炸伤害; 近战伤害 10，近战间隔 28帧 (0.47秒)，缩放 60% 近战伤害；爆炸伤害 8，爆炸间隔 300帧 (5.00秒)，缩放 40% 近战伤害。",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1762,6 +1879,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "生成布雷机器人构筑物：发射子弹并定期生成地雷; 远程伤害 10，远程间隔 32帧 (0.53秒)，缩放 100% 工程学；地雷生成伤害 10，地雷生成间隔 300帧 (5.00秒)，缩放 100% 工程学。",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1830,6 +1949,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "生成猫特林机枪宠物：发射子弹，靠近玩家或其他宠物时提高攻速; 远程伤害 10，远程间隔 55帧 (0.92秒)，缩放 60% 远程伤害。",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1858,7 +1979,7 @@
     },
     {
       "group": "pet-static-parameters",
-      "status": "decoded-static-parameters",
+      "status": "partial-static-decode",
       "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
       "kind": "item",
       "nameKey": "ITEM_DOC_MOTH",
@@ -1871,6 +1992,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "生成蛾医生宠物：玩家处于其光环内时，生命再生和生命窃取属性翻倍。; 光环缩放 1。",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "boost_zone_scale": 1
       },
@@ -1878,7 +2001,7 @@
     },
     {
       "group": "pet-static-parameters",
-      "status": "decoded-static-parameters",
+      "status": "partial-static-decode",
       "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
       "kind": "item",
       "nameKey": "ITEM_JELLYSHIELD",
@@ -1891,12 +2014,14 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "生成水母盾宠物：环绕玩家移动并阻挡敌方投射物。",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {}
     },
     {
       "group": "pet-static-parameters",
-      "status": "decoded-static-parameters",
+      "status": "partial-static-decode",
       "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
       "kind": "item",
       "nameKey": "ITEM_LOOTWORM",
@@ -1909,6 +2034,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "生成搜刮虫虫宠物：收集材料并摧毁树木；拾取材料时有 10% 概率使其价值翻倍。; 材料翻倍概率 10%。",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "double_chance": 0.1
       },
@@ -1929,6 +2056,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "生成鼠斯拉宠物并攻击敌人; 近战伤害 4，近战间隔 25帧 (0.42秒)，缩放 10% 最大生命。",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {
         "weapon_stats": {
@@ -1952,7 +2081,7 @@
     },
     {
       "group": "pet-static-parameters",
-      "status": "decoded-static-parameters",
+      "status": "partial-static-decode",
       "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
       "kind": "item",
       "nameKey": "ITEM_SCAPEGOAT",
@@ -1965,6 +2094,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "生成替罪羔羊宠物：代替玩家吸引敌人攻击；死亡后，玩家可站在旁边将其复活。",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "health_boost": 1,
         "revive_duration": 2
@@ -1986,6 +2117,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时生成减速区域；减速幅度和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2004,6 +2137,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时生成减速区域；减速幅度和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2022,6 +2157,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时生成减速区域；减速幅度和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2040,6 +2177,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时生成减速区域；减速幅度和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2058,6 +2197,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时生成减速区域；减速幅度和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2076,6 +2217,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时生成减速区域；减速幅度和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2094,6 +2237,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "命中时生成减速区域；减速幅度和持续时间待解码",
+      "hasPendingDisplay": true,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2112,6 +2257,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "投射物 +2",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2130,6 +2277,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[ SubResource( 1 ) ]",
+      "displayText": "每 1 点永久元素伤害：结构物攻速 +5",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2148,6 +2297,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "建造者炮塔工程缩放：工程学 +1",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2168,6 +2319,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "建造者炮塔工程缩放：工程学 +1",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2188,6 +2341,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "投射物 +2",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2206,6 +2361,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "建造者炮塔工程缩放：工程学 +1",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2226,6 +2383,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "投射物 +3",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2244,6 +2403,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "建造者炮塔工程缩放：工程学 +1",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2264,6 +2425,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "结构物攻速 +10",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2282,6 +2445,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "花园",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2319,6 +2484,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "地雷",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": 12
       },
@@ -2362,6 +2529,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "结构物可暴击 +1",
+      "hasPendingDisplay": false,
       "effectParameters": {},
       "relatedResources": {}
     },
@@ -2380,6 +2549,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "燃烧炮塔",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2417,6 +2588,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "医疗炮塔",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2460,6 +2633,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "激光炮塔",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2503,6 +2678,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "爆炸炮塔",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2546,6 +2723,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "炮塔",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2589,6 +2768,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "泰勒",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2636,6 +2817,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "流浪机器人 +1",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2679,6 +2862,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "花园",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2716,6 +2901,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "花园",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2753,6 +2940,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "花园",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2790,6 +2979,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "花园",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -2827,6 +3018,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "地雷",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": 12
       },
@@ -2870,6 +3063,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "地雷",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": 9
       },
@@ -2913,6 +3108,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "地雷",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": 6
       },
@@ -2956,6 +3153,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "地雷",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": 3
       },
@@ -2999,6 +3198,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "燃烧炮塔",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -3036,6 +3237,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "激光炮塔",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -3079,6 +3282,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "爆炸炮塔",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -3122,6 +3327,8 @@
       "chance": null,
       "customKey": null,
       "customArgs": "[  ]",
+      "displayText": "炮塔",
+      "hasPendingDisplay": false,
       "effectParameters": {
         "spawn_cooldown": -1
       },
@@ -3149,6 +3356,625 @@
           ]
         }
       }
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "character",
+      "nameKey": "CHARACTER_ARMS_DEALER",
+      "recordId": "character_arms_dealer",
+      "resourcePath": "res://items/characters/arms_dealer/arms_dealer_effect_1.tres",
+      "effectKey": "weapons_price",
+      "textKey": null,
+      "scriptPath": "res://items/global/effect.gd",
+      "value": -95,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "官方特殊效果；具体参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "character",
+      "nameKey": "CHARACTER_BUILDER",
+      "recordId": "character_builder",
+      "resourcePath": "res://dlcs/dlc_1/characters/builder/effects/builder_effect_0b.tres",
+      "effectKey": "max_turret_count",
+      "textKey": "[EMPTY]",
+      "scriptPath": "res://items/global/effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "官方特殊效果；具体参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "character",
+      "nameKey": "CHARACTER_DIVER",
+      "recordId": "character_diver",
+      "resourcePath": "res://dlcs/dlc_1/characters/diver/effects/diver_effect_3.tres",
+      "effectKey": "stat_ranged_damage",
+      "textKey": "EFFECT_ENEMY_PERCENT_DAMAGE_TAKEN",
+      "scriptPath": "res://effects/items/percent_damage_effect.gd",
+      "value": 300,
+      "chance": null,
+      "customKey": "enemy_percent_damage_taken",
+      "customArgs": "[ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ]",
+      "displayText": "以远程伤害命中后：目标受到伤害 +300%；持续时间待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "character",
+      "nameKey": "CHARACTER_EXPLORER",
+      "recordId": "character_explorer",
+      "resourcePath": "res://items/characters/explorer/explorer_effect_11.tres",
+      "effectKey": "trees_start_wave",
+      "textKey": "[EMPTY]",
+      "scriptPath": "res://items/global/effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "官方特殊效果；具体参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "character",
+      "nameKey": "CHARACTER_EXPLORER",
+      "recordId": "character_explorer",
+      "resourcePath": "res://items/characters/explorer/explorer_effect_6.tres",
+      "effectKey": "map_size",
+      "textKey": null,
+      "scriptPath": "res://items/global/effect.gd",
+      "value": 33,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "官方特殊效果；具体参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "character",
+      "nameKey": "CHARACTER_GANGSTER",
+      "recordId": "character_gangster",
+      "resourcePath": "res://dlcs/dlc_1/characters/gangster/effects/gangster_effect_0c.tres",
+      "effectKey": "lock",
+      "textKey": "[EMPTY]",
+      "scriptPath": "res://items/global/effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": "remove_shop_items",
+      "customArgs": "[  ]",
+      "displayText": "官方特殊效果；具体参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "character",
+      "nameKey": "CHARACTER_GENERALIST",
+      "recordId": "character_generalist",
+      "resourcePath": "res://items/characters/generalist/generalist_effect_4.tres",
+      "effectKey": "max_ranged_weapons",
+      "textKey": "[EMPTY]",
+      "scriptPath": "res://items/global/effect.gd",
+      "value": 3,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "官方特殊效果；具体参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "character",
+      "nameKey": "CHARACTER_OLD",
+      "recordId": "character_old",
+      "resourcePath": "res://items/characters/old/old_effect_3.tres",
+      "effectKey": "map_size",
+      "textKey": null,
+      "scriptPath": "res://items/global/effect.gd",
+      "value": -33,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "官方特殊效果；具体参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_ALIEN_EYES",
+      "recordId": "item_alien_eyes",
+      "resourcePath": "res://items/all/alien_eyes/alien_eyes_effect_1.tres",
+      "effectKey": "alien_eyes",
+      "textKey": "effect_alien_eyes",
+      "scriptPath": "res://effects/items/projectile_effect.gd",
+      "value": 6,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "周期性发射异形眼球投射物（官方参数 6）；伤害和频率待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {
+        "cooldown": 3
+      },
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://items/all/alien_eyes/alien_eyes_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 1,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 10000,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_max_hp",
+              "value": 0.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_BABY_WITH_A_BEARD",
+      "recordId": "item_baby_with_a_beard",
+      "resourcePath": "res://items/all/baby_with_a_beard/baby_with_a_beard_effect_1.tres",
+      "effectKey": "projectiles_on_death",
+      "textKey": "effect_projectiles_on_death",
+      "scriptPath": "res://effects/items/projectile_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "敌人死亡时产生 1 个额外投射物；投射物伤害参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {
+        "cooldown": -1
+      },
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/ranged/base_ranged_weapon_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 1,
+          "crit_chance": 0.03,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 10000,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_ranged_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_CRYSTAL",
+      "recordId": "item_crystal",
+      "resourcePath": "res://dlcs/dlc_1/items/crystal/effects/crystal_effect_0a.tres",
+      "effectKey": "stat_attack_speed",
+      "textKey": "EFFECT_TEMP_STATS_PER_INTERVAL",
+      "scriptPath": "res://effects/items/temp_stats_per_interval_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": "temp_stats_per_interval",
+      "customArgs": "[  ]",
+      "displayText": "每隔一段时间：攻速 +1%，持续到波次结束；间隔参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_ICE_CUBE",
+      "recordId": "item_ice_cube",
+      "resourcePath": "res://items/all/ice_cube/effects/ice_cube_effect_0.tres",
+      "effectKey": "stat_elemental_damage",
+      "textKey": "EFFECT_ENEMY_PERCENT_DAMAGE_TAKEN_ONCE",
+      "scriptPath": "res://effects/items/percent_damage_effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": "enemy_percent_damage_taken",
+      "customArgs": "[ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ]",
+      "displayText": "首次以元素伤害命中后：目标受到伤害 +10%；持续时间待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_MEDIKIT",
+      "recordId": "item_medikit",
+      "resourcePath": "res://items/all/medikit/medikit_effect_1b.tres",
+      "effectKey": "stat_hp_regeneration",
+      "textKey": "EFFECT_TEMP_STATS_PER_INTERVAL",
+      "scriptPath": "res://effects/items/temp_stats_per_interval_effect.gd",
+      "value": 2,
+      "chance": null,
+      "customKey": "temp_stats_per_interval",
+      "customArgs": "[  ]",
+      "displayText": "每隔一段时间：生命再生 +2，持续到波次结束；间隔参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_POTION",
+      "recordId": "item_potion",
+      "resourcePath": "res://items/all/potion/potion_effect_1.tres",
+      "effectKey": "hp_regen_bonus",
+      "textKey": "effect_hp_regen_bonus_double",
+      "scriptPath": "res://effects/items/double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "满足生命条件时生命再生效果加倍；触发条件待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_SCARED_SAUSAGE",
+      "recordId": "item_scared_sausage",
+      "resourcePath": "res://items/all/scared_sausage/scared_sausage_effect_1.tres",
+      "effectKey": "burn_chance",
+      "textKey": "effect_burn_chance",
+      "scriptPath": "res://effects/items/burn_chance_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "攻击有概率对敌人施加燃烧；触发概率待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://items/all/scared_sausage/scared_sausage_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 1,
+          "chance": 0.25,
+          "duration": 3,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_SUNKEN_BELL",
+      "recordId": "item_sunken_bell",
+      "resourcePath": "res://dlcs/dlc_1/items/sunken_bell/effects/sunken_bell_effect_0.tres",
+      "effectKey": "explode_when_below_hp",
+      "textKey": "effect_explode_when_below_hp",
+      "scriptPath": "res://effects/items/item_exploding_when_below_hp_effect.gd",
+      "value": 1,
+      "chance": 1,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "生命值低于阈值时触发爆炸；生命阈值、伤害和冷却参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {
+        "chance": 1,
+        "base_smoke_amount": 40,
+        "scale": 6
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://dlcs/dlc_1/items/sunken_bell/effects/sunken_bell_explosion_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 100,
+          "crit_chance": 0.03,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 150,
+          "knockback": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_melee_damage",
+              "value": 5
+            },
+            {
+              "stat": "stat_ranged_damage",
+              "value": 5
+            },
+            {
+              "stat": "stat_elemental_damage",
+              "value": 5
+            },
+            {
+              "stat": "stat_engineering",
+              "value": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_TORTURE",
+      "recordId": "item_torture",
+      "resourcePath": "res://items/all/torture/torture_effect_2.tres",
+      "effectKey": "torture",
+      "textKey": "effect_torture",
+      "scriptPath": "res://items/global/effect.gd",
+      "value": 5,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "启用固定治疗机制（官方治疗参数 5）；其他治疗限制待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_UGLY_TOOTH",
+      "recordId": "item_ugly_tooth",
+      "resourcePath": "res://items/all/ugly_tooth/ugly_tooth_effect_1.tres",
+      "effectKey": "remove_speed",
+      "textKey": "effect_remove_speed",
+      "scriptPath": "res://effects/items/double_value_effect.gd",
+      "value": 5,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "displayText": "命中使敌人移速降低 5%；叠加上限待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "item",
+      "nameKey": "ITEM_WISDOM",
+      "recordId": "item_wisdom",
+      "resourcePath": "res://items/all/wisdom/wisdom_effect_1.tres",
+      "effectKey": "stat_percent_damage",
+      "textKey": "EFFECT_TEMP_STATS_PER_INTERVAL",
+      "scriptPath": "res://effects/items/temp_stats_per_interval_effect.gd",
+      "value": 5,
+      "chance": null,
+      "customKey": "temp_stats_per_interval",
+      "customArgs": "[  ]",
+      "displayText": "每隔一段时间：总伤害 +5%，持续到波次结束；间隔参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_DRILL",
+      "recordId": "weapon_drill_4",
+      "resourcePath": "res://weapons/melee/drill/4/drill_effect_2.tres",
+      "effectKey": "stat_attack_speed",
+      "textKey": "EFFECT_TEMP_STATS_PER_INTERVAL",
+      "scriptPath": "res://effects/items/temp_stats_per_interval_effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": "temp_stats_per_interval",
+      "customArgs": "[  ]",
+      "displayText": "每隔一段时间：攻速 +10%，持续到波次结束；间隔参数待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_LUTE",
+      "recordId": "weapon_lute_1",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/lute/1/lute_effect_0.tres",
+      "effectKey": "stat_all",
+      "textKey": "EFFECT_INCREASE_DAMAGE_RECEIVED",
+      "scriptPath": "res://effects/weapons/weapon_percent_damage_effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": "enemy_percent_damage_taken",
+      "customArgs": "[  ]",
+      "displayText": "命中后：目标受到伤害 +10%；持续时间待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_LUTE",
+      "recordId": "weapon_lute_2",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/lute/2/lute_2_effect_0.tres",
+      "effectKey": "stat_all",
+      "textKey": "EFFECT_INCREASE_DAMAGE_RECEIVED",
+      "scriptPath": "res://effects/weapons/weapon_percent_damage_effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": "enemy_percent_damage_taken",
+      "customArgs": "[  ]",
+      "displayText": "命中后：目标受到伤害 +10%；持续时间待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_LUTE",
+      "recordId": "weapon_lute_3",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/lute/3/lute_3_effect_0.tres",
+      "effectKey": "stat_all",
+      "textKey": "EFFECT_INCREASE_DAMAGE_RECEIVED",
+      "scriptPath": "res://effects/weapons/weapon_percent_damage_effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": "enemy_percent_damage_taken",
+      "customArgs": "[  ]",
+      "displayText": "命中后：目标受到伤害 +10%；持续时间待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_LUTE",
+      "recordId": "weapon_lute_4",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/lute/4/lute_4_effect_0.tres",
+      "effectKey": "stat_all",
+      "textKey": "EFFECT_INCREASE_DAMAGE_RECEIVED",
+      "scriptPath": "res://effects/weapons/weapon_percent_damage_effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": "enemy_percent_damage_taken",
+      "customArgs": "[  ]",
+      "displayText": "命中后：目标受到伤害 +10%；持续时间待解码",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_PARTICLE_ACCELERATOR",
+      "recordId": "weapon_particle_accelerator_3",
+      "resourcePath": "res://weapons/ranged/particle_accelerator/3/particle_accelerator_3_effect_2.tres",
+      "effectKey": "EFFECT_WEAPON_SLOW_ON_HIT",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/weapon_slow_on_hit_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[ SubResource( 1 ) ]",
+      "displayText": "命中时减速敌人，缩放属性待解码（效果等级 +1）",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "unclassified-runtime-effect",
+      "status": "pending-runtime-decode",
+      "impactScope": "图鉴仍明确标注待解码的官方特殊效果；已记录静态入口，但具体运行时参数尚未可靠分类。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_PARTICLE_ACCELERATOR",
+      "recordId": "weapon_particle_accelerator_4",
+      "resourcePath": "res://weapons/ranged/particle_accelerator/4/particle_accelerator_4_effect_2.tres",
+      "effectKey": "EFFECT_WEAPON_SLOW_ON_HIT",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/weapon_slow_on_hit_effect.gd",
+      "value": 2,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[ SubResource( 1 ) ]",
+      "displayText": "命中时减速敌人，缩放属性待解码（效果等级 +2）",
+      "hasPendingDisplay": true,
+      "effectParameters": {},
+      "relatedResources": {}
     }
   ]
 }

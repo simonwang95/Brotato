@@ -128,6 +128,12 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
 }
 
 {
+  const glutton = generateStrategyGuide("glutton", "normal20", { officialCatalog });
+  assert.match(glutton.character.unlock, /拾取 20 个消耗品/);
+  assert.doesNotMatch(glutton.character.unlock, /20 把武器/);
+}
+
+{
   const beastMaster = generateStrategyGuide("beastMaster", "normal20", { officialCatalog });
   assert.equal(beastMaster.character.name, "Beast Master");
   assert.match(beastMaster.character.unlock, /解锁猫特林机枪/);
@@ -151,6 +157,12 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     ),
     "Beast Master pet recommendations should explain static pet parameter scoring",
   );
+  const botOMine = beastMaster.keyItems.find(({ item }) => item.name === "Bot-O-Mine");
+  const botOMineScenarioReason = botOMine?.recommendationReasons.find((reason) =>
+    reason.includes("单宠物静态攻击参数"),
+  );
+  assert.match(botOMineScenarioReason ?? "", /约 114\.1 DPS/);
+  assert.doesNotMatch(botOMineScenarioReason ?? "", /1753\.1 DPS/);
 
   const wounded = generateStrategyGuide("wounded", "normal20", { officialCatalog });
   assert.equal(wounded.character.name, "Wounded");

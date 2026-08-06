@@ -361,16 +361,24 @@ function formatScalingStats(stats) {
     .join("，");
 }
 
-function formatRelatedWeaponStats(stats, label) {
-  if (!stats?.damage && !stats?.cooldown) return "";
+function formatRelatedWeaponStats(stats, label, cooldownFrames = stats?.cooldown) {
+  if (!stats?.damage && !cooldownFrames) return "";
   const parts = [
     `${label}伤害 ${stats.damage ?? "未知"}`,
-    Number.isFinite(stats.cooldown) ? `${label}间隔 ${formatCompactCooldown(stats.cooldown)}` : "",
+    Number.isFinite(cooldownFrames)
+      ? `${label}间隔 ${formatCompactCooldown(cooldownFrames)}`
+      : "",
   ].filter(Boolean);
   if (stats.scalingStats?.length) {
     parts.push(`缩放 ${formatScalingStats(stats.scalingStats)}`);
   }
   return parts.join("，");
+}
+
+function relatedWeaponLabel(stats, fallback) {
+  if (stats?.scriptPath?.includes("ranged_weapon_stats")) return "远程";
+  if (stats?.scriptPath?.includes("melee_weapon_stats")) return "近战";
+  return fallback;
 }
 
 function formatPetEffect(effect) {
@@ -379,7 +387,10 @@ function formatPetEffect(effect) {
 
   const related = effect.relatedResources ?? {};
   const details = [
-    formatRelatedWeaponStats(related.weapon_stats, "近战"),
+    formatRelatedWeaponStats(
+      related.weapon_stats,
+      relatedWeaponLabel(related.weapon_stats, "宠物攻击"),
+    ),
     formatRelatedWeaponStats(related.ranged_weapon_stats, "远程"),
     formatRelatedWeaponStats(related.explosion_effect?.stats, "爆炸"),
   ].filter(Boolean);
@@ -395,10 +406,13 @@ function formatPetEffect(effect) {
 
   const landmine = related.landmine_effect_stat;
   if (landmine) {
-    details.push(
-      `地雷生成间隔 ${Number.isFinite(landmine.spawn_cooldown) ? formatCompactCooldown(landmine.spawn_cooldown) : "未知"}`,
-    );
-    if (landmine.stats) details.push(formatRelatedWeaponStats(landmine.stats, "地雷"));
+    if (landmine.stats) {
+      details.push(formatRelatedWeaponStats(landmine.stats, "地雷生成", landmine.spawn_cooldown));
+    } else {
+      details.push(
+        `地雷生成间隔 ${Number.isFinite(landmine.spawn_cooldown) ? formatCompactCooldown(landmine.spawn_cooldown) : "未知"}`,
+      );
+    }
   }
 
   if (Number.isFinite(effect.effectParameters?.double_chance)) {
@@ -412,7 +426,7 @@ function formatPetEffect(effect) {
   return `${summary.replace(/；具体[^。]+。?$/, "")}; ${details.join("；")}。`;
 }
 
-function formatEffectDetail(effect) {
+export function formatEffectDetail(effect) {
   const trigger = effectTextLabel(effect.textKey);
   const keyLabel = statLabel(effect.key);
   const scriptPath = effect.scriptPath ?? "";

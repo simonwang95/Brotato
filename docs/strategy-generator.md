@@ -281,7 +281,7 @@ npm run extract:unlocks
 ```
 
 该命令读取 base/DLC `.pck` 中的 challenge 资源，并用原版 `achievementLocalizations.csv` 连接挑战 ID、奖励角色和条件文本。CSV 未覆盖的挑战通过 `scripts/optimized-translation.mjs` 按 Godot `OptimizedTranslation` 的两阶段哈希规则查询简中 `PHashTranslation`；占位符按官方 `ChallengeData._get_desc_args()` 的顺序由 `value`、翻译后的 `stat` 和 `additional_args` 展开。它只读取静态安装包数据，不读取玩家存档，也不受本机解锁进度影响。当前 54 条奖励映射全部有 `verified-static-text` 简中条件：43 条来自原版 achievement CSV，11 条来自简中 PHashTranslation。解析器只接受未压缩 UTF-8 消息；未来遇到压缩或缺失文本时仍会保留 `pendingReason` 与 `pendingEvidence`，不会猜测。
-`npm run extract:unlocks` 完成抽取后会自动运行 `scripts/sync-official-unlock-module.mjs`，从 `data/official-unlocks.json` 生成 `src/officialUnlocks.js`。攻略层只引用这个生成模块，不再维护第二份已验证解锁条件；无法验证的记录不会进入模块。
+`npm run extract:unlocks` 完成抽取后会自动运行 `scripts/sync-official-unlock-module.mjs`，从 `data/official-unlocks.json` 生成 `src/officialUnlocks.js`。攻略层只引用这个生成模块，不再维护第二份已验证解锁条件；无法验证的记录不会进入模块。对于同一静态记录中英文条件明确冲突的已知条目，抽取器会写入 `textCorrection` 审计字段；例如 `chal_hungry` 保留原始错误简中和英文 consumables 证据，再生成“拾取 20 个消耗品”的纠正文案。
 
 集中导出待校验解锁文本：
 
@@ -293,7 +293,7 @@ npm run unlocks:pending
 
 角色图鉴会读取 `data/official-unlocks.json` 展示静态解锁证据。图鉴角色列表会合并官方目录角色和策略层角色；官方目录里存在但 `CHARACTER_GUIDES` 尚未维护的角色会标记为 official-only，只展示官方图片、特性和解锁证据，不生成攻略推荐。只有写入 `zhDescription` 的 `verified-static-text` 才能由同步脚本进入 `src/officialUnlocks.js`；`pending-text` 仍只能证明 challenge 与奖励映射已定位。
 
-角色特性展示同样遵守可信边界：`src/compendium.js` 会把已知官方 stat/effect key 翻译成中文，把起始物品、二元机制、掉落/宠物标签和主资源中明确的自定义成长公式展示出来；如果主资源仍未给出收益目标、只能定位到未展开的 SubResource 参数，则只显示“官方自定义收益”。这表示资源已定位，但具体内部收益尚未可靠解析，不能直接用于精确评分或解锁文案。复杂效果的逐条状态、资源路径和影响范围见 `data/official-effect-decoding.json`；运行 `npm run report:effect-decoding` 可在重新抽取目录后刷新。
+角色特性展示同样遵守可信边界：`src/compendium.js` 会把已知官方 stat/effect key 翻译成中文，把起始物品、二元机制、掉落/宠物标签和主资源中明确的自定义成长公式展示出来；如果主资源仍未给出收益目标、只能定位到未展开的 SubResource 参数，则只显示“官方自定义收益”。这表示资源已定位，但具体内部收益尚未可靠解析，不能直接用于精确评分或解锁文案。复杂效果的逐条状态、资源路径和影响范围见 `data/official-effect-decoding.json`；运行 `npm run report:effect-decoding` 可手动刷新，`npm run extract:catalog` 也会在目录和图片抽取后自动重建清单。校验器会反向检查所有实际显示“待解码/未知”的效果均已入清单。
 
 `npm run verify:unlocks` 会同时检查反向覆盖：如果安装包里已有角色奖励映射，但攻略层还没有维护对应角色，脚本会输出 `official-unlock:*` warning，并输出未维护记录中 verified-static-text、pending-text 和其他状态的细分计数。当前 `oneArm` 会通过别名映射到策略层的 `oneArmed`；Beast Master 与 Wounded 已同步精确条件并完成攻略模板、禁用项和回归测试，因此 warning 为 0。Giant 只作为单独的 `Audited catalog gaps` 展示。
 

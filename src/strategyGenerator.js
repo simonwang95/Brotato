@@ -1246,7 +1246,7 @@ function itemScenarioModel(entry, plan, mode) {
 
   if (itemEffect.trigger === "petStaticDamage") {
     const stats = representativeStats(plan);
-    const petSources = itemEffect.petSources.map(({ label, stats: source }) => {
+    const petSources = itemEffect.petSources.map(({ label, stats: source, cooldownFrames }) => {
       const scaledDamage =
         Number(source.damage ?? 0) +
         (source.scalingStats ?? []).reduce((sum, scaling) => {
@@ -1257,7 +1257,7 @@ function itemScenarioModel(entry, plan, mode) {
         label,
         dps:
           (scaledDamage * Math.max(1, Number(source.nb_projectiles ?? 1)) * 60) /
-          Number(source.cooldown),
+          Number(cooldownFrames),
       };
     });
     return {
@@ -1659,18 +1659,26 @@ function petStaticDamageEffectForEntry(baseEffect, effects) {
 
   const related = petEffect.relatedResources ?? {};
   const sources = [
-    ["宠物攻击", related.weapon_stats],
-    ["宠物远程攻击", related.ranged_weapon_stats],
-    ["宠物爆炸", related.explosion_effect?.stats],
-    ["宠物地雷", related.landmine_effect_stat?.stats],
-  ].filter(([, stats]) => stats?.damage > 0 && stats?.cooldown > 0);
+    ["宠物攻击", related.weapon_stats, related.weapon_stats?.cooldown],
+    ["宠物远程攻击", related.ranged_weapon_stats, related.ranged_weapon_stats?.cooldown],
+    ["宠物爆炸", related.explosion_effect?.stats, related.explosion_effect?.stats?.cooldown],
+    [
+      "宠物地雷",
+      related.landmine_effect_stat?.stats,
+      related.landmine_effect_stat?.spawn_cooldown,
+    ],
+  ].filter(([, stats, cooldownFrames]) => stats?.damage > 0 && cooldownFrames > 0);
   if (!sources.length) return null;
 
   return {
     ...baseEffect,
     id: `${baseEffect.id}:pet-static-damage`,
     trigger: "petStaticDamage",
-    petSources: sources.map(([label, stats]) => ({ label, stats })),
+    petSources: sources.map(([label, stats, cooldownFrames]) => ({
+      label,
+      stats,
+      cooldownFrames,
+    })),
     description:
       "按官方宠物武器/爆炸/地雷 SubResource 的单宠物静态参数估算；不假设一局触发次数、命中率、宠物数量或宠物存活时间。",
   };

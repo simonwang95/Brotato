@@ -33,13 +33,14 @@
 - `data/official-localization.json` 维护 `nameKey -> 官方中文名`，由本机安装包的英文/中文 translation 资源合并生成。
 - `src/strategyData.js` 只维护当前策略会引用到的类型、定位、路线说明和推荐理由；角色 `unlock` 文案统一由 `data/official-unlocks.json` 生成 `src/officialUnlocks.js`，避免手写攻略文案和官方静态条件漂移。
 - `data/official-unlocks.json` 由 `npm run extract:unlocks` 从安装包静态 challenge / achievement 资源生成。该数据不读取玩家存档，不受本机解锁进度影响。原版 CSV 未覆盖的描述会按 `descriptionKey` 查询简中 `PHashTranslation`，并用 challenge 的 `value`、`stat`、`additional_args` 展开占位符。当前 54 条记录全部有 `verified-static-text` 简中条件。
+- 静态文本非空不代表语义必然正确。若同一条 challenge 的官方英文和简中条件明确冲突，抽取器会在记录的 `textCorrection` 中保留原始简中、英文条件和纠正原因，再由同一份 JSON 生成攻略文案；当前已审计 `chal_hungry` 的 consumables/武器冲突。
 - `data/official-unlock-pending.json` 由 `npm run unlocks:pending` 从 `data/official-unlocks.json` 的 `pending-text` 记录派生。当前清单为 0 条；后续新增但无法可靠读取的文本仍会保留 source package、官方角色 key、攻略维护状态、challenge key、数值和核验动作。
 - `npm run localization:coverage` 用来检查官方图鉴里还有哪些角色、武器、道具没有进入本地化维护表。
 - `npm run extract:localization` 可以重新从本机安装包生成本地化表。脚本优先用官方 `nameKey` 按 Godot 双哈希规则直接查询未压缩简中消息，不再用跨语言内部哈希碰撞做名称 join；当前 386 条来自 `translation-key`，仅 `ITEM_RETROMATIONS_HOODIE` 使用已确认的 `manual-override`。
 - 当前本地化表已覆盖官方目录里的 79 个武器、244 个物品和 64/64 个角色。后续如果官方目录新增条目，无法可靠读取的名称要继续留在覆盖率报告中，不要凭直觉填入。
 - `data/official-catalog.json`、`data/official-localization.json` 和 `data/official-unlocks.json` 都携带 `sourceMetadata`：包括抽取器版本、抽取时间、产品版本、输入包大小和 SHA-256；证据边界明确为静态安装包，不包含存档或当前解锁进度。
 - 角色图鉴特性来自官方目录里的 stat/effect key。目录抽取器只从最终 `[resource]` 读取主效果字段，避免把前置 `[sub_resource]` 的 `arg_key/arg_value` 当成主效果；可稳定读取的 `key/value/statScaled/nbStatScaled/stat/statNb` 以及关联武器、爆炸、燃烧和地雷资源参数会精确格式化，仍无法解释的内部参数才保守显示。
-- `data/official-effect-decoding.json` 记录每个已命中的复杂效果的 `resourcePath`、`effectKey`、脚本路径、静态参数、影响边界和状态。`decoded-static-parameters` 可进入保守场景模型；`partial-static-decode` 只允许部分参数进入排序；`pending-runtime-decode` 只允许目录展示和待解码说明。宠物静态模型明确不假设触发次数、命中率、宠物数量或存活时间；`Giant Belt` 也不被写成精确生命伤害 DPS。
+- `data/official-effect-decoding.json` 记录每个已命中的复杂效果的 `resourcePath`、`effectKey`、脚本路径、静态参数、影响边界和状态。生成器复用图鉴格式化函数，所有仍显示“待解码/未知”的效果都会进入清单；专门规则未覆盖的条目归入 `unclassified-runtime-effect`，不能静默遗漏。`decoded-static-parameters` 可进入保守场景模型；`partial-static-decode` 只允许部分参数进入排序；`pending-runtime-decode` 只允许目录展示和待解码说明。宠物静态模型明确不假设触发次数、命中率、宠物数量或存活时间；地雷使用父资源的生成间隔而不是内部伤害资源冷却，`Giant Belt` 也不被写成精确生命伤害 DPS。
 - `npm run verify:unlocks` 用来校验策略层的默认解锁、需解锁和掉落池文案是否与官方目录状态冲突。脚本也会反向列出已抽到但策略层未维护的官方角色解锁记录；当前 Beast Master/Wounded 已有攻略模板，因此 warning 为 0。`Giant / CHARACTER_GIANT` 当前是记录在 `data/official-character-catalog-gaps.json` 的官方角色目录缺口，校验时单独列入 `Audited catalog gaps`，不按普通 warning 或映射失败处理。
 
 ## 推荐流程

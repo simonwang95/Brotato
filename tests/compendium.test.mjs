@@ -308,6 +308,15 @@ assert.ok(
 }
 
 {
+  const botOMine = compendium.items.find((entry) => entry.nameKey === "ITEM_BOT_O_MINE");
+  assert.ok(botOMine?.detailedAttributes.some((line) => line.includes("远程伤害 10")));
+  assert.ok(
+    botOMine?.detailedAttributes.some((line) => line.includes("地雷生成间隔 300帧 (5.00秒)")),
+  );
+  assert.ok(botOMine?.detailedAttributes.every((line) => !line.includes("地雷生成间隔 2帧")));
+}
+
+{
   const beastMaster = compendium.characters.find((entry) => entry.id === "beastMaster");
   assert.equal(beastMaster?.cnName, "驯兽师");
   assert.equal(beastMaster?.officialOnly, undefined);
