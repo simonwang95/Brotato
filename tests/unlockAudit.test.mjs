@@ -8,13 +8,13 @@ const warningsSection = output.split("\nAudited catalog gaps:")[0] ?? output;
 
 assert.match(
   output,
-  /Static unlock records: 54; unmaintained in strategy layer: 2\./,
-  "unlock verifier should report official unlock records missing from strategy data",
+  /Static unlock records: 54; unmaintained in strategy layer: 0\./,
+  "unlock verifier should report every official unlock record as maintained",
 );
 assert.match(
   output,
-  /Unmaintained unlock detail: verified-static-text 2, pending-text 0, other 0\./,
-  "unlock verifier should distinguish verified official-only characters from pending text",
+  /Unmaintained unlock detail: verified-static-text 0, pending-text 0, other 0\./,
+  "unlock verifier should keep the unmaintained unlock count empty",
 );
 assert.match(
   output,
@@ -38,13 +38,18 @@ assert.doesNotMatch(
 );
 assert.match(
   output,
-  /official-unlock:beastMaster .*CHARACTER_BEAST_MASTER.*CHAL_PAWS_N_CLAWS_DESC.*官方静态条件：解锁猫特林机枪/,
-  "beast master verified static unlock text should not be hidden",
+  /Checked 44 weapons, 49 items, 65 characters\./,
+  "unlock verifier should include the maintained Beast Master and Wounded guides",
 );
 assert.match(
   output,
-  /official-unlock:wounded .*CHARACTER_WOUNDED.*CHAL_DIFFICULTY_NIGHTMARE_1_DESC.*官方静态条件：在噩梦难度下赢得一局游戏/,
-  "wounded verified static unlock text should not be hidden",
+  /Unlock states are consistent with the official catalog\./,
+  "unlock verifier should pass after maintaining Beast Master and Wounded",
+);
+assert.doesNotMatch(
+  output,
+  /official-unlock:(?:beastMaster|wounded)/,
+  "maintained official unlock records should not remain warnings",
 );
 assert.doesNotMatch(
   output,

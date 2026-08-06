@@ -1,4 +1,25 @@
 {
+  "sourceMetadata": {
+    "extractorVersion": "brotato-static-extractors@3",
+    "extractedAt": "2026-08-06T06:45:22.472Z",
+    "productVersion": "1.1.12.0.beta-3",
+    "productVersionEvidence": "Brotato.app/Contents/Info.plist:CFBundleShortVersionString",
+    "packages": [
+      {
+        "id": "base",
+        "file": "Brotato.pck",
+        "sizeBytes": 147912168,
+        "sha256": "be303f0a320cb099001fdc39c3b807cdd657e93426dc09867cee1d36f5385acf"
+      },
+      {
+        "id": "abyssalTerrors",
+        "file": "BrotatoAbyssalTerrors.pck",
+        "sizeBytes": 57980096,
+        "sha256": "ee5b45a27bd6ad53e24b6c160c0780bd11c67e9563732091d62ef72c3fef3016"
+      }
+    ],
+    "evidenceBoundary": "仅使用安装包、Brotato.app/Contents/Info.plist 和仓库静态数据；不读取玩家存档或本机解锁进度。"
+  },
   "packages": [
     {
       "id": "base",

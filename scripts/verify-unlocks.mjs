@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { findOfficialRecords, getOfficialNameKey, toOfficialNameKey } from "../src/officialCatalog.js";
+import { OFFICIAL_CHARACTER_UNLOCKS } from "../src/officialUnlocks.js";
 import { CHARACTER_GUIDES, ITEMS, WEAPONS } from "../src/strategyData.js";
 
 const catalogPath = process.env.BROTATO_CATALOG_PATH || "data/official-catalog.json";
@@ -30,6 +31,17 @@ const UNLOCK_CHARACTER_ID_ALIASES = {
 };
 
 const strategyCharacterIds = new Set(Object.keys(CHARACTER_GUIDES));
+
+const canonicalUnlockErrors = (unlocks.records ?? [])
+  .filter((record) => record.extractionStatus === "verified-static-text")
+  .flatMap((record) => {
+    const strategyId = strategyCharacterIdForUnlock(record);
+    const expected = OFFICIAL_CHARACTER_UNLOCKS[strategyId];
+    const normalize = (value) => String(value ?? "").replace(/[\s。]/g, "");
+    return normalize(expected?.replace(/^官方静态数据：/, "")) === normalize(record.zhDescription)
+      ? []
+      : [`canonical unlock module drift: ${record.characterId}`];
+  });
 
 function strategyCharacterIdForUnlock(record) {
   return UNLOCK_CHARACTER_ID_ALIASES[record.characterId] ?? record.characterId;
@@ -196,6 +208,7 @@ const results = [
 ];
 
 const errors = results.flatMap((result) => result.errors);
+errors.push(...canonicalUnlockErrors);
 const warnings = results.flatMap((result) => result.warnings);
 const catalogGapNotices = results.flatMap((result) => result.catalogGapNotices ?? []);
 const officialWeaponCandidateCount = unique(
@@ -213,6 +226,9 @@ const unmaintainedCounts = unmaintainedUnlockRecordCounts();
 console.log("Brotato unlock verification");
 console.log(`Catalog: ${catalogPath}`);
 console.log(`Unlocks: ${unlocksPath}`);
+console.log(
+  `Static source version: ${unlocks.sourceMetadata?.productVersion ?? "unknown"}; extractor ${unlocks.sourceMetadata?.extractorVersion ?? "unknown"}.`,
+);
 console.log(`Checked ${Object.keys(WEAPONS).length} weapons, ${Object.keys(ITEMS).length} items, ${Object.keys(CHARACTER_GUIDES).length} characters.`);
 console.log(`Audited character catalog gaps: ${catalogGapNotices.length}.`);
 console.log(

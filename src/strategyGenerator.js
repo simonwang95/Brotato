@@ -119,6 +119,8 @@ const FOCUS_ROUTE_TAGS = new Set([
   "support",
   "tool",
   "unarmed",
+  "pet",
+  "economy",
 ]);
 
 const ITEM_EFFECT_NAME_KEYS = {
@@ -173,11 +175,12 @@ const CUSTOM_GROWTH_MIN_SOURCE_VALUE = {
 };
 
 export function getAvailableCharacters() {
-  return Object.values(CHARACTER_GUIDES).map(({ id, name, cnHint, unlock }) => ({
+  return Object.values(CHARACTER_GUIDES).map(({ id, name, cnHint, unlock, catalogStatus }) => ({
     id,
     name,
     cnHint,
     unlock,
+    catalogStatus: catalogStatus ?? "official-or-maintained",
   }));
 }
 
@@ -466,7 +469,20 @@ function entryAllowedByOptions(entry, options) {
 }
 
 function entryAllowedByCharacter(entry, plan) {
-  if (!entry.weapon || !plan?.officialCharacter) return true;
+  if (!plan?.officialCharacter) return true;
+  const characterEffects = officialCharacterEffects(plan);
+  if (entry.item) {
+    const bannedItems = new Set(plan.officialCharacter.bannedItems ?? []);
+    const isBanned = entry.official.records.some((record) => bannedItems.has(record.id));
+    return !isBanned;
+  }
+  if (!entry.weapon) return true;
+
+  const cannotUseWeapons = characterEffects.some(
+    (effect) => effect.key === "weapon_slot" && Number(effect.value) === 0,
+  );
+  if (cannotUseWeapons) return false;
+
   const noRangedWeapons = officialCharacterEffects(plan).some(
     (effect) => effect.key === "no_ranged_weapons" && Number(effect.value) > 0,
   );
@@ -475,7 +491,9 @@ function entryAllowedByCharacter(entry, plan) {
   const weaponTypes = entry.official.records
     .map((record) => record.weaponType)
     .filter((weaponType) => Number.isFinite(weaponType));
-  return !weaponTypes.length || weaponTypes.some((weaponType) => weaponType === 0);
+  if (weaponTypes.length && !weaponTypes.some((weaponType) => weaponType === 0)) return false;
+
+  return true;
 }
 
 function normalizeTag(tag) {
@@ -1226,6 +1244,33 @@ function itemScenarioModel(entry, plan, mode) {
     return null;
   }
 
+  if (itemEffect.trigger === "petStaticDamage") {
+    const stats = representativeStats(plan);
+    const petSources = itemEffect.petSources.map(({ label, stats: source }) => {
+      const scaledDamage =
+        Number(source.damage ?? 0) +
+        (source.scalingStats ?? []).reduce((sum, scaling) => {
+          const planStat = OFFICIAL_STAT_TO_PLAN_STAT[scaling.stat];
+          return sum + (planStat ? Number(stats[planStat] ?? 0) * Number(scaling.value ?? 0) : 0);
+        }, 0);
+      return {
+        label,
+        dps:
+          (scaledDamage * Math.max(1, Number(source.nb_projectiles ?? 1)) * 60) /
+          Number(source.cooldown),
+      };
+    });
+    return {
+      scenarioId: "normalWave",
+      itemEffectId: itemEffect.id,
+      result: {
+        itemEffect,
+        petStaticDps: petSources.reduce((sum, source) => sum + source.dps, 0),
+        petSources,
+      },
+    };
+  }
+
   const scenarioId =
     itemEffect.trigger === "conditionalDamageSupport" ? "boss" : scenarioIdForEntry(entry, mode);
   const result = calculateItemEffectDps(representativeStats(plan), scenarioId, itemEffect);
@@ -1261,6 +1306,18 @@ function scoreScenarioModel(entry, plan, mode) {
 
   const itemModel = itemScenarioModel(entry, plan, mode);
   if (itemModel) {
+    if (Number.isFinite(itemModel.result.petStaticDps)) {
+      const score = Math.min(8, Math.max(0, Math.round(itemModel.result.petStaticDps / 20)));
+      return {
+        score,
+        reasons: [
+          `场景模型：单宠物静态攻击参数约 ${itemModel.result.petStaticDps.toFixed(
+            1,
+          )} DPS；不计触发次数、命中率、宠物数量和存活时间`,
+        ],
+      };
+    }
+
     if (itemModel.result.pickupUtilityScore) {
       const score = Math.min(8, Math.max(0, Math.round(itemModel.result.pickupUtilityScore)));
       return {
@@ -1596,6 +1653,29 @@ function crateItemOpportunityFromEffects(effects) {
   };
 }
 
+function petStaticDamageEffectForEntry(baseEffect, effects) {
+  const petEffect = effects.find((effect) => /^EFFECT_PET_/.test(effect.textKey ?? ""));
+  if (!petEffect) return null;
+
+  const related = petEffect.relatedResources ?? {};
+  const sources = [
+    ["宠物攻击", related.weapon_stats],
+    ["宠物远程攻击", related.ranged_weapon_stats],
+    ["宠物爆炸", related.explosion_effect?.stats],
+    ["宠物地雷", related.landmine_effect_stat?.stats],
+  ].filter(([, stats]) => stats?.damage > 0 && stats?.cooldown > 0);
+  if (!sources.length) return null;
+
+  return {
+    ...baseEffect,
+    id: `${baseEffect.id}:pet-static-damage`,
+    trigger: "petStaticDamage",
+    petSources: sources.map(([label, stats]) => ({ label, stats })),
+    description:
+      "按官方宠物武器/爆炸/地雷 SubResource 的单宠物静态参数估算；不假设一局触发次数、命中率、宠物数量或宠物存活时间。",
+  };
+}
+
 function itemEffectForEntry(entry) {
   const effects = officialEffects(entry.official);
   const crateItemOpportunity = crateItemOpportunityFromEffects(effects);
@@ -1605,6 +1685,8 @@ function itemEffectForEntry(entry) {
     cnName: entry.item.cnName,
   };
   const staticItemEffectId = ITEM_EFFECT_NAME_KEYS[entry.official.nameKey];
+  const petStaticDamage = petStaticDamageEffectForEntry(baseEffect, effects);
+  if (petStaticDamage) return petStaticDamage;
   const chanceDamageEffect = effects
     .map((effect) => chanceDamageEffectForEntry(baseEffect, effect))
     .find(Boolean);
@@ -2305,6 +2387,9 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
     ],
     stance: plan.stance,
     recommendedWeapons,
+    weaponRouteNote:
+      plan.weaponRouteNote ??
+      "按官方目录中的角色限制选择武器；如果候选为空，说明该角色的核心路线不依赖武器栏。",
     avoid: plan.avoid,
     keyItems,
     statPriority: formatStatPriorities(plan.statPriority),

@@ -9,12 +9,16 @@
       "strategyName": "Giant",
       "expectedNameKey": "CHARACTER_GIANT",
       "status": "not-in-static-catalog",
-      "reason": "当前已抽取的 base + Abyssal Terrors 官方角色目录没有 CHARACTER_GIANT 记录。保留 Giant 为策略层待校验候选，而不是硬造官方目录映射。",
+      "reason": "当前已抽取的 base + Abyssal Terrors 官方角色目录没有 CHARACTER_GIANT 记录。保留 Giant 为已审计的策略层待核验候选，而不是硬造官方目录映射。",
       "evidence": [
         "data/official-catalog.json 没有 nameKey 为 CHARACTER_GIANT 的 character 记录。",
         "data/official-localization.json 没有 CHARACTER_GIANT 条目。",
-        "data/official-unlocks.json 包含 chal_giant_slayer，但该静态挑战奖励 Jack，不是 Giant 角色。"
-      ]
+        "data/official-unlocks.json 包含 chal_giant_slayer，但该静态挑战奖励 Jack，不是 Giant 角色。",
+        "base 包中的 Giant 路径仅命中 items/all/giant_belt 与 challenges/giant_slayer_data.tres。",
+        "Abyssal Terrors 中的 Giant 路径仅命中 dlc_1/enemies/giant、dlc_1/elites/giant_data.tres 和 Giant Isopod 资源，不属于角色目录。",
+        "base 与 Abyssal Terrors 的静态资源内容均没有 CHARACTER_GIANT 或 character_giant 命中。"
+      ],
+      "behavior": "保留在策略层和历史证据中，但在角色选择器标记为待核验目录缺口；不参与官方角色目录映射，不生成官方解锁条件。"
     }
   ]
 }

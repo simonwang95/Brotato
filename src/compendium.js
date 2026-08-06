@@ -361,14 +361,63 @@ function formatScalingStats(stats) {
     .join("，");
 }
 
+function formatRelatedWeaponStats(stats, label) {
+  if (!stats?.damage && !stats?.cooldown) return "";
+  const parts = [
+    `${label}伤害 ${stats.damage ?? "未知"}`,
+    Number.isFinite(stats.cooldown) ? `${label}间隔 ${formatCompactCooldown(stats.cooldown)}` : "",
+  ].filter(Boolean);
+  if (stats.scalingStats?.length) {
+    parts.push(`缩放 ${formatScalingStats(stats.scalingStats)}`);
+  }
+  return parts.join("，");
+}
+
+function formatPetEffect(effect) {
+  const summary = PET_EFFECT_SUMMARIES[effect.textKey];
+  if (!summary) return null;
+
+  const related = effect.relatedResources ?? {};
+  const details = [
+    formatRelatedWeaponStats(related.weapon_stats, "近战"),
+    formatRelatedWeaponStats(related.ranged_weapon_stats, "远程"),
+    formatRelatedWeaponStats(related.explosion_effect?.stats, "爆炸"),
+  ].filter(Boolean);
+
+  const burning = related.burning_data;
+  if (burning) {
+    details.push(
+      `燃烧 ${Number.isFinite(burning.damage) ? `${burning.damage}/跳` : "伤害未知"}` +
+        `${Number.isFinite(burning.duration) ? `，持续 ${burning.duration} 秒` : ""}` +
+        `${Number.isFinite(burning.chance) ? `，概率 ${formatFractionChance(burning.chance)}` : ""}`,
+    );
+  }
+
+  const landmine = related.landmine_effect_stat;
+  if (landmine) {
+    details.push(
+      `地雷生成间隔 ${Number.isFinite(landmine.spawn_cooldown) ? formatCompactCooldown(landmine.spawn_cooldown) : "未知"}`,
+    );
+    if (landmine.stats) details.push(formatRelatedWeaponStats(landmine.stats, "地雷"));
+  }
+
+  if (Number.isFinite(effect.effectParameters?.double_chance)) {
+    details.push(`材料翻倍概率 ${formatFractionChance(effect.effectParameters.double_chance)}`);
+  }
+  if (Number.isFinite(effect.effectParameters?.boost_zone_scale)) {
+    details.push(`光环缩放 ${effect.effectParameters.boost_zone_scale}`);
+  }
+
+  if (!details.length) return summary;
+  return `${summary.replace(/；具体[^。]+。?$/, "")}; ${details.join("；")}。`;
+}
+
 function formatEffectDetail(effect) {
   const trigger = effectTextLabel(effect.textKey);
   const keyLabel = statLabel(effect.key);
   const scriptPath = effect.scriptPath ?? "";
 
-  if (PET_EFFECT_SUMMARIES[effect.textKey]) {
-    return PET_EFFECT_SUMMARIES[effect.textKey];
-  }
+  if (PET_EFFECT_SUMMARIES[effect.textKey]) return formatPetEffect(effect);
 
   if (scriptPath.endsWith("/pet_effect.gd") && !effect.textKey && !effect.key) {
     return "";
@@ -393,7 +442,17 @@ function formatEffectDetail(effect) {
   }
 
   if (scriptPath.includes("burning_effect")) {
-    return "命中时施加燃烧；燃烧伤害参数待解码";
+    const burning = effect.relatedResources?.burning_data;
+    if (burning) {
+      const details = [
+        Number.isFinite(burning.damage) ? `每跳 ${burning.damage} 伤害` : "伤害未知",
+        Number.isFinite(burning.duration) ? `持续 ${burning.duration} 秒` : "持续时间未知",
+        Number.isFinite(burning.chance) ? `概率 ${formatFractionChance(burning.chance)}` : "触发概率待解码",
+      ];
+      if (burning.scalingStats?.length) details.push(`缩放 ${formatScalingStats(burning.scalingStats)}`);
+      return `命中时施加燃烧；${details.join("，")}；传播/跳数参数待解码`;
+    }
+    return "命中时施加燃烧；燃烧伤害、持续时间和触发参数待解码";
   }
 
   if (scriptPath.includes("slow_in_zone_effect")) {
@@ -442,9 +501,8 @@ function formatEffectDetail(effect) {
   }
 
   if (scriptPath.includes("weapon_slow_on_hit_effect")) {
-    return `命中时减速敌人，效果随${statLabel(effect.stat)}提高（效果等级 ${signedNumber(
-      effect.value,
-    )}）`;
+    const scaledStat = effect.stat ? `随${statLabel(effect.stat)}提高` : "缩放属性待解码";
+    return `命中时减速敌人，${scaledStat}（效果等级 ${signedNumber(effect.value)}）`;
   }
 
   if (scriptPath.includes("weapon_stack_effect")) {

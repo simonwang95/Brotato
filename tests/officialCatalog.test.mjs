@@ -7,6 +7,10 @@ assert.ok(catalog.summary.total >= 500, "catalog should include base game and DL
 assert.ok(catalog.summary.byKind.item > 200, "catalog should include item records");
 assert.ok(catalog.summary.byKind.weapon > 200, "catalog should include weapon records");
 assert.ok(catalog.summary.byKind.character > 60, "catalog should include character records");
+assert.equal(catalog.sourceMetadata.productVersion, "1.1.12.0.beta-3");
+assert.match(catalog.sourceMetadata.extractorVersion, /^brotato-static-extractors@/);
+assert.equal(catalog.sourceMetadata.packages.length, 2);
+assert.ok(catalog.sourceMetadata.packages.every((source) => /^[a-f0-9]{64}$/.test(source.sha256)));
 
 {
   const lute = catalog.records.find((record) => record.id === "weapon_lute_1");
@@ -25,6 +29,20 @@ assert.ok(catalog.summary.byKind.character > 60, "catalog should include charact
     { stat: "stat_melee_damage", value: 0.5 },
     { stat: "stat_luck", value: 0.1 },
   ]);
+}
+
+{
+  const bonkDog = catalog.records.find((record) => record.id === "item_bonk_dog");
+  assert.equal(
+    bonkDog?.effects?.[0]?.relatedResources?.weapon_stats?.damage,
+    10,
+    "pet effect extraction should retain weapon SubResource damage",
+  );
+  assert.equal(
+    bonkDog?.effects?.[0]?.relatedResources?.explosion_effect?.stats?.cooldown,
+    300,
+    "pet effect extraction should retain explosion SubResource cooldown",
+  );
 }
 
 {

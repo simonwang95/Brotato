@@ -4,6 +4,7 @@ import {
   getUncompressedOptimizedMessage,
   parseOptimizedTranslation,
 } from "./optimized-translation.mjs";
+import { buildSourceMetadata } from "./extraction-metadata.mjs";
 
 const defaultInstallDir =
   "***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato";
@@ -341,6 +342,10 @@ if (existsSync(dlcPackagePath)) {
 
 const records = packages.flatMap((sourcePackage) => sourcePackage.records);
 const output = {
+  sourceMetadata: buildSourceMetadata(installDir, [
+    { id: "base", path: basePackagePath },
+    { id: "abyssalTerrors", path: dlcPackagePath },
+  ]),
   generatedFrom: packages.map(({ id, file }) => ({ id, file })),
   note:
     "Static install-package data only. This does not read save files and is not affected by local unlock progress.",

@@ -1,3 +1,5 @@
+import { OFFICIAL_CHARACTER_UNLOCKS } from "./officialUnlocks.js";
+
 export const MODES = {
   normal20: {
     id: "normal20",
@@ -832,6 +834,54 @@ export const ITEMS = {
     role: "高生命目标伤害",
     statNote: "重点影响高生命敌人、精英和 Boss 的伤害效率，适合高攻速或高命中路线。",
   },
+  catlingGun: {
+    id: "catlingGun",
+    name: "Catling Gun",
+    cnName: "猫特林机枪",
+    unlock: "官方目录显示需解锁、可掉落。",
+    role: "宠物远程输出",
+    statNote: "宠物远程攻击，官方资源提供远程伤害缩放；适合驯兽师的宠物标签路线。",
+  },
+  bonkDog: {
+    id: "bonkDog",
+    name: "Bonk Dog",
+    cnName: "Bonk狗",
+    unlock: "官方目录显示需解锁、可掉落。",
+    role: "宠物爆炸输出",
+    statNote: "宠物近战与定时爆炸，官方资源提供近战缩放和爆炸参数。",
+  },
+  botOMine: {
+    id: "botOMine",
+    name: "Bot-O-Mine",
+    cnName: "布雷机器人",
+    unlock: "官方目录显示需解锁、可掉落。",
+    role: "宠物工程输出",
+    statNote: "工程学缩放的宠物结构物，同时生成地雷；适合工程/宠物混合路线。",
+  },
+  blazemander: {
+    id: "blazemander",
+    name: "Blazemander",
+    cnName: "焰蜥蜴",
+    unlock: "官方目录显示需解锁、可掉落。",
+    role: "宠物燃烧输出",
+    statNote: "宠物近战、远程火焰和燃烧三段效果，官方资源同时提供元素缩放。",
+  },
+  lootworm: {
+    id: "lootworm",
+    name: "Lootworm",
+    cnName: "搜刮虫虫",
+    unlock: "官方目录显示需解锁、可掉落。",
+    role: "宠物经济",
+    statNote: "收集材料和树木，官方资源确认拾取材料时 10% 概率使其价值翻倍。",
+  },
+  tardigrade: {
+    id: "tardigrade",
+    name: "Tardigrade",
+    cnName: "水熊虫",
+    unlock: "默认道具池，无需角色解锁。",
+    role: "一次命中保护",
+    statNote: "官方效果为抵挡接下来受到的 1 次伤害；受伤者的起始保护，不是假设的生命值。",
+  },
 };
 
 const defaultSourceNotes = [
@@ -846,62 +896,6 @@ const dlcSourceNotes = [
   "DLC 角色解锁条件来自本机安装包的静态 challenge 与简中 PHashTranslation；角色机制仍在逐条校验。",
 ];
 
-const VERIFIED_CHARACTER_UNLOCKS = {
-  apprentice: "官方 Progress 静态数据：达到 20 等级后解锁。",
-  armsDealer: "官方 Progress 静态数据：单局内回收 12 把武器后解锁。",
-  artificer: "官方 Progress 静态数据：使用单次爆炸击杀 15 名敌人后解锁。",
-  baby: "官方 Progress 静态数据：在第 6 波前达到 10 等级后解锁。",
-  bull: "官方 Progress 静态数据：危险 1 通关后解锁。",
-  chunky: "官方 Progress 静态数据：首次阵亡后解锁。",
-  cryptid: "官方 Progress 静态数据：以不少于 10 棵存活树木完成一波后解锁。",
-  cyborg: "官方 Progress 静态数据：达到 10 远程伤害并同时拥有 3 个构筑物后解锁。",
-  demon: "官方 Progress 静态数据：危险 5 通关后解锁。",
-  doctor: "官方 Progress 静态数据：在一波内恢复 200 生命值后解锁。",
-  engineer: "官方 Progress 静态数据：同时在地图上拥有 5 个炮塔后解锁。",
-  entrepreneur: "官方 Progress 静态数据：持有 3000 材料后解锁。",
-  explorer: "官方 Progress 静态数据：击杀 50 棵树木后解锁。",
-  farmer: "官方 Progress 静态数据：达到 200 收获后解锁。",
-  fisherman: "官方 Progress 静态数据：单局内获得 2 个诱饵后解锁。",
-  generalist: "官方 Progress 静态数据：累计收集 2000 材料后解锁。",
-  ghost: "官方 Progress 静态数据：达到 60% 闪避后解锁。",
-  gladiator: "官方 Progress 静态数据：累计击杀 20000 名敌人后解锁。",
-  glutton: "官方 Progress 静态数据：单局内拾取 20 个消耗品后解锁。",
-  golem: "官方 Progress 静态数据：以 1 生命值完成一波后解锁。",
-  hunter: "官方 Progress 静态数据：达到 300 范围后解锁。",
-  jack: "官方 Progress 静态数据：在 15 秒内击杀一个 Boss 或精英后解锁。",
-  king: "官方 Progress 静态数据：同时拥有 3 把 IV 阶武器后解锁。",
-  knight: "官方 Progress 静态数据：危险 4 通关后解锁。",
-  lich: "官方 Progress 静态数据：达到 100 最大生命后解锁。",
-  loud: "官方 Progress 静态数据：累计击杀 5000 名敌人后解锁。",
-  lucky: "官方 Progress 静态数据：累计收集 300 材料后解锁。",
-  masochist: "官方 Progress 静态数据：危险 3 通关后解锁。",
-  multitasker: "官方 Progress 静态数据：累计收集 5000 材料后解锁。",
-  mutant: "官方 Progress 静态数据：累计击杀 2000 名敌人后解锁。",
-  old: "官方 Progress 静态数据：累计击杀 300 名敌人后解锁。",
-  oneArmed: "官方 Progress 静态数据：危险 0 通关后解锁。",
-  pacifist: "官方 Progress 静态数据：累计收集 10000 材料后解锁。",
-  renegade: "官方 Progress 静态数据：单局内获得 10 个不同的 I 阶道具后解锁。",
-  saver: "官方 Progress 静态数据：累计收集 20000 材料后解锁。",
-  sick: "官方 Progress 静态数据：达到 -5 生命再生后解锁。",
-  soldier: "官方 Progress 静态数据：危险 2 通关后解锁。",
-  speedy: "官方 Progress 静态数据：达到 50% 移速后解锁。",
-  streamer: "官方 Progress 静态数据：达到 -20% 移速后解锁。",
-  technomage: "官方 Progress 静态数据：达到 10 元素伤害并同时拥有 3 个构筑物后解锁。",
-  vagabond: "官方 Progress 静态数据：同时拥有 6 把不同武器后解锁。",
-  vampire: "官方 Progress 静态数据：达到 40% 生命窃取后解锁。",
-  wildling: "官方 Progress 静态数据：累计击杀 10000 名敌人后解锁。",
-  buccaneer: "官方 Progress 静态数据：达到 100% 拾取范围后解锁。",
-  chef: "官方 Progress 静态数据：同时让至少 25 个敌人处于燃烧状态后解锁。",
-  diver: "官方 Progress 静态数据：击杀距离角色超过 700 范围的 1000 个敌人后解锁。",
-  druid: "官方 Progress 静态数据：到第 20 波袭击结束时收集 250 个消耗品后解锁。",
-  dwarf: "官方 Progress 静态数据：使用近战攻击击中至少 25 个敌人后解锁。",
-  gangster: "官方 Progress 静态数据：在单个商店中刷新 10 次后解锁。",
-  hiker: "官方 Progress 静态数据：总计行走 20000 步后解锁。",
-  ogre: "官方 Progress 静态数据：单次攻击对敌人造成 1000 伤害后解锁。",
-  romantic: "官方 Progress 静态数据：以 0 诅咒完成一场比赛后解锁。",
-  giant:
-    "深海魔怪 DLC/策略层候选；当前 base+DLC 官方角色资源未包含 CHARACTER_GIANT，具体挑战条件待校验。",
-};
 
 function weaponPlan(weaponIds) {
   return weaponIds.map((weaponId, index) => ({
@@ -965,6 +959,7 @@ function makeSeedPlans(config) {
   return {
     normal20: {
       stance: config.normalStance,
+      weaponRouteNote: config.weaponRouteNote,
       recommendedWeapons: withRouteTags(weaponPlan(config.weapons), config.routeTags),
       avoid: config.avoid,
       keyItems: withRouteTags(itemPlan(config.items), config.routeTags),
@@ -974,6 +969,7 @@ function makeSeedPlans(config) {
     },
     endless: {
       stance: config.endlessStance ?? `${config.normalStance} 无尽中更重视经济成长、范围覆盖和后期生存。`,
+      weaponRouteNote: config.weaponRouteNote,
       recommendedWeapons: withRouteTags(
         weaponPlan(config.endlessWeapons ?? config.weapons),
         config.endlessRouteTags ?? config.routeTags,
@@ -1946,7 +1942,7 @@ export const CHARACTER_GUIDES = {
     id: "chunky",
     name: "Chunky",
     cnHint: "大壮，生命坦克",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "大壮适合把最大生命和生存转化成容错，用偏稳定的近战或弹射路线通关。伤害不能断档，否则只肉不清怪。",
     sourceNotes: defaultSourceNotes,
@@ -1982,7 +1978,7 @@ export const CHARACTER_GUIDES = {
     id: "old",
     name: "Old",
     cnHint: "老叟，低速高经验",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "老叟地图小、节奏紧，适合近距离覆盖和高效率清怪。移速短板明显，需要更早补走位属性。",
     sourceNotes: defaultSourceNotes,
@@ -2018,7 +2014,7 @@ export const CHARACTER_GUIDES = {
     id: "loud",
     name: "Loud",
     cnHint: "大嗓门，高密度清怪",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "大嗓门面对更多敌人，收益来自高密度清怪和击杀经济。武器要能覆盖多个目标，单体慢武器压力很大。",
     sourceNotes: defaultSourceNotes,
@@ -2055,7 +2051,7 @@ export const CHARACTER_GUIDES = {
     id: "multitasker",
     name: "Multitasker",
     cnHint: "多面手，多武器数量",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "多面手能带更多武器，最怕路线散。应选择便宜、同类、能被数量放大的武器，把规模优势转成稳定 DPS。",
     sourceNotes: defaultSourceNotes,
@@ -2092,7 +2088,7 @@ export const CHARACTER_GUIDES = {
     id: "wildling",
     name: "Wildling",
     cnHint: "野人，原始武器",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "野人适合 Primitive 武器，前期便宜且容易成型。中后期要补伤害倍率，否则基础武器会掉队。",
     sourceNotes: defaultSourceNotes,
@@ -2128,7 +2124,7 @@ export const CHARACTER_GUIDES = {
     id: "pacifist",
     name: "Pacifist",
     cnHint: "和平主义者，生存经济",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "和平主义者不靠击杀收益，重点是活着、拾取和收获。输出只需要够推开压力，生存和经济是主线。",
     sourceNotes: defaultSourceNotes,
@@ -2164,7 +2160,7 @@ export const CHARACTER_GUIDES = {
     id: "gladiator",
     name: "Gladiator",
     cnHint: "角斗士，多近战武器",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "角斗士适合多种近战武器并行，但缩放仍要集中在近战伤害、攻速和生存。贴脸风险高，护甲不能落后。",
     sourceNotes: defaultSourceNotes,
@@ -2201,7 +2197,7 @@ export const CHARACTER_GUIDES = {
     id: "saver",
     name: "Saver",
     cnHint: "节俭者，存钱成长",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "节俭者需要在存钱收益和战斗阈值之间平衡。前期不能太贪，清怪稳定后再让经济滚起来。",
     sourceNotes: defaultSourceNotes,
@@ -2238,7 +2234,7 @@ export const CHARACTER_GUIDES = {
     id: "sick",
     name: "Sick",
     cnHint: "病人，生命窃取",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "病人适合高攻速和生命窃取路线。持续掉血要求武器尽快形成高频命中，回复和清怪都不能断。",
     sourceNotes: defaultSourceNotes,
@@ -2274,7 +2270,7 @@ export const CHARACTER_GUIDES = {
     id: "farmer",
     name: "Farmer",
     cnHint: "农夫，收获经济",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "农夫依赖收获和经济滚雪球。前中期可以更重视收获，但清怪底线必须守住。",
     sourceNotes: defaultSourceNotes,
@@ -2310,7 +2306,7 @@ export const CHARACTER_GUIDES = {
     id: "ghost",
     name: "Ghost",
     cnHint: "幽灵，闪避玻璃炮",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "幽灵适合高闪避和幽魂武器成长路线，但容错很薄。重点是尽快拉满闪避，并用幽魂套装把击杀转成永久属性。",
     sourceNotes: defaultSourceNotes,
@@ -2346,7 +2342,7 @@ export const CHARACTER_GUIDES = {
     id: "mutant",
     name: "Mutant",
     cnHint: "异变体，经验成长",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "异变体适合快速升级拿属性，但经济和商店节奏更紧。前期要用高效率武器把等级优势转成清怪。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2381,7 +2377,7 @@ export const CHARACTER_GUIDES = {
     id: "generalist",
     name: "Generalist",
     cnHint: "博学家，近远双修",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "博学家适合同时利用近战和远程属性，但不能变成无目的混伤。优先选择能同时覆盖两类缩放的武器组合。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2416,7 +2412,7 @@ export const CHARACTER_GUIDES = {
     id: "speedy",
     name: "Speedy",
     cnHint: "飞毛腿，移速输出",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "飞毛腿把移速变成节奏优势，适合高机动近战或远程绕场。移速很强，但不能替代护甲和生命。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2451,7 +2447,7 @@ export const CHARACTER_GUIDES = {
     id: "entrepreneur",
     name: "Entrepreneur",
     cnHint: "企业家，商店经济",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "企业家围绕商店效率和经济折扣滚动，适合低成本武器快速成型。关键是把经济优势及时转成战斗力。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2486,7 +2482,7 @@ export const CHARACTER_GUIDES = {
     id: "explorer",
     name: "Explorer",
     cnHint: "探险家，拾取探索",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "探险家更重视地图资源、拾取和移动。清怪不是唯一收入来源，但武器仍要能支撑波次压力。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2521,7 +2517,7 @@ export const CHARACTER_GUIDES = {
     id: "doctor",
     name: "Doctor",
     cnHint: "医生，回复攻速",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "医生适合高攻速和生命再生路线。输出可以偏稳定，重点是让回复和武器频率一起工作。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2556,7 +2552,7 @@ export const CHARACTER_GUIDES = {
     id: "hunter",
     name: "Hunter",
     cnHint: "猎人，范围暴击",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "猎人适合远程、范围和暴击路线。射程优势要转化为安全输出，而不是忽略近身防御。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2592,7 +2588,7 @@ export const CHARACTER_GUIDES = {
     id: "artificer",
     name: "Artificer",
     cnHint: "技工，爆炸工程",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "技工偏爆炸和工程思路，适合螺丝刀、扳手等工具路线。爆发强，但要注意冷却和走位。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2626,7 +2622,7 @@ export const CHARACTER_GUIDES = {
     id: "armsDealer",
     name: "Arms Dealer",
     cnHint: "军火商，轮换武器",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "军火商需要适应商店武器轮换，泛用属性比单一缩放更重要。推荐用枪械思路降低转换成本。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2661,7 +2657,7 @@ export const CHARACTER_GUIDES = {
     id: "streamer",
     name: "Streamer",
     cnHint: "主播，站位经济",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "主播需要在站位收益和清怪压力之间切换。工程结构能帮你在少移动时保持输出。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2696,7 +2692,7 @@ export const CHARACTER_GUIDES = {
     id: "cyborg",
     name: "Cyborg",
     cnHint: "赛博格，远程转工程",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "赛博格前期偏远程，后期要关注工程转换。需要提前规划，不要只按普通枪手玩。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2730,7 +2726,7 @@ export const CHARACTER_GUIDES = {
     id: "glutton",
     name: "Glutton",
     cnHint: "暴食，消耗品爆发",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "暴食依赖消耗品和爆发收益，适合幸运、拾取和范围清怪。保持掉落链路比单点输出更重要。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2765,7 +2761,7 @@ export const CHARACTER_GUIDES = {
     id: "jack",
     name: "Jack",
     cnHint: "杰克，单体精英",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "杰克更偏少量高威胁目标，单体伤害和暴击价值更高，但普通清怪也不能断。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2800,7 +2796,7 @@ export const CHARACTER_GUIDES = {
     id: "lich",
     name: "Lich",
     cnHint: "巫妖，生命再生",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "巫妖偏生命再生和持续作战。回复是输出和生存的共同底座，但仍要补清怪能力。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2834,7 +2830,7 @@ export const CHARACTER_GUIDES = {
     id: "apprentice",
     name: "Apprentice",
     cnHint: "学徒，升级成长",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "学徒随升级成长，适合前期快速把属性方向定死。成长强但也要及时补生存。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2869,7 +2865,7 @@ export const CHARACTER_GUIDES = {
     id: "cryptid",
     name: "Cryptid",
     cnHint: "神秘生物，树木经济",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "神秘生物偏树木、消耗品和资源路线。幸运、拾取和走位很重要，输出需要靠稳定武器兜底。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2904,7 +2900,7 @@ export const CHARACTER_GUIDES = {
     id: "fisherman",
     name: "Fisherman",
     cnHint: "渔夫，诱饵收益",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "渔夫靠诱饵提高收益，同时提高波次压力。要主动把额外敌人转成经济，而不是被经济反噬。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2939,7 +2935,7 @@ export const CHARACTER_GUIDES = {
     id: "golem",
     name: "Golem",
     cnHint: "魔像，重甲高血",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "魔像偏高血量和护甲，机动性和回复空间有限。要用厚身板争取输出时间，同时避免清怪不足。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -2973,7 +2969,7 @@ export const CHARACTER_GUIDES = {
     id: "king",
     name: "King",
     cnHint: "国王，高阶装备",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "国王偏高阶武器和稀有道具收益。前期要稳住，后期通过高品质装备提高上限。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -3008,7 +3004,7 @@ export const CHARACTER_GUIDES = {
     id: "renegade",
     name: "Renegade",
     cnHint: "叛徒，多弹远程",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "叛徒适合多弹体和远程覆盖，单发伤害可能不亮眼，但命中次数和触发频率很强。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -3044,7 +3040,7 @@ export const CHARACTER_GUIDES = {
     id: "oneArmed",
     name: "One Armed",
     cnHint: "独臂，单武器爆发",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "独臂只能围绕一把武器打穿全局，武器质量和属性集中度极高。不要频繁换路线。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -3080,7 +3076,7 @@ export const CHARACTER_GUIDES = {
     id: "bull",
     name: "Bull",
     cnHint: "公牛，受击爆炸",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "公牛主要靠受击和爆炸节奏清怪，重点是血量、护甲、回复和主动控场。普通武器不是主线。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -3114,7 +3110,7 @@ export const CHARACTER_GUIDES = {
     id: "soldier",
     name: "Soldier",
     cnHint: "士兵，站桩远程",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "士兵适合站桩高远程输出。强在射击效率，弱在移动受限，所以范围和防御要更早补。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -3149,7 +3145,7 @@ export const CHARACTER_GUIDES = {
     id: "masochist",
     name: "Masochist",
     cnHint: "受虐狂，受击成长",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "受虐狂能从受击中获得收益，但前提是活下来。生存阈值和回复比普通输出更关键。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -3184,7 +3180,7 @@ export const CHARACTER_GUIDES = {
     id: "knight",
     name: "Knight",
     cnHint: "骑士，护甲近战",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "骑士适合护甲和近战路线，防御属性能转化为稳定贴脸输出。攻速和范围仍需要补。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -3221,7 +3217,7 @@ export const CHARACTER_GUIDES = {
     id: "demon",
     name: "Demon",
     cnHint: "恶魔，生命经济",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary: "恶魔用生命参与经济转换，强度上限高但容错低。需要清楚什么时候花血、什么时候补回生存。",
     sourceNotes: defaultSourceNotes,
     plans: makeSeedPlans({
@@ -3368,7 +3364,7 @@ export const CHARACTER_GUIDES = {
     id: "chef",
     name: "Chef",
     cnHint: "厨师，消耗品燃烧",
-    unlock: VERIFIED_CHARACTER_UNLOCKS.chef,
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.chef,
     summary: "厨师适合消耗品、燃烧和回复路线。拾取水果不只是回血，也能成为输出节奏的一部分。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3405,7 +3401,7 @@ export const CHARACTER_GUIDES = {
     id: "diver",
     name: "Diver",
     cnHint: "潜水员，海军近距远程",
-    unlock: VERIFIED_CHARACTER_UNLOCKS.diver,
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.diver,
     summary: "潜水员适合海军、近距远程和拾取节奏。需要在安全距离、移速和范围之间找到平衡。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3476,13 +3472,221 @@ export const CHARACTER_GUIDES = {
       ],
     }),
   },
+  beastMaster: {
+    id: "beastMaster",
+    name: "Beast Master",
+    cnHint: "驯兽师，宠物流",
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.beastMaster,
+    summary:
+      "官方特性禁止武器栏，并从宠物标签、永久宠物属性与幸运获得收益；主路线应把宠物道具当作输出和经济核心，而不是硬塞武器推荐。",
+    sourceNotes: [
+      ...defaultSourceNotes,
+      "官方角色静态 effect/stat 数据：无武器栏、宠物标签加权、永久宠物属性转移速、+10 幸运，并从官方 starting_items 记录确认四个宠物起始物品。",
+    ],
+    plans: {
+      normal20: {
+        stance:
+          "不购买武器；优先凑宠物道具，先用 Catling Gun/Bonk Dog 建立伤害，再用 Bot-O-Mine 和 Blazemander 补工程、元素与范围覆盖。",
+        weaponRouteNote:
+          "官方 weapon_slot=0：驯兽师不能持有武器。这里的主路线是宠物道具池，不能把空武器推荐误解成缺少攻略。",
+        recommendedWeapons: [],
+        avoid: "不要购买武器或 Jelly、Glasses；也不要只堆幸运而忽略宠物数量、移速与基础生存。",
+        keyItems: [
+          {
+            itemId: "catlingGun",
+            priority: "主推荐",
+            reason: "官方 starting_items 与 pet 标签确认；远程宠物先提供稳定单体和清怪输出。",
+          },
+          {
+            itemId: "bonkDog",
+            priority: "核心",
+            reason: "官方宠物资源带有近战缩放和爆炸子资源，补足怪群清理与贴身压力。",
+          },
+          {
+            itemId: "botOMine",
+            priority: "高",
+            reason: "官方 starting_items 和 Engineering/Pet 机制确认；炮塔与地雷能覆盖玩家不能持武器的空档。",
+          },
+          {
+            itemId: "blazemander",
+            priority: "高",
+            reason: "官方 Pet 与燃烧资源同时存在，元素伤害会放大其火焰持续输出。",
+          },
+          {
+            itemId: "lootworm",
+            priority: "经济补充",
+            reason: "官方起始物品；拾取材料时的 10% 翻倍概率能支持宠物路线的高成本成型。",
+          },
+          {
+            itemId: "wings",
+            priority: "补充",
+            reason: "驯兽师的永久宠物属性会转移速，翅膀同时补移速与范围，帮助围绕宠物走位。",
+          },
+        ],
+        statPriority: {
+          early: ["luck", "attackSpeed", "speed", "harvesting"],
+          mid: ["engineering", "elementalDamage", "range", "damagePercent"],
+          late: ["armor", "maxHp", "dodge", "hpRegen"],
+        },
+        wave20Targets: {
+          maxHp: [65, 95],
+          armor: [7, 12],
+          dodge: [15, 45],
+          hpRegen: [6, 14],
+          damagePercent: [45, 95],
+          attackSpeed: [35, 85],
+          elementalDamage: [25, 65],
+          engineering: [25, 65],
+          range: [70, 160],
+          speed: [18, 35],
+          harvesting: [50, 120],
+          luck: [80, 180],
+        },
+        rhythm: [
+          "前 5 波优先确认至少两个宠物入口，不买武器，也不要被非宠物高稀有道具打散路线。",
+          "第 6-12 波把幸运、移速和宠物对应的元素/工程属性补齐；宠物输出不足时先补宠物，不要只买生存。",
+          "第 13 波后再把经济换成护甲、最大生命和范围，确保宠物在怪潮里有时间输出。",
+        ],
+      },
+      endless: {
+        stance:
+          "无尽继续围绕宠物标签滚动，但要把幸运和经济兑现为宠物数量、工程/元素伤害、范围与生存，不依赖未证明的宠物触发次数。",
+        weaponRouteNote:
+          "官方 weapon_slot=0：无尽同样不能持有武器；推荐项全部来自官方宠物/起始物品和可追溯的宠物参数。",
+        recommendedWeapons: [],
+        avoid: "不要把无尽资源全投在幸运或高阶宠物上；没有移速、范围和护甲时，宠物路线会被怪潮拖垮。",
+        keyItems: [
+          {
+            itemId: "catlingGun",
+            priority: "主推荐",
+            reason: "远程宠物攻击距离长，适合无尽怪潮中维持稳定输出。",
+          },
+          {
+            itemId: "bonkDog",
+            priority: "核心",
+            reason: "爆炸与近战缩放提供无尽所需的群体清理，但需要移速和护甲保护宠物窗口。",
+          },
+          {
+            itemId: "botOMine",
+            priority: "核心",
+            reason: "工程缩放、炮塔射击与地雷覆盖可以补足宠物攻击间隔。",
+          },
+          {
+            itemId: "blazemander",
+            priority: "高",
+            reason: "火焰宠物把元素伤害和范围转成持续覆盖，避免只依赖单一宠物。",
+          },
+          {
+            itemId: "lootworm",
+            priority: "经济",
+            reason: "拾取材料翻倍是官方明确的经济触发，不把未知箱子数或宠物触发次数写成估算。",
+          },
+          {
+            itemId: "wings",
+            priority: "高",
+            reason: "移速与范围决定无尽走位和宠物覆盖空间。",
+          },
+        ],
+        statPriority: {
+          early: ["luck", "harvesting", "speed", "attackSpeed"],
+          mid: ["engineering", "elementalDamage", "range", "damagePercent"],
+          late: ["armor", "maxHp", "dodge", "hpRegen"],
+        },
+        wave20Targets: {
+          maxHp: [85, 120],
+          armor: [10, 16],
+          dodge: [30, 60],
+          hpRegen: [10, 20],
+          damagePercent: [75, 140],
+          attackSpeed: [60, 120],
+          elementalDamage: [45, 90],
+          engineering: [45, 90],
+          range: [110, 220],
+          speed: [25, 45],
+          harvesting: [100, 220],
+          luck: [160, 320],
+        },
+        rhythm: [
+          "第 20 波前先让宠物输出稳定，幸运和经济只在宠物数量与生存已过线后继续堆。",
+          "无尽开始后优先把经济换成工程、元素、范围和真实防御；不把宠物的未知频率换算成虚假 DPS。",
+          "如果怪潮开始贴脸，先买移速、范围、护甲和闪避，而不是继续追一件高价宠物。",
+        ],
+      },
+    },
+  },
+  wounded: {
+    id: "wounded",
+    name: "Wounded",
+    cnHint: "伤者，一击即死",
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.wounded,
+    summary:
+      "官方特性是一击即死，不能购买护甲、最大生命、生命再生或生命窃取升级；路线必须用距离、移速、范围、攻速和水熊虫的单次命中保护换容错。",
+    sourceNotes: [
+      ...defaultSourceNotes,
+      "官方角色静态 effect/stat 数据：die_in_one_hit、起始 Tardigrade、+5 移速、+8 收获，以及四类被禁用升级。",
+    ],
+    plans: makeSeedPlans({
+      normalStance:
+        "优先 SMG 或 Slingshot 维持远程清怪，再用 Taser/元素分支控制接敌；Wounded 的目标不是堆血，而是让敌人尽量打不到。",
+      endlessStance:
+        "无尽把安全距离、范围、移速和经济放在纸面伤害之前；一击即死使任何一次命中都不能靠护甲或血量修复。",
+      weaponRouteNote:
+        "官方 starting_weapon_paths 覆盖近战和远程，但攻略优先远程/元素；角色没有武器类型禁用，真正的限制在受击和四类升级禁用。",
+      weapons: ["smg", "slingshot", "taser"],
+      endlessWeapons: ["smg", "taser", "slingshot"],
+      avoid:
+        "不要依赖护甲、最大生命、生命再生、生命窃取或近战贴脸；这些升级被官方禁用，近战命中也没有一击容错。",
+      items: ["tardigrade", "wings", "scope", "coffee", "coupon"],
+      endlessItems: ["tardigrade", "wings", "scope", "babyGecko", "coupon"],
+      routeTags: ["Ranged", "Elemental"],
+      endlessRouteTags: ["Ranged", "Elemental", "Economy"],
+      statPriority: {
+        early: ["range", "attackSpeed", "rangedDamage", "speed"],
+        mid: ["damagePercent", "elementalDamage", "harvesting", "luck"],
+        late: ["dodge", "critChance", "engineering"],
+      },
+      endlessStatPriority: {
+        early: ["range", "speed", "attackSpeed", "harvesting"],
+        mid: ["rangedDamage", "damagePercent", "elementalDamage", "luck"],
+        late: ["dodge", "critChance", "engineering"],
+      },
+      targets: {
+        maxHp: [1, 1],
+        armor: [0, 0],
+        dodge: [25, 60],
+        damagePercent: [55, 110],
+        attackSpeed: [70, 140],
+        rangedDamage: [35, 75],
+        elementalDamage: [25, 65],
+        range: [130, 260],
+        speed: [20, 40],
+        harvesting: [70, 160],
+        luck: [40, 110],
+      },
+      rhythm: [
+        "前 5 波先做出远程武器数量和范围；水熊虫是官方起始保护，不能把它当作可无限叠加的血量。",
+        "第 6-12 波优先买移速、攻速、远程/元素伤害和范围，商店刷新要服从当前清怪阈值。",
+        "第 13 波后只买能提高命中前安全距离或清怪覆盖的属性；被击一次即结束，护甲和血量升级即使出现也不属于有效路线。",
+      ],
+      endlessRhythm: [
+        "无尽前先把范围、移速和攻速过线，不能用经济成长替代安全空间。",
+        "无尽中期用幸运和收获提升商店质量，再换成远程伤害、总伤害和暴击。",
+        "后期保留水熊虫保护的单次容错，但不假设它能应对多段伤害或改变一击即死规则。",
+      ],
+    }),
+  },
   giant: {
     id: "giant",
     name: "Giant",
     cnHint: "巨人，高生命重型近战",
-    unlock: "深海魔怪 DLC 角色；当前本机官方目录未匹配，具体挑战条件待校验。",
+    catalogStatus: "audited-catalog-gap",
+    unlock:
+      "策略层待核验候选：静态 base + Abyssal Terrors 官方角色资源未包含 CHARACTER_GIANT；仅有 Giant Belt、Giant Slayer 和 Giant 敌人资源，不构造角色映射或解锁条件。",
     summary: "巨人适合高生命、高护甲和重型近战路线。输出不只靠面板伤害，也靠能否在怪群压力下稳定挥出重武器。",
-    sourceNotes: dlcSourceNotes,
+    sourceNotes: [
+      ...dlcSourceNotes,
+      "目录审计结论：base 仅命中 Giant Belt/Giant Slayer，DLC 的 Giant 路径属于敌人/精英资源；没有 CHARACTER_GIANT 角色、翻译或角色奖励映射。",
+    ],
     plans: makeSeedPlans({
       normalStance: "用 Anchor、Brick 或 Mace 走高生命重型近战，先稳生存再补攻速和范围。",
       weapons: ["anchor", "brick", "mace"],
@@ -3517,7 +3721,7 @@ export const CHARACTER_GUIDES = {
     id: "ogre",
     name: "Ogre",
     cnHint: "食人魔，受击爆发近战",
-    unlock: VERIFIED_CHARACTER_UNLOCKS.ogre,
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.ogre,
     summary: "食人魔适合重型、钝器和高生命近战。路线重点是把受压环境转成范围清怪，而不是无脑吃伤。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3554,7 +3758,7 @@ export const CHARACTER_GUIDES = {
     id: "dwarf",
     name: "Dwarf",
     cnHint: "矮人，钝器重型成长",
-    unlock: VERIFIED_CHARACTER_UNLOCKS.dwarf,
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.dwarf,
     summary: "矮人适合钝器、工具和重型近战。路线要把升级、护甲和近战缩放捆在一起，避免只拿慢武器没有成长。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3628,7 +3832,7 @@ export const CHARACTER_GUIDES = {
     id: "gangster",
     name: "Gangster",
     cnHint: "匪徒，商店风险经济",
-    unlock: VERIFIED_CHARACTER_UNLOCKS.gangster,
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.gangster,
     summary: "匪徒围绕商店风险和快速变现。推荐用枪械或精准武器保证击杀速度，再用经济道具滚雪球。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3665,7 +3869,7 @@ export const CHARACTER_GUIDES = {
     id: "romantic",
     name: "Romantic",
     cnHint: "浪漫之人，魅惑乐器",
-    unlock: VERIFIED_CHARACTER_UNLOCKS.romantic,
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.romantic,
     summary: "浪漫之人适合乐器、远程控制和魅惑相关路线。它需要用安全距离和触发频率把控制转成输出窗口。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3702,7 +3906,7 @@ export const CHARACTER_GUIDES = {
     id: "druid",
     name: "Druid",
     cnHint: "德鲁伊，消耗品成长",
-    unlock: VERIFIED_CHARACTER_UNLOCKS.druid,
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.druid,
     summary: "德鲁伊适合收获、消耗品和辅助近战。路线要让水果、升级和经济形成循环，再补真实输出。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3739,7 +3943,7 @@ export const CHARACTER_GUIDES = {
     id: "hiker",
     name: "Hiker",
     cnHint: "徒步旅行者，行走经济",
-    unlock: VERIFIED_CHARACTER_UNLOCKS.hiker,
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.hiker,
     summary: "徒步旅行者围绕移动、步数和经济收益。核心不是跑得越快越好，而是边走位边保持稳定击杀。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3777,7 +3981,7 @@ export const CHARACTER_GUIDES = {
     id: "buccaneer",
     name: "Buccaneer",
     cnHint: "海盗，海军远程经济",
-    unlock: VERIFIED_CHARACTER_UNLOCKS.buccaneer,
+    unlock: OFFICIAL_CHARACTER_UNLOCKS.buccaneer,
     summary: "海盗适合海军远程、距离击杀和商店风险收益。强在经济滚动，弱在前期需要迅速建立清怪覆盖。",
     sourceNotes: dlcSourceNotes,
     plans: makeSeedPlans({
@@ -3814,7 +4018,7 @@ export const CHARACTER_GUIDES = {
     id: "baby",
     name: "Baby",
     cnHint: "宝宝，升级经济",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "官方目录显示 Baby 拥有额外收获、低价商店和武器栏成长限制，路线重点是用早期经济和升级节奏撑过武器栏不足的阶段。",
     sourceNotes: defaultSourceNotes,
@@ -3852,7 +4056,7 @@ export const CHARACTER_GUIDES = {
     id: "technomage",
     name: "Technomage",
     cnHint: "科技法师，元素结构",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "官方目录显示 Technomage 从结构物和元素伤害获得收益，并降低近战/远程伤害成长，适合元素与工程混合路线。",
     sourceNotes: defaultSourceNotes,
@@ -3890,7 +4094,7 @@ export const CHARACTER_GUIDES = {
     id: "vagabond",
     name: "Vagabond",
     cnHint: "流浪汉，混合武器",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "官方目录显示 Vagabond 禁止重复武器，并让所有武器都参与套装计数；路线重点是用不同武器拼套装和覆盖。",
     sourceNotes: defaultSourceNotes,
@@ -3928,7 +4132,7 @@ export const CHARACTER_GUIDES = {
     id: "vampire",
     name: "Vampire",
     cnHint: "吸血鬼，生命窃取",
-    unlock: "待校验：已确认官方中文名，具体解锁条件待补。",
+    unlock: "官方静态数据待同步；请勿将此占位文案当作已验证解锁条件。",
     summary:
       "官方目录显示 Vampire 围绕缺失生命获得收益，但生命再生和消耗品治疗受限；路线重点是生命窃取、攻速和可控风险。",
     sourceNotes: defaultSourceNotes,
@@ -3964,7 +4168,7 @@ export const CHARACTER_GUIDES = {
   },
 };
 
-Object.entries(VERIFIED_CHARACTER_UNLOCKS).forEach(([characterId, unlock]) => {
+Object.entries(OFFICIAL_CHARACTER_UNLOCKS).forEach(([characterId, unlock]) => {
   if (CHARACTER_GUIDES[characterId]) {
     CHARACTER_GUIDES[characterId].unlock = unlock;
   }

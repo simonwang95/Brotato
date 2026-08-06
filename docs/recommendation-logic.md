@@ -19,6 +19,8 @@
 - 官方武器/道具目录：`data/official-catalog.json`。
 - 官方武器/道具中文名：`data/official-localization.json`。
 - 官方角色解锁映射：`data/official-unlocks.json`。
+- 生成的角色解锁模块：`src/officialUnlocks.js`，由 `npm run extract:unlocks` 从上述 JSON 单向同步。
+- 效果解码边界清单：`data/official-effect-decoding.json`。
 - 目录匹配逻辑：`src/officialCatalog.js`。
 - 生成逻辑：`src/strategyGenerator.js`。
 
@@ -29,14 +31,16 @@
 
 - `data/official-catalog.json` 先提供完整角色/武器/道具 `nameKey`、来源包、阶数、价格、套装和效果路径。
 - `data/official-localization.json` 维护 `nameKey -> 官方中文名`，由本机安装包的英文/中文 translation 资源合并生成。
-- `src/strategyData.js` 只维护当前策略会引用到的类型、定位、解锁说明和推荐理由。
+- `src/strategyData.js` 只维护当前策略会引用到的类型、定位、路线说明和推荐理由；角色 `unlock` 文案统一由 `data/official-unlocks.json` 生成 `src/officialUnlocks.js`，避免手写攻略文案和官方静态条件漂移。
 - `data/official-unlocks.json` 由 `npm run extract:unlocks` 从安装包静态 challenge / achievement 资源生成。该数据不读取玩家存档，不受本机解锁进度影响。原版 CSV 未覆盖的描述会按 `descriptionKey` 查询简中 `PHashTranslation`，并用 challenge 的 `value`、`stat`、`additional_args` 展开占位符。当前 54 条记录全部有 `verified-static-text` 简中条件。
 - `data/official-unlock-pending.json` 由 `npm run unlocks:pending` 从 `data/official-unlocks.json` 的 `pending-text` 记录派生。当前清单为 0 条；后续新增但无法可靠读取的文本仍会保留 source package、官方角色 key、攻略维护状态、challenge key、数值和核验动作。
 - `npm run localization:coverage` 用来检查官方图鉴里还有哪些角色、武器、道具没有进入本地化维护表。
 - `npm run extract:localization` 可以重新从本机安装包生成本地化表。脚本优先用官方 `nameKey` 按 Godot 双哈希规则直接查询未压缩简中消息，不再用跨语言内部哈希碰撞做名称 join；当前 386 条来自 `translation-key`，仅 `ITEM_RETROMATIONS_HOODIE` 使用已确认的 `manual-override`。
 - 当前本地化表已覆盖官方目录里的 79 个武器、244 个物品和 64/64 个角色。后续如果官方目录新增条目，无法可靠读取的名称要继续留在覆盖率报告中，不要凭直觉填入。
-- 角色图鉴特性来自官方目录里的 stat/effect key。目录抽取器只从最终 `[resource]` 读取主效果字段，避免把前置 `[sub_resource]` 的 `arg_key/arg_value` 当成主效果；可稳定读取的 `key/value/statScaled/nbStatScaled/stat/statNb` 会精确格式化，仍无法解释的内部参数才保守显示。
-- `npm run verify:unlocks` 用来校验策略层的默认解锁、需解锁和掉落池文案是否与官方目录状态冲突。待校验角色会同时输出静态 challenge key 和 pending 阻塞原因；脚本也会反向列出已抽到但策略层未维护的官方角色解锁记录。角色图鉴会展示这些 official-only 角色，但攻略推荐仍只使用已维护路线的 `CHARACTER_GUIDES`。`Giant / CHARACTER_GIANT` 当前是记录在 `data/official-character-catalog-gaps.json` 的官方角色目录缺口，校验时单独列入 `Audited catalog gaps`，不按普通 warning 或映射失败处理。
+- `data/official-catalog.json`、`data/official-localization.json` 和 `data/official-unlocks.json` 都携带 `sourceMetadata`：包括抽取器版本、抽取时间、产品版本、输入包大小和 SHA-256；证据边界明确为静态安装包，不包含存档或当前解锁进度。
+- 角色图鉴特性来自官方目录里的 stat/effect key。目录抽取器只从最终 `[resource]` 读取主效果字段，避免把前置 `[sub_resource]` 的 `arg_key/arg_value` 当成主效果；可稳定读取的 `key/value/statScaled/nbStatScaled/stat/statNb` 以及关联武器、爆炸、燃烧和地雷资源参数会精确格式化，仍无法解释的内部参数才保守显示。
+- `data/official-effect-decoding.json` 记录每个已命中的复杂效果的 `resourcePath`、`effectKey`、脚本路径、静态参数、影响边界和状态。`decoded-static-parameters` 可进入保守场景模型；`partial-static-decode` 只允许部分参数进入排序；`pending-runtime-decode` 只允许目录展示和待解码说明。宠物静态模型明确不假设触发次数、命中率、宠物数量或存活时间；`Giant Belt` 也不被写成精确生命伤害 DPS。
+- `npm run verify:unlocks` 用来校验策略层的默认解锁、需解锁和掉落池文案是否与官方目录状态冲突。脚本也会反向列出已抽到但策略层未维护的官方角色解锁记录；当前 Beast Master/Wounded 已有攻略模板，因此 warning 为 0。`Giant / CHARACTER_GIANT` 当前是记录在 `data/official-character-catalog-gaps.json` 的官方角色目录缺口，校验时单独列入 `Audited catalog gaps`，不按普通 warning 或映射失败处理。
 
 ## 推荐流程
 
@@ -69,6 +73,7 @@
 - 官方效果或武器缩放命中角色属性优先级/第 20 关目标时，会得到数值协同加分。
 - 官方武器记录会转换为 `scenario model` 输入，用角色目标面板中位数估算普通清怪、无尽怪潮或 Boss 单体的有效清场分。该分数用于排序和解释，但权重低于手写主线。
 - 支持的触发道具会用 `calculateItemEffectDps` 估算场景 DPS、经济/成长收益或续航潜力。推荐器会优先从官方 effect 字段动态生成模型：`chance_stat_damage_effect` 会按 `dmg_when_death` / `dmg_when_pickup_gold` / `dmg_on_dodge` 区分击杀、拾取和闪避触发伤害；`gold_on_crit_kill`、`chance_double_gold`、`instant_gold_attracting`、`harvesting_growth`、`item_box_gold`、`recycling_gains`、`extra_item_in_crate`、`loot_alien_chance`、`extra_loot_aliens_next_wave`、`effect_gain_pct_gold_start_wave_limited`、`stats_end_of_wave`、`stats_next_wave`、`piercing`、`pierce_on_crit`、`items_price`、`free_rerolls`、`reroll_price` 会分别生成暴击材料、拾取双倍材料、拾取频率、收获成长、箱子材料、单次回收材料、箱子额外道具、战利品外星人、波次存钱、每波属性成长、下一波经验、贯通覆盖、暴击贯通覆盖和商店效率模型；手写 `ITEM_EFFECTS` 只作为静态计算器兜底。
+- 宠物物品会读取官方 `relatedResources` 中的武器、爆炸、燃烧和地雷参数。当前只用静态伤害/冷却与明确的 `statScaled` 做“单只宠物”保守 DPS：不推断宠物数量、触发率、命中率、攻击目标选择或存活时间；因此该模型适合作为排序回归，不是战斗模拟。
 - 官方 `EFFECT_GAIN_STAT_FOR_EVERY*` 类道具会进入“官方自定义成长潜力”模型。推荐器读取主资源里的收益 `key/value` 与缩放来源 `statScaled/nbStatScaled`，例如 `Power Generator` 每点移速提供总伤害、`Pearl` 随永久幸运成长、`Stone Skin` 随护甲放大；只有主资源仍未给出收益目标时才退回保守的“官方自定义收益”，不会从 SubResource 参数猜公式。
 - 自定义成长潜力只在角色属性优先级明确重视该缩放来源、且第 20 关目标达到最低阈值时加分。这样 Speedy 会解释 `Power Generator` 的移速成长，Lucky 的高幸运路线可以吸收幸运来源，但普通角色不会因为都有一点移速目标而泛化推荐发电机。
 - 官方道具补充候选默认展示手写关键道具外的前 24 个高分候选，让 `Crown`、`Bag`、`Recycling Machine`、`Treasure Map`、`Lure`、`Adrenaline`、`Cute Monkey`、`Dangerous Bunny` 这类非手写但强协同的经济或续航道具能进入对应路线推荐。
@@ -128,7 +133,7 @@
 - `Vagabond（浪客）`：套装切换和多路线适配。
 - `Vampire（吸血鬼）`：生命消耗、治疗与伤害转换路线。
 
-DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 会映射 DLC challenge 奖励角色，并按 Godot `OptimizedTranslation` 的双哈希查表规则读取未压缩简中消息。当前 54 条静态角色挑战均已得到 verified-static-text；8 个已有攻略的 DLC 解锁条件已同步到策略层。`Beast Master` 和 `Wounded` 仍是 official-only 图鉴条目，但现在会显示精确静态条件，而不是 pending 证据；是否新增其攻略模板与文本可信度分开处理。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`，保留为策略层待校验候选。
+DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 会映射 DLC challenge 奖励角色，并按 Godot `OptimizedTranslation` 的双哈希查表规则读取未压缩简中消息。当前 54 条静态角色挑战均已得到 verified-static-text；Beast Master 与 Wounded 已同步精确条件并完成宠物流/一击即死攻略模板。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`，保留为策略层待核验候选并在界面显式标记。
 
 ## Lucky（幸运星）规则
 

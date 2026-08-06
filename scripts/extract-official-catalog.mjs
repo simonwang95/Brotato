@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, join } from "node:path";
 import { TextDecoder } from "node:util";
+import { buildSourceMetadata } from "./extraction-metadata.mjs";
 
 const defaultInstallDir =
   "***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato";
@@ -62,27 +63,29 @@ function asBool(value) {
 }
 
 function getString(block, key) {
-  const match = block.match(new RegExp(`${key} = "([^"]*)"`));
+  const match = block.match(new RegExp(`(?:^|\\s)${key} = "([^"]*)"`));
   return match?.[1] ?? null;
 }
 
 function getNumber(block, key) {
-  const match = block.match(new RegExp(`${key} = (-?\\d+(?:\\.\\d+)?)`));
+  const match = block.match(new RegExp(`(?:^|\\s)${key} = (-?\\d+(?:\\.\\d+)?)`));
   return match ? Number(match[1]) : null;
 }
 
 function getBoolean(block, key) {
-  const match = block.match(new RegExp(`${key} = (true|false)`));
+  const match = block.match(new RegExp(`(?:^|\\s)${key} = (true|false)`));
   return match ? asBool(match[1]) : null;
 }
 
 function getLineValue(block, key) {
-  const match = block.match(new RegExp(`^${key} = (.+)$`, "m"));
+  const match = block.match(new RegExp(`(?:^|\\s)${key} = (.+)$`, "m"));
   return match?.[1]?.trim() ?? null;
 }
 
 function getResourceRef(block, key) {
-  const match = block.match(new RegExp(`${key} = ExtResource\\(\\s*(\\d+)\\s*\\)`));
+  const match = block.match(
+    new RegExp(`(?:^|\\s)${key} = ExtResource\\(\\s*(\\d+)\\s*\\)`),
+  );
   return match ? Number(match[1]) : null;
 }
 
@@ -162,7 +165,71 @@ function parseWeaponStats(path, block) {
   };
 }
 
-function parseEffectDetail(path, block) {
+const RELATED_RESOURCE_KEYS = [
+  "weapon_stats",
+  "ranged_weapon_stats",
+  "burning_data",
+  "explosion_effect",
+  "landmine_effect_stat",
+  "stats",
+];
+
+const RELATED_NUMBER_FIELDS = [
+  "cooldown",
+  "damage",
+  "crit_chance",
+  "crit_damage",
+  "min_range",
+  "max_range",
+  "knockback",
+  "piercing",
+  "piercing_dmg_reduction",
+  "bounce",
+  "bounce_dmg_reduction",
+  "nb_projectiles",
+  "chance",
+  "duration",
+  "spread",
+  "attack_cd",
+  "spawn_cooldown",
+  "base_smoke_amount",
+  "scale",
+  "boost_zone_scale",
+  "double_chance",
+  "health_boost",
+  "revive_duration",
+];
+
+function parseRelatedResource(path, block, resources, seen = new Set()) {
+  if (!path || !block || seen.has(path)) return null;
+  const nextSeen = new Set(seen).add(path);
+  const extResources = collectExtResources(block);
+  const resourceBlock = block.match(/\[resource\]\s*([\s\S]*)$/)?.[1] ?? block;
+  const scriptRef = getResourceRef(resourceBlock, "script");
+  const result = {
+    path,
+    scriptPath: extResources[scriptRef]?.path ?? null,
+    ...parseNumberFields(resourceBlock, RELATED_NUMBER_FIELDS),
+    scalingStats: parseScalingStats(resourceBlock),
+  };
+
+  RELATED_RESOURCE_KEYS.forEach((key) => {
+    const refPath = extResources[getResourceRef(resourceBlock, key)]?.path;
+    const refBlock = refPath ? resources.get(refPath) : null;
+    if (!refPath || !refBlock) return;
+    const nested = parseRelatedResource(refPath, refBlock, resources, nextSeen);
+    if (nested) result[key] = nested;
+  });
+
+  Object.keys(result).forEach((key) => {
+    if (result[key] === null || (Array.isArray(result[key]) && !result[key].length)) {
+      delete result[key];
+    }
+  });
+  return result;
+}
+
+function parseEffectDetail(path, block, resources) {
   if (!path || !block) return null;
   const extResources = collectExtResources(block);
   const resourceBlock = block.match(/\[resource\]\s*([\s\S]*)$/)?.[1] ?? block;
@@ -170,7 +237,7 @@ function parseEffectDetail(path, block) {
   const stat = getString(resourceBlock, "stat");
   const statNb = getNumber(resourceBlock, "stat_nb");
 
-  return {
+  const effect = {
     path,
     scriptPath: extResources[scriptRef]?.path ?? null,
     key: getString(resourceBlock, "key"),
@@ -193,6 +260,22 @@ function parseEffectDetail(path, block) {
     ...(Number.isFinite(statNb) ? { statNb } : {}),
     permStatsOnly: getBoolean(resourceBlock, "perm_stats_only"),
   };
+
+  const effectParameters = parseNumberFields(resourceBlock, RELATED_NUMBER_FIELDS);
+  if (Object.keys(effectParameters).length) effect.effectParameters = effectParameters;
+
+  const relatedResources = {};
+  RELATED_RESOURCE_KEYS.forEach((key) => {
+    const resourcePath = extResources[getResourceRef(resourceBlock, key)]?.path;
+    const relatedBlock = resourcePath ? resources.get(resourcePath) : null;
+    const related = resourcePath && relatedBlock
+      ? parseRelatedResource(resourcePath, relatedBlock, resources)
+      : null;
+    if (related) relatedResources[key] = related;
+  });
+  if (Object.keys(relatedResources).length) effect.relatedResources = relatedResources;
+
+  return effect;
 }
 
 function normalizeRecord(kind, block, sourcePackage, resources = new Map()) {
@@ -222,7 +305,7 @@ function normalizeRecord(kind, block, sourcePackage, resources = new Map()) {
     setPaths: setRefs.map((id) => extResources[id]?.path).filter(Boolean),
     effectPaths,
     effects: effectPaths
-      .map((effectPath) => parseEffectDetail(effectPath, resources.get(effectPath)))
+      .map((effectPath) => parseEffectDetail(effectPath, resources.get(effectPath), resources))
       .filter(Boolean),
   };
 
@@ -305,7 +388,9 @@ if (!loadedPackages.length) {
 
 records.sort((a, b) => `${a.kind}:${a.id}`.localeCompare(`${b.kind}:${b.id}`));
 
+const sourceMetadata = buildSourceMetadata(installDir, packageInputs);
 const catalog = {
+  sourceMetadata,
   packages: loadedPackages.map((sourcePackage) => ({
     id: sourcePackage.id,
     file: basename(sourcePackage.path),

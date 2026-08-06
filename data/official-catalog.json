@@ -1,4 +1,25 @@
 {
+  "sourceMetadata": {
+    "extractorVersion": "brotato-static-extractors@3",
+    "extractedAt": "2026-08-06T06:48:04.837Z",
+    "productVersion": "1.1.12.0.beta-3",
+    "productVersionEvidence": "Brotato.app/Contents/Info.plist:CFBundleShortVersionString",
+    "packages": [
+      {
+        "id": "base",
+        "file": "Brotato.pck",
+        "sizeBytes": 147912168,
+        "sha256": "be303f0a320cb099001fdc39c3b807cdd657e93426dc09867cee1d36f5385acf"
+      },
+      {
+        "id": "abyssalTerrors",
+        "file": "BrotatoAbyssalTerrors.pck",
+        "sizeBytes": 57980096,
+        "sha256": "ee5b45a27bd6ad53e24b6c160c0780bd11c67e9563732091d62ef72c3fef3016"
+      }
+    ],
+    "evidenceBoundary": "仅使用安装包、Brotato.app/Contents/Info.plist 和仓库静态数据；不读取玩家存档或本机解锁进度。"
+  },
   "packages": [
     {
       "id": "base",
@@ -1488,7 +1509,39 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 20,
+            "scale": 1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://items/characters/bull/bull_explosion_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 30,
+              "crit_chance": 0.03,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_melee_damage",
+                  "value": 3
+                },
+                {
+                  "stat": "stat_ranged_damage",
+                  "value": 3
+                },
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 3
+                }
+              ]
+            }
+          }
         },
         {
           "path": "res://items/characters/bull/bull_effect_5.tres",
@@ -1777,7 +1830,39 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 20,
+            "scale": 2.5
+          },
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://dlcs/dlc_1/characters/chef/effects/chef_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 1,
+              "chance": 1,
+              "duration": 5,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            },
+            "stats": {
+              "path": "res://dlcs/dlc_1/characters/chef/effects/chef_explosion_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 0,
+              "crit_chance": 0.03,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0
+            }
+          }
         },
         {
           "path": "res://dlcs/dlc_1/characters/chef/effects/chef_effect_2c.tres",
@@ -2907,7 +2992,6 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "stat": "stat_engineering",
           "permStatsOnly": null
         },
         {
@@ -3048,7 +3132,6 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "stat": "stat_max_hp",
           "permStatsOnly": null
         },
         {
@@ -5484,7 +5567,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 20,
+            "scale": 2
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://items/characters/glutton/glutton_explosion_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 10,
+              "crit_chance": 0.03,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_melee_damage",
+                  "value": 5
+                }
+              ]
+            }
+          }
         },
         {
           "path": "res://items/characters/glutton/glutton_effect_3.tres",
@@ -6690,7 +6797,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 100
+          }
         },
         {
           "path": "res://items/characters/lich/lich_effect_3.tres",
@@ -6961,7 +7071,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 75
+          }
         },
         {
           "path": "res://items/characters/lucky/lucky_effect_4.tres",
@@ -7626,7 +7739,35 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 1,
+            "scale": 1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://dlcs/dlc_1/characters/ogre/effects/ogre_explosion_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 10,
+              "crit_chance": 0.03,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_max_hp",
+                  "value": 0.5
+                },
+                {
+                  "stat": "stat_attack_speed",
+                  "value": -0.5
+                }
+              ]
+            }
+          }
         },
         {
           "path": "res://dlcs/dlc_1/characters/ogre/effects/ogre_effect_1.tres",
@@ -10753,7 +10894,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 50
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_adrenaline.webp"
@@ -10859,7 +11003,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "cooldown": 3
+          },
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://items/all/alien_eyes/alien_eyes_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 1,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 10000,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_max_hp",
+                  "value": 0.5
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_alien_eyes.webp"
@@ -11481,7 +11652,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 25
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_baby_elephant.webp"
@@ -11652,7 +11826,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "cooldown": -1
+          },
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/ranged/base_ranged_weapon_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 1,
+              "crit_chance": 0.03,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 10000,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_ranged_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         },
         {
           "path": "res://items/all/baby_with_a_beard/baby_with_a_beard_effect_2.tres",
@@ -12833,7 +13034,62 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://entities/units/pet/blazemander/blazemander_weapon_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+              "cooldown": 22,
+              "damage": 1,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 2,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 0.01
+                }
+              ]
+            },
+            "ranged_weapon_stats": {
+              "path": "res://entities/units/pet/blazemander/blazemander_ranged_weapon_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 240,
+              "damage": 1,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 300,
+              "knockback": 0,
+              "piercing": 99,
+              "piercing_dmg_reduction": 1,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 0.01
+                }
+              ]
+            },
+            "burning_data": {
+              "path": "res://entities/units/pet/blazemander/blazemander_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 3,
+              "chance": 1,
+              "duration": 5,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 0.5
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_blazemander.webp"
@@ -13325,7 +13581,50 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://entities/units/pet/bonk_dog/bonk_dog_weapon_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+              "cooldown": 28,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 2,
+              "scalingStats": [
+                {
+                  "stat": "stat_melee_damage",
+                  "value": 0.6
+                }
+              ]
+            },
+            "explosion_effect": {
+              "path": "res://entities/units/pet/bonk_dog/bonk_dog_exploding_effect.tres",
+              "scriptPath": "res://effects/items/item_exploding_effect.gd",
+              "chance": 1,
+              "base_smoke_amount": 40,
+              "scale": 1.5,
+              "stats": {
+                "path": "res://entities/units/pet/bonk_dog/bonk_dog_explosion_stats.tres",
+                "scriptPath": "res://weapons/weapon_stats/weapon_stats.gd",
+                "cooldown": 300,
+                "damage": 8,
+                "crit_chance": 0,
+                "crit_damage": 1.5,
+                "min_range": 0,
+                "max_range": 150,
+                "knockback": 2,
+                "scalingStats": [
+                  {
+                    "stat": "stat_melee_damage",
+                    "value": 0.4
+                  }
+                ]
+              }
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_bonk_dog.webp"
@@ -13453,7 +13752,58 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://entities/units/pet/bot_o_mine/bot_o_mine_weapon_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 32,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 300,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 1
+                }
+              ]
+            },
+            "landmine_effect_stat": {
+              "path": "res://entities/units/pet/bot_o_mine/bot_o_mine_landmines_effect.tres",
+              "scriptPath": "res://effects/items/structure_effect.gd",
+              "spawn_cooldown": 300,
+              "stats": {
+                "path": "res://items/all/landmines/landmine_stats.tres",
+                "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+                "cooldown": 2,
+                "damage": 10,
+                "crit_chance": 0,
+                "crit_damage": 2,
+                "min_range": 0,
+                "max_range": 0,
+                "knockback": 0,
+                "piercing": 0,
+                "piercing_dmg_reduction": 0.5,
+                "bounce": 0,
+                "bounce_dmg_reduction": 0.5,
+                "nb_projectiles": 1,
+                "scalingStats": [
+                  {
+                    "stat": "stat_engineering",
+                    "value": 1
+                  }
+                ]
+              }
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_bot_o_mine.webp"
@@ -13838,7 +14188,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          }
         },
         {
           "path": "res://dlcs/dlc_1/items/builder_turret/effects/builder_turret_effect_1.tres",
@@ -13903,7 +14256,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          }
         },
         {
           "path": "res://dlcs/dlc_1/items/builder_turret/effects/builder_turret_1_effect.tres",
@@ -13989,7 +14345,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          }
         },
         {
           "path": "res://dlcs/dlc_1/items/builder_turret/effects/builder_turret_2_effect.tres",
@@ -14074,7 +14433,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          }
         },
         {
           "path": "res://dlcs/dlc_1/items/builder_turret/effects/builder_turret_3_effect.tres",
@@ -14697,7 +15059,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://entities/units/pet/catling_gun/catling_gun_weapon_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 55,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 500,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_ranged_damage",
+                  "value": 0.6
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_catling_gun.webp"
@@ -16067,7 +16453,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 25
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_cyberball.webp"
@@ -16451,7 +16840,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "boost_zone_scale": 1
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_doc_moth.webp"
@@ -18187,7 +18579,28 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/garden/garden_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 900,
+              "damage": 0,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 0
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_garden.webp"
@@ -19193,7 +19606,6 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "stat": "stat_max_hp",
           "permStatsOnly": null
         }
       ],
@@ -20416,7 +20828,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.5,
+            "base_smoke_amount": 20,
+            "scale": 1.5
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://dlcs/dlc_1/items/krakens_eye/effects/krakens_eye_explosion_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 10,
+              "crit_chance": 0.03,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_curse",
+                  "value": 5
+                }
+              ]
+            }
+          }
         },
         {
           "path": "res://dlcs/dlc_1/items/krakens_eye/effects/krakens_eye_effect_1.tres",
@@ -20500,7 +20936,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": 12
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://items/all/landmines/landmine_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 2,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 0,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_landmines.webp"
@@ -21112,7 +21575,7 @@
           "customKey": "",
           "storageMethod": 0,
           "effectSign": 3,
-          "chance": 0.1,
+          "chance": null,
           "trackingText": null,
           "customArgs": "[  ]",
           "setId": null,
@@ -21122,7 +21585,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "double_chance": 0.1
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_lootworm.webp"
@@ -24104,7 +24570,26 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://entities/units/pet/ratzilla/ratzilla_weapon_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+              "cooldown": 25,
+              "damage": 4,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_max_hp",
+                  "value": 0.1
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_ratzilla.webp"
@@ -24403,7 +24888,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.2,
+            "base_smoke_amount": 1,
+            "scale": 0.65
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://items/all/rip_and_tear/rip_and_tear_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_melee_damage",
+                  "value": 0.5
+                }
+              ]
+            }
+          }
         },
         {
           "path": "res://items/all/rip_and_tear/rip_and_tear_effect_2.tres",
@@ -24488,7 +24997,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 100
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_riposte.webp"
@@ -24874,7 +25386,11 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "health_boost": 1,
+            "revive_duration": 2
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_scapegoat.webp"
@@ -24980,7 +25496,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://items/all/scared_sausage/scared_sausage_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 1,
+              "chance": 0.25,
+              "duration": 3,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_scared_sausage.webp"
@@ -25346,7 +25878,6 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "stat": "stat_speed",
           "permStatsOnly": null
         }
       ],
@@ -26117,7 +26648,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.5,
+            "base_smoke_amount": 20,
+            "scale": 1.25
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://items/all/spicy_sauce/spicy_sauce_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 0,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_max_hp",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_spicy_sauce.webp"
@@ -26695,7 +27250,43 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 40,
+            "scale": 6
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://dlcs/dlc_1/items/sunken_bell/effects/sunken_bell_explosion_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 100,
+              "crit_chance": 0.03,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_melee_damage",
+                  "value": 5
+                },
+                {
+                  "stat": "stat_ranged_damage",
+                  "value": 5
+                },
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 5
+                },
+                {
+                  "stat": "stat_engineering",
+                  "value": 5
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_sunken_bell.webp"
@@ -27333,7 +27924,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/turret_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 32,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 300,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 0.8
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_turret.webp"
@@ -27375,7 +27993,28 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/flame/flame_turret_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 15,
+              "damage": 1,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 300,
+              "knockback": 0,
+              "piercing": 99,
+              "piercing_dmg_reduction": 1,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_turret_flame.webp"
@@ -27417,7 +28056,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/healing/healing_turret_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 120,
+              "damage": 3,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 400,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 0.05
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_turret_healing.webp"
@@ -27459,7 +28125,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/laser/laser_turret_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 40,
+              "damage": 20,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 400,
+              "knockback": 0,
+              "piercing": 3,
+              "piercing_dmg_reduction": 0,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 1.25
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_turret_laser.webp"
@@ -27501,7 +28194,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/rocket/rocket_turret_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 40,
+              "damage": 25,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 500,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 1.5
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_turret_rocket.webp"
@@ -27543,7 +28263,38 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/tyler/tyler_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 120,
+              "damage": 12,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 235,
+              "knockback": 0,
+              "piercing": 2,
+              "piercing_dmg_reduction": 0,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0,
+              "nb_projectiles": 10,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 0.9
+                },
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 0.9
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_tyler.webp"
@@ -27691,7 +28442,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/wandering_bot/wandering_bot_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 999999999,
+              "damage": 1,
+              "crit_chance": 0,
+              "crit_damage": 1,
+              "min_range": 0,
+              "max_range": 0,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 0
+                }
+              ]
+            }
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_wandering_bot.webp"
@@ -28636,7 +29414,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -28691,7 +29468,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -28746,7 +29522,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -28827,7 +29602,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 2,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -28907,7 +29682,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 2,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -28987,7 +29762,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 2,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -29064,7 +29839,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -29142,7 +29916,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -29220,7 +29993,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -29298,7 +30070,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -29353,7 +30124,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/cactus_mace/1/cactus_mace_projectile.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 1,
+              "crit_chance": 0.03,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 9999,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_ranged_damage",
+                  "value": 0.6
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_cacti_club",
@@ -29377,7 +30172,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -29428,7 +30222,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/cactus_mace/2/cactus_mace_2_projectile.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 2,
+              "crit_chance": 0.03,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 9999,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_ranged_damage",
+                  "value": 0.7
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_cacti_club",
@@ -29452,7 +30270,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -29503,7 +30320,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/cactus_mace/3/cactus_mace_3_projectile.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 3,
+              "crit_chance": 0.03,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 9999,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_ranged_damage",
+                  "value": 0.8
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_cacti_club",
@@ -29527,7 +30368,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -29578,7 +30418,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/cactus_mace/4/cactus_mace_4_projectile.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 4,
+              "crit_chance": 0.03,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 9999,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_ranged_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_cacti_club",
@@ -29602,7 +30466,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -29648,7 +30511,7 @@
           "customArgs": "[  ]",
           "setId": null,
           "statDisplayedName": null,
-          "statName": "damage",
+          "statName": null,
           "statDisplayed": null,
           "statsModified": [],
           "nbStatScaled": 1,
@@ -29677,7 +30540,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -29727,7 +30589,7 @@
           "customArgs": "[  ]",
           "setId": null,
           "statDisplayedName": null,
-          "statName": "damage",
+          "statName": null,
           "statDisplayed": null,
           "statsModified": [],
           "nbStatScaled": 1,
@@ -29756,7 +30618,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -29813,7 +30674,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 3,
         "projectile_spread": 0.3,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -29895,7 +30756,6 @@
         "recoil": 0,
         "recoil_duration": 0.01,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -29978,7 +30838,6 @@
         "recoil": 0,
         "recoil_duration": 0.01,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -30060,7 +30919,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -30138,7 +30996,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -30216,7 +31073,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -30294,7 +31150,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -30349,7 +31204,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -30400,7 +31254,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -30451,7 +31304,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -30502,7 +31354,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -30557,7 +31408,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -30612,7 +31462,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -30667,7 +31516,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -31081,7 +31929,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -31155,7 +32002,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -31229,7 +32075,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -31303,7 +32148,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -31355,7 +32199,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.5,
+            "base_smoke_amount": 25,
+            "scale": 1.25
+          }
         },
         {
           "path": "res://weapons/melee/dextroyer/4/dextroyer_4_effect_2.tres",
@@ -31376,7 +32225,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/dextroyer/4/dextroyer_4_effect_2_projectile.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 30,
+              "crit_chance": 0.03,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 9999,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 4,
+              "bounce_dmg_reduction": 0,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_dextroyer",
@@ -31400,7 +32273,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -31456,7 +32328,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 4,
         "projectile_spread": 0.5,
-        "piercing": 0,
+        "piercing": 2,
         "piercing_dmg_reduction": 0.3,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -31511,7 +32383,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 4,
         "projectile_spread": 0.5,
-        "piercing": 0,
+        "piercing": 2,
         "piercing_dmg_reduction": 0.3,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -31566,7 +32438,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 4,
         "projectile_spread": 0.5,
-        "piercing": 0,
+        "piercing": 2,
         "piercing_dmg_reduction": 0.3,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -31621,7 +32493,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 6,
         "projectile_spread": 0.5,
-        "piercing": 0,
+        "piercing": 3,
         "piercing_dmg_reduction": 0.3,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -31721,7 +32593,6 @@
         "recoil": 0,
         "recoil_duration": 0.01,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -31800,7 +32671,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -31879,7 +32749,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -31958,7 +32827,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -32037,7 +32905,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -32116,7 +32983,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -32172,7 +33038,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 10,
+            "scale": 1
+          }
         },
         {
           "path": "res://weapons/ranged/fireball/2/fireball_2_effect_1.tres",
@@ -32193,7 +33064,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/fireball/2/fireball_2_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 3,
+              "chance": 1,
+              "duration": 5,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_fireball",
@@ -32274,7 +33161,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 10,
+            "scale": 1
+          }
         },
         {
           "path": "res://weapons/ranged/fireball/3/fireball_3_effect_1.tres",
@@ -32295,7 +33187,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/fireball/3/fireball_3_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 4,
+              "chance": 1,
+              "duration": 6,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_fireball",
@@ -32376,7 +33284,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 10,
+            "scale": 1
+          }
         },
         {
           "path": "res://weapons/ranged/fireball/4/fireball_4_effect_1.tres",
@@ -32397,7 +33310,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/fireball/4/fireball_4_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 5,
+              "chance": 1,
+              "duration": 8,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_fireball",
@@ -32476,7 +33405,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -32526,7 +33454,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -32576,7 +33503,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -32626,7 +33552,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -32677,7 +33602,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/flamethrower/2/flamethrower_2_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 1,
+              "chance": 1,
+              "duration": 3,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_flamethrower",
@@ -32703,7 +33644,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 99,
         "piercing_dmg_reduction": 1,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -32757,7 +33698,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/flamethrower/3/flamethrower_3_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 3,
+              "chance": 1,
+              "duration": 5,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_flamethrower",
@@ -32783,7 +33740,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 99,
         "piercing_dmg_reduction": 1,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -32837,7 +33794,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/flamethrower/4/flamethrower_4_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 5,
+              "chance": 1,
+              "duration": 8,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_flamethrower",
@@ -32863,7 +33836,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 99,
         "piercing_dmg_reduction": 1,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -32917,7 +33890,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/melee/flaming_knuckles/2/flaming_knuckles_2_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 10,
+              "chance": 1,
+              "duration": 5,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_flaming_brass_knuckles",
@@ -32941,7 +33930,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -32992,7 +33980,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/melee/flaming_knuckles/3/flaming_knuckles_3_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 15,
+              "chance": 1,
+              "duration": 6,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_flaming_brass_knuckles",
@@ -33016,7 +34020,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -33067,7 +34070,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/melee/flaming_knuckles/4/flaming_knuckles_4_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 18,
+              "chance": 1,
+              "duration": 7,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_flaming_brass_knuckles",
@@ -33091,7 +34110,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -33476,7 +34494,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 3,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -33555,7 +34573,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -33631,7 +34648,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -33707,7 +34723,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -33783,7 +34798,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -33859,7 +34873,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -33935,7 +34948,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -34011,7 +35023,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -34087,7 +35098,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -34462,7 +35472,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 20,
+            "scale": 0.75
+          }
         }
       ],
       "weaponId": "weapon_grenade_launcher",
@@ -34542,7 +35557,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 20,
+            "scale": 0.75
+          }
         }
       ],
       "weaponId": "weapon_grenade_launcher",
@@ -34622,7 +35642,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 20,
+            "scale": 0.75
+          }
         }
       ],
       "weaponId": "weapon_grenade_launcher",
@@ -34726,7 +35751,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0.1,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -34801,7 +35825,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0.15,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -34876,7 +35899,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0.2,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -34951,7 +35973,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -35026,7 +36047,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -35101,7 +36121,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -35176,7 +36195,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -35253,7 +36271,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0.9,
+        "piercing": 3,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -35337,7 +36355,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0.9,
+        "piercing": 4,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -35421,7 +36439,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0.9,
+        "piercing": 5,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -35478,7 +36496,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -35532,7 +36549,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -35586,7 +36602,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -35640,7 +36655,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -35718,7 +36732,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -35796,7 +36809,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -35874,7 +36886,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -35952,7 +36963,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -36009,7 +37019,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -36065,7 +37075,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -36121,7 +37131,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -36177,7 +37187,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -36256,7 +37266,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 2,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -36335,7 +37345,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 3,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -36414,7 +37424,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 4,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -36493,7 +37503,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 5,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -36592,7 +37602,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -36692,7 +37701,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -36792,7 +37800,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -36892,7 +37899,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -36946,7 +37952,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -36996,7 +38001,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -37046,7 +38050,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -37096,7 +38099,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -37193,7 +38195,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -37248,7 +38250,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -37303,7 +38305,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -37358,7 +38360,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -37412,7 +38414,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/lightning_shiv/1/lightning_shiv_projectile.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 5,
+              "crit_chance": 0.04,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 9999,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 0.8
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_lightning_shiv",
@@ -37436,7 +38462,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -37487,7 +38512,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/lightning_shiv/2/lightning_shiv_projectile_2.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 6,
+              "crit_chance": 0.06,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 9999,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 1,
+              "bounce_dmg_reduction": 0,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 0.8
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_lightning_shiv",
@@ -37511,7 +38560,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -37562,7 +38610,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/lightning_shiv/3/lightning_shiv_projectile_3.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 8,
+              "crit_chance": 0.08,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 9999,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 2,
+              "bounce_dmg_reduction": 0,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 0.8
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_lightning_shiv",
@@ -37586,7 +38658,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -37637,7 +38708,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/lightning_shiv/4/lightning_shiv_projectile_4.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 11,
+              "crit_chance": 0.1,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 9999,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 3,
+              "bounce_dmg_reduction": 0,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 0.8
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_lightning_shiv",
@@ -37661,7 +38756,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -37736,7 +38830,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -37815,7 +38908,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -37894,7 +38986,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -37973,7 +39064,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -38052,7 +39142,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -38131,7 +39220,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -38210,7 +39298,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -38491,7 +39578,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -38547,7 +39634,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 2,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -38601,7 +39688,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 40,
+            "scale": 2
+          }
         }
       ],
       "weaponId": "weapon_nuclear_launcher",
@@ -38685,7 +39777,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 40,
+            "scale": 2.25
+          }
         }
       ],
       "weaponId": "weapon_nuclear_launcher",
@@ -38771,7 +39868,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 99,
         "piercing_dmg_reduction": 0,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -38827,7 +39924,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 99,
         "piercing_dmg_reduction": 0,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -38882,7 +39979,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/particle_accelerator/3/particle_accelerator_3_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 8,
+              "chance": 1,
+              "duration": 8,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         },
         {
           "path": "res://weapons/ranged/particle_accelerator/3/particle_accelerator_3_effect_2.tres",
@@ -38903,7 +40016,6 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "stat": "stat_engineering",
           "permStatsOnly": null
         }
       ],
@@ -38930,7 +40042,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 99,
         "piercing_dmg_reduction": 0,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -38989,7 +40101,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/particle_accelerator/4/particle_accelerator_4_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 10,
+              "chance": 1,
+              "duration": 10,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         },
         {
           "path": "res://weapons/ranged/particle_accelerator/4/particle_accelerator_4_effect_2.tres",
@@ -39010,7 +40138,6 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "stat": "stat_engineering",
           "permStatsOnly": null
         }
       ],
@@ -39037,7 +40164,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 99,
         "piercing_dmg_reduction": 0,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -39096,7 +40223,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -39151,7 +40278,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -39206,7 +40333,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -39261,7 +40388,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -39315,7 +40442,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.25,
+            "base_smoke_amount": 10,
+            "scale": 0.75
+          }
         }
       ],
       "weaponId": "weapon_plank",
@@ -39339,7 +40471,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -39398,7 +40529,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.3,
+            "base_smoke_amount": 10,
+            "scale": 0.75
+          }
         }
       ],
       "weaponId": "weapon_plank",
@@ -39422,7 +40558,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -39481,7 +40616,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.4,
+            "base_smoke_amount": 10,
+            "scale": 0.75
+          }
         }
       ],
       "weaponId": "weapon_plank",
@@ -39505,7 +40645,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -39564,7 +40703,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.5,
+            "base_smoke_amount": 10,
+            "scale": 0.75
+          }
         }
       ],
       "weaponId": "weapon_plank",
@@ -39588,7 +40732,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -39647,7 +40790,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.25,
+            "base_smoke_amount": 10,
+            "scale": 1
+          }
         }
       ],
       "weaponId": "weapon_plasma_sledgehammer",
@@ -39671,7 +40819,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -39726,7 +40873,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.5,
+            "base_smoke_amount": 10,
+            "scale": 1.25
+          }
         }
       ],
       "weaponId": "weapon_plasma_sledgehammer",
@@ -39750,7 +40902,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -39982,7 +41133,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.25,
+            "base_smoke_amount": 10,
+            "scale": 1
+          }
         }
       ],
       "weaponId": "weapon_power_fist",
@@ -40006,7 +41162,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -40057,7 +41212,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.5,
+            "base_smoke_amount": 20,
+            "scale": 1.25
+          }
         }
       ],
       "weaponId": "weapon_power_fist",
@@ -40081,7 +41241,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -40131,7 +41290,28 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/garden/garden_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 900,
+              "damage": 0,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 0
+            }
+          }
         }
       ],
       "weaponId": "weapon_pruner",
@@ -40155,7 +41335,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -40205,7 +41384,28 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://weapons/melee/pruner/2/pruner_2_garden_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 840,
+              "damage": 0,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 0
+            }
+          }
         }
       ],
       "weaponId": "weapon_pruner",
@@ -40229,7 +41429,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -40279,7 +41478,28 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://weapons/melee/pruner/3/pruner_3_garden_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 720,
+              "damage": 0,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 0
+            }
+          }
         }
       ],
       "weaponId": "weapon_pruner",
@@ -40303,7 +41523,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -40353,7 +41572,28 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://weapons/melee/pruner/4/pruner_4_garden_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 600,
+              "damage": 0,
+              "crit_chance": 0,
+              "crit_damage": 1.5,
+              "min_range": 0,
+              "max_range": 150,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 0
+            }
+          }
         }
       ],
       "weaponId": "weapon_pruner",
@@ -40377,7 +41617,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -40454,7 +41693,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -40538,7 +41777,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.35,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -40622,7 +41861,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 2,
         "piercing_dmg_reduction": 0.35,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -40706,7 +41945,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 3,
         "piercing_dmg_reduction": 0.25,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -40984,7 +42223,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41059,7 +42297,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41156,7 +42393,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41253,7 +42489,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41304,7 +42539,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 40,
+            "scale": 1.2
+          }
         }
       ],
       "weaponId": "weapon_rocket_launcher",
@@ -41384,7 +42624,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 40,
+            "scale": 1.2
+          }
         }
       ],
       "weaponId": "weapon_rocket_launcher",
@@ -41464,7 +42709,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 40,
+            "scale": 1.2
+          }
         }
       ],
       "weaponId": "weapon_rocket_launcher",
@@ -41544,7 +42794,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41595,7 +42844,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41646,7 +42894,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41697,7 +42944,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41747,7 +42993,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": 12
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://items/all/landmines/landmine_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 2,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 0,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_screwdriver",
@@ -41771,7 +43044,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41825,7 +43097,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": 9
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://items/all/landmines/landmine_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 2,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 0,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_screwdriver",
@@ -41849,7 +43148,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41903,7 +43201,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": 6
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://items/all/landmines/landmine_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 2,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 0,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_screwdriver",
@@ -41927,7 +43252,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -41981,7 +43305,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": 3
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://items/all/landmines/landmine_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 2,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 0,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_screwdriver",
@@ -42005,7 +43356,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -42106,7 +43456,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -42185,7 +43534,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -42264,7 +43612,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -42343,7 +43690,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -42422,7 +43768,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -42477,7 +43822,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.5,
+            "base_smoke_amount": 10,
+            "scale": 0.75
+          }
         }
       ],
       "weaponId": "weapon_shredder",
@@ -42503,7 +43853,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 3,
         "piercing_dmg_reduction": 0,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -42557,7 +43907,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.65,
+            "base_smoke_amount": 10,
+            "scale": 0.8
+          }
         }
       ],
       "weaponId": "weapon_shredder",
@@ -42583,7 +43938,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 3,
         "piercing_dmg_reduction": 0,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -42637,7 +43992,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 0.8,
+            "base_smoke_amount": 10,
+            "scale": 0.85
+          }
         }
       ],
       "weaponId": "weapon_shredder",
@@ -42663,7 +44023,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 3,
         "piercing_dmg_reduction": 0,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -42717,7 +44077,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "chance": 1,
+            "base_smoke_amount": 10,
+            "scale": 0.9
+          }
         }
       ],
       "weaponId": "weapon_shredder",
@@ -42743,7 +44108,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 3,
         "piercing_dmg_reduction": 0,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -43136,7 +44501,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -43214,7 +44578,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -43292,7 +44655,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -43370,7 +44732,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -43865,7 +45226,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/ranged/sniper_gun/3/sniper_gun_3_proj_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 5,
+              "crit_chance": 0.2,
+              "crit_damage": 3,
+              "min_range": 0,
+              "max_range": 10000,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_range",
+                  "value": 0.1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_sniper_gun",
@@ -43949,7 +45334,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/ranged/sniper_gun/4/sniper_gun_4_proj_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 60,
+              "damage": 5,
+              "crit_chance": 0.2,
+              "crit_damage": 4,
+              "min_range": 0,
+              "max_range": 10000,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_range",
+                  "value": 0.15
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_sniper_gun",
@@ -44032,7 +45441,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44082,7 +45490,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44132,7 +45539,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44182,7 +45588,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44233,7 +45638,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44284,7 +45688,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44335,7 +45738,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44386,7 +45788,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44460,7 +45861,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -44538,7 +45938,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -44616,7 +46015,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -44694,7 +46092,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -44772,7 +46169,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44846,7 +46242,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44920,7 +46315,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -44994,7 +46388,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -45045,7 +46438,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -45096,7 +46488,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -45147,7 +46538,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -45518,7 +46908,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/thunder_sword/thunder_sword_projectile_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 45,
+              "damage": 1,
+              "crit_chance": 0.03,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 10000,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_thunder_sword",
@@ -45542,7 +46956,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -45597,7 +47010,31 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "weapon_stats": {
+              "path": "res://weapons/melee/thunder_sword/thunder_sword_projectile_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 45,
+              "damage": 1,
+              "crit_chance": 0.03,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 10000,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_thunder_sword",
@@ -45621,7 +47058,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -45676,7 +47112,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/melee/torch/1/torch_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 3,
+              "chance": 1,
+              "duration": 3,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_torch",
@@ -45700,7 +47152,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -45755,7 +47206,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/melee/torch/2/torch_2_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 5,
+              "chance": 1,
+              "duration": 5,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_torch",
@@ -45779,7 +47246,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -45835,7 +47301,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/melee/torch/3/torch_3_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 8,
+              "chance": 1,
+              "duration": 6,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         },
         {
           "path": "res://weapons/melee/torch/3/torch_3_effect_2.tres",
@@ -45880,7 +47362,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -45936,7 +47417,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/melee/torch/4/torch_4_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 12,
+              "chance": 1,
+              "duration": 9,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         },
         {
           "path": "res://weapons/melee/torch/4/torch_4_effect_2.tres",
@@ -45981,7 +47478,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -46060,7 +47556,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -46139,7 +47634,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -46218,7 +47712,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -46297,7 +47790,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -46372,7 +47864,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -46447,7 +47938,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 0,
         "scalingStats": [
           {
@@ -46497,7 +47987,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/wand/1/wand_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 3,
+              "chance": 1,
+              "duration": 3,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_wand",
@@ -46523,7 +48029,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -46576,7 +48082,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/wand/2/wand_2_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 5,
+              "chance": 1,
+              "duration": 5,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_wand",
@@ -46602,7 +48124,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -46655,7 +48177,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/wand/3/wand_3_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 8,
+              "chance": 1,
+              "duration": 6,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_wand",
@@ -46681,7 +48219,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -46734,7 +48272,23 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "relatedResources": {
+            "burning_data": {
+              "path": "res://weapons/ranged/wand/4/wand_4_burning_data.tres",
+              "scriptPath": "res://effects/burning_data.gd",
+              "damage": 12,
+              "chance": 1,
+              "duration": 9,
+              "spread": 0,
+              "scalingStats": [
+                {
+                  "stat": "stat_elemental_damage",
+                  "value": 1
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_wand",
@@ -46760,7 +48314,7 @@
         "speed_percent_modifier": 0,
         "nb_projectiles": 1,
         "projectile_spread": 0,
-        "piercing": 0,
+        "piercing": 1,
         "piercing_dmg_reduction": 0.5,
         "bounce": 0,
         "bounce_dmg_reduction": 0.5,
@@ -46838,7 +48392,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -46917,7 +48470,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -46971,7 +48523,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/turret_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 32,
+              "damage": 10,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 300,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 0.8
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_wrench",
@@ -46995,7 +48574,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -47045,7 +48623,28 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/flame/flame_turret_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 15,
+              "damage": 1,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 300,
+              "knockback": 0,
+              "piercing": 99,
+              "piercing_dmg_reduction": 1,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1
+            }
+          }
         }
       ],
       "weaponId": "weapon_wrench",
@@ -47069,7 +48668,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -47119,7 +48717,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/laser/laser_turret_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 40,
+              "damage": 20,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 400,
+              "knockback": 0,
+              "piercing": 3,
+              "piercing_dmg_reduction": 0,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 1.25
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_wrench",
@@ -47143,7 +48768,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {
@@ -47193,7 +48817,34 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "spawn_cooldown": -1
+          },
+          "relatedResources": {
+            "stats": {
+              "path": "res://entities/structures/turret/rocket/rocket_turret_stats.tres",
+              "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+              "cooldown": 40,
+              "damage": 25,
+              "crit_chance": 0,
+              "crit_damage": 2,
+              "min_range": 0,
+              "max_range": 500,
+              "knockback": 0,
+              "piercing": 0,
+              "piercing_dmg_reduction": 0.5,
+              "bounce": 0,
+              "bounce_dmg_reduction": 0.5,
+              "nb_projectiles": 1,
+              "scalingStats": [
+                {
+                  "stat": "stat_engineering",
+                  "value": 1.5
+                }
+              ]
+            }
+          }
         }
       ],
       "weaponId": "weapon_wrench",
@@ -47217,7 +48868,6 @@
         "recoil": 25,
         "recoil_duration": 0.1,
         "speed_percent_modifier": 0,
-        "piercing": 0,
         "attack_type": 1,
         "scalingStats": [
           {

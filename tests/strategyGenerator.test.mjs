@@ -78,6 +78,17 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     characters.some((character) => character.id === "demon" && character.cnHint === "恶魔，生命经济"),
     "demon should expose Chinese name and archetype",
   );
+  const giant = characters.find((character) => character.id === "giant");
+  assert.equal(
+    giant?.catalogStatus,
+    "audited-catalog-gap",
+    "Giant should remain an explicitly audited catalog gap",
+  );
+  assert.match(
+    giant?.unlock ?? "",
+    /CHARACTER_GIANT/,
+    "Giant should expose the static audit boundary instead of an invented unlock",
+  );
   assert.ok(
     characters.some((character) => character.id === "sailor" && character.cnHint.startsWith("水手")),
     "DLC sailor guide should be present with Chinese name",
@@ -92,7 +103,7 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
   const verifiedOfficialGuides = [
     ["baby", /第 6 波前达到 10 等级/],
     ["technomage", /10 元素伤害.*3 个构筑物/],
-    ["vagabond", /6 把不同武器/],
+    ["vagabond", /6 个不同的武器/],
     ["vampire", /40% 生命窃取/],
     ["chef", /至少 25 个敌人处于燃烧状态/],
     ["diver", /超过 700 范围的 1000 个敌人/],
@@ -114,6 +125,94 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     assert.ok(guide.recommendedWeapons.length > 0, `${characterId} should have weapon guidance`);
     assert.ok(guide.keyItems.length > 0, `${characterId} should have item guidance`);
   });
+}
+
+{
+  const beastMaster = generateStrategyGuide("beastMaster", "normal20", { officialCatalog });
+  assert.equal(beastMaster.character.name, "Beast Master");
+  assert.match(beastMaster.character.unlock, /解锁猫特林机枪/);
+  assert.equal(
+    beastMaster.recommendedWeapons.length,
+    0,
+    "Beast Master official weapon_slot=0 should not receive weapon recommendations",
+  );
+  assert.match(beastMaster.weaponRouteNote, /weapon_slot=0/);
+  assert.ok(
+    beastMaster.keyItems.some(({ item }) => item.name === "Catling Gun"),
+    "Beast Master should recommend its official starting pet route",
+  );
+  assert.ok(
+    beastMaster.keyItems.every(({ item }) => !["Jelly", "Glasses"].includes(item.name)),
+    "Beast Master should not recommend its banned items",
+  );
+  assert.ok(
+    beastMaster.keyItems.some(({ recommendationReasons }) =>
+      recommendationReasons.some((reason) => reason.includes("单宠物静态攻击参数")),
+    ),
+    "Beast Master pet recommendations should explain static pet parameter scoring",
+  );
+
+  const wounded = generateStrategyGuide("wounded", "normal20", { officialCatalog });
+  assert.equal(wounded.character.name, "Wounded");
+  assert.match(wounded.character.unlock, /噩梦难度/);
+  assert.ok(
+    wounded.keyItems.some(({ item }) => item.name === "Tardigrade"),
+    "Wounded should expose its official starting Tardigrade protection",
+  );
+  assert.ok(
+    wounded.keyItems.every(
+      ({ official }) =>
+        !official.records.some((record) =>
+          [
+            "item_armor",
+            "item_max_hp",
+            "item_hp_regeneration",
+            "item_lifesteal",
+            "item_whetstone",
+          ].includes(record.id),
+        ),
+    ),
+    "Wounded should filter official banned sustain and armor items",
+  );
+  assert.ok(
+    wounded.recommendedWeapons.some(({ weapon }) => weapon.name === "SMG"),
+    "Wounded should retain a ranged route",
+  );
+  assert.ok(
+    !wounded.recommendedWeapons.some(({ weapon }) => weapon.name === "Sword"),
+    "Wounded should not be pushed into an untracked melee route",
+  );
+}
+
+{
+  const regressionCases = [
+    ["lucky", "endless", { preferenceId: "damage" }],
+    ["knight", "normal20", { dlcOptionId: "baseOnly", preferenceId: "melee" }],
+    ["ghost", "normal20", { unlockOptionId: "defaultOnly" }],
+    ["engineer", "normal20", { preferenceId: "engineering" }],
+    ["druid", "normal20", { preferenceId: "elemental" }],
+    ["beastMaster", "endless", {}],
+    ["wounded", "endless", { preferenceId: "ranged", unlockOptionId: "defaultOnly" }],
+  ];
+
+  for (const [characterId, modeId, options] of regressionCases) {
+    const input = { officialCatalog, ...options };
+    const guide = generateStrategyGuide(characterId, modeId, input);
+    const rerun = generateStrategyGuide(characterId, modeId, input);
+    assert.equal(guide.mode.id, modeId, `${characterId} should preserve its regression mode`);
+    assert.deepEqual(
+      guide.recommendedWeapons.slice(0, 3).map(({ weapon }) => weapon.name),
+      rerun.recommendedWeapons.slice(0, 3).map(({ weapon }) => weapon.name),
+      `${characterId} top weapon recommendations should remain stable`,
+    );
+    assert.ok(guide.keyItems.length > 0, `${characterId} should expose key item guidance`);
+    assert.ok(
+      guide.keyItems.every(({ recommendationScore, recommendationReasons }) =>
+        Number.isFinite(recommendationScore) && recommendationReasons.length > 0,
+      ),
+      `${characterId} key items should expose finite, explainable scores`,
+    );
+  }
 }
 
 {

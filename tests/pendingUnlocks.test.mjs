@@ -5,6 +5,9 @@ import { readFileSync } from "node:fs";
 const unlocks = JSON.parse(readFileSync("data/official-unlocks.json", "utf8"));
 const pending = JSON.parse(readFileSync("data/official-unlock-pending.json", "utf8"));
 
+assert.equal(unlocks.sourceMetadata.productVersion, "1.1.12.0.beta-3");
+assert.equal(unlocks.sourceMetadata.packages.length, 2);
+
 const sourcePendingRecords = unlocks.records.filter(
   (record) => record.extractionStatus === "pending-text",
 );

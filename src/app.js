@@ -800,7 +800,7 @@ function renderStrategyControls() {
     ...getAvailableCharacters().map((character) => {
       const option = document.createElement("option");
       option.value = character.id;
-      option.textContent = `${character.name}（${character.cnHint}）`;
+      option.textContent = `${character.name}（${character.cnHint}）${character.catalogStatus === "audited-catalog-gap" ? " [待核验目录缺口]" : ""}`;
       return option;
     }),
   );
@@ -865,7 +865,7 @@ function renderSimulatorCharacterControl() {
     ...getAvailableCharacters().map((character) => {
       const option = document.createElement("option");
       option.value = character.id;
-      option.textContent = `${character.name}（${character.cnHint}）`;
+      option.textContent = `${character.name}（${character.cnHint}）${character.catalogStatus === "audited-catalog-gap" ? " [待核验目录缺口]" : ""}`;
       return option;
     }),
   );
@@ -950,6 +950,7 @@ function renderStrategyGuide() {
             )
             .join("")}
         </div>
+        <p class="route-note">${escapeHtml(guide.weaponRouteNote)}</p>
         <p class="avoid-line"><strong>避免：</strong>${escapeHtml(guide.avoid)}</p>
       </div>
 

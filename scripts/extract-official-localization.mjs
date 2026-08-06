@@ -4,6 +4,7 @@ import {
   getUncompressedOptimizedMessage,
   parseOptimizedTranslation,
 } from "./optimized-translation.mjs";
+import { buildSourceMetadata } from "./extraction-metadata.mjs";
 
 const defaultInstallDir =
   "***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato";
@@ -335,6 +336,7 @@ const summary = {
 };
 
 const output = {
+  sourceMetadata: buildSourceMetadata(installDir, packageInputs),
   packages: loadedPackages.map((sourcePackage) => ({
     id: sourcePackage.id,
     file: basename(sourcePackage.path),

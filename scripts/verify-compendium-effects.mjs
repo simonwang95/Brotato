@@ -1,15 +1,32 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { buildCompendium } from "../src/compendium.js";
 
 const catalog = JSON.parse(readFileSync("data/official-catalog.json", "utf8"));
 const localization = JSON.parse(readFileSync("data/official-localization.json", "utf8"));
 const unlocks = JSON.parse(readFileSync("data/official-unlocks.json", "utf8"));
+const decodingPath = "data/official-effect-decoding.json";
+const decoding = existsSync(decodingPath)
+  ? JSON.parse(readFileSync(decodingPath, "utf8"))
+  : { records: [] };
 const compendium = buildCompendium(catalog, localization, unlocks);
 const internalArtifactPattern =
   /\.gd\b|res:\/\/|\b(?:effect|item|stat|enemy|weapon)_[a-z0-9_]+\b|\[EMPTY\]|未解析|官方自定义收益|未知属性/i;
 
 const issues = [];
 let renderedLineCount = 0;
+
+for (const record of decoding.records ?? []) {
+  const catalogRecord = (catalog.records ?? []).find(
+    (candidate) => candidate.id === record.recordId && candidate.kind === record.kind,
+  );
+  const effect = catalogRecord?.effects?.find((candidate) => candidate.path === record.resourcePath);
+  if (!catalogRecord || !effect) {
+    issues.push(`decoding manifest entry is stale: ${record.kind}:${record.nameKey}:${record.resourcePath}`);
+  }
+  if (!record.resourcePath || !record.effectKey || !record.impactScope) {
+    issues.push(`decoding manifest entry is incomplete: ${record.kind}:${record.nameKey}`);
+  }
+}
 
 for (const [kind, entries] of [
   ["weapon", compendium.weapons],
@@ -33,6 +50,7 @@ for (const [kind, entries] of [
 console.log("Brotato compendium effect verification");
 console.log(`Checked ${compendium.weapons.length} weapons and ${compendium.items.length} items.`);
 console.log(`Checked ${renderedLineCount} rendered attribute/effect lines.`);
+console.log(`Checked ${decoding.records?.length ?? 0} effect decoding manifest entries.`);
 
 if (issues.length) {
   console.error("\nIssues:");

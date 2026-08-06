@@ -1,0 +1,3154 @@
+{
+  "generatedFrom": "data/official-catalog.json",
+  "sourceMetadata": {
+    "extractorVersion": "brotato-static-extractors@3",
+    "extractedAt": "2026-08-06T06:48:04.837Z",
+    "productVersion": "1.1.12.0.beta-3",
+    "productVersionEvidence": "Brotato.app/Contents/Info.plist:CFBundleShortVersionString",
+    "packages": [
+      {
+        "id": "base",
+        "file": "Brotato.pck",
+        "sizeBytes": 147912168,
+        "sha256": "be303f0a320cb099001fdc39c3b807cdd657e93426dc09867cee1d36f5385acf"
+      },
+      {
+        "id": "abyssalTerrors",
+        "file": "BrotatoAbyssalTerrors.pck",
+        "sizeBytes": 57980096,
+        "sha256": "ee5b45a27bd6ad53e24b6c160c0780bd11c67e9563732091d62ef72c3fef3016"
+      }
+    ],
+    "evidenceBoundary": "仅使用安装包、Brotato.app/Contents/Info.plist 和仓库静态数据；不读取玩家存档或本机解锁进度。"
+  },
+  "note": "这是官方静态效果解码边界清单。decoded-static-parameters 仅表示主资源/SubResource 参数已读取；partial 或 pending 项不能直接当作精确 DPS。",
+  "summary": {
+    "total": 102,
+    "byGroup": {
+      "burning": 19,
+      "charm": 4,
+      "extra-projectiles": 13,
+      "giant-belt": 1,
+      "high-low-health-threshold": 18,
+      "pet-static-parameters": 9,
+      "slow-zone": 7,
+      "structure-internal-parameters": 31
+    },
+    "byStatus": {
+      "partial-static-decode": 63,
+      "pending-runtime-decode": 30,
+      "decoded-static-parameters": 9
+    }
+  },
+  "records": [
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FIREBALL",
+      "recordId": "weapon_fireball_2",
+      "resourcePath": "res://weapons/ranged/fireball/2/fireball_2_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/fireball/2/fireball_2_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 3,
+          "chance": 1,
+          "duration": 5,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FIREBALL",
+      "recordId": "weapon_fireball_3",
+      "resourcePath": "res://weapons/ranged/fireball/3/fireball_3_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/fireball/3/fireball_3_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 4,
+          "chance": 1,
+          "duration": 6,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FIREBALL",
+      "recordId": "weapon_fireball_4",
+      "resourcePath": "res://weapons/ranged/fireball/4/fireball_4_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/fireball/4/fireball_4_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 5,
+          "chance": 1,
+          "duration": 8,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FLAMETHROWER",
+      "recordId": "weapon_flamethrower_2",
+      "resourcePath": "res://weapons/ranged/flamethrower/2/flamethrower_2_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/flamethrower/2/flamethrower_2_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 1,
+          "chance": 1,
+          "duration": 3,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FLAMETHROWER",
+      "recordId": "weapon_flamethrower_3",
+      "resourcePath": "res://weapons/ranged/flamethrower/3/flamethrower_3_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/flamethrower/3/flamethrower_3_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 3,
+          "chance": 1,
+          "duration": 5,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FLAMETHROWER",
+      "recordId": "weapon_flamethrower_4",
+      "resourcePath": "res://weapons/ranged/flamethrower/4/flamethrower_4_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/flamethrower/4/flamethrower_4_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 5,
+          "chance": 1,
+          "duration": 8,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FLAMING_BRASS_KNUCKLES",
+      "recordId": "weapon_flaming_brass_knuckles_2",
+      "resourcePath": "res://weapons/melee/flaming_knuckles/2/flaming_knuckles_2_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/melee/flaming_knuckles/2/flaming_knuckles_2_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 10,
+          "chance": 1,
+          "duration": 5,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FLAMING_BRASS_KNUCKLES",
+      "recordId": "weapon_flaming_brass_knuckles_3",
+      "resourcePath": "res://weapons/melee/flaming_knuckles/3/flaming_knuckles_3_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/melee/flaming_knuckles/3/flaming_knuckles_3_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 15,
+          "chance": 1,
+          "duration": 6,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FLAMING_BRASS_KNUCKLES",
+      "recordId": "weapon_flaming_brass_knuckles_4",
+      "resourcePath": "res://weapons/melee/flaming_knuckles/4/flaming_knuckles_4_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/melee/flaming_knuckles/4/flaming_knuckles_4_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 18,
+          "chance": 1,
+          "duration": 7,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_PARTICLE_ACCELERATOR",
+      "recordId": "weapon_particle_accelerator_3",
+      "resourcePath": "res://weapons/ranged/particle_accelerator/3/particle_accelerator_3_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/particle_accelerator/3/particle_accelerator_3_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 8,
+          "chance": 1,
+          "duration": 8,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_PARTICLE_ACCELERATOR",
+      "recordId": "weapon_particle_accelerator_4",
+      "resourcePath": "res://weapons/ranged/particle_accelerator/4/particle_accelerator_4_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/particle_accelerator/4/particle_accelerator_4_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 10,
+          "chance": 1,
+          "duration": 10,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TORCH",
+      "recordId": "weapon_torch_1",
+      "resourcePath": "res://weapons/melee/torch/1/torch_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/melee/torch/1/torch_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 3,
+          "chance": 1,
+          "duration": 3,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TORCH",
+      "recordId": "weapon_torch_2",
+      "resourcePath": "res://weapons/melee/torch/2/torch_2_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/melee/torch/2/torch_2_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 5,
+          "chance": 1,
+          "duration": 5,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TORCH",
+      "recordId": "weapon_torch_3",
+      "resourcePath": "res://weapons/melee/torch/3/torch_3_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/melee/torch/3/torch_3_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 8,
+          "chance": 1,
+          "duration": 6,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TORCH",
+      "recordId": "weapon_torch_4",
+      "resourcePath": "res://weapons/melee/torch/4/torch_4_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/melee/torch/4/torch_4_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 12,
+          "chance": 1,
+          "duration": 9,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_WAND",
+      "recordId": "weapon_wand_1",
+      "resourcePath": "res://weapons/ranged/wand/1/wand_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/wand/1/wand_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 3,
+          "chance": 1,
+          "duration": 3,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_WAND",
+      "recordId": "weapon_wand_2",
+      "resourcePath": "res://weapons/ranged/wand/2/wand_2_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/wand/2/wand_2_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 5,
+          "chance": 1,
+          "duration": 5,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_WAND",
+      "recordId": "weapon_wand_3",
+      "resourcePath": "res://weapons/ranged/wand/3/wand_3_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/wand/3/wand_3_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 8,
+          "chance": 1,
+          "duration": 6,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "burning",
+      "status": "partial-static-decode",
+      "impactScope": "燃烧入口和元素路线评分；触发率、跳数、持续时间和传播触发链仍需从运行时脚本确认。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_WAND",
+      "recordId": "weapon_wand_4",
+      "resourcePath": "res://weapons/ranged/wand/4/wand_4_effect_1.tres",
+      "effectKey": "effect_burning",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/burning_effect.gd",
+      "value": 0,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "burning_data": {
+          "path": "res://weapons/ranged/wand/4/wand_4_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 12,
+          "chance": 1,
+          "duration": 9,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "charm",
+      "status": "pending-runtime-decode",
+      "impactScope": "魅惑控制与输出窗口；低生命阈值、概率和持续时间尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FLUTE",
+      "recordId": "weapon_flute_1",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/flute/1/flute_effect_0.tres",
+      "effectKey": "EFFECT_CHARM_BELOW_HP_NO_SCALING",
+      "textKey": "EFFECT_CHARM_BELOW_HP_NO_SCALING",
+      "scriptPath": "res://effects/weapons/null_charm_effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": "charm_on_hit",
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "charm",
+      "status": "pending-runtime-decode",
+      "impactScope": "魅惑控制与输出窗口；低生命阈值、概率和持续时间尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FLUTE",
+      "recordId": "weapon_flute_2",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/flute/2/flute_2_effect_0.tres",
+      "effectKey": "EFFECT_CHARM_BELOW_HP_NO_SCALING",
+      "textKey": "EFFECT_CHARM_BELOW_HP_NO_SCALING",
+      "scriptPath": "res://effects/weapons/null_charm_effect.gd",
+      "value": 15,
+      "chance": null,
+      "customKey": "charm_on_hit",
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "charm",
+      "status": "pending-runtime-decode",
+      "impactScope": "魅惑控制与输出窗口；低生命阈值、概率和持续时间尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FLUTE",
+      "recordId": "weapon_flute_3",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/flute/3/flute_3_effect_0.tres",
+      "effectKey": "EFFECT_CHARM_BELOW_HP_NO_SCALING",
+      "textKey": "EFFECT_CHARM_BELOW_HP_NO_SCALING",
+      "scriptPath": "res://effects/weapons/null_charm_effect.gd",
+      "value": 20,
+      "chance": null,
+      "customKey": "charm_on_hit",
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "charm",
+      "status": "pending-runtime-decode",
+      "impactScope": "魅惑控制与输出窗口；低生命阈值、概率和持续时间尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_FLUTE",
+      "recordId": "weapon_flute_4",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/flute/4/flute_4_effect_0.tres",
+      "effectKey": "EFFECT_CHARM_BELOW_HP_NO_SCALING",
+      "textKey": "EFFECT_CHARM_BELOW_HP_NO_SCALING",
+      "scriptPath": "res://effects/weapons/null_charm_effect.gd",
+      "value": 25,
+      "chance": null,
+      "customKey": "charm_on_hit",
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_CACTI_CLUB",
+      "recordId": "weapon_cacti_club_1",
+      "resourcePath": "res://weapons/melee/cactus_mace/1/cactus_mace_effect_1.tres",
+      "effectKey": "effect_projectiles_on_hit",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 3,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/cactus_mace/1/cactus_mace_projectile.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 1,
+          "crit_chance": 0.03,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 9999,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_ranged_damage",
+              "value": 0.6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_CACTI_CLUB",
+      "recordId": "weapon_cacti_club_2",
+      "resourcePath": "res://weapons/melee/cactus_mace/2/cactus_mace_2_effect_1.tres",
+      "effectKey": "effect_projectiles_on_hit",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 4,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/cactus_mace/2/cactus_mace_2_projectile.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 2,
+          "crit_chance": 0.03,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 9999,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_ranged_damage",
+              "value": 0.7
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_CACTI_CLUB",
+      "recordId": "weapon_cacti_club_3",
+      "resourcePath": "res://weapons/melee/cactus_mace/3/cactus_mace_3_effect_1.tres",
+      "effectKey": "effect_projectiles_on_hit",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 5,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/cactus_mace/3/cactus_mace_3_projectile.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 3,
+          "crit_chance": 0.03,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 9999,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_ranged_damage",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_CACTI_CLUB",
+      "recordId": "weapon_cacti_club_4",
+      "resourcePath": "res://weapons/melee/cactus_mace/4/cactus_mace_4_effect_1.tres",
+      "effectKey": "effect_projectiles_on_hit",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 6,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/cactus_mace/4/cactus_mace_4_projectile.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 4,
+          "crit_chance": 0.03,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 9999,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_ranged_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_DEXTROYER",
+      "recordId": "weapon_dextroyer_4",
+      "resourcePath": "res://weapons/melee/dextroyer/4/dextroyer_4_effect_2.tres",
+      "effectKey": "effect_lightning_on_hit",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/dextroyer/4/dextroyer_4_effect_2_projectile.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 30,
+          "crit_chance": 0.03,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 9999,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 4,
+          "bounce_dmg_reduction": 0,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_LIGHTNING_SHIV",
+      "recordId": "weapon_lightning_shiv_1",
+      "resourcePath": "res://weapons/melee/lightning_shiv/1/lightning_shiv_effect_1.tres",
+      "effectKey": "effect_lightning_on_hit",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/lightning_shiv/1/lightning_shiv_projectile.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 5,
+          "crit_chance": 0.04,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 9999,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_LIGHTNING_SHIV",
+      "recordId": "weapon_lightning_shiv_2",
+      "resourcePath": "res://weapons/melee/lightning_shiv/2/lightning_shiv_2_effect_1.tres",
+      "effectKey": "effect_lightning_on_hit",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/lightning_shiv/2/lightning_shiv_projectile_2.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 6,
+          "crit_chance": 0.06,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 9999,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 1,
+          "bounce_dmg_reduction": 0,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_LIGHTNING_SHIV",
+      "recordId": "weapon_lightning_shiv_3",
+      "resourcePath": "res://weapons/melee/lightning_shiv/3/lightning_shiv_3_effect_1.tres",
+      "effectKey": "effect_lightning_on_hit",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/lightning_shiv/3/lightning_shiv_projectile_3.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 8,
+          "crit_chance": 0.08,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 9999,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 2,
+          "bounce_dmg_reduction": 0,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_LIGHTNING_SHIV",
+      "recordId": "weapon_lightning_shiv_4",
+      "resourcePath": "res://weapons/melee/lightning_shiv/4/lightning_shiv_4_effect_1.tres",
+      "effectKey": "effect_lightning_on_hit",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/lightning_shiv/4/lightning_shiv_projectile_4.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 11,
+          "crit_chance": 0.1,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 9999,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 3,
+          "bounce_dmg_reduction": 0,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_SNIPER_GUN",
+      "recordId": "weapon_sniper_gun_3",
+      "resourcePath": "res://weapons/ranged/sniper_gun/3/sniper_gun_3_effect.tres",
+      "effectKey": "EFFECT_PROJECTILES_ON_HIT",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 5,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/ranged/sniper_gun/3/sniper_gun_3_proj_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 5,
+          "crit_chance": 0.2,
+          "crit_damage": 3,
+          "min_range": 0,
+          "max_range": 10000,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_range",
+              "value": 0.1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_SNIPER_GUN",
+      "recordId": "weapon_sniper_gun_4",
+      "resourcePath": "res://weapons/ranged/sniper_gun/4/sniper_gun_4_effect.tres",
+      "effectKey": "EFFECT_PROJECTILES_ON_HIT",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 8,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/ranged/sniper_gun/4/sniper_gun_4_proj_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 60,
+          "damage": 5,
+          "crit_chance": 0.2,
+          "crit_damage": 4,
+          "min_range": 0,
+          "max_range": 10000,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_range",
+              "value": 0.15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_THUNDER_SWORD",
+      "recordId": "weapon_thunder_sword_3",
+      "resourcePath": "res://weapons/melee/thunder_sword/3/thunder_sword_3_effect.tres",
+      "effectKey": "EFFECT_SLOW_PROJECTILES_ON_HIT",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 2,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/thunder_sword/thunder_sword_projectile_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 45,
+          "damage": 1,
+          "crit_chance": 0.03,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 10000,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "extra-projectiles",
+      "status": "partial-static-decode",
+      "impactScope": "额外投射物/闪电/减速投射物的覆盖评分；子投射物伤害、命中率和触发频率未硬编码。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_THUNDER_SWORD",
+      "recordId": "weapon_thunder_sword_4",
+      "resourcePath": "res://weapons/melee/thunder_sword/4/thunder_sword_4_effect.tres",
+      "effectKey": "EFFECT_SLOW_PROJECTILES_ON_HIT",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/projectiles_on_hit_effect.gd",
+      "value": 4,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://weapons/melee/thunder_sword/thunder_sword_projectile_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 45,
+          "damage": 1,
+          "crit_chance": 0.03,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 10000,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "giant-belt",
+      "status": "pending-runtime-decode",
+      "impactScope": "Giant Belt 的 giant_crit_damage 生命伤害换算；未证明普通敌人、精英和 Boss 的实际结算公式。",
+      "kind": "item",
+      "nameKey": "ITEM_GIANT_BELT",
+      "recordId": "item_giant_belt",
+      "resourcePath": "res://items/all/giant_belt/giant_belt_effect_1.tres",
+      "effectKey": "giant_crit_damage",
+      "textKey": "effect_giant_crit_damage",
+      "scriptPath": "res://effects/items/double_value_effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "item",
+      "nameKey": "ITEM_SMALL_FISH",
+      "recordId": "item_small_fish",
+      "resourcePath": "res://dlcs/dlc_1/items/small_fish/effects/small_fish_effect_0.tres",
+      "effectKey": "bonus_damage_against_targets_above_hp",
+      "textKey": "EFFECT_BONUS_DAMAGE_AGAINST_TARGETS_ABOVE_HP",
+      "scriptPath": "res://effects/items/double_value_effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_BRICK",
+      "recordId": "weapon_brick_1",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/1/brick_effect_0.tres",
+      "effectKey": "break_on_hit",
+      "textKey": "effect_break_on_hit",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_BRICK",
+      "recordId": "weapon_brick_2",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/2/brick_2_effect_0.tres",
+      "effectKey": "break_on_hit",
+      "textKey": "effect_break_on_hit",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_BRICK",
+      "recordId": "weapon_brick_3",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/3/brick_3_effect_0.tres",
+      "effectKey": "break_on_hit",
+      "textKey": "effect_break_on_hit",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_BRICK",
+      "recordId": "weapon_brick_4",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/brick/4/brick_4_effect_0.tres",
+      "effectKey": "break_on_hit",
+      "textKey": "effect_break_on_hit",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_CHAINSAW",
+      "recordId": "weapon_chainsaw_3",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/chainsaw/3/chainsaw_3_effect_0.tres",
+      "effectKey": "bonus_current_health_damage",
+      "textKey": "effect_bonus_current_health_damage",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_CHAINSAW",
+      "recordId": "weapon_chainsaw_4",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/chainsaw/4/chainsaw_4_effect_0.tres",
+      "effectKey": "bonus_current_health_damage",
+      "textKey": "effect_bonus_current_health_damage",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 20,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_HIKING_STICK",
+      "recordId": "weapon_hiking_stick_1",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/hiking_stick/1/hiking_stick_effect_0.tres",
+      "effectKey": "stat_range",
+      "textKey": "EFFECT_STAT_ON_EVERY_STEP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": "gain_stat_for_every_step_after_equip",
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_HIKING_STICK",
+      "recordId": "weapon_hiking_stick_2",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/hiking_stick/2/hiking_stick_2_effect_0.tres",
+      "effectKey": "stat_range",
+      "textKey": "EFFECT_STAT_ON_EVERY_STEP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": "gain_stat_for_every_step_after_equip",
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_HIKING_STICK",
+      "recordId": "weapon_hiking_stick_3",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/hiking_stick/3/hiking_stick_3_effect_0.tres",
+      "effectKey": "stat_range",
+      "textKey": "EFFECT_STAT_ON_EVERY_STEP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": "gain_stat_for_every_step_after_equip",
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_HIKING_STICK",
+      "recordId": "weapon_hiking_stick_4",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/hiking_stick/4/hiking_stick_4_effect_0.tres",
+      "effectKey": "stat_range",
+      "textKey": "EFFECT_STAT_ON_EVERY_STEP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": "gain_stat_for_every_step_after_equip",
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_SICKLE",
+      "recordId": "weapon_sickle_1",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/sickle/1/sickle_effect_0.tres",
+      "effectKey": "bonus_damage_against_targets_below_hp",
+      "textKey": "EFFECT_BONUS_DAMAGE_AGAINST_TARGETS_BELOW_HP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 20,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_SICKLE",
+      "recordId": "weapon_sickle_2",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/sickle/2/sickle_2_effect_0.tres",
+      "effectKey": "bonus_damage_against_targets_below_hp",
+      "textKey": "EFFECT_BONUS_DAMAGE_AGAINST_TARGETS_BELOW_HP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 30,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_SICKLE",
+      "recordId": "weapon_sickle_3",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/sickle/3/sickle_3_effect_0.tres",
+      "effectKey": "bonus_damage_against_targets_below_hp",
+      "textKey": "EFFECT_BONUS_DAMAGE_AGAINST_TARGETS_BELOW_HP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 40,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_SICKLE",
+      "recordId": "weapon_sickle_4",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/sickle/4/sickle_4_effect_0.tres",
+      "effectKey": "bonus_damage_against_targets_below_hp",
+      "textKey": "EFFECT_BONUS_DAMAGE_AGAINST_TARGETS_BELOW_HP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 50,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TRIDENT",
+      "recordId": "weapon_trident_2",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/trident/2/trident_2_effect_0.tres",
+      "effectKey": "bonus_damage_against_targets_above_hp",
+      "textKey": "EFFECT_BONUS_DAMAGE_AGAINST_TARGETS_ABOVE_HP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 30,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TRIDENT",
+      "recordId": "weapon_trident_3",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/trident/3/trident_3_effect_0.tres",
+      "effectKey": "bonus_damage_against_targets_above_hp",
+      "textKey": "EFFECT_BONUS_DAMAGE_AGAINST_TARGETS_ABOVE_HP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 40,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "high-low-health-threshold",
+      "status": "pending-runtime-decode",
+      "impactScope": "高/低生命目标条件伤害；阈值和场景占比未证明，只保留官方数值与保守文案。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TRIDENT",
+      "recordId": "weapon_trident_4",
+      "resourcePath": "res://dlcs/dlc_1/weapons/melee/trident/4/trident_4_effect_0.tres",
+      "effectKey": "bonus_damage_against_targets_above_hp",
+      "textKey": "EFFECT_BONUS_DAMAGE_AGAINST_TARGETS_ABOVE_HP",
+      "scriptPath": "res://effects/weapons/null_double_value_effect.gd",
+      "value": 50,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "pet-static-parameters",
+      "status": "decoded-static-parameters",
+      "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
+      "kind": "item",
+      "nameKey": "ITEM_BLAZEMANDER",
+      "recordId": "item_blazemander",
+      "resourcePath": "res://items/all/blazemander/blazemander_effect_0.tres",
+      "effectKey": "EFFECT_PET_BLAZEMANDER",
+      "textKey": "EFFECT_PET_BLAZEMANDER",
+      "scriptPath": "res://effects/items/blazemander_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://entities/units/pet/blazemander/blazemander_weapon_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+          "cooldown": 22,
+          "damage": 1,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 150,
+          "knockback": 2,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 0.01
+            }
+          ]
+        },
+        "ranged_weapon_stats": {
+          "path": "res://entities/units/pet/blazemander/blazemander_ranged_weapon_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 240,
+          "damage": 1,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 300,
+          "knockback": 0,
+          "piercing": 99,
+          "piercing_dmg_reduction": 1,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 0.01
+            }
+          ]
+        },
+        "burning_data": {
+          "path": "res://entities/units/pet/blazemander/blazemander_burning_data.tres",
+          "scriptPath": "res://effects/burning_data.gd",
+          "damage": 3,
+          "chance": 1,
+          "duration": 5,
+          "spread": 0,
+          "scalingStats": [
+            {
+              "stat": "stat_elemental_damage",
+              "value": 0.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "pet-static-parameters",
+      "status": "decoded-static-parameters",
+      "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
+      "kind": "item",
+      "nameKey": "ITEM_BONK_DOG",
+      "recordId": "item_bonk_dog",
+      "resourcePath": "res://items/all/bonk_dog/bonk_dog_effect_0.tres",
+      "effectKey": "EFFECT_PET_BONK_DOG",
+      "textKey": "EFFECT_PET_BONK_DOG",
+      "scriptPath": "res://effects/items/bonk_dog_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://entities/units/pet/bonk_dog/bonk_dog_weapon_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+          "cooldown": 28,
+          "damage": 10,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 150,
+          "knockback": 2,
+          "scalingStats": [
+            {
+              "stat": "stat_melee_damage",
+              "value": 0.6
+            }
+          ]
+        },
+        "explosion_effect": {
+          "path": "res://entities/units/pet/bonk_dog/bonk_dog_exploding_effect.tres",
+          "scriptPath": "res://effects/items/item_exploding_effect.gd",
+          "chance": 1,
+          "base_smoke_amount": 40,
+          "scale": 1.5,
+          "stats": {
+            "path": "res://entities/units/pet/bonk_dog/bonk_dog_explosion_stats.tres",
+            "scriptPath": "res://weapons/weapon_stats/weapon_stats.gd",
+            "cooldown": 300,
+            "damage": 8,
+            "crit_chance": 0,
+            "crit_damage": 1.5,
+            "min_range": 0,
+            "max_range": 150,
+            "knockback": 2,
+            "scalingStats": [
+              {
+                "stat": "stat_melee_damage",
+                "value": 0.4
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "group": "pet-static-parameters",
+      "status": "decoded-static-parameters",
+      "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
+      "kind": "item",
+      "nameKey": "ITEM_BOT_O_MINE",
+      "recordId": "item_bot_o_mine",
+      "resourcePath": "res://items/all/bot_o_mine/bot_o_mine_effect_0.tres",
+      "effectKey": "EFFECT_PET_BOT_O_MINE",
+      "textKey": "EFFECT_PET_BOT_O_MINE",
+      "scriptPath": "res://effects/items/bot_o_mine_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://entities/units/pet/bot_o_mine/bot_o_mine_weapon_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 32,
+          "damage": 10,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 300,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 1
+            }
+          ]
+        },
+        "landmine_effect_stat": {
+          "path": "res://entities/units/pet/bot_o_mine/bot_o_mine_landmines_effect.tres",
+          "scriptPath": "res://effects/items/structure_effect.gd",
+          "spawn_cooldown": 300,
+          "stats": {
+            "path": "res://items/all/landmines/landmine_stats.tres",
+            "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+            "cooldown": 2,
+            "damage": 10,
+            "crit_chance": 0,
+            "crit_damage": 2,
+            "min_range": 0,
+            "max_range": 0,
+            "knockback": 0,
+            "piercing": 0,
+            "piercing_dmg_reduction": 0.5,
+            "bounce": 0,
+            "bounce_dmg_reduction": 0.5,
+            "nb_projectiles": 1,
+            "scalingStats": [
+              {
+                "stat": "stat_engineering",
+                "value": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "group": "pet-static-parameters",
+      "status": "decoded-static-parameters",
+      "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
+      "kind": "item",
+      "nameKey": "ITEM_CATLING_GUN",
+      "recordId": "item_catling_gun",
+      "resourcePath": "res://items/all/catling_gun/catling_gun_effect_0.tres",
+      "effectKey": "EFFECT_PET_CATLING_GUN",
+      "textKey": "EFFECT_PET_CATLING_GUN",
+      "scriptPath": "res://effects/items/catling_gun_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://entities/units/pet/catling_gun/catling_gun_weapon_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 55,
+          "damage": 10,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 500,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_ranged_damage",
+              "value": 0.6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "pet-static-parameters",
+      "status": "decoded-static-parameters",
+      "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
+      "kind": "item",
+      "nameKey": "ITEM_DOC_MOTH",
+      "recordId": "item_doc_moth",
+      "resourcePath": "res://items/all/doc_moth/doc_moth_effect_0.tres",
+      "effectKey": "EFFECT_PET_DOC_MOTH",
+      "textKey": "EFFECT_PET_DOC_MOTH",
+      "scriptPath": "res://effects/items/doc_moth_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "boost_zone_scale": 1
+      },
+      "relatedResources": {}
+    },
+    {
+      "group": "pet-static-parameters",
+      "status": "decoded-static-parameters",
+      "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
+      "kind": "item",
+      "nameKey": "ITEM_JELLYSHIELD",
+      "recordId": "item_jellyshield",
+      "resourcePath": "res://items/all/jellyshield/jellyshield_effect_0.tres",
+      "effectKey": "jellyshield_count",
+      "textKey": "EFFECT_PET_JELLYSHIELD",
+      "scriptPath": "res://items/global/effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "pet-static-parameters",
+      "status": "decoded-static-parameters",
+      "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
+      "kind": "item",
+      "nameKey": "ITEM_LOOTWORM",
+      "recordId": "item_lootworm",
+      "resourcePath": "res://items/all/lootworm/lootworm_effect_0.tres",
+      "effectKey": "EFFECT_PET_LOOTWORM",
+      "textKey": "EFFECT_PET_LOOTWORM",
+      "scriptPath": "res://effects/items/lootworm_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "double_chance": 0.1
+      },
+      "relatedResources": {}
+    },
+    {
+      "group": "pet-static-parameters",
+      "status": "decoded-static-parameters",
+      "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
+      "kind": "item",
+      "nameKey": "ITEM_RATZILLA",
+      "recordId": "item_ratzilla",
+      "resourcePath": "res://items/all/ratzilla/ratzilla_effect_0.tres",
+      "effectKey": "EFFECT_PET_RATZILLA",
+      "textKey": "EFFECT_PET_RATZILLA",
+      "scriptPath": "res://effects/items/ratzilla_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {
+        "weapon_stats": {
+          "path": "res://entities/units/pet/ratzilla/ratzilla_weapon_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/melee_weapon_stats.gd",
+          "cooldown": 25,
+          "damage": 4,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 150,
+          "knockback": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_max_hp",
+              "value": 0.1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "pet-static-parameters",
+      "status": "decoded-static-parameters",
+      "impactScope": "宠物单体/爆炸/燃烧/地雷的静态伤害、攻击间隔和官方缩放；未假设每局宠物数量、命中率或存活时间。",
+      "kind": "item",
+      "nameKey": "ITEM_SCAPEGOAT",
+      "recordId": "item_scapegoat",
+      "resourcePath": "res://items/all/scapegoat/scapegoat_effect_0.tres",
+      "effectKey": "EFFECT_PET_SCAPEGOAT",
+      "textKey": "EFFECT_PET_SCAPEGOAT",
+      "scriptPath": "res://effects/items/scapegoat_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "health_boost": 1,
+        "revive_duration": 2
+      },
+      "relatedResources": {}
+    },
+    {
+      "group": "slow-zone",
+      "status": "pending-runtime-decode",
+      "impactScope": "减速区域的伤害覆盖和走位收益；区域幅度、持续时间、触发频率尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_HARPOON_GUN",
+      "recordId": "weapon_harpoon_gun_2",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/harpoon_gun/harpoon_gun_effect.tres",
+      "effectKey": "effect_slow_in_zone",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/slow_in_zone_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "slow-zone",
+      "status": "pending-runtime-decode",
+      "impactScope": "减速区域的伤害覆盖和走位收益；区域幅度、持续时间、触发频率尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_HARPOON_GUN",
+      "recordId": "weapon_harpoon_gun_3",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/harpoon_gun/harpoon_gun_effect.tres",
+      "effectKey": "effect_slow_in_zone",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/slow_in_zone_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "slow-zone",
+      "status": "pending-runtime-decode",
+      "impactScope": "减速区域的伤害覆盖和走位收益；区域幅度、持续时间、触发频率尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_HARPOON_GUN",
+      "recordId": "weapon_harpoon_gun_4",
+      "resourcePath": "res://dlcs/dlc_1/weapons/ranged/harpoon_gun/harpoon_gun_effect.tres",
+      "effectKey": "effect_slow_in_zone",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/slow_in_zone_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "slow-zone",
+      "status": "pending-runtime-decode",
+      "impactScope": "减速区域的伤害覆盖和走位收益；区域幅度、持续时间、触发频率尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TASER",
+      "recordId": "weapon_taser_1",
+      "resourcePath": "res://weapons/ranged/taser/taser_effect_1.tres",
+      "effectKey": "effect_slow_in_zone",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/slow_in_zone_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "slow-zone",
+      "status": "pending-runtime-decode",
+      "impactScope": "减速区域的伤害覆盖和走位收益；区域幅度、持续时间、触发频率尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TASER",
+      "recordId": "weapon_taser_2",
+      "resourcePath": "res://weapons/ranged/taser/taser_effect_1.tres",
+      "effectKey": "effect_slow_in_zone",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/slow_in_zone_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "slow-zone",
+      "status": "pending-runtime-decode",
+      "impactScope": "减速区域的伤害覆盖和走位收益；区域幅度、持续时间、触发频率尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TASER",
+      "recordId": "weapon_taser_3",
+      "resourcePath": "res://weapons/ranged/taser/taser_effect_1.tres",
+      "effectKey": "effect_slow_in_zone",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/slow_in_zone_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "slow-zone",
+      "status": "pending-runtime-decode",
+      "impactScope": "减速区域的伤害覆盖和走位收益；区域幅度、持续时间、触发频率尚未由静态主资源证明。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_TASER",
+      "recordId": "weapon_taser_4",
+      "resourcePath": "res://weapons/ranged/taser/taser_effect_1.tres",
+      "effectKey": "effect_slow_in_zone",
+      "textKey": null,
+      "scriptPath": "res://effects/weapons/slow_in_zone_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "character",
+      "nameKey": "CHARACTER_RENEGADE",
+      "recordId": "character_renegade",
+      "resourcePath": "res://items/characters/renegade/renegade_effect_0.tres",
+      "effectKey": "projectiles",
+      "textKey": "EFFECT_PROJECTILES",
+      "scriptPath": "res://items/global/effect.gd",
+      "value": 2,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "character",
+      "nameKey": "CHARACTER_TECHNOMAGE",
+      "recordId": "character_technomage",
+      "resourcePath": "res://items/characters/technomage/effects/technomage_effect_1.tres",
+      "effectKey": "structure_attack_speed",
+      "textKey": "EFFECT_GAIN_STAT_FOR_EVERY_PERM_STAT",
+      "scriptPath": "res://effects/items/gain_stat_for_every_stat_effect.gd",
+      "value": 5,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[ SubResource( 1 ) ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_BUILDER_TURRET",
+      "recordId": "item_builder_turret_1",
+      "resourcePath": "res://dlcs/dlc_1/items/builder_turret/effects/builder_turret_1_effect_0.tres",
+      "effectKey": "stat_engineering",
+      "textKey": "effect_builder_turret_alt",
+      "scriptPath": "res://effects/items/builder_turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_BUILDER_TURRET",
+      "recordId": "item_builder_turret_2",
+      "resourcePath": "res://dlcs/dlc_1/items/builder_turret/effects/builder_turret_2_effect_0.tres",
+      "effectKey": "stat_engineering",
+      "textKey": "effect_builder_turret_alt",
+      "scriptPath": "res://effects/items/builder_turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_BUILDER_TURRET",
+      "recordId": "item_builder_turret_2",
+      "resourcePath": "res://dlcs/dlc_1/items/builder_turret/effects/builder_turret_2_effect.tres",
+      "effectKey": "projectiles",
+      "textKey": "EFFECT_PROJECTILES",
+      "scriptPath": "res://effects/weapons/null_effect.gd",
+      "value": 2,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_BUILDER_TURRET",
+      "recordId": "item_builder_turret_3",
+      "resourcePath": "res://dlcs/dlc_1/items/builder_turret/effects/builder_turret_3_effect_0.tres",
+      "effectKey": "stat_engineering",
+      "textKey": "effect_builder_turret_alt",
+      "scriptPath": "res://effects/items/builder_turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_BUILDER_TURRET",
+      "recordId": "item_builder_turret_3",
+      "resourcePath": "res://dlcs/dlc_1/items/builder_turret/effects/builder_turret_3_effect.tres",
+      "effectKey": "projectiles",
+      "textKey": "EFFECT_PROJECTILES",
+      "scriptPath": "res://effects/weapons/null_effect.gd",
+      "value": 3,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_BUILDER_TURRET",
+      "recordId": "item_builder_turret_0",
+      "resourcePath": "res://dlcs/dlc_1/items/builder_turret/effects/builder_turret_effect_0.tres",
+      "effectKey": "stat_engineering",
+      "textKey": "effect_builder_turret_alt",
+      "scriptPath": "res://effects/items/builder_turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_CLOCKWORK_WASP",
+      "recordId": "item_clockwork_wasp",
+      "resourcePath": "res://items/all/clockwork_wasp/effects/clockwork_wasp_effect_1.tres",
+      "effectKey": "structure_attack_speed",
+      "textKey": null,
+      "scriptPath": "res://items/global/effect.gd",
+      "value": 10,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_GARDEN",
+      "recordId": "item_garden",
+      "resourcePath": "res://items/all/garden/garden_effect_1.tres",
+      "effectKey": "effect_garden",
+      "textKey": "effect_garden",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/garden/garden_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 900,
+          "damage": 0,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 150,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 0
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_LANDMINES",
+      "recordId": "item_landmines",
+      "resourcePath": "res://items/all/landmines/landmines_effect_1.tres",
+      "effectKey": "effect_landmines",
+      "textKey": "effect_landmines",
+      "scriptPath": "res://effects/items/structure_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": 12
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://items/all/landmines/landmine_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 2,
+          "damage": 10,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 0,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_PILE_OF_BOOKS",
+      "recordId": "item_pile_of_books",
+      "resourcePath": "res://items/all/pile_of_books/effects/pile_of_books_effect_0.tres",
+      "effectKey": "structures_can_crit",
+      "textKey": "EFFECT_STRUCTURES_CAN_CRIT",
+      "scriptPath": "res://items/global/effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {},
+      "relatedResources": {}
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_TURRET_FLAME",
+      "recordId": "item_turret_flame",
+      "resourcePath": "res://items/all/turret_flame/turret_flame_effect_1.tres",
+      "effectKey": "effect_turret_flame",
+      "textKey": "effect_turret_flame",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/flame/flame_turret_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 15,
+          "damage": 1,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 300,
+          "knockback": 0,
+          "piercing": 99,
+          "piercing_dmg_reduction": 1,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_TURRET_HEALING",
+      "recordId": "item_turret_healing",
+      "resourcePath": "res://items/all/turret_healing/turret_healing_effect_1.tres",
+      "effectKey": "effect_turret_healing",
+      "textKey": "effect_turret_healing",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/healing/healing_turret_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 120,
+          "damage": 3,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 400,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 0.05
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_TURRET_LASER",
+      "recordId": "item_turret_laser",
+      "resourcePath": "res://items/all/turret_laser/turret_laser_effect_1.tres",
+      "effectKey": "effect_turret_laser",
+      "textKey": "effect_turret_laser",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/laser/laser_turret_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 40,
+          "damage": 20,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 400,
+          "knockback": 0,
+          "piercing": 3,
+          "piercing_dmg_reduction": 0,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 1.25
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_TURRET_ROCKET",
+      "recordId": "item_turret_rocket",
+      "resourcePath": "res://items/all/turret_rocket/turret_rocket_effect_1.tres",
+      "effectKey": "effect_turret_rocket",
+      "textKey": "effect_turret_rocket",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/rocket/rocket_turret_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 40,
+          "damage": 25,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 500,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 1.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_TURRET",
+      "recordId": "item_turret",
+      "resourcePath": "res://items/all/turret/turret_effect_1.tres",
+      "effectKey": "effect_turret",
+      "textKey": "effect_turret",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/turret_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 32,
+          "damage": 10,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 300,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_TYLER",
+      "recordId": "item_tyler",
+      "resourcePath": "res://items/all/tyler/tyler_effect_1.tres",
+      "effectKey": "effect_tyler",
+      "textKey": "effect_tyler",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/tyler/tyler_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 120,
+          "damage": 12,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 235,
+          "knockback": 0,
+          "piercing": 2,
+          "piercing_dmg_reduction": 0,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0,
+          "nb_projectiles": 10,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 0.9
+            },
+            {
+              "stat": "stat_elemental_damage",
+              "value": 0.9
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "item",
+      "nameKey": "ITEM_WANDERING_BOT",
+      "recordId": "item_wandering_bot",
+      "resourcePath": "res://items/all/wandering_bot/wandering_bot_effect_1.tres",
+      "effectKey": "wandering_bot",
+      "textKey": "effect_wandering_bot",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/wandering_bot/wandering_bot_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 999999999,
+          "damage": 1,
+          "crit_chance": 0,
+          "crit_damage": 1,
+          "min_range": 0,
+          "max_range": 0,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_PRUNER",
+      "recordId": "weapon_pruner_1",
+      "resourcePath": "res://items/all/garden/garden_effect_1.tres",
+      "effectKey": "effect_garden",
+      "textKey": "effect_garden",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/garden/garden_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 900,
+          "damage": 0,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 150,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 0
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_PRUNER",
+      "recordId": "weapon_pruner_2",
+      "resourcePath": "res://weapons/melee/pruner/2/pruner_2_effect_1.tres",
+      "effectKey": "effect_garden",
+      "textKey": "effect_garden",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://weapons/melee/pruner/2/pruner_2_garden_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 840,
+          "damage": 0,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 150,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 0
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_PRUNER",
+      "recordId": "weapon_pruner_3",
+      "resourcePath": "res://weapons/melee/pruner/3/pruner_3_effect_1.tres",
+      "effectKey": "effect_garden",
+      "textKey": "effect_garden",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://weapons/melee/pruner/3/pruner_3_garden_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 720,
+          "damage": 0,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 150,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 0
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_PRUNER",
+      "recordId": "weapon_pruner_4",
+      "resourcePath": "res://weapons/melee/pruner/4/pruner_4_effect_1.tres",
+      "effectKey": "effect_garden",
+      "textKey": "effect_garden",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://weapons/melee/pruner/4/pruner_4_garden_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 600,
+          "damage": 0,
+          "crit_chance": 0,
+          "crit_damage": 1.5,
+          "min_range": 0,
+          "max_range": 150,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 0
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_SCREWDRIVER",
+      "recordId": "weapon_screwdriver_1",
+      "resourcePath": "res://weapons/melee/screwdriver/1/screwdriver_effect.tres",
+      "effectKey": "effect_landmines",
+      "textKey": "effect_landmines",
+      "scriptPath": "res://effects/items/structure_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": 12
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://items/all/landmines/landmine_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 2,
+          "damage": 10,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 0,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_SCREWDRIVER",
+      "recordId": "weapon_screwdriver_2",
+      "resourcePath": "res://weapons/melee/screwdriver/2/screwdriver_2_effect.tres",
+      "effectKey": "effect_landmines",
+      "textKey": "effect_landmines",
+      "scriptPath": "res://effects/items/structure_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": 9
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://items/all/landmines/landmine_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 2,
+          "damage": 10,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 0,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_SCREWDRIVER",
+      "recordId": "weapon_screwdriver_3",
+      "resourcePath": "res://weapons/melee/screwdriver/3/screwdriver_3_effect.tres",
+      "effectKey": "effect_landmines",
+      "textKey": "effect_landmines",
+      "scriptPath": "res://effects/items/structure_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": 6
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://items/all/landmines/landmine_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 2,
+          "damage": 10,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 0,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_SCREWDRIVER",
+      "recordId": "weapon_screwdriver_4",
+      "resourcePath": "res://weapons/melee/screwdriver/4/screwdriver_4_effect.tres",
+      "effectKey": "effect_landmines",
+      "textKey": "effect_landmines",
+      "scriptPath": "res://effects/items/structure_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": 3
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://items/all/landmines/landmine_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 2,
+          "damage": 10,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 0,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_WRENCH",
+      "recordId": "weapon_wrench_2",
+      "resourcePath": "res://items/all/turret_flame/turret_flame_effect_1.tres",
+      "effectKey": "effect_turret_flame",
+      "textKey": "effect_turret_flame",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/flame/flame_turret_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 15,
+          "damage": 1,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 300,
+          "knockback": 0,
+          "piercing": 99,
+          "piercing_dmg_reduction": 1,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_WRENCH",
+      "recordId": "weapon_wrench_3",
+      "resourcePath": "res://items/all/turret_laser/turret_laser_effect_1.tres",
+      "effectKey": "effect_turret_laser",
+      "textKey": "effect_turret_laser",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/laser/laser_turret_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 40,
+          "damage": 20,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 400,
+          "knockback": 0,
+          "piercing": 3,
+          "piercing_dmg_reduction": 0,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 1.25
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_WRENCH",
+      "recordId": "weapon_wrench_4",
+      "resourcePath": "res://items/all/turret_rocket/turret_rocket_effect_1.tres",
+      "effectKey": "effect_turret_rocket",
+      "textKey": "effect_turret_rocket",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/rocket/rocket_turret_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 40,
+          "damage": 25,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 500,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 1.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "group": "structure-internal-parameters",
+      "status": "partial-static-decode",
+      "impactScope": "结构物攻速、投射物、冷却、可暴击和地雷生成；结构物实际覆盖、命中率与存活时间不作伪造。",
+      "kind": "weapon",
+      "nameKey": "WEAPON_WRENCH",
+      "recordId": "weapon_wrench_1",
+      "resourcePath": "res://items/all/turret/turret_effect_1.tres",
+      "effectKey": "effect_turret",
+      "textKey": "effect_turret",
+      "scriptPath": "res://effects/items/turret_effect.gd",
+      "value": 1,
+      "chance": null,
+      "customKey": null,
+      "customArgs": "[  ]",
+      "effectParameters": {
+        "spawn_cooldown": -1
+      },
+      "relatedResources": {
+        "stats": {
+          "path": "res://entities/structures/turret/turret_stats.tres",
+          "scriptPath": "res://weapons/weapon_stats/ranged_weapon_stats.gd",
+          "cooldown": 32,
+          "damage": 10,
+          "crit_chance": 0,
+          "crit_damage": 2,
+          "min_range": 0,
+          "max_range": 300,
+          "knockback": 0,
+          "piercing": 0,
+          "piercing_dmg_reduction": 0.5,
+          "bounce": 0,
+          "bounce_dmg_reduction": 0.5,
+          "nb_projectiles": 1,
+          "scalingStats": [
+            {
+              "stat": "stat_engineering",
+              "value": 0.8
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

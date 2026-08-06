@@ -100,6 +100,17 @@ assert.ok(
     "T3 生成水母盾宠物：环绕玩家移动并阻挡敌方投射物。",
   ]);
 
+  const bonkDog = compendium.items.find((entry) => entry.nameKey === "ITEM_BONK_DOG");
+  assert.ok(
+    bonkDog?.detailedAttributes.some((line) => line.includes("近战伤害 10") && line.includes("爆炸伤害 8")),
+    "Bonk Dog should expose decoded pet and explosion SubResource parameters",
+  );
+  const blazemander = compendium.items.find((entry) => entry.nameKey === "ITEM_BLAZEMANDER");
+  assert.ok(
+    blazemander?.detailedAttributes.some((line) => line.includes("燃烧 3/跳") && line.includes("持续 5 秒")),
+    "Blazemander should expose decoded burning SubResource parameters",
+  );
+
   const spyglass = compendium.items.find((entry) => entry.nameKey === "ITEM_SPYGLASS");
   assert.ok(
     spyglass?.detailedAttributes.includes("T2 商店刷新价格 -25%"),
@@ -281,9 +292,10 @@ assert.ok(
 
 {
   const wounded = compendium.characters.find((entry) => entry.id === "wounded");
-  assert.equal(wounded?.officialOnly, true);
+  assert.equal(wounded?.officialOnly, undefined);
   assert.equal(wounded?.cnName, "伤者");
-  assert.equal(wounded?.unlockStatus, "已抽取静态条件");
+  assert.equal(wounded?.officialFound, true);
+  assert.equal(wounded?.unlockStatus, "已维护条件");
   assert.equal(wounded?.unlockEvidenceStatus, "verified-static-text");
   assert.ok(wounded?.traits.includes("受到一次伤害即死亡"));
   assert.ok(wounded?.traits.includes("起始物品：水熊虫 +1"));
@@ -298,7 +310,9 @@ assert.ok(
 {
   const beastMaster = compendium.characters.find((entry) => entry.id === "beastMaster");
   assert.equal(beastMaster?.cnName, "驯兽师");
-  assert.equal(beastMaster?.unlockStatus, "已抽取静态条件");
+  assert.equal(beastMaster?.officialOnly, undefined);
+  assert.equal(beastMaster?.officialFound, true);
+  assert.equal(beastMaster?.unlockStatus, "已维护条件");
   assert.ok(
     beastMaster?.unlockEvidenceLines.some((line) => line.includes("解锁猫特林机枪")),
     "beast master should expose verified static challenge text",

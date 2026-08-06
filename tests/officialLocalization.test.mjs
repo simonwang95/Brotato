@@ -3,6 +3,9 @@ import { readFileSync } from "node:fs";
 
 const localization = JSON.parse(readFileSync("data/official-localization.json", "utf8"));
 
+assert.equal(localization.sourceMetadata.productVersion, "1.1.12.0.beta-3");
+assert.equal(localization.sourceMetadata.packages.length, 2);
+
 assert.equal(
   localization.summary.byKind.weapon.localized,
   localization.summary.byKind.weapon.total,
