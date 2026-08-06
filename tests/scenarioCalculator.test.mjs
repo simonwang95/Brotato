@@ -384,14 +384,20 @@ function closeTo(actual, expected, message) {
     {
       id: "official:giant-crit-support",
       trigger: "conditionalDamageSupport",
-      giantCritDamageValue: 10,
+      giantCritNormalHpPercent: 10,
+      giantCritBossEliteHpPercent: 1,
     },
   );
 
   closeTo(silverBullet.conditionalDamageUtilityScore, 5, "boss damage uses the official percent");
   closeTo(smallFish.expectedHighHealthDamagePercent, 5, "high-health damage uses boss uptime");
   closeTo(smallFish.conditionalDamageUtilityScore, 1, "high-health damage stays conservative");
-  closeTo(giantBelt.conditionalDamageUtilityScore, 2, "giant crit utility follows plan crit chance");
+  closeTo(
+    giantBelt.conditionalDamageUtilityScore,
+    0.2,
+    "giant crit boss utility uses the official elite and boss percentage",
+  );
+  closeTo(giantBelt.giantCritScenarioHpPercent, 1, "boss scenario should not use the normal 10% value");
 }
 
 {

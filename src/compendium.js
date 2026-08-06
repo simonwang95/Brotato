@@ -61,6 +61,7 @@ const STAT_LABELS = {
   burning_cooldown_reduction: "燃烧冷却缩短",
   tree_turrets: "树生成炮塔",
   structure_attack_speed: "结构物攻速",
+  structure_range: "结构物范围",
   structures_can_crit: "结构物可暴击",
   projectiles: "投射物",
   free_weapon_slots: "空武器栏",
@@ -112,6 +113,7 @@ const PERCENT_STATS = new Set([
   "stat_lifesteal",
   "stat_percent_damage",
   "stat_speed",
+  "structure_attack_speed",
   "dodge_cap",
   "enemy_speed",
 ]);
@@ -375,6 +377,17 @@ function formatRelatedWeaponStats(stats, label, cooldownFrames = stats?.cooldown
   return parts.join("，");
 }
 
+function formatDamageProfile(stats) {
+  if (!stats) return "伤害参数待解码";
+  const scaling = formatScalingStats(stats.scalingStats);
+  return `${stats.damage ?? "未知"}${scaling ? `（${scaling}）` : ""}点伤害`;
+}
+
+function formatSubEffect(effect) {
+  if (!effect?.key) return "未分类强化";
+  return `${statLabel(effect.key)} ${formatStatValue(effect.key, effect.value)}`;
+}
+
 function relatedWeaponLabel(stats, fallback) {
   if (stats?.scriptPath?.includes("ranged_weapon_stats")) return "远程";
   if (stats?.scriptPath?.includes("melee_weapon_stats")) return "近战";
@@ -488,23 +501,33 @@ export function formatEffectDetail(effect) {
     scriptPath.includes("weapon_effect_with_sub_effect") ||
     scriptPath.includes("effect_with_sub_effects")
   ) {
-    return `每第 ${effect.value} 个投射物触发强化效果；具体强化参数待解码`;
+    const bonuses = effect.subEffects?.length
+      ? effect.subEffects.map(formatSubEffect).join("、")
+      : "具体强化参数待解码";
+    if (effect.key === "convert_bonus_gold") {
+      return `每 ${effect.value} 个未收集材料在波次结束时转换为：${bonuses}`;
+    }
+    const scope = effect.textKey === "EFFECT_MODIFY_EVERY_X_PROJECTILE" ? "每把远程武器的" : "";
+    return `${scope}第 ${effect.value} 个投射物获得：${bonuses}`;
   }
 
   if (scriptPath.includes("null_charm_effect")) {
-    return "命中低生命敌人时有概率使其受到魅惑；生命阈值、概率和持续时间待解码";
+    const threshold = effect.effectParameters?.value2;
+    const condition = Number.isFinite(threshold) ? `生命低于 ${threshold}%` : "低生命";
+    const chance = Number.isFinite(effect.value) ? `${effect.value}% 概率` : "有概率";
+    return `命中${condition}的敌人时有 ${chance}使其受到魅惑；持续时间待解码`;
   }
 
   if (scriptPath.includes("null_double_value_effect")) {
     if (effect.key === "bonus_damage_against_targets_above_hp") {
       return `对高生命目标造成的伤害 ${signedNumber(
         effect.value,
-      )}%；生命阈值待解码`;
+      )}%；目标生命高于 ${effect.effectParameters?.value2 ?? "待解码"}% 时生效`;
     }
     if (effect.key === "bonus_damage_against_targets_below_hp") {
       return `对低生命目标造成的伤害 ${signedNumber(
         effect.value,
-      )}%；生命阈值待解码`;
+      )}%；目标生命低于 ${effect.effectParameters?.value2 ?? "待解码"}% 时生效`;
     }
     if (effect.key === "bonus_current_health_damage") {
       return `附加目标当前生命值 ${effect.value}% 的伤害`;
@@ -562,6 +585,12 @@ export function formatEffectDetail(effect) {
   }
 
   if (effect.key === "burn_chance") {
+    const burning = effect.relatedResources?.burning_data;
+    if (burning) {
+      return `攻击有 ${formatFractionChance(burning.chance)} 概率施加燃烧：每跳造成 ${formatDamageProfile(
+        burning,
+      )}，持续 ${burning.duration ?? "未知"} 秒`;
+    }
     return "攻击有概率对敌人施加燃烧；触发概率待解码";
   }
 
@@ -606,11 +635,15 @@ export function formatEffectDetail(effect) {
   }
 
   if (effect.key === "bonus_damage_against_targets_above_hp") {
-    return `对高生命目标造成的伤害 ${signedNumber(effect.value)}%；生命阈值待解码`;
+    return `对高生命目标造成的伤害 ${signedNumber(effect.value)}%；目标生命高于 ${
+      effect.effectParameters?.value2 ?? "待解码"
+    }% 时生效`;
   }
 
   if (effect.key === "bonus_damage_against_targets_below_hp") {
-    return `对低生命目标造成的伤害 ${signedNumber(effect.value)}%；生命阈值待解码`;
+    return `对低生命目标造成的伤害 ${signedNumber(effect.value)}%；目标生命低于 ${
+      effect.effectParameters?.value2 ?? "待解码"
+    }% 时生效`;
   }
 
   if (effect.customKey === "increase_tier_on_reroll") {
@@ -622,10 +655,12 @@ export function formatEffectDetail(effect) {
   }
 
   if (effect.customKey === "temp_stats_per_interval") {
-    return `每隔一段时间：${keyLabel} ${formatStatValue(
+    const interval = effect.effectParameters?.interval;
+    const reset = effect.effectParameters?.reset_on_hit ? "；受到伤害时重置累计奖励" : "";
+    return `每 ${interval ?? "待解码"} 秒：${keyLabel} ${formatStatValue(
       effect.key,
       effect.value,
-    )}，持续到波次结束；间隔参数待解码`;
+    )}，持续到波次结束${reset}`;
   }
 
   if (effect.customKey === "stats_next_wave") {
@@ -646,7 +681,11 @@ export function formatEffectDetail(effect) {
   }
 
   if (effect.customKey === "explode_when_below_hp" || effect.key === "explode_when_below_hp") {
-    return "生命值低于阈值时触发爆炸；生命阈值、伤害和冷却参数待解码";
+    const threshold = effect.effectParameters?.hp_threshold;
+    const stats = effect.relatedResources?.stats;
+    return `每波首次生命低于 ${threshold ?? "待解码"}% 时爆炸，造成 ${formatDamageProfile(
+      stats,
+    )}`;
   }
 
   if (effect.customKey === "chance_double_gold" || effect.key === "chance_double_gold") {
@@ -680,23 +719,29 @@ export function formatEffectDetail(effect) {
   }
 
   if (effect.customKey === "projectiles_on_death" || effect.key === "projectiles_on_death") {
-    return `敌人死亡时产生 ${effect.value} 个额外投射物；投射物伤害参数待解码`;
+    return `敌人死亡时产生 ${effect.value} 个投射物，每个造成 ${formatDamageProfile(
+      effect.relatedResources?.weapon_stats,
+    )}`;
   }
 
   if (effect.customKey === "alien_eyes" || effect.key === "alien_eyes") {
-    return `周期性发射异形眼球投射物（官方参数 ${effect.value}）；伤害和频率待解码`;
+    return `每 ${effect.effectParameters?.cooldown ?? "待解码"} 秒向周围发射 ${
+      effect.value
+    } 颗异形眼球，每颗造成 ${formatDamageProfile(effect.relatedResources?.weapon_stats)}`;
   }
 
   if (effect.customKey === "remove_speed" || effect.key === "remove_speed") {
-    return `命中使敌人移速降低 ${effect.value}%；叠加上限待解码`;
+    return `命中使敌人移速降低 ${effect.value}%，最多降低 ${
+      effect.effectParameters?.value2 ?? "待解码"
+    }%`;
   }
 
   if (effect.customKey === "hp_regen_bonus" || effect.key === "hp_regen_bonus") {
-    return "满足生命条件时生命再生效果加倍；触发条件待解码";
+    return `生命低于 ${effect.effectParameters?.value2 ?? "待解码"}% 时，生命再生翻倍`;
   }
 
   if (effect.customKey === "torture" || effect.key === "torture") {
-    return `启用固定治疗机制（官方治疗参数 ${effect.value}）；其他治疗限制待解码`;
+    return `每秒恢复 ${effect.value} 点生命，但无法通过其他方式恢复生命`;
   }
 
   if (scriptPath.includes("gain_stat_every_killed_enemies_effect")) {
@@ -742,9 +787,12 @@ export function formatEffectDetail(effect) {
     const damageType = scriptPath.includes("weapon_percent_damage_effect")
       ? ""
       : `以${keyLabel}`;
+    const duration = effect.effectParameters?.duration_secs;
+    const stacks = effect.effectParameters?.max_stacks;
+    const stackText = Number.isFinite(stacks) && stacks > 1 ? `，最多叠加 ${stacks} 层` : "";
     return `${firstHit}${damageType}命中后：目标受到伤害 ${signedNumber(
       effect.value,
-    )}%；持续时间待解码`;
+    )}%，持续 ${duration ?? "待解码"} 秒${stackText}`;
   }
 
   if (effect.key === "recycling_gains") {
@@ -788,10 +836,16 @@ export function formatEffectDetail(effect) {
   }
 
   if (effect.key === "giant_crit_damage") {
-    return `暴击触发高生命目标额外伤害（官方参数 ${signedNumber(
-      effect.value,
-    )}）；生命伤害换算待解码`;
+    return `暴击额外造成目标当前生命 ${effect.value}% 的伤害；Boss 和精英按 ${
+      effect.effectParameters?.value2 ?? "待解码"
+    }% 计算`;
   }
+
+  if (effect.key === "weapons_price") return `武器价格 ${signedNumber(effect.value)}%`;
+  if (effect.key === "max_turret_count") return `最大炮塔数量 ${signedNumber(effect.value)}`;
+  if (effect.key === "trees_start_wave") return `每波开始额外生成树木 ${signedNumber(effect.value)}`;
+  if (effect.key === "map_size") return `地图尺寸 ${signedNumber(effect.value)}%`;
+  if (effect.key === "max_ranged_weapons") return `最多持有 ${effect.value} 件远程武器`;
 
   if (effect.key === "reroll_price") {
     return `商店刷新价格 ${signedNumber(effect.value)}%`;

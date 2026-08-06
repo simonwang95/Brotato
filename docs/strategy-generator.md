@@ -144,7 +144,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 - 水果掉落道具：用官方 `enemy_fruit_drops` 和场景击杀频率估算额外消耗品机会；静态目录没有水果治疗量时只输出消耗品/秒，不换算成生命/秒。
 - 诅咒/风险经济道具：用官方 `gold_on_cursed_enemy_kill`、`enemy_gold_drops`、`curse_locked_items`、`stat_curse` 和敌人风险字段估算额外材料或商店诅咒潜力，不计入伤害 DPS。
 - 下一波经验道具：用官方 `stats_next_wave` 的 `xp_gain` 估算短期经验潜力，并用同组敌人生命、伤害或速度字段做风险折扣；只在收获路线中转成经济排序分。
-- 条件伤害：用官方 `damage_against_bosses`、`bonus_damage_against_targets_above_hp` 和 `giant_crit_damage` 估算 Boss / 高生命目标潜力；高生命阶段按 Boss 50%、普通清怪 25%、怪潮 20% 的场景权重折算。`giant_crit_damage` 的生命伤害换算未可靠解码，因此只按官方原始值和角色目标暴击率排序，不当作精确 DPS。
+- 条件伤害：用官方 `damage_against_bosses`、`bonus_damage_against_targets_above_hp` 和 `giant_crit_damage` 估算 Boss / 高生命目标潜力；高生命阶段按 Boss 50%、普通清怪 25%、怪潮 20% 的场景权重折算。高/低生命阈值来自静态 `value2`；`Giant Belt` 的普通目标当前生命 10% 与 Boss/精英 1% 也已由双值效果和官方简中模板确认。当前生命伤害仍只作为潜力分，不当作固定 DPS。
 - 覆盖潜力道具：用官方 `explosion_damage`、`explosion_size`、`burning_spread`、`burning_enemy_hp_percent_damage`、`structure_attack_speed`、`structures_cooldown_reduction`、`structures_can_crit` 和结构物脚本路径估算爆炸、燃烧、结构物路线潜力；结构物可暴击时会合并角色目标暴击率与道具自带暴击率，按默认 2 倍暴击估算期望倍率。这类分数用于排序和解释，不作为精确 DPS。
 - 官方自定义成长道具：用 `EFFECT_GAIN_STAT_FOR_EVERY*` / `custom_arg.gd` 中可稳定读取的 `statScaled` 和 `nbStatScaled` 估算“随某项来源放大”的潜力，例如 `Power Generator（发电机）` 随移速来源放大。该模型使用对数效用和属性阈值，只作为排序修正；目标收益仍未从子资源完全解码，因此不写成精确属性加成。
 - 移速和闪避：合成为有效规避率，用来估算承伤倍率。
@@ -194,8 +194,8 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
 仍待校准：
 
 - 这些模型目前是可解释近似值，不等同于完整反编译公式。
-- `bonus_damage_against_targets_above_hp` 的精确生命阈值与 `giant_crit_damage` 对普通敌人、精英和 Boss 的换算仍需从脚本资源继续解码。
-- 后续需要从 `.pck` 资源里继续解析武器、道具、结构物和敌人的具体效果参数。
+- 当前还剩 14 条 `pending-runtime-decode`：4 条砖块破损、7 条减速区域、2 条粒子加速器减速缩放和 1 条 Gangster 商店锁定机制。它们缺少可稳定证明的运行时语义，继续保持待解码。
+- 燃烧传播、额外投射物命中率、结构物覆盖和部分宠物链路仍是 `partial-static-decode`，后续需要从 `.pck` 资源继续解析运行时行为。
 
 ## 实现步骤
 
@@ -207,6 +207,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
    - 已完成：按角色读取默认路线。
    - 已完成：按普通 20 关 / 无尽模式切换权重。
    - 已完成：复用场景计算器为武器和道具提供可解释的数值排序修正；未完全解码的官方公式仍保守标注为近似潜力。
+   - 已完成：为 Lucky、Knight、Ghost、Engineer、Beast Master 建立普通/无尽 Top-N 回归，并全量检查推荐理由不出现 `0 DPS`。
 
 3. 做攻略页面
    - 已完成：角色选择。
@@ -258,12 +259,13 @@ npm run extract:catalog
 - `canBeLooted`
 - `setPaths`
 - `effectPaths`
-- 主效果的 `key`、`value`、`customKey`、缩放字段
+- 主效果的 `key`、`value`、`value2`、时间窗口、生命阈值、重置标记、`customKey` 和缩放字段
+- `sub_effects` 引用的子效果 key/value
 - 击杀成长效果的目标 `stat` 与单次成长 `statNb`
 - 关联武器/爆炸/燃烧/地雷资源的静态参数、脚本路径和缩放属性
 
 生成文件 `data/official-catalog.json` 是后续批量补全武器、道具和解锁信息的基础。
-抽取器会把 Godot 资源最后的 `[resource]` 视为主效果，只把 `[sub_resource]` 当参数来源，避免 `arg_key/arg_value` 覆盖真实主字段。`npm run extract:catalog` 会在目录生成后自动运行资产提取，恢复每条记录的本地 `imageAssetPath`；需要只刷新图片时仍可单独运行 `npm run extract:assets`。
+抽取器会把 Godot 资源最后的 `[resource]` 视为主效果，只把 `[sub_resource]` 当参数来源，避免 `arg_key/arg_value` 覆盖真实主字段；`sub_effects` 中的外部资源则会递归解析为独立子效果。`npm run extract:catalog` 会在目录生成后自动运行资产提取，恢复每条记录的本地 `imageAssetPath`；需要只刷新图片时仍可单独运行 `npm run extract:assets`。
 目录与本地化/解锁抽取结果都会写入 `sourceMetadata`，记录 `extractorVersion`、`extractedAt`、产品版本以及输入 `.pck` 的大小和 SHA-256。这样后续升级安装包时可以区分“数据真的变了”和“仅重新运行抽取器”。
 
 从安装包提取官方中文名称：
@@ -304,6 +306,12 @@ npm run verify:catalog
 ```
 
 这会把 `src/strategyData.js` 里的武器和道具名称转换为官方 `nameKey`，并检查是否能在 `data/official-catalog.json` 找到对应记录。
+
+检查关键角色在普通/无尽模式下的 Top-N 推荐基线，并全量审计误导性 `0 DPS` 理由：
+
+```bash
+npm run verify:recommendations
+```
 
 运行页面时，攻略生成器会把官方目录和本地化表注入推荐结果，在武器和道具卡片中显示：
 

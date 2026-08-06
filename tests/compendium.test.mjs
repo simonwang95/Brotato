@@ -119,6 +119,46 @@ assert.ok(
 }
 
 {
+  const giantBelt = compendium.items.find((entry) => entry.nameKey === "ITEM_GIANT_BELT");
+  assert.ok(
+    giantBelt?.detailedAttributes.some((line) =>
+      /目标当前生命 10%.*Boss 和精英按 1%/.test(line),
+    ),
+    "Giant Belt should distinguish normal and boss/elite current-health damage",
+  );
+
+  const alienEyes = compendium.items.find((entry) => entry.nameKey === "ITEM_ALIEN_EYES");
+  assert.ok(
+    alienEyes?.detailedAttributes.some((line) =>
+      /每 3 秒.*6 颗异形眼球.*1（50% 最大生命）点伤害/.test(line),
+    ),
+    "Alien Eyes should expose its static interval, projectile count, damage and scaling",
+  );
+
+  const scaredSausage = compendium.items.find(
+    (entry) => entry.nameKey === "ITEM_SCARED_SAUSAGE",
+  );
+  assert.ok(
+    scaredSausage?.detailedAttributes.some((line) =>
+      /25% 概率.*每跳造成 1（100% 元素伤害）点伤害.*持续 3 秒/.test(line),
+    ),
+    "Scared Sausage should expose static burning parameters",
+  );
+
+  const sunkenBell = compendium.items.find((entry) => entry.nameKey === "ITEM_SUNKEN_BELL");
+  assert.ok(
+    sunkenBell?.detailedAttributes.some((line) => /每波首次生命低于 40%.*100/.test(line)),
+    "Sunken Bell should expose its once-per-wave threshold and explosion damage",
+  );
+
+  const seashell = compendium.items.find((entry) => entry.nameKey === "ITEM_SEASHELL");
+  assert.ok(
+    seashell?.detailedAttributes.some((line) => /每把远程武器的第 5 个投射物.*投射物 \+3/.test(line)),
+    "Seashell should expose its decoded projectile sub-effect",
+  );
+}
+
+{
   const lute = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_LUTE");
   assert.equal(lute?.enName, "Lute");
   assert.equal(lute?.cnName, "琉特琴");
@@ -344,7 +384,7 @@ assert.ok(
 {
   const technomage = compendium.characters.find((entry) => entry.id === "technomage");
   assert.ok(technomage?.traits.includes("起始物品：炮塔 +2"));
-  assert.ok(technomage?.traits.includes("每 1 点永久元素伤害：结构物攻速 +5"));
+  assert.ok(technomage?.traits.includes("每 1 点永久元素伤害：结构物攻速 +5%"));
   assert.ok(technomage?.traits.includes("每 1 点结构物：元素伤害 +2"));
   assertNoRawEffectArtifacts(technomage);
 }

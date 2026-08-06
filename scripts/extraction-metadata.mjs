@@ -2,7 +2,7 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import { basename, join } from "node:path";
 import { createHash } from "node:crypto";
 
-export const EXTRACTION_TOOL_VERSION = "brotato-static-extractors@4";
+export const EXTRACTION_TOOL_VERSION = "brotato-static-extractors@5";
 
 function sha256(path) {
   return createHash("sha256").update(readFileSync(path)).digest("hex");

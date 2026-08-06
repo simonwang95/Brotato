@@ -1070,9 +1070,11 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
   assert.ok(giantBelt, "giant should retain the manual Giant Belt recommendation");
   assert.ok(
     giantBelt.recommendationReasons.some((reason) =>
-      reason.includes("暴击高生命目标潜力（官方值 10 × 目标面板 0% 暴击率）"),
+      reason.includes(
+        "暴击高生命目标潜力（普通目标当前生命 10% / Boss 与精英 1% × 目标面板 0% 暴击率）",
+      ),
     ),
-    "giant belt should expose the official raw value without inventing an HP-damage formula",
+    "giant belt should expose both official current-health percentages",
   );
   assert.ok(
     giantBelt.recommendationReasons.every((reason) => !reason.includes("触发伤害 0 DPS")),

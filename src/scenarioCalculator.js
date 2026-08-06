@@ -376,17 +376,23 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
   if (itemEffect.trigger === "conditionalDamageSupport") {
     const bossDamagePercent = Math.max(0, itemEffect.bossDamagePercent ?? 0);
     const highHealthDamagePercent = Math.max(0, itemEffect.highHealthDamagePercent ?? 0);
-    const giantCritDamageValue = Math.max(0, itemEffect.giantCritDamageValue ?? 0);
+    const giantCritNormalHpPercent = Math.max(0, itemEffect.giantCritNormalHpPercent ?? 0);
+    const giantCritBossEliteHpPercent = Math.max(
+      0,
+      itemEffect.giantCritBossEliteHpPercent ?? 0,
+    );
     const critChance = clamp(normalizedStats.critChance / 100, 0, 1);
     const highHealthDamageUptime = clamp(scenario.highHealthDamageUptime ?? 0.25, 0, 1);
     const effectiveBossDamagePercent = scenario.id === "boss" ? bossDamagePercent : 0;
     const expectedHighHealthDamagePercent = highHealthDamagePercent * highHealthDamageUptime;
     const bossDamageUtility = effectiveBossDamagePercent / 5;
     const highHealthDamageUtility = expectedHighHealthDamagePercent / 5;
-    const giantCritUtility = scenario.id === "boss" ? (giantCritDamageValue * critChance) / 2 : 0;
+    const giantCritScenarioHpPercent =
+      scenario.id === "boss" ? giantCritBossEliteHpPercent : giantCritNormalHpPercent;
+    const giantCritUtility = (giantCritScenarioHpPercent * critChance) / 2;
     const conditionalDamageUtilityScore =
       bossDamageUtility + highHealthDamageUtility + giantCritUtility;
-    const utilityLabel = giantCritDamageValue
+    const utilityLabel = giantCritNormalHpPercent
       ? "暴击高生命目标潜力"
       : bossDamagePercent
         ? "Boss 条件伤害潜力"
@@ -401,7 +407,9 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
       rawDps: 0,
       bossDamagePercent,
       highHealthDamagePercent,
-      giantCritDamageValue,
+      giantCritNormalHpPercent,
+      giantCritBossEliteHpPercent,
+      giantCritScenarioHpPercent,
       critChance,
       highHealthDamageUptime,
       effectiveBossDamagePercent,

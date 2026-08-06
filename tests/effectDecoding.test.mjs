@@ -9,6 +9,16 @@ assert.equal(manifest.summary.total, manifest.records.length);
 assert.ok(manifest.summary.byGroup["pet-static-parameters"] >= 9);
 assert.ok(manifest.summary.byGroup["giant-belt"] >= 1);
 assert.ok(manifest.summary.byStatus["pending-runtime-decode"] >= 1);
+assert.equal(
+  manifest.summary.byStatus["pending-runtime-decode"],
+  14,
+  "only effects without a stable static interpretation should remain runtime-pending",
+);
+assert.equal(
+  manifest.summary.byGroup["unclassified-runtime-effect"],
+  3,
+  "new pending display effects must be deliberately classified",
+);
 
 for (const record of manifest.records) {
   const catalogRecord = catalog.records.find(
@@ -23,15 +33,18 @@ for (const record of manifest.records) {
 }
 
 const giantBelt = manifest.records.find((record) => record.group === "giant-belt");
-assert.equal(giantBelt?.status, "pending-runtime-decode");
+assert.equal(giantBelt?.status, "decoded-static-parameters");
 assert.equal(giantBelt?.effectKey, "giant_crit_damage");
-assert.match(giantBelt?.impactScope ?? "", /未证明/);
+assert.equal(giantBelt?.effectParameters.value2, 1);
+assert.match(giantBelt?.displayText ?? "", /当前生命 10%.*Boss 和精英按 1%/);
 
 const javelinSubEffect = manifest.records.find(
   (record) => record.nameKey === "WEAPON_JAVELIN" && record.group === "periodic-sub-effect",
 );
-assert.ok(javelinSubEffect, "Javelin pending sub-effect should be classified in the manifest");
-assert.match(javelinSubEffect.displayText, /强化参数待解码/);
+assert.ok(javelinSubEffect, "Javelin sub-effect should be classified in the manifest");
+assert.equal(javelinSubEffect.status, "decoded-static-parameters");
+assert.equal(javelinSubEffect.subEffects[0]?.key, "stat_crit_chance");
+assert.match(javelinSubEffect.displayText, /第 5 个投射物.*暴击率 \+100%/);
 
 const breakOnHit = manifest.records.find((record) => record.effectKey === "break_on_hit");
 assert.equal(breakOnHit?.group, "break-on-hit");

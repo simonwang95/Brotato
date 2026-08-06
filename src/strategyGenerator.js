@@ -1369,13 +1369,15 @@ function scoreScenarioModel(entry, plan, mode) {
     }
 
     if (itemModel.result.itemEffect.trigger === "conditionalDamageSupport") {
-      const score = Math.min(
-        8,
-        Math.max(0, Math.round(itemModel.result.conditionalDamageUtilityScore)),
-      );
       const result = itemModel.result;
-      const detail = result.giantCritDamageValue
-        ? `官方值 ${result.giantCritDamageValue.toFixed(0)} × 目标面板 ${(
+      const score =
+        result.conditionalDamageUtilityScore > 0
+          ? Math.min(8, Math.max(1, Math.round(result.conditionalDamageUtilityScore)))
+          : 0;
+      const detail = result.giantCritNormalHpPercent
+        ? `普通目标当前生命 ${result.giantCritNormalHpPercent.toFixed(
+            0,
+          )}% / Boss 与精英 ${result.giantCritBossEliteHpPercent.toFixed(0)}% × 目标面板 ${(
             result.critChance * 100
           ).toFixed(0)}% 暴击率`
         : result.bossDamagePercent
@@ -1384,7 +1386,9 @@ function scoreScenarioModel(entry, plan, mode) {
       return {
         score,
         reasons: [
-          `场景模型：${result.scenario.name} · ${result.utilityLabel}（${detail}） +${score}`,
+          `场景模型：${result.scenario.name} · ${result.utilityLabel}（${detail}） ${
+            score > 0 ? `+${score}` : "当前目标面板未加分"
+          }`,
         ],
       };
     }
@@ -1479,12 +1483,12 @@ function scoreScenarioModel(entry, plan, mode) {
     }
 
     const score = Math.min(8, Math.max(0, Math.round(itemModel.result.dps / 12)));
+    if (!(itemModel.result.dps > 0)) return { score: 0, reasons: [] };
+    const dpsLabel = itemModel.result.dps < 1 ? "<1" : String(Math.round(itemModel.result.dps));
     return {
       score,
       reasons: [
-        `场景模型：${itemModel.result.scenario.name}触发伤害 ${Math.round(
-          itemModel.result.dps,
-        )} DPS`,
+        `场景模型：${itemModel.result.scenario.name}触发伤害 ${dpsLabel} DPS`,
       ],
     };
   }
@@ -1834,19 +1838,28 @@ function itemEffectForEntry(entry) {
       (effect) => effect.key === "bonus_damage_against_targets_above_hp" && effect.value > 0,
     )
     .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
-  const giantCritDamageValue = effects
-    .filter((effect) => effect.key === "giant_crit_damage" && effect.value > 0)
-    .reduce((sum, effect) => sum + Number(effect.value ?? 0), 0);
-  if (bossDamagePercent || highHealthDamagePercent || giantCritDamageValue) {
+  const giantCritEffects = effects.filter(
+    (effect) => effect.key === "giant_crit_damage" && effect.value > 0,
+  );
+  const giantCritNormalHpPercent = giantCritEffects.reduce(
+    (sum, effect) => sum + Number(effect.value ?? 0),
+    0,
+  );
+  const giantCritBossEliteHpPercent = giantCritEffects.reduce(
+    (sum, effect) => sum + Number(effect.effectParameters?.value2 ?? 0),
+    0,
+  );
+  if (bossDamagePercent || highHealthDamagePercent || giantCritNormalHpPercent) {
     return {
       ...baseEffect,
       id: `${baseEffect.id}:conditional-damage-support`,
       trigger: "conditionalDamageSupport",
       bossDamagePercent,
       highHealthDamagePercent,
-      giantCritDamageValue,
+      giantCritNormalHpPercent,
+      giantCritBossEliteHpPercent,
       description:
-        "按官方 Boss、高生命目标或 giant_crit_damage 字段估算条件伤害潜力；未解码阈值与特殊生命伤害换算不写成精确 DPS。",
+        "按官方 Boss、高生命目标或当前生命百分比伤害字段估算条件伤害潜力；当前生命伤害不伪装成固定 DPS。",
     };
   }
 

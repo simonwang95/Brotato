@@ -94,6 +94,7 @@ npm run start:static
 
 ```bash
 npm test
+npm run verify:recommendations
 ```
 
 检查全部武器/物品图鉴效果是否泄露内部脚本名或资源键：
@@ -169,7 +170,7 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 
 ## 后续目标
 
-二期攻略生成器已经接入 64 条官方角色策略模板，并保留 1 条已审计的 `Giant / CHARACTER_GIANT` 目录缺口作为策略层候选。角色、武器和物品图鉴本地化已覆盖当前官方目录，54 条已抽取角色挑战均有精确简中条件；Beast Master 与 Wounded 已补齐攻略、禁用项和宠物/一击即死回归测试，官方效果解码清单与安装包版本/哈希来源元数据也已落盘。
+二期攻略生成器已经接入 64 条官方角色策略模板，并保留 1 条已审计的 `Giant / CHARACTER_GIANT` 目录缺口作为策略层候选。角色、武器和物品图鉴本地化已覆盖当前官方目录，54 条已抽取角色挑战均有精确简中条件；Beast Master 与 Wounded 已补齐攻略、禁用项和宠物/一击即死回归测试。复杂效果审计当前覆盖 128 条记录，运行时待解码已从 56 条降至 14 条；Lucky、Knight、Ghost、Engineer、Beast Master 的普通/无尽 Top-N 推荐也已有固定回归基线。
 
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。
@@ -178,7 +179,7 @@ Vercel 部署清单见 [docs/vercel-deployment.md](docs/vercel-deployment.md)。
 
 ## 资料来源状态
 
-当前攻略数据参考 Brotato Wiki 的 Characters、Progress、Weapons、Stats 和 Endless Mode 页面，并在数据里保留了解锁说明。攻略推荐本身是策略化整理，不等同于游戏内唯一最优解；当前已把官方武器数值、解锁/掉落状态、稀有度、价格、套装匹配、官方触发与 Boss/高生命条件伤害、暴击/拾取/箱子/回收/战利品外星人/波次经济、每波结束属性成长、下一波经验风险收益、官方贯通覆盖、官方商店效率、水果掉落与拾取频率收益、击杀/暴击击杀/拾取/消耗品即时与持续/闪避治疗续航、诅咒/敌人风险经济、爆炸/燃烧/结构物及结构物暴击覆盖潜力、官方幸运/护甲缩放、击杀成长机制、宠物关联资源静态参数和官方自定义成长缩放来源接入可解释评分。未完全解码的运行时链路会在 `data/official-effect-decoding.json` 标为 `partial-static-decode` 或 `pending-runtime-decode`，不伪造精确 DPS。
+当前攻略数据参考 Brotato Wiki 的 Characters、Progress、Weapons、Stats 和 Endless Mode 页面，并在数据里保留了解锁说明。攻略推荐本身是策略化整理，不等同于游戏内唯一最优解；当前已把官方武器数值、解锁/掉落状态、稀有度、价格、套装匹配、官方触发与 Boss/高生命条件伤害、暴击/拾取/箱子/回收/战利品外星人/波次经济、每波结束属性成长、下一波经验风险收益、官方贯通覆盖、官方商店效率、水果掉落与拾取频率收益、击杀/暴击击杀/拾取/消耗品即时与持续/闪避治疗续航、诅咒/敌人风险经济、爆炸/燃烧/结构物及结构物暴击覆盖潜力、官方幸运/护甲缩放、击杀成长机制、宠物关联资源静态参数和官方自定义成长缩放来源接入可解释评分。双值效果、时间窗口和 `sub_effects` 已用于展示 Giant Belt、高低生命阈值、临时属性间隔、琉特琴承伤窗口、标枪/贝壳强化、异形眼球、胡子宝宝、害怕的香肠和沉没之钟；未完全解码的运行时链路仍会标为 `partial-static-decode` 或 `pending-runtime-decode`，不伪造精确 DPS。
 
 官方简中名称优先以本机安装包里的 `Brotato.pck` 和 `BrotatoAbyssalTerrors.pck` 为准；`npm run verify:names` 会扫描这些包并报告当前数据是否匹配。
 

@@ -175,6 +175,12 @@ const RELATED_RESOURCE_KEYS = [
 ];
 
 const RELATED_NUMBER_FIELDS = [
+  "value2",
+  "interval",
+  "duration_secs",
+  "max_stacks",
+  "max_procs",
+  "hp_threshold",
   "cooldown",
   "damage",
   "crit_chance",
@@ -200,6 +206,14 @@ const RELATED_NUMBER_FIELDS = [
   "revive_duration",
 ];
 
+const RELATED_BOOLEAN_FIELDS = ["reset_on_hit"];
+
+function parseBooleanFields(block, keys) {
+  return Object.fromEntries(
+    keys.map((key) => [key, getBoolean(block, key)]).filter(([, value]) => value !== null),
+  );
+}
+
 function parseRelatedResource(path, block, resources, seen = new Set()) {
   if (!path || !block || seen.has(path)) return null;
   const nextSeen = new Set(seen).add(path);
@@ -210,6 +224,7 @@ function parseRelatedResource(path, block, resources, seen = new Set()) {
     path,
     scriptPath: extResources[scriptRef]?.path ?? null,
     ...parseNumberFields(resourceBlock, RELATED_NUMBER_FIELDS),
+    ...parseBooleanFields(resourceBlock, RELATED_BOOLEAN_FIELDS),
     scalingStats: parseScalingStats(resourceBlock),
   };
 
@@ -229,8 +244,9 @@ function parseRelatedResource(path, block, resources, seen = new Set()) {
   return result;
 }
 
-function parseEffectDetail(path, block, resources) {
-  if (!path || !block) return null;
+function parseEffectDetail(path, block, resources, seen = new Set()) {
+  if (!path || !block || seen.has(path)) return null;
+  const nextSeen = new Set(seen).add(path);
   const extResources = collectExtResources(block);
   const resourceBlock = block.match(/\[resource\]\s*([\s\S]*)$/)?.[1] ?? block;
   const scriptRef = getResourceRef(resourceBlock, "script");
@@ -261,7 +277,10 @@ function parseEffectDetail(path, block, resources) {
     permStatsOnly: getBoolean(resourceBlock, "perm_stats_only"),
   };
 
-  const effectParameters = parseNumberFields(resourceBlock, RELATED_NUMBER_FIELDS);
+  const effectParameters = {
+    ...parseNumberFields(resourceBlock, RELATED_NUMBER_FIELDS),
+    ...parseBooleanFields(resourceBlock, RELATED_BOOLEAN_FIELDS),
+  };
   if (Object.keys(effectParameters).length) effect.effectParameters = effectParameters;
 
   const relatedResources = {};
@@ -274,6 +293,15 @@ function parseEffectDetail(path, block, resources) {
     if (related) relatedResources[key] = related;
   });
   if (Object.keys(relatedResources).length) effect.relatedResources = relatedResources;
+
+  const subEffects = getArrayRefs(resourceBlock, "sub_effects")
+    .map((ref) => extResources[ref]?.path)
+    .filter(Boolean)
+    .map((subEffectPath) =>
+      parseEffectDetail(subEffectPath, resources.get(subEffectPath), resources, nextSeen),
+    )
+    .filter(Boolean);
+  if (subEffects.length) effect.subEffects = subEffects;
 
   return effect;
 }

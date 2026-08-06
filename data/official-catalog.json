@@ -1,7 +1,7 @@
 {
   "sourceMetadata": {
-    "extractorVersion": "brotato-static-extractors@3",
-    "extractedAt": "2026-08-06T06:48:04.837Z",
+    "extractorVersion": "brotato-static-extractors@5",
+    "extractedAt": "2026-08-06T08:07:50.553Z",
     "productVersion": "1.1.12.0.beta-3",
     "productVersionEvidence": "Brotato.app/Contents/Info.plist:CFBundleShortVersionString",
     "packages": [
@@ -1235,7 +1235,51 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "subEffects": [
+            {
+              "path": "res://dlcs/dlc_1/characters/builder/effects/builder_effect_1b.tres",
+              "scriptPath": "res://items/global/effect.gd",
+              "key": "structure_attack_speed",
+              "textKey": "",
+              "value": 1,
+              "customKey": "",
+              "storageMethod": 0,
+              "effectSign": 3,
+              "chance": null,
+              "trackingText": null,
+              "customArgs": "[  ]",
+              "setId": null,
+              "statDisplayedName": null,
+              "statName": null,
+              "statDisplayed": null,
+              "statsModified": [],
+              "nbStatScaled": null,
+              "statScaled": null,
+              "permStatsOnly": null
+            },
+            {
+              "path": "res://dlcs/dlc_1/characters/builder/effects/builder_effect_1c.tres",
+              "scriptPath": "res://items/global/effect.gd",
+              "key": "structure_range",
+              "textKey": "",
+              "value": 1,
+              "customKey": "",
+              "storageMethod": 0,
+              "effectSign": 3,
+              "chance": null,
+              "trackingText": null,
+              "customArgs": "[  ]",
+              "setId": null,
+              "statDisplayedName": null,
+              "statName": null,
+              "statDisplayed": null,
+              "statsModified": [],
+              "nbStatScaled": null,
+              "statScaled": null,
+              "permStatsOnly": null
+            }
+          ]
         },
         {
           "path": "res://dlcs/dlc_1/characters/builder/effects/builder_effect_2.tres",
@@ -3329,7 +3373,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "duration_secs": 3,
+            "max_stacks": 1,
+            "max_procs": -1
+          }
         },
         {
           "path": "res://dlcs/dlc_1/characters/diver/effects/diver_effect_4.tres",
@@ -3670,7 +3719,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 33
+          }
         },
         {
           "path": "res://dlcs/dlc_1/characters/druid/effects/druid_effect_3.tres",
@@ -3839,7 +3891,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 6
+          }
         },
         {
           "path": "res://dlcs/dlc_1/characters/dwarf/effects/dwarf_effect_1.tres",
@@ -5900,7 +5955,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 10
+          }
         },
         {
           "path": "res://dlcs/dlc_1/characters/hiker/effects/hiker_effect_1.tres",
@@ -5921,7 +5979,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 80
+          }
         },
         {
           "path": "res://dlcs/dlc_1/characters/hiker/effects/hiker_effect_2.tres",
@@ -8677,7 +8738,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 25
+          }
         },
         {
           "path": "res://dlcs/dlc_1/characters/romantic/effects/romantic_effect_0a.tres",
@@ -9578,7 +9642,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 25
+          }
         },
         {
           "path": "res://items/characters/streamer/streamer_effect_1b.tres",
@@ -13518,7 +13585,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 50
+          }
         },
         {
           "path": "res://dlcs/dlc_1/items/bone_dice/effects/bone_dice_effect_1.tres",
@@ -13539,7 +13609,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 10
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_bone_dice.webp"
@@ -14866,7 +14939,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 100
+          }
         },
         {
           "path": "res://items/all/candy_bag/candy_bag_effect_1.tres",
@@ -15148,7 +15224,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 2
+          }
         },
         {
           "path": "res://dlcs/dlc_1/items/cauldron/effects/cauldron_effect_2.tres",
@@ -16305,7 +16384,11 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "interval": 1,
+            "reset_on_hit": true
+          }
         },
         {
           "path": "res://dlcs/dlc_1/items/crystal/effects/crystal_effect_0b.tres",
@@ -17509,7 +17592,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 8
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_extra_stomach.webp"
@@ -18836,7 +18922,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 1
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_giant_belt.webp"
@@ -19305,7 +19394,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 1
+          }
         },
         {
           "path": "res://items/all/greek_fire/effects/greek_fire_effect_1.tres",
@@ -20228,7 +20320,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "duration_secs": 3,
+            "max_stacks": 1,
+            "max_procs": 1
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_ice_cube.webp"
@@ -22297,7 +22394,11 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "interval": 5,
+            "reset_on_hit": false
+          }
         },
         {
           "path": "res://items/all/medikit/medikit_effect_2.tres",
@@ -24315,7 +24416,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 50
+          }
         },
         {
           "path": "res://items/all/potion/potion_effect_2.tres",
@@ -25323,7 +25427,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 3
+          }
         },
         {
           "path": "res://dlcs/dlc_1/items/saltwater/effects/saltwater_effect_2.tres",
@@ -25749,7 +25856,30 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "subEffects": [
+            {
+              "path": "res://dlcs/dlc_1/items/seashell/effects/seashell_effect_0b.tres",
+              "scriptPath": "res://items/global/effect.gd",
+              "key": "projectiles",
+              "textKey": "EFFECT_PROJECTILES",
+              "value": 3,
+              "customKey": "",
+              "storageMethod": 0,
+              "effectSign": 3,
+              "chance": null,
+              "trackingText": null,
+              "customArgs": "[  ]",
+              "setId": null,
+              "statDisplayedName": null,
+              "statName": null,
+              "statDisplayed": null,
+              "statsModified": [],
+              "nbStatScaled": null,
+              "statScaled": null,
+              "permStatsOnly": null
+            }
+          ]
         },
         {
           "path": "res://dlcs/dlc_1/items/seashell/effects/seashell_effect_1.tres",
@@ -26307,7 +26437,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 75
+          }
         },
         {
           "path": "res://dlcs/dlc_1/items/small_fish/effects/small_fish_effect_1.tres",
@@ -26584,7 +26717,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 0
+          }
         }
       ],
       "imageAssetPath": "data/assets/items/item_snowball.webp"
@@ -27252,6 +27388,7 @@
           "statScaled": null,
           "permStatsOnly": null,
           "effectParameters": {
+            "hp_threshold": 40,
             "chance": 1,
             "base_smoke_amount": 40,
             "scale": 6
@@ -28337,7 +28474,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 20
+          }
         },
         {
           "path": "res://items/all/ugly_tooth/ugly_tooth_effect_2.tres",
@@ -29112,7 +29252,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 1
+          }
         },
         {
           "path": "res://items/all/will_o_the_wisp/will_o_the_wisp_effect_1.tres",
@@ -29262,7 +29405,11 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "interval": 5,
+            "reset_on_hit": false
+          }
         },
         {
           "path": "res://items/all/wisdom/wisdom_effect_2.tres",
@@ -29815,7 +29962,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 10
+          }
         }
       ],
       "weaponId": "weapon_brick",
@@ -29892,7 +30042,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 30
+          }
         }
       ],
       "weaponId": "weapon_brick",
@@ -29969,7 +30122,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 75
+          }
         }
       ],
       "weaponId": "weapon_brick",
@@ -30046,7 +30202,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 200
+          }
         }
       ],
       "weaponId": "weapon_brick",
@@ -30732,7 +30891,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 1
+          }
         }
       ],
       "weaponId": "weapon_chainsaw",
@@ -30814,7 +30976,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 2
+          }
         }
       ],
       "weaponId": "weapon_chainsaw",
@@ -32569,7 +32734,11 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "interval": 5,
+            "reset_on_hit": false
+          }
         }
       ],
       "weaponId": "weapon_drill",
@@ -34159,7 +34328,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 60
+          }
         }
       ],
       "weaponId": "weapon_flute",
@@ -34242,7 +34414,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 65
+          }
         }
       ],
       "weaponId": "weapon_flute",
@@ -34325,7 +34500,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 70
+          }
         }
       ],
       "weaponId": "weapon_flute",
@@ -34408,7 +34586,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 75
+          }
         }
       ],
       "weaponId": "weapon_flute",
@@ -36708,7 +36889,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 70
+          }
         }
       ],
       "weaponId": "weapon_hiking_stick",
@@ -36785,7 +36969,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 60
+          }
         }
       ],
       "weaponId": "weapon_hiking_stick",
@@ -36862,7 +37049,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 50
+          }
         }
       ],
       "weaponId": "weapon_hiking_stick",
@@ -36939,7 +37129,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 40
+          }
         }
       ],
       "weaponId": "weapon_hiking_stick",
@@ -37240,7 +37433,30 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "subEffects": [
+            {
+              "path": "res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_effect_0c.tres",
+              "scriptPath": "res://items/global/effect.gd",
+              "key": "stat_crit_chance",
+              "textKey": "",
+              "value": 100,
+              "customKey": "",
+              "storageMethod": 0,
+              "effectSign": 3,
+              "chance": null,
+              "trackingText": null,
+              "customArgs": "[  ]",
+              "setId": null,
+              "statDisplayedName": null,
+              "statName": null,
+              "statDisplayed": null,
+              "statsModified": [],
+              "nbStatScaled": null,
+              "statScaled": null,
+              "permStatsOnly": null
+            }
+          ]
         }
       ],
       "weaponId": "weapon_javelin",
@@ -37319,7 +37535,30 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "subEffects": [
+            {
+              "path": "res://dlcs/dlc_1/weapons/ranged/javelin/2/javelin_2_effect_0c.tres",
+              "scriptPath": "res://items/global/effect.gd",
+              "key": "stat_crit_chance",
+              "textKey": "",
+              "value": 100,
+              "customKey": "",
+              "storageMethod": 0,
+              "effectSign": 3,
+              "chance": null,
+              "trackingText": null,
+              "customArgs": "[  ]",
+              "setId": null,
+              "statDisplayedName": null,
+              "statName": null,
+              "statDisplayed": null,
+              "statsModified": [],
+              "nbStatScaled": null,
+              "statScaled": null,
+              "permStatsOnly": null
+            }
+          ]
         }
       ],
       "weaponId": "weapon_javelin",
@@ -37398,7 +37637,30 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "subEffects": [
+            {
+              "path": "res://dlcs/dlc_1/weapons/ranged/javelin/3/javelin_3_effect_0c.tres",
+              "scriptPath": "res://items/global/effect.gd",
+              "key": "stat_crit_chance",
+              "textKey": "",
+              "value": 100,
+              "customKey": "",
+              "storageMethod": 0,
+              "effectSign": 3,
+              "chance": null,
+              "trackingText": null,
+              "customArgs": "[  ]",
+              "setId": null,
+              "statDisplayedName": null,
+              "statName": null,
+              "statDisplayed": null,
+              "statsModified": [],
+              "nbStatScaled": null,
+              "statScaled": null,
+              "permStatsOnly": null
+            }
+          ]
         }
       ],
       "weaponId": "weapon_javelin",
@@ -37477,7 +37739,30 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "subEffects": [
+            {
+              "path": "res://dlcs/dlc_1/weapons/ranged/javelin/4/javelin_4_effect_0c.tres",
+              "scriptPath": "res://items/global/effect.gd",
+              "key": "stat_crit_chance",
+              "textKey": "",
+              "value": 100,
+              "customKey": "",
+              "storageMethod": 0,
+              "effectSign": 3,
+              "chance": null,
+              "trackingText": null,
+              "customArgs": "[  ]",
+              "setId": null,
+              "statDisplayedName": null,
+              "statName": null,
+              "statDisplayed": null,
+              "statsModified": [],
+              "nbStatScaled": null,
+              "statScaled": null,
+              "permStatsOnly": null
+            }
+          ]
         }
       ],
       "weaponId": "weapon_javelin",
@@ -38806,7 +39091,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "duration_secs": 3,
+            "max_stacks": 3,
+            "max_procs": -1
+          }
         }
       ],
       "weaponId": "weapon_lute",
@@ -38884,7 +39174,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "duration_secs": 3,
+            "max_stacks": 5,
+            "max_procs": -1
+          }
         }
       ],
       "weaponId": "weapon_lute",
@@ -38962,7 +39257,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "duration_secs": 3,
+            "max_stacks": 7,
+            "max_procs": -1
+          }
         }
       ],
       "weaponId": "weapon_lute",
@@ -39040,7 +39340,12 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "duration_secs": 3,
+            "max_stacks": 10,
+            "max_procs": -1
+          }
         }
       ],
       "weaponId": "weapon_lute",
@@ -41667,7 +41972,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "interval": 5
+          }
         }
       ],
       "weaponId": "weapon_rail_gun",
@@ -41751,7 +42059,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "interval": 5
+          }
         }
       ],
       "weaponId": "weapon_rail_gun",
@@ -41835,7 +42146,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "interval": 5
+          }
         }
       ],
       "weaponId": "weapon_rail_gun",
@@ -41919,7 +42233,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "interval": 5
+          }
         }
       ],
       "weaponId": "weapon_rail_gun",
@@ -44477,7 +44794,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 30
+          }
         }
       ],
       "weaponId": "weapon_sickle",
@@ -44554,7 +44874,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 30
+          }
         }
       ],
       "weaponId": "weapon_sickle",
@@ -44631,7 +44954,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 30
+          }
         }
       ],
       "weaponId": "weapon_sickle",
@@ -44708,7 +45034,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 30
+          }
         }
       ],
       "weaponId": "weapon_sickle",
@@ -47532,7 +47861,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 80
+          }
         }
       ],
       "weaponId": "weapon_trident",
@@ -47610,7 +47942,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 80
+          }
         }
       ],
       "weaponId": "weapon_trident",
@@ -47688,7 +48023,10 @@
           "statsModified": [],
           "nbStatScaled": null,
           "statScaled": null,
-          "permStatsOnly": null
+          "permStatsOnly": null,
+          "effectParameters": {
+            "value2": 80
+          }
         }
       ],
       "weaponId": "weapon_trident",

@@ -40,7 +40,7 @@
 - 当前本地化表已覆盖官方目录里的 79 个武器、244 个物品和 64/64 个角色。后续如果官方目录新增条目，无法可靠读取的名称要继续留在覆盖率报告中，不要凭直觉填入。
 - `data/official-catalog.json`、`data/official-localization.json` 和 `data/official-unlocks.json` 都携带 `sourceMetadata`：包括抽取器版本、抽取时间、产品版本、输入包大小和 SHA-256；证据边界明确为静态安装包，不包含存档或当前解锁进度。
 - 角色图鉴特性来自官方目录里的 stat/effect key。目录抽取器只从最终 `[resource]` 读取主效果字段，避免把前置 `[sub_resource]` 的 `arg_key/arg_value` 当成主效果；可稳定读取的 `key/value/statScaled/nbStatScaled/stat/statNb` 以及关联武器、爆炸、燃烧和地雷资源参数会精确格式化，仍无法解释的内部参数才保守显示。
-- `data/official-effect-decoding.json` 记录每个已命中的复杂效果的 `resourcePath`、`effectKey`、脚本路径、静态参数、影响边界和状态。生成器复用图鉴格式化函数，所有仍显示“待解码/未知”的效果都会进入清单；专门规则未覆盖的条目归入 `unclassified-runtime-effect`，不能静默遗漏。`decoded-static-parameters` 可进入保守场景模型；`partial-static-decode` 只允许部分参数进入排序；`pending-runtime-decode` 只允许目录展示和待解码说明。宠物静态模型明确不假设触发次数、命中率、宠物数量或存活时间；地雷使用父资源的生成间隔而不是内部伤害资源冷却，`Giant Belt` 也不被写成精确生命伤害 DPS。
+- `data/official-effect-decoding.json` 记录每个已命中的复杂效果的 `resourcePath`、`effectKey`、脚本路径、静态参数、子效果、影响边界和状态。生成器复用图鉴格式化函数，所有仍显示“待解码/未知”的效果都会进入清单；专门规则未覆盖的条目归入 `unclassified-runtime-effect`，不能静默遗漏。当前 128 条记录中有 43 条 `decoded-static-parameters`、71 条 `partial-static-decode` 和 14 条 `pending-runtime-decode`，未分类待解码仅 3 条。宠物静态模型明确不假设触发次数、命中率、宠物数量或存活时间；地雷使用父资源的生成间隔而不是内部伤害资源冷却。`Giant Belt` 已由 `value/value2` 与官方简中模板确认普通目标当前生命 10%、Boss/精英 1%，但仍只作为当前生命伤害潜力，不伪装成固定 DPS。
 - `npm run verify:unlocks` 用来校验策略层的默认解锁、需解锁和掉落池文案是否与官方目录状态冲突。脚本也会反向列出已抽到但策略层未维护的官方角色解锁记录；当前 Beast Master/Wounded 已有攻略模板，因此 warning 为 0。`Giant / CHARACTER_GIANT` 当前是记录在 `data/official-character-catalog-gaps.json` 的官方角色目录缺口，校验时单独列入 `Audited catalog gaps`，不按普通 warning 或映射失败处理。
 
 ## 推荐流程
@@ -81,7 +81,7 @@
 - 每波结束属性成长只会在正向属性命中角色目标时加分。例如 `Robot Arm（机械臂）` 的官方 `stats_end_of_wave` 会在 Builder 工程路线解释为工程学每波成长；同一条目里的负面生命成长不会变成推荐加分。
 - 下一波经验类道具从官方 `stats_next_wave` 里读取 `xp_gain`，再用同一批下一波敌人生命、伤害或速度字段做风险折扣。例如 `Peacock（孔雀）` 会输出“下一波经验潜力”，但只在收获路线中转成经济分；`Celery Tea（芹菜茶）` 同时有 `stats_end_of_wave` 时优先走长期每波成长解释，避免把短期冲刺写成长期收益。
 - 贯通类道具从官方 `piercing` 和 `pierce_on_crit` 字段生成覆盖潜力。例如 `Bandana（头巾）` 和 `Sharp Bullet（尖头子弹）` 会按场景直线目标数估算怪潮覆盖；`Eyepatch（眼罩）` 这类暴击贯通还会按角色目标暴击率折算。该分数是覆盖修正，不当作直接伤害 DPS。
-- Boss / 高生命条件伤害会读取官方 `damage_against_bosses`、`bonus_damage_against_targets_above_hp` 和 `giant_crit_damage`。`Silver Bullet（银质子弹）` 直接解释官方 Boss 加伤；`Small Fish（小鱼）` 和 `Trident（三叉戟）` 按场景高生命阶段权重估算期望收益，当前 Boss / 普通清怪 / 怪潮分别使用 50% / 25% / 20%；`Giant Belt（巨型带）` 只展示官方原始值与角色目标暴击率，因为静态安装包尚未证明它对普通敌人、精英和 Boss 的生命伤害换算，不写成精确 DPS。
+- Boss / 高生命条件伤害会读取官方 `damage_against_bosses`、`bonus_damage_against_targets_above_hp` 和 `giant_crit_damage`。`Small Fish（小鱼）` 的 75%、`Sickle（镰刀）` 的 30%、`Trident（三叉戟）` 的 80% 生命阈值已经从 `value2` 解码；场景持续时间仍分别按 Boss / 普通清怪 / 怪潮的 50% / 25% / 20% 假设折算。`Giant Belt（巨型带）` 在 Boss 场景使用官方 1% 参数而不是普通目标 10%，并结合角色目标暴击率形成潜力分；由于缺少具体敌人当前生命曲线，不写成固定 DPS。
 - 商店效率类道具从官方 `items_price`、`free_rerolls`、`reroll_price` 字段生成经济潜力。例如 `Coupon（优惠券）` 解释物品折扣，`Dangerous Bunny（危险兔子）` 解释免费刷新，`Spyglass（望远镜）` 解释刷新折扣；这些只在收获或幸运路线中转成场景分。
 - 拾取吸附本身仍输出拾取频率收益，不对普通角色伪装成伤害 DPS。对 Lucky，推荐器会额外读取角色静态效果中的 75% 拾取触发、15% 幸运伤害和幸运获取 `+25%`，再计算候选的幸运、总伤害或吸附带来的边际 DPS；例如普通清怪目标面板下 `Sifd's Relic` 的 100% 吸附约增加 `39.9 DPS`，无尽目标面板下约增加 `161.4 DPS`。
 - 击杀、暴击击杀、拾取、消耗品和闪避治疗会从官方效果 key 动态生成续航模型。例如 `Goblet（高脚杯）` 按 `heal_on_kill` 与场景击杀频率估算，`Tentacle（触手）` 会把 `heal_on_crit_kill`、自带暴击率和角色目标暴击率合并，`Cute Monkey` 按拾取材料治疗概率估算，`Lemonade` / `Weird Food` 按消耗品即时治疗估算，`Jerky` 会合并官方 `consumable_heal` 和 `consumable_heal_over_time`，`Adrenaline` 按角色目标闪避与触发概率估算；这些只输出“治疗期望/续航潜力”，不计入伤害 DPS。
@@ -94,6 +94,8 @@
 - 官方候选会读取套装、效果和当前角色资源。例如幽魂路线只会吸收幽魂套装补充项，避免普通近战武器仅凭近战缩放混入；骑士路线会读取官方“每 1 护甲 `+2` 近战伤害”，按目标护甲量化所有近战武器的角色联动，并执行“不能持有远程武器”过滤。Sword 仍依靠手写主线、剑类/中世纪双套装和 T2 起步保持骑士首选，而不是把护甲转换误写成剑本身的缩放。
 - 官方属性协同只把正值或无符号的机制字段当作正向匹配；例如 `Small Fish` 的 `-3%` 攻速和 `Metal Detector（金属探测器）` 的 `-5%` 总伤害不会再产生攻速/伤害协同分。袋子和金属探测器分别通过箱子材料、拾取双倍材料的真实机制获得经济路线分。
 - 无尽模式会小幅偏好成长、拾取、经济、幸运、弹射、贯通、范围和诅咒收益；20 关通关会小幅偏好稳定阈值。
+
+`npm run verify:recommendations` 固定检查 Lucky、Knight、Ghost、Engineer、Beast Master 在普通 20 波和无尽模式下的前 5 武器、前 8 道具，并扫描全部角色，禁止输出误导性的 `触发伤害 0 DPS`。评分调整导致基线变化时，应先逐条审查推荐理由，再有意识地更新测试基线。
 
 推荐武器和关键道具必须带属性说明。当前由 `src/strategyGenerator.js` 根据武器标签、武器类型和道具定位自动生成；后续精修时可以在数据层加入手写 `statNote` 覆盖。
 
