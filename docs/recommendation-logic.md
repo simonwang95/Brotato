@@ -39,6 +39,7 @@
 - `npm run extract:localization` 可以重新从本机安装包生成本地化表。脚本优先用官方 `nameKey` 按 Godot 双哈希规则直接查询未压缩简中消息，不再用跨语言内部哈希碰撞做名称 join；当前 386 条来自 `translation-key`，仅 `ITEM_RETROMATIONS_HOODIE` 使用已确认的 `manual-override`。
 - 当前本地化表已覆盖官方目录里的 79 个武器、244 个物品和 64/64 个角色。后续如果官方目录新增条目，无法可靠读取的名称要继续留在覆盖率报告中，不要凭直觉填入。
 - `data/official-catalog.json`、`data/official-localization.json` 和 `data/official-unlocks.json` 都携带 `sourceMetadata`：包括抽取器版本、抽取时间、产品版本、输入包大小和 SHA-256；证据边界明确为静态安装包，不包含存档或当前解锁进度。
+- `npm run official-data:diff` 默认将工作区的目录、本地化、解锁和复杂效果记录与 `HEAD` 比较，报告记录新增/删除/修改以及提取器版本、产品版本、输入包哈希变化。纯 `extractedAt` 变化不会形成语义差异；可用 `--ref <git-ref>` 更换基线，或用 `--fail-on-change` 供自动校验拦截未审计更新。
 - 角色图鉴特性来自官方目录里的 stat/effect key。目录抽取器只从最终 `[resource]` 读取主效果字段，避免把前置 `[sub_resource]` 的 `arg_key/arg_value` 当成主效果；可稳定读取的 `key/value/statScaled/nbStatScaled/stat/statNb` 以及关联武器、爆炸、燃烧和地雷资源参数会精确格式化，仍无法解释的内部参数才保守显示。
 - `data/official-effect-decoding.json` 记录每个已命中的复杂效果的 `resourcePath`、`effectKey`、脚本路径、静态参数、子效果、影响边界和状态。生成器复用图鉴格式化函数，所有仍显示“待解码/未知”的效果都会进入清单；专门规则未覆盖的条目归入 `unclassified-runtime-effect`，不能静默遗漏。当前 128 条记录中有 43 条 `decoded-static-parameters`、71 条 `partial-static-decode` 和 14 条 `pending-runtime-decode`，未分类待解码仅 3 条。宠物静态模型明确不假设触发次数、命中率、宠物数量或存活时间；地雷使用父资源的生成间隔而不是内部伤害资源冷却。`Giant Belt` 已由 `value/value2` 与官方简中模板确认普通目标当前生命 10%、Boss/精英 1%，但仍只作为当前生命伤害潜力，不伪装成固定 DPS。
 - `npm run verify:unlocks` 用来校验策略层的默认解锁、需解锁和掉落池文案是否与官方目录状态冲突。脚本也会反向列出已抽到但策略层未维护的官方角色解锁记录；当前 Beast Master/Wounded 已有攻略模板，因此 warning 为 0。`Giant / CHARACTER_GIANT` 当前是记录在 `data/official-character-catalog-gaps.json` 的官方角色目录缺口，校验时单独列入 `Audited catalog gaps`，不按普通 warning 或映射失败处理。
@@ -122,7 +123,7 @@
 - `Chef（厨师）`：消耗品、燃烧和回复节奏。
 - `Diver（潜水员）`：近距远程、海军和拾取节奏。
 - `Curious（好奇之人）`：重复购买和经济成长。
-- `Giant（巨人）`：高生命、重型近战和高生命目标伤害。
+- `Giant（巨人）`：仅保留历史策略和官方目录缺口审计，不进入普通攻略或模拟器角色选择器。
 - `Ogre（食人魔）`：受压环境下的重型/钝器近战。
 - `Dwarf（矮人）`：钝器、工具和重型成长路线。
 - `Creature（生物）`：原始/精准高频近战。
@@ -136,7 +137,7 @@
 - `Vagabond（浪客）`：套装切换和多路线适配。
 - `Vampire（吸血鬼）`：生命消耗、治疗与伤害转换路线。
 
-DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 会映射 DLC challenge 奖励角色，并按 Godot `OptimizedTranslation` 的双哈希查表规则读取未压缩简中消息。当前 54 条静态角色挑战均已得到 verified-static-text；Beast Master 与 Wounded 已同步精确条件并完成宠物流/一击即死攻略模板。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`，保留为策略层待核验候选并在界面显式标记。
+DLC 角色的官方中文名来自本机深海魔怪安装包；默认/需解锁状态已用官方目录校验。`npm run extract:unlocks` 会映射 DLC challenge 奖励角色，并按 Godot `OptimizedTranslation` 的双哈希查表规则读取未压缩简中消息。当前 54 条静态角色挑战均已得到 verified-static-text；Beast Master 与 Wounded 已同步精确条件并完成宠物流/一击即死攻略模板。`Giant（巨人）` 当前不在 base+DLC 官方角色目录中，缺口证据记录在 `data/official-character-catalog-gaps.json`；图鉴和校验报告保留该证据，默认角色选择 API 则隐藏它。
 
 ## Lucky（幸运星）规则
 

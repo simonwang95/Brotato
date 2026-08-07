@@ -138,7 +138,164 @@ const TOP_N_BASELINES = {
       "ITEM_BABY_GECKO",
     ],
   },
+  "druid:normal20": {
+    weapons: ["sickle", "pruner", "wand", "WEAPON_LUTE", "WEAPON_TORCH"],
+    items: [
+      "crystal",
+      "penguin",
+      "cauldron",
+      "ITEM_PEARL",
+      "ITEM_PIGGY_BANK",
+      "ITEM_SNAKE",
+      "ITEM_CROWN",
+      "ITEM_EYES_SURGERY",
+    ],
+  },
+  "druid:endless": {
+    weapons: ["sickle", "pruner", "wand", "WEAPON_LUTE", "WEAPON_TORCH"],
+    items: [
+      "crystal",
+      "penguin",
+      "cauldron",
+      "ITEM_PEARL",
+      "ITEM_EYES_SURGERY",
+      "ITEM_PIGGY_BANK",
+      "ITEM_SNAKE",
+      "ITEM_CROWN",
+    ],
+  },
+  "wounded:normal20": {
+    weapons: ["smg", "slingshot", "taser", "WEAPON_TORCH", "WEAPON_DOUBLE_BARREL_SHOTGUN"],
+    items: [
+      "tardigrade",
+      "coupon",
+      "wings",
+      "scope",
+      "coffee",
+      "ITEM_PIGGY_BANK",
+      "ITEM_METAL_DETECTOR",
+      "ITEM_POWER_GENERATOR",
+    ],
+  },
+  "wounded:endless": {
+    weapons: ["smg", "taser", "slingshot", "WEAPON_TORCH", "WEAPON_LUTE"],
+    items: [
+      "babyGecko",
+      "coupon",
+      "tardigrade",
+      "wings",
+      "scope",
+      "ITEM_PEARL",
+      "ITEM_PIGGY_BANK",
+      "ITEM_CROWN",
+    ],
+  },
 };
+
+const OPTION_BASELINES = [
+  {
+    name: "Lucky endless damage",
+    characterId: "lucky",
+    modeId: "endless",
+    options: { preferenceId: "damage" },
+    weapons: ["lute", "slingshot", "pruner", "WEAPON_FLUTE", "WEAPON_POTATO_THROWER"],
+    items: [
+      "sifdsRelic",
+      "babyGecko",
+      "cyberball",
+      "babyElephant",
+      "babyWithABeard",
+      "luckyCharm",
+      "ITEM_PEARL",
+      "ITEM_HEAVY_BULLETS",
+    ],
+  },
+  {
+    name: "Knight base melee",
+    characterId: "knight",
+    modeId: "normal20",
+    options: { dlcOptionId: "baseOnly", preferenceId: "melee" },
+    weapons: ["sword", "spikyShield", "spear", "WEAPON_CHOPPER", "WEAPON_VORPAL_SWORD"],
+    items: [
+      "whetstone",
+      "wings",
+      "coffee",
+      "ITEM_RIPOSTE",
+      "ITEM_CLAW_TREE",
+      "ITEM_DEFECTIVE_STEROIDS",
+      "ITEM_LITTLE_MUSCLEY_DUDE",
+      "ITEM_ROBOT_ARM",
+    ],
+  },
+  {
+    name: "Ghost default pool",
+    characterId: "ghost",
+    modeId: "normal20",
+    options: { unlockOptionId: "defaultOnly" },
+    weapons: ["ghostAxe", "ghostFlint", "ghostScepter", "WEAPON_SCYTHE"],
+    items: [
+      "wings",
+      "coffee",
+      "ITEM_ADRENALINE",
+      "ITEM_LUCKY_COIN",
+      "ITEM_MEDAL",
+      "ITEM_RIPOSTE",
+      "ITEM_VIGILANTE_RING",
+      "ITEM_DYNAMITE",
+    ],
+  },
+  {
+    name: "Engineer engineering",
+    characterId: "engineer",
+    modeId: "normal20",
+    options: { preferenceId: "engineering" },
+    weapons: ["wrench", "screwdriver", "WEAPON_CHAINSAW", "WEAPON_CHAIN_GUN", "WEAPON_DRILL"],
+    items: [
+      "turret",
+      "robotArm",
+      "coupon",
+      "ITEM_BUILDER_TURRET",
+      "ITEM_METAL_DETECTOR",
+      "ITEM_CLOCKWORK_WASP",
+      "ITEM_IMPROVED_TOOLS",
+      "ITEM_LIGHTHOUSE",
+    ],
+  },
+  {
+    name: "Druid elemental",
+    characterId: "druid",
+    modeId: "normal20",
+    options: { preferenceId: "elemental" },
+    weapons: ["sickle", "pruner", "wand", "WEAPON_TORCH", "WEAPON_LUTE"],
+    items: [
+      "crystal",
+      "penguin",
+      "cauldron",
+      "ITEM_SNAKE",
+      "ITEM_EYES_SURGERY",
+      "ITEM_CHARCOAL",
+      "ITEM_ICE_CUBE",
+      "ITEM_PEARL",
+    ],
+  },
+  {
+    name: "Wounded ranged default pool",
+    characterId: "wounded",
+    modeId: "endless",
+    options: { preferenceId: "ranged", unlockOptionId: "defaultOnly" },
+    weapons: ["smg", "slingshot", "taser", "WEAPON_CHAIN_GUN", "WEAPON_DOUBLE_BARREL_SHOTGUN"],
+    items: [
+      "babyGecko",
+      "coupon",
+      "tardigrade",
+      "wings",
+      "scope",
+      "ITEM_HEAVY_BULLETS",
+      "ITEM_HONEY",
+      "ITEM_ALLOY",
+    ],
+  },
+];
 
 function candidateKey(candidate) {
   return candidate.weaponId ?? candidate.itemId ?? candidate.official?.nameKey;
@@ -156,6 +313,94 @@ for (const [scenario, expected] of Object.entries(TOP_N_BASELINES)) {
     guide.keyItems.slice(0, 8).map(candidateKey),
     expected.items,
     `${scenario} item Top-N changed; review the scoring reasons before updating the baseline`,
+  );
+}
+
+for (const scenario of OPTION_BASELINES) {
+  const guide = generateStrategyGuide(scenario.characterId, scenario.modeId, {
+    officialCatalog,
+    ...scenario.options,
+  });
+  const recommendations = [...guide.recommendedWeapons, ...guide.keyItems];
+  assert.deepEqual(
+    guide.recommendedWeapons.slice(0, 5).map(candidateKey),
+    scenario.weapons,
+    `${scenario.name} weapon Top-N changed; review option scoring before updating the baseline`,
+  );
+  assert.deepEqual(
+    guide.keyItems.slice(0, 8).map(candidateKey),
+    scenario.items,
+    `${scenario.name} item Top-N changed; review option scoring before updating the baseline`,
+  );
+
+  if (scenario.options.dlcOptionId === "baseOnly") {
+    assert.ok(
+      recommendations.every((candidate) => candidate.official.sources.every((source) => source === "base")),
+      `${scenario.name} must not include DLC recommendations`,
+    );
+  }
+  if (scenario.options.unlockOptionId === "defaultOnly") {
+    assert.ok(
+      recommendations.every((candidate) =>
+        candidate.official.records.every((record) => record.unlockedByDefault !== false),
+      ),
+      `${scenario.name} must not include locked recommendations`,
+    );
+  }
+}
+
+{
+  const knight = generateStrategyGuide("knight", "normal20", {
+    officialCatalog,
+    dlcOptionId: "baseOnly",
+    preferenceId: "melee",
+  });
+  assert.ok(
+    knight.recommendedWeapons.every(({ weapon }) => weapon.tags.includes("Melee")),
+    "Knight melee preference must not admit a ranged-only weapon",
+  );
+
+  const engineer = generateStrategyGuide("engineer", "normal20", {
+    officialCatalog,
+    preferenceId: "engineering",
+  });
+  assert.deepEqual(
+    engineer.recommendedWeapons.slice(0, 2).map(candidateKey),
+    ["wrench", "screwdriver"],
+    "Engineer engineering preference should retain both core tools",
+  );
+  assert.ok(
+    engineer.keyItems.slice(0, 8).some((candidate) => candidateKey(candidate) === "ITEM_BUILDER_TURRET"),
+    "Engineer engineering preference should surface an official structure item",
+  );
+
+  const druid = generateStrategyGuide("druid", "normal20", {
+    officialCatalog,
+    preferenceId: "elemental",
+  });
+  assert.ok(
+    ["ITEM_SNAKE", "ITEM_EYES_SURGERY"].every((key) =>
+      druid.keyItems.slice(0, 8).some((candidate) => candidateKey(candidate) === key),
+    ),
+    "Druid elemental preference should surface verified burning support",
+  );
+
+  const wounded = generateStrategyGuide("wounded", "endless", {
+    officialCatalog,
+    preferenceId: "ranged",
+    unlockOptionId: "defaultOnly",
+  });
+  assert.ok(
+    wounded.keyItems.some((candidate) => candidateKey(candidate) === "tardigrade"),
+    "Wounded should retain the official one-hit protection item under filtering",
+  );
+  assert.ok(
+    wounded.keyItems.every(({ official }) =>
+      official.records.every(
+        ({ id }) => !["item_armor", "item_max_hp", "item_hp_regeneration", "item_lifesteal"].includes(id),
+      ),
+    ),
+    "Wounded must not recommend officially banned sustain or armor items",
   );
 }
 

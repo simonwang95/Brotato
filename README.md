@@ -133,7 +133,7 @@ npm run extract:catalog
 npm run extract:unlocks
 ```
 
-生成文件在 `data/official-unlocks.json`。该脚本只读取安装包里的静态 `challenge` / achievement 资源，不读取玩家存档，因此不受本机已解锁进度影响。当前 54 条角色奖励映射都已写入精确简中条件：43 条来自原版 achievement CSV，另 11 条通过 Godot `OptimizedTranslation` 的双哈希表按 `descriptionKey` 直接读取安装包简中 `PHashTranslation`，并按 challenge 的 `value`、`stat`、`additional_args` 展开占位符。解析模块只接受未压缩 UTF-8 消息；不能可靠读取的文本仍会降级为 `pending-text`，不会猜测。若同一静态记录的中英文条件明确冲突，抽取器会保留原始简中、英文证据和纠正原因；当前 `chal_hungry` 已将误写的“20 把武器”纠正为“拾取 20 个消耗品”。角色图鉴会合并官方目录和策略层：当前展示 64 条官方角色记录，加上 `Giant / CHARACTER_GIANT` 这个已记录在 `data/official-character-catalog-gaps.json` 的策略层官方目录缺口；Beast Master 与 Wounded 已有完整策略模板，不再属于 official-only。
+生成文件在 `data/official-unlocks.json`。该脚本只读取安装包里的静态 `challenge` / achievement 资源，不读取玩家存档，因此不受本机已解锁进度影响。当前 54 条角色奖励映射都已写入精确简中条件：43 条来自原版 achievement CSV，另 11 条通过 Godot `OptimizedTranslation` 的双哈希表按 `descriptionKey` 直接读取安装包简中 `PHashTranslation`，并按 challenge 的 `value`、`stat`、`additional_args` 展开占位符。解析模块只接受未压缩 UTF-8 消息；不能可靠读取的文本仍会降级为 `pending-text`，不会猜测。若同一静态记录的中英文条件明确冲突，抽取器会保留原始简中、英文证据和纠正原因；当前 `chal_hungry` 已将误写的“20 把武器”纠正为“拾取 20 个消耗品”。角色图鉴会合并官方目录和策略层：当前展示 64 条官方角色记录，加上 `Giant / CHARACTER_GIANT` 这个已记录在 `data/official-character-catalog-gaps.json` 的审计条目；Giant 不进入普通攻略或模拟器角色选择器。Beast Master 与 Wounded 已有完整策略模板，不再属于 official-only。
 
 生成集中待校验清单：
 
@@ -159,6 +159,14 @@ npm run verify:catalog
 
 `npm run extract:catalog` 会依次重建静态目录并刷新本地图片路径，避免只重抽字段后留下缺少 `imageAssetPath` 的中间状态。
 
+重新抽取后可将工作区官方数据与最近提交比较：
+
+```bash
+npm run official-data:diff
+```
+
+该命令逐条比较目录、本地化、解锁和复杂效果清单，并单独报告产品版本、提取器版本与输入包哈希变化。它有意忽略单纯的 `extractedAt` 变化；需要在自动校验中把差异作为失败时，可运行 `npm run official-data:diff -- --fail-on-change`，也可用 `--ref <git-ref>` 指定基线。
+
 页面启动时会读取 `data/official-catalog.json` 和 `data/official-localization.json`，在推荐武器和关键道具下方补充官方来源、阶数、价格、解锁、掉落池状态、图片和中文名。角色、武器与物品名称当前均按官方 `nameKey` 查询安装包静态简中 PHashTranslation；未来新增且无法可靠读取的名称才会显示为待本地化。目录抽取器会区分 Godot `[resource]` 与 `[sub_resource]`，避免把 `arg_key/arg_value` 误当主效果；可稳定读取的主效果 key、数值、缩放来源、目标属性和关联武器/爆炸/燃烧资源参数会精确展示，仍未解码的内部参数才保守标注。攻略推荐会把全量官方武器/道具图鉴作为补充候选池参与评分，手写路线仍优先展示，道具页会补充前 24 个高分官方候选。触发伤害、条件伤害、击杀治疗、水果掉落、暴击材料、拾取双倍材料、拾取吸附、收获成长、箱子材料、单次回收材料、箱子额外道具、战利品外星人、波次存钱、每波结束属性成长、下一波经验、贯通覆盖和商店效率等道具会优先从官方 effect 字段动态生成场景收益模型；例如 `Cyberball（赛博球）` 按官方 `dmg_when_death` 作为击杀触发、25% 幸运伤害估算，`Silver Bullet（银质子弹）` 按官方 Boss 加伤估算，`Goblet（高脚杯）` 按击杀频率估算治疗期望，`Fruit Basket（果篮）` 只估算额外消耗品机会而不猜水果治疗量，`Recycling Machine（回收装置）` 按每次回收额外 35 材料解释，`Pearl（珍珠）` 同时保留幸运成长与每箱 3% 同名道具机会，`Whistle（哨子）` 会显示 50% 战利品外星人机会及其 20% 移速追逐风险，`Robot Arm（机械臂）` 会按官方 `stats_end_of_wave` 解释工程学每波成长，`Peacock（孔雀）` 会按官方 `stats_next_wave` 解释下一波经验潜力并用敌人风险折扣，`Bandana（头巾）` 会按官方 `piercing` 解释怪潮贯通覆盖，`Coupon（优惠券）` 会按官方 `items_price` 解释物品折扣。宠物条目会额外读取官方关联资源中的武器、爆炸、燃烧和地雷静态参数，按“单只宠物、静态攻击间隔/伤害”的保守模型评分，不假设触发次数、命中率、宠物数量或存活时间。幽魂武器会按逐阶 `20/18/16/12` 次该武器击杀换算每 100 杀永久成长；骑士会按官方每 1 护甲 `+2` 近战伤害并过滤远程武器；幸运星会把官方 75% 拾取触发、15% 幸运伤害与候选的幸运、总伤害和拾取吸附合并为边际 DPS。
 Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“仅原版”时会隐藏该 DLC 武器。
 
@@ -170,7 +178,7 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 
 ## 后续目标
 
-二期攻略生成器已经接入 64 条官方角色策略模板，并保留 1 条已审计的 `Giant / CHARACTER_GIANT` 目录缺口作为策略层候选。角色、武器和物品图鉴本地化已覆盖当前官方目录，54 条已抽取角色挑战均有精确简中条件；Beast Master 与 Wounded 已补齐攻略、禁用项和宠物/一击即死回归测试。复杂效果审计当前覆盖 128 条记录，运行时待解码已从 56 条降至 14 条；Lucky、Knight、Ghost、Engineer、Beast Master 的普通/无尽 Top-N 推荐也已有固定回归基线。
+二期攻略生成器已经接入 64 条官方角色策略模板；`Giant / CHARACTER_GIANT` 仅作为图鉴和校验报告中的已审计目录缺口保留，不进入普通攻略或模拟器选择器。角色、武器和物品图鉴本地化已覆盖当前官方目录，54 条已抽取角色挑战均有精确简中条件；攻略对象直接引用生成的 `src/officialUnlocks.js`，不再保留运行时二次覆盖的占位文案。复杂效果审计当前覆盖 128 条记录，运行时待解码已从 56 条降至 14 条；Lucky、Knight、Ghost、Engineer、Druid、Beast Master、Wounded 的普通/无尽 Top-N，以及 DLC、默认池和六类偏好组合均有固定回归。
 
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。
@@ -189,6 +197,6 @@ Vercel 部署清单见 [docs/vercel-deployment.md](docs/vercel-deployment.md)。
 npm run verify:unlocks
 ```
 
-精确挑战条件来自安装包静态 Progress / achievement / challenge 资源。`data/official-unlocks.json` 当前记录 54 条角色奖励映射，全部带有 `verified-static-text` 简中条件；原版 CSV 未覆盖的后补挑战与 DLC challenge 会用静态 `descriptionKey` 查询简中 `PHashTranslation`，再按 challenge 脚本规定的参数顺序展开占位符。`npm run unlocks:pending` 仍会维护无法可靠读取的新条目，当前输出 0 条。`npm run verify:unlocks` 反向报告已抽到但策略层尚未维护的官方角色解锁记录：当前 0 条 warning、0 条 pending-text，Beast Master/Wounded 的精确条件已由 `data/official-unlocks.json` 生成 `src/officialUnlocks.js`，角色攻略不再维护第二份解锁文案。已审计的策略层目录缺口会单独列入 `Audited catalog gaps`，避免和真正待处理 warning 混在一起；`Giant / CHARACTER_GIANT` 仅保留缺口证据，不映射到 Giant Belt、Giant Slayer 或 Giant 敌人资源。
+精确挑战条件来自安装包静态 Progress / achievement / challenge 资源。`data/official-unlocks.json` 当前记录 54 条角色奖励映射，全部带有 `verified-static-text` 简中条件；原版 CSV 未覆盖的后补挑战与 DLC challenge 会用静态 `descriptionKey` 查询简中 `PHashTranslation`，再按 challenge 脚本规定的参数顺序展开占位符。`npm run unlocks:pending` 仍会维护无法可靠读取的新条目，当前输出 0 条。`npm run verify:unlocks` 反向报告已抽到但策略层尚未维护的官方角色解锁记录：当前 0 条 warning、0 条 pending-text。精确条件由 `data/official-unlocks.json` 单向生成 `src/officialUnlocks.js`，每个攻略对象直接引用该模块，不维护第二份文案，也不在对象创建后再次覆盖。已审计的策略层目录缺口会单独列入 `Audited catalog gaps`，避免和真正待处理 warning 混在一起；`Giant / CHARACTER_GIANT` 仅保留缺口证据，不映射到 Giant Belt、Giant Slayer 或 Giant 敌人资源。
 
 这不依赖当前电脑的存档解锁进度。安装包 `.pck` 是静态游戏数据；本机进度只会影响游戏内或存档里“你已经解锁了什么”，不会改变仓库中由安装包提取出的官方目录字段。除非后续改为读取存档或游戏 UI 截图，否则本机是否已经全解锁不会影响这些脚本的结果。

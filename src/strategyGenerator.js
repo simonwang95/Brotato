@@ -174,14 +174,19 @@ const CUSTOM_GROWTH_MIN_SOURCE_VALUE = {
   curse: 10,
 };
 
-export function getAvailableCharacters() {
-  return Object.values(CHARACTER_GUIDES).map(({ id, name, cnHint, unlock, catalogStatus }) => ({
-    id,
-    name,
-    cnHint,
-    unlock,
-    catalogStatus: catalogStatus ?? "official-or-maintained",
-  }));
+export function getAvailableCharacters({ includeAuditedCatalogGaps = false } = {}) {
+  return Object.values(CHARACTER_GUIDES)
+    .filter(
+      ({ catalogStatus }) =>
+        includeAuditedCatalogGaps || catalogStatus !== "audited-catalog-gap",
+    )
+    .map(({ id, name, cnHint, unlock, catalogStatus }) => ({
+      id,
+      name,
+      cnHint,
+      unlock,
+      catalogStatus: catalogStatus ?? "official-or-maintained",
+    }));
 }
 
 export function getAvailableModes() {

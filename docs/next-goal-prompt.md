@@ -5,73 +5,55 @@
 ```text
 /goal
 
-目标：继续完善 Brotato Number Lab，完成官方角色攻略闭环，并进一步提高图鉴效果数据与推荐评分的可信度、覆盖率和可解释性。
+目标：继续完善 Brotato Number Lab，优先降低剩余复杂效果的不确定性，并校准推荐模型质量；OCR 暂停推进，除非用户重新明确启用。
 
 工作目录：***REMOVED***/Files/Code2/Brotato
 
 当前稳定基线：
-- main 与远端一致，开始前必须先运行 git status，确认工作区状态。
-- 官方图鉴本地化覆盖：武器 79/79、物品 244/244、角色 64/64。
-- 图鉴效果校验覆盖 79 个武器、244 个物品、1593 条属性/效果展示，不再直接暴露内部资源 key。
-- data/official-unlocks.json 已包含 54 条角色奖励映射，全部为 verified-static-text，pending-text 为 0。
-- 推荐器已把官方 79 个武器和 244 个物品纳入补充候选池；手写策略层当前校验 44 个武器、43 个物品、63 个角色。
-- verify:unlocks 当前仅剩两个 official-only 角色 warning：Beast Master 和 Wounded。
-- Giant / CHARACTER_GIANT 不在当前 base + Abyssal Terrors 官方角色目录中，缺口证据已记录在 data/official-character-catalog-gaps.json。
+- 开始前必须运行 git status，不要假设本地分支已与远端同步，也不要回退用户已有修改。
+- 官方图鉴本地化覆盖武器 79/79、物品 244/244、角色 64/64。
+- data/official-unlocks.json 有 54 条 verified-static-text 角色挑战，pending-text 为 0；攻略对象直接引用生成的 src/officialUnlocks.js，不再保留待同步占位或运行时二次覆盖。
+- 普通攻略和模拟器选择器只展示 64 条官方角色。Giant / CHARACTER_GIANT 缺口证据仍保留在图鉴、策略历史和 data/official-character-catalog-gaps.json 中，但不作为可选官方角色。
+- 官方 79 个武器和 244 个物品均可进入补充候选池；推荐仍受角色禁用项、模式、DLC、默认解锁池和偏好过滤。
+- Lucky、Knight、Ghost、Engineer、Druid、Beast Master、Wounded 已有普通/无尽 Top-N 回归，并覆盖仅原版、默认池、稳健/输出/工程/元素/远程/近战偏好与负向断言。
+- data/official-effect-decoding.json 当前有 128 条记录，其中 14 条 pending-runtime-decode，未分类待解码 3 条；不能把未知触发频率或命中率伪造成精确 DPS。
+- npm run official-data:diff 可将工作区目录、本地化、解锁和复杂效果记录与 HEAD 比较，并报告提取器版本、产品版本及输入包哈希变化；纯 extractedAt 变化会被忽略。
 
 优先任务，按顺序推进：
 
-1. 补齐 Beast Master 和 Wounded 官方角色攻略
-- 从 data/official-catalog.json、data/official-localization.json、data/official-unlocks.json 和官方角色静态 effect/stat 数据读取名称、特性、图片和解锁条件。
-- 为两个角色补充与现有 CHARACTER_GUIDES 风格一致的攻略模板、模式策略、武器路线、routeTags、关键道具、属性优先级、第 20 关目标和节奏说明。
-- 推荐必须尊重模式、危险等级、DLC、是否允许解锁物和偏好流派。
-- 不要仅凭角色名称或印象选择路线；每个核心推荐应能追溯到官方特性、武器套装、角色目标属性或场景模型收益。
-- 更新反向解锁校验，使 verify:unlocks 不再把这两个角色报告为未维护。
-- 补充针对两个角色的推荐测试，包括正常推荐和明显不应出现的负向断言。
+1. 继续解码剩余复杂效果
+- 先运行 npm run verify:effects 和 npm run report:effect-decoding，按 data/official-effect-decoding.json 的 pending-runtime-decode 与 unclassified-runtime-effect 清单推进。
+- 优先处理会直接改变推荐排序的宠物、燃烧、减速区域、额外投射物、魅惑、结构物内部参数、武器破损和条件触发效果。
+- 只使用安装包静态脚本、主资源、SubResource、PHashTranslation 和仓库已有证据；无法证明的参数继续明确标记，不猜触发次数、命中率、目标数量或每局资源次数。
+- 新解码结果应同时改善图鉴中文展示，并在确实可量化时接入 scenario model；不能量化时说明影响边界。
 
-2. 最终处理 Giant / CHARACTER_GIANT
-- 继续搜索本机安装包和官方静态目录中的 character、challenge、achievement、translation、Progress 及关联资源，判断 Giant 是旧版本数据、未发布内容、别名还是策略层错误记录。
-- 不读取或依赖玩家存档解锁进度，只使用静态安装包和仓库已有证据。
-- 不要凭记忆硬造 CHARACTER_GIANT 映射或解锁条件。
-- 如果仍找不到可靠官方证据，保留明确的目录缺口记录，并评估将 Giant 从普通官方角色选择/推荐入口隐藏或标记为非官方待核验候选；不要悄悄删除历史证据。
-- 为最终行为补测试，并在文档中说明选择依据。
+2. 校准推荐回归与评分
+- 在现有固定 Top-N 基线上继续检查“高分但不合理”的候选，先看 recommendationReasons，再决定修模型还是更新基线。
+- 重点复核 Druid 的消耗品/收获兑现、Wounded 的一击即死禁用项、Knight 的护甲转近战、Ghost 的击杀成长、Lucky 的幸运/拾取边际收益、Engineer 的结构物路线。
+- 评分保持“基础适配 + 场景数值收益 + 解锁/掉落 + 稀有度/价格 + 套装 + 角色机制 + 模式修正”，显著加减分必须产生用户可读理由。
+- 新增规则需要正向和负向测试；不要只锁顺序，也要验证 DLC、默认池、角色禁用项和路线排除边界。
 
-3. 继续解码复杂武器和物品效果
-- 先生成或维护一份所有“待解码”效果及对应资源路径、effect key、子资源参数和影响范围的清单。
-- 优先处理会直接影响推荐评分的效果：宠物伤害与间隔、燃烧、减速区域、额外投射物、魅惑、结构物内部参数、Giant Belt 的生命伤害换算，以及高/低生命阈值效果。
-- 优先从官方脚本、主资源、SubResource 和 PHashTranslation 中稳定解析参数含义；无法证明的参数继续明确标记为待解码，不要猜。
-- 解码结果既要改善图鉴中文说明，也要在适用时接入 scenario model，而不是只替换展示文案。
-- 扩展 npm run verify:effects，防止内部 key、脚本路径、空效果或未经解释的占位字段重新进入 UI。
+3. 做官方版本更新审计
+- 游戏或 DLC 更新后依次重跑目录、本地化、解锁和复杂效果抽取，再运行 npm run official-data:diff。
+- 对新增、删除、修改记录逐条判断是否影响本地化、解锁、图鉴展示、角色禁用项或推荐评分；不要只看总数。
+- 如需自动阻止未经审计的数据变化，使用 npm run official-data:diff -- --fail-on-change；需要跨版本比较时使用 --ref <git-ref>。
+- sourceMetadata 只记录可复现的静态安装包证据；不读取玩家存档，不从文件日期猜产品版本。
 
-4. 建立推荐质量回归集并校准评分
-- 为 Lucky、Knight、Ghost、Engineer、Druid、Beast Master、Wounded 等典型角色建立固定场景测试。
-- 至少覆盖普通 20 关、无尽模式、允许/禁用 DLC、允许解锁物/只看默认池，以及稳健、输出、工程、元素、远程、近战偏好。
-- 校验 Top 推荐的稳定性，同时加入“明显不应推荐”的负向断言，避免仅因名称或宽泛标签碰撞而入选。
-- 评分继续采用“基础适配 + 场景数值收益 + 解锁/掉落 + 稀有度/价格 + 套装 + 角色机制 + 模式修正”。
-- 保持可解释：每个显著加减分都应形成用户可读的 recommendationReasons。
-- 场景模型不能伪造安装包没有提供的触发次数、命中率、治疗量或每局箱子数；近似值必须明确说明假设。
+4. 维护解锁和目录边界
+- npm run verify:unlocks 应保持 0 warning、0 pending-text；未来新增无法读取的挑战进入 data/official-unlock-pending.json，不手填猜测条件。
+- Giant 只有在新的官方角色资源、翻译 key 和挑战/奖励映射形成一致证据链时才重新进入普通选择器；相似名称的道具、武器或敌人不能作为映射依据。
+- 官方静态文本中英文冲突时保留原文、纠正依据和审计字段，再由单一生成链路同步到攻略。
 
-5. 清理解锁数据与文档债务
-- src/strategyData.js 中仍有一批旧的“待校验”占位 unlock 文案，目前依赖 VERIFIED_CHARACTER_UNLOCKS 在运行时覆盖。将解锁条件收敛为明确的单一可信数据源，避免源文件和运行结果互相矛盾。
-- 不要复制粘贴两套容易漂移的精确解锁文本；优先复用 data/official-unlocks.json 或稳定生成的数据模块。
-- 更新 docs/strategy-generator.md 中已经过期的“解锁条件逐条来源校验待完成”等描述。
-- 同步 README.md、docs/recommendation-logic.md 和 docs/strategy-generator.md 的角色数量、warning 数量、候选池覆盖、效果解码边界及评分机制。
-
-6. 增加官方数据版本溯源
-- 在不破坏现有数据读取结构的前提下，为官方目录、本地化和解锁抽取结果增加可复现的来源元数据。
-- 优先记录游戏/DLC 来源包、提取时间、提取器版本，以及能够稳定获得的安装包哈希或版本信息。
-- 如果安装包内无法可靠确定产品版本，明确记录 unknown 和证据边界，不要从文件日期猜版本号。
-- 更新抽取脚本测试和使用文档，说明 Brotato 更新后如何重新抽取、比较和校验数据。
+暂不推进：
+- 不修改 OCR 服务、截图裁剪、视觉模型提示词或图片识别流程。
+- 不把 OCR 结果接入推荐评分；等用户重新明确启用后再单独规划和验证。
 
 工程约束：
-- 不要回退用户已有改动；工作区可能存在与本任务无关的修改。
-- 先读代码、数据和安装包静态资源，再修改文件。
-- 使用现有代码风格和数据结构，避免大规模重构。
-- 文件编辑使用 apply_patch。
-- 优先扩展现有解析器、场景模型和测试辅助函数，不为单个条目堆叠难以维护的特例。
-- 所有数据结论区分“官方静态数据”“模型估算”“手写策略判断”和“待校验”。
-- 本机存档解锁进度不得作为官方解锁条件或默认池状态的证据。
-- UI 中推荐项继续显示图片、官方中文名、属性说明、评分理由，并可跳转图鉴。
-- 新增或修改前端展示后，检查桌面和移动端，确保没有文本溢出、横向滚动或控件重叠。
+- 先读代码、数据和安装包静态资源，再修改文件；使用现有结构，避免大规模重构。
+- 文件编辑使用 apply_patch；不回退与任务无关的修改。
+- 所有结论区分官方静态数据、模型估算、手写策略判断和待校验。
+- 前端推荐项继续显示图片、官方中文名、属性说明、评分理由和图鉴跳转。
+- 修改前端后检查桌面与移动端，避免文本溢出、横向滚动和控件重叠。
 
 每完成一批改动，运行：
 - npm test
@@ -79,16 +61,15 @@
 - npm run verify:effects
 - npm run verify:unlocks
 - npm run localization:coverage
+- npm run official-data:diff
 - npm run build
 - git diff --check
 
 验收标准：
-- Beast Master 和 Wounded 能生成完整、可解释且经过测试的攻略推荐。
-- verify:unlocks 不再报告这两个 official-only 角色未维护；任何剩余 warning 都有明确证据和说明。
-- Giant 有基于静态资源的最终处理结论和回归测试，不存在硬造映射。
-- 新解码效果不暴露内部 key，且影响推荐的效果已经接入可解释评分或明确说明为何暂不接入。
-- 推荐回归集覆盖关键角色和输入组合，并包含负向断言。
-- 解锁条件只有一个明确的可信来源，文档与代码现状一致。
-- 新增的数据来源元数据可以支持后续版本差异审计。
-- 工作区最终保持干净；完成稳定节点后创建 git commit，并在最终回复中给出变更摘要、验证结果、仍待解码/待验证清单和下一步建议。
+- 新解码效果有静态证据、中文展示和明确评分边界，不暴露未解释内部 key。
+- 推荐变化有固定 Top-N、筛选边界和负向断言保护，且理由可读。
+- 解锁条件保持单一可信来源，Giant 不被误当成官方可选角色。
+- 官方数据变化可以通过版本差异命令逐条审计。
+- OCR 文件没有被改动。
+- 工作区最终保持干净；稳定节点完成后创建 git commit，并说明验证结果、剩余待解码清单和下一步建议。
 ```

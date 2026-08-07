@@ -2,19 +2,19 @@
 
 目标：用户选择一个角色，并选择是否无尽模式，程序生成一份可执行攻略。
 
-当前实现已接入页面，覆盖 64 条官方角色策略模板，并保留 1 条已审计的 `Giant / CHARACTER_GIANT` 目录缺口。数据模块在 `src/strategyData.js`，生成逻辑在 `src/strategyGenerator.js`。
+当前实现已接入页面，覆盖 64 条官方角色策略模板，并在图鉴/审计数据中保留 1 条 `Giant / CHARACTER_GIANT` 目录缺口。数据模块在 `src/strategyData.js`，生成逻辑在 `src/strategyGenerator.js`。
 推荐规则的维护说明见 [recommendation-logic.md](recommendation-logic.md)。
 
 ## 输入
 
-- 角色：当前覆盖官方目录中的 64 个角色，并单独标记 1 个 Giant 目录缺口。
+- 角色：普通攻略和模拟器选择器覆盖官方目录中的 64 个角色；Giant 只在图鉴和审计报告中标记。
 - 模式：20 关通关 / 无尽模式。
 - 可选难度：危险等级、DLC、是否允许稀有解锁物。
 - 可选偏好：稳健通关、极限输出、工程流、元素流、远程流、近战流。
 
 当前页面已经接入全部输入。默认策略是危险 0、允许 DLC、允许解锁物、稳健通关；选择“仅原版”会隐藏深海魔怪等 DLC 武器和道具，选择“只看默认池”会隐藏官方目录标记为非默认解锁的条目。
 
-角色目录校验以 `data/official-catalog.json` 为准。当前有 64 条官方角色目录记录；`Giant / CHARACTER_GIANT` 不在已抽取的 base + 深海魔怪官方角色资源中，相关证据记录在 `data/official-character-catalog-gaps.json`。攻略层保留它作为已审计缺口，并在界面标注待核验，不把 Giant Belt、Giant Slayer 或 Giant 敌人资源硬填成角色映射。
+角色目录校验以 `data/official-catalog.json` 为准。当前有 64 条官方角色目录记录；`Giant / CHARACTER_GIANT` 不在已抽取的 base + 深海魔怪官方角色资源中，相关证据记录在 `data/official-character-catalog-gaps.json`。攻略层保留其历史策略和审计证据供显式校验，但默认 `getAvailableCharacters()` 不返回它，因此普通攻略和模拟器入口不会把目录缺口当作官方角色；图鉴仍展示缺口结论，也不把 Giant Belt、Giant Slayer 或 Giant 敌人资源硬填成角色映射。
 
 ## 输出
 
@@ -207,7 +207,7 @@ v0.3 起加入 `scenario model`，用于把普通 DPS 估算扩展到不同战�
    - 已完成：按角色读取默认路线。
    - 已完成：按普通 20 关 / 无尽模式切换权重。
    - 已完成：复用场景计算器为武器和道具提供可解释的数值排序修正；未完全解码的官方公式仍保守标注为近似潜力。
-   - 已完成：为 Lucky、Knight、Ghost、Engineer、Beast Master 建立普通/无尽 Top-N 回归，并全量检查推荐理由不出现 `0 DPS`。
+   - 已完成：为 Lucky、Knight、Ghost、Engineer、Druid、Beast Master、Wounded 建立普通/无尽 Top-N 回归，并覆盖仅原版、默认池、稳健/输出/工程/元素/远程/近战偏好和负向过滤；全量检查推荐理由不出现 `0 DPS`。
 
 3. 做攻略页面
    - 已完成：角色选择。
@@ -266,7 +266,7 @@ npm run extract:catalog
 
 生成文件 `data/official-catalog.json` 是后续批量补全武器、道具和解锁信息的基础。
 抽取器会把 Godot 资源最后的 `[resource]` 视为主效果，只把 `[sub_resource]` 当参数来源，避免 `arg_key/arg_value` 覆盖真实主字段；`sub_effects` 中的外部资源则会递归解析为独立子效果。`npm run extract:catalog` 会在目录生成后自动运行资产提取，恢复每条记录的本地 `imageAssetPath`；需要只刷新图片时仍可单独运行 `npm run extract:assets`。
-目录与本地化/解锁抽取结果都会写入 `sourceMetadata`，记录 `extractorVersion`、`extractedAt`、产品版本以及输入 `.pck` 的大小和 SHA-256。这样后续升级安装包时可以区分“数据真的变了”和“仅重新运行抽取器”。
+目录、本地化、解锁和复杂效果抽取结果都会写入 `sourceMetadata`，记录 `extractorVersion`、`extractedAt`、产品版本以及输入 `.pck` 的大小和 SHA-256。重新抽取后运行 `npm run official-data:diff`，可与 `HEAD` 逐条比较记录和来源元数据；比较会忽略纯提取时间变化，也支持 `--ref <git-ref>` 和 `--fail-on-change`。
 
 从安装包提取官方中文名称：
 
@@ -293,11 +293,11 @@ npm run unlocks:pending
 
 该命令不会重新读取安装包，而是从 `data/official-unlocks.json` 过滤 `pending-text`，生成 `data/official-unlock-pending.json`。当前清单为 0 条。未来如果新版本出现无法可靠读取的条目，每条记录仍会保留官方角色 `nameKey`、静态 challenge key、数值、图标资源、奖励路径和后续核验动作。
 
-角色图鉴会读取 `data/official-unlocks.json` 展示静态解锁证据。图鉴角色列表会合并官方目录角色和策略层角色；官方目录里存在但 `CHARACTER_GUIDES` 尚未维护的角色会标记为 official-only，只展示官方图片、特性和解锁证据，不生成攻略推荐。只有写入 `zhDescription` 的 `verified-static-text` 才能由同步脚本进入 `src/officialUnlocks.js`；`pending-text` 仍只能证明 challenge 与奖励映射已定位。
+角色图鉴会读取 `data/official-unlocks.json` 展示静态解锁证据。图鉴角色列表会合并官方目录角色和策略层审计条目；官方目录里存在但 `CHARACTER_GUIDES` 尚未维护的角色会标记为 official-only，只展示官方图片、特性和解锁证据，不生成攻略推荐。只有写入 `zhDescription` 的 `verified-static-text` 才能由同步脚本进入 `src/officialUnlocks.js`；攻略对象直接引用该生成模块，不再先保存占位文本后做运行时覆盖。`pending-text` 仍只能证明 challenge 与奖励映射已定位。
 
 角色特性展示同样遵守可信边界：`src/compendium.js` 会把已知官方 stat/effect key 翻译成中文，把起始物品、二元机制、掉落/宠物标签和主资源中明确的自定义成长公式展示出来；如果主资源仍未给出收益目标、只能定位到未展开的 SubResource 参数，则只显示“官方自定义收益”。这表示资源已定位，但具体内部收益尚未可靠解析，不能直接用于精确评分或解锁文案。复杂效果的逐条状态、资源路径和影响范围见 `data/official-effect-decoding.json`；运行 `npm run report:effect-decoding` 可手动刷新，`npm run extract:catalog` 也会在目录和图片抽取后自动重建清单。校验器会反向检查所有实际显示“待解码/未知”的效果均已入清单。
 
-`npm run verify:unlocks` 会同时检查反向覆盖：如果安装包里已有角色奖励映射，但攻略层还没有维护对应角色，脚本会输出 `official-unlock:*` warning，并输出未维护记录中 verified-static-text、pending-text 和其他状态的细分计数。当前 `oneArm` 会通过别名映射到策略层的 `oneArmed`；Beast Master 与 Wounded 已同步精确条件并完成攻略模板、禁用项和回归测试，因此 warning 为 0。Giant 只作为单独的 `Audited catalog gaps` 展示。
+`npm run verify:unlocks` 会同时检查反向覆盖：如果安装包里已有角色奖励映射，但攻略层还没有维护对应角色，脚本会输出 `official-unlock:*` warning，并输出未维护记录中 verified-static-text、pending-text 和其他状态的细分计数。当前 `oneArm` 会通过别名映射到策略层的 `oneArmed`；Beast Master 与 Wounded 已同步精确条件并完成攻略模板、禁用项和回归测试，因此 warning 为 0。Giant 只作为单独的 `Audited catalog gaps` 展示，默认角色选择 API 不包含它。
 
 攻略资料和官方目录的引用校验：
 

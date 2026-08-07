@@ -32,7 +32,6 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     "chef",
     "diver",
     "curious",
-    "giant",
     "ogre",
     "dwarf",
     "creature",
@@ -78,7 +77,13 @@ const officialUnlocks = JSON.parse(readFileSync("data/official-unlocks.json", "u
     characters.some((character) => character.id === "demon" && character.cnHint === "恶魔，生命经济"),
     "demon should expose Chinese name and archetype",
   );
-  const giant = characters.find((character) => character.id === "giant");
+  assert.ok(
+    !characters.some((character) => character.id === "giant"),
+    "Giant should be hidden from normal strategy and simulator selectors",
+  );
+  const giant = getAvailableCharacters({ includeAuditedCatalogGaps: true }).find(
+    (character) => character.id === "giant",
+  );
   assert.equal(
     giant?.catalogStatus,
     "audited-catalog-gap",
