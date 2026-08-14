@@ -1,6 +1,12 @@
 # Brotato Number Lab
 
-土豆兄弟数值实验台第一版。
+《土豆兄弟》角色攻略、图鉴与场景数值模拟工具。项目基于仓库内的官方静态数据生成可解释的武器、道具与属性推荐，并支持手动面板和截图 OCR 辅助分析。
+
+## 在线体验
+
+当前部署：[https://brotato-8dvv.vercel.app/#guide](https://brotato-8dvv.vercel.app/#guide)
+
+[![Brotato Number Lab 角色攻略页面](docs/images/brotato-number-lab-guide.jpg)](https://brotato-8dvv.vercel.app/#guide)
 
 ## 当前范围
 
