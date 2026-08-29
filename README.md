@@ -190,6 +190,7 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。
 图片和部署数据约束见 [docs/assets-and-deployment.md](docs/assets-and-deployment.md)。
 Vercel 部署清单见 [docs/vercel-deployment.md](docs/vercel-deployment.md)。
+当前修复与优化优先级见 [docs/remediation-plan.md](docs/remediation-plan.md)。
 
 ## 资料来源状态
 
