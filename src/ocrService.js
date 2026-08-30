@@ -1,4 +1,8 @@
+import { createHash, randomUUID } from "node:crypto";
 import { getAvailableCharacters } from "./strategyGenerator.js";
+import { readImageDimensions } from "./imageValidation.js";
+
+export { readImageDimensions } from "./imageValidation.js";
 
 export function parseEnvLocal(text) {
   return text.split(/\r?\n/).reduce((env, line) => {
@@ -74,10 +78,15 @@ export function buildAiConfig(env) {
 
 // GET /api/parse-screenshot 返回的状态，前端据此决定是否展示上传入口。
 export function getOcrStatus(env = {}) {
+  const requested = isOcrEnabled(env);
+  const sharedLimiterReady = !isProductionEnv(env) || Boolean(sharedRateLimitConfig(env));
   return {
-    enabled: isOcrEnabled(env),
+    enabled: requested && sharedLimiterReady,
     mode: isProductionEnv(env) ? "production" : "local",
     timeoutSeconds: Math.round(buildAiConfig(env).timeoutMs / 1000),
+    ...(requested && !sharedLimiterReady
+      ? { reasonCode: "OCR_SHARED_RATE_LIMIT_REQUIRED" }
+      : {}),
   };
 }
 
@@ -92,6 +101,7 @@ export const ALLOWED_IMAGE_MIMES = ["png", "jpeg", "webp"];
 // 本地与线上保持同一口径。
 export const DEFAULT_MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 export const DEFAULT_MAX_IMAGE_DIMENSION = 12000;
+export const DEFAULT_MAX_IMAGE_PIXELS = 20_000_000;
 
 export function maxImageBytesFromEnv(env = {}) {
   return numberFromEnv(env.OCR_MAX_IMAGE_BYTES, DEFAULT_MAX_IMAGE_BYTES);
@@ -101,85 +111,20 @@ export function maxImageDimensionFromEnv(env = {}) {
   return numberFromEnv(env.OCR_MAX_IMAGE_DIMENSION, DEFAULT_MAX_IMAGE_DIMENSION);
 }
 
+export function maxImagePixelsFromEnv(env = {}) {
+  return numberFromEnv(env.OCR_MAX_IMAGE_PIXELS, DEFAULT_MAX_IMAGE_PIXELS);
+}
+
 // 严格 base64：完整 4 字符组 + 正确填充（无填充 / 一个 = / 两个 ==）。
 const STRICT_BASE64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})?$/;
 
-const SIGNATURES = {
-  png: [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
-  jpeg: [0xff, 0xd8, 0xff],
-  webp: [0x52, 0x49, 0x46, 0x46], // "RIFF"
-};
-
-function hasSignature(buffer, signature) {
-  if (buffer.length < signature.length) return false;
-  for (let index = 0; index < signature.length; index += 1) {
-    if (buffer[index] !== signature[index]) return false;
-  }
-  return true;
-}
-
-function pngDimensions(buffer) {
-  // 8 字节签名 + IHDR：length(4) "IHDR"(4) width(4 BE) height(4 BE)
-  if (buffer.length < 24) return null;
-  return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
-}
-
-function jpegDimensions(buffer) {
-  // 扫描 marker：按段长跳过，遇到 SOF 读取宽高。
-  let offset = 2; // 跳过 SOI
-  while (offset + 4 <= buffer.length) {
-    if (buffer[offset] !== 0xff) return null;
-    const marker = buffer[offset + 1];
-    if (marker === 0xd9) return null; // EOI 之前没有 SOF
-    if (marker === 0xd8 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd3)) {
-      offset += 2; // 无段长的 marker
-      continue;
-    }
-    const segmentLength = buffer.readUInt16BE(offset + 2);
-    if (segmentLength < 2) return null;
-    if (marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc) {
-      if (segmentLength < 8) return null;
-      return { height: buffer.readUInt16BE(offset + 5), width: buffer.readUInt16BE(offset + 7) };
-    }
-    offset += 2 + segmentLength;
-  }
-  return null;
-}
-
-function webpDimensions(buffer) {
-  if (buffer.length < 16) return null;
-  if (buffer.toString("ascii", 8, 12) !== "WEBP") return null;
-  const chunk = buffer.toString("ascii", 12, 16);
-  if (chunk === "VP8L") {
-    // 0x2F 签名 + 14bit width-1 + 14bit height-1 + 1bit 颜色模式（LSB 优先）
-    if (buffer.length < 25 || buffer[20] !== 0x2f) return null;
-    const bits = buffer.readUInt32LE(21);
-    return { width: (bits & 0x3fff) + 1, height: ((bits >>> 14) & 0x3fff) + 1 };
-  }
-  if (chunk === "VP8X") {
-    // flags(1) reserved(3) width-1(3 LE) height-1(3 LE)
-    if (buffer.length < 30) return null;
-    return { width: buffer.readUIntLE(24, 3) + 1, height: buffer.readUIntLE(27, 3) + 1 };
-  }
-  if (chunk === "VP8 ") {
-    // 帧标签(3) + 起始码 0x9D 0x01 0x2A + width(2 LE, 14bit) + height(2 LE, 14bit)
-    if (buffer.length < 30) return null;
-    if (!(buffer[23] === 0x9d && buffer[24] === 0x01 && buffer[25] === 0x2a)) return null;
-    return { width: buffer.readUInt16LE(26) & 0x3fff, height: buffer.readUInt16LE(28) & 0x3fff };
-  }
-  return null;
-}
-
-const DIMENSION_PARSERS = { png: pngDimensions, jpeg: jpegDimensions, webp: webpDimensions };
-
-export function readImageDimensions(buffer, subtype) {
-  const parser = DIMENSION_PARSERS[subtype];
-  return parser ? parser(buffer) : null;
-}
-
 export function validateImageDataUrl(
   imageDataUrl,
-  { maxBytes = DEFAULT_MAX_IMAGE_BYTES, maxDimension = DEFAULT_MAX_IMAGE_DIMENSION } = {},
+  {
+    maxBytes = DEFAULT_MAX_IMAGE_BYTES,
+    maxDimension = DEFAULT_MAX_IMAGE_DIMENSION,
+    maxPixels = DEFAULT_MAX_IMAGE_PIXELS,
+  } = {},
 ) {
   if (typeof imageDataUrl !== "string" || imageDataUrl.length === 0) {
     return { ok: false, status: 400, code: "MISSING_IMAGE", message: "请求缺少 imageDataUrl。" };
@@ -214,7 +159,7 @@ export function validateImageDataUrl(
     };
   }
 
-  if (!header.includes(";base64")) {
+  if (!/^data:image\/(?:png|jpeg|webp);base64$/i.test(header)) {
     return {
       ok: false,
       status: 400,
@@ -253,13 +198,12 @@ export function validateImageDataUrl(
       message: "图片过大，请裁剪或压缩后重试。",
     };
   }
-
-  if (!hasSignature(buffer, SIGNATURES[subtype])) {
+  if (buffer.toString("base64") !== payload) {
     return {
       ok: false,
       status: 400,
-      code: "INVALID_IMAGE_DATA",
-      message: "图片内容与声明的格式不符。",
+      code: "MALFORMED_BASE64",
+      message: "图片数据不是规范的 base64。",
     };
   }
 
@@ -288,6 +232,15 @@ export function validateImageDataUrl(
     };
   }
 
+  if (dimensions.width * dimensions.height > maxPixels) {
+    return {
+      ok: false,
+      status: 413,
+      code: "IMAGE_PIXELS_TOO_LARGE",
+      message: "图片总像素过大，请裁剪后重试。",
+    };
+  }
+
   return { ok: true, mime: `image/${subtype}`, dimensions };
 }
 
@@ -311,11 +264,174 @@ export function resolveSelectedCharacter(selectedCharacter) {
 }
 
 // ---------------------------------------------------------------------------
-// 速率限制：按客户端 IP 的滑动窗口 + 每日额度 + 每 IP 并发 + 全局并发。
-// 注意：内存状态在 Vercel 上按函数实例隔离（冷启动重置、实例间不共享），
-// 属于尽力而为的最小防护，不是严格配额；生产启用 OCR 时应叠加平台级
-// 防护（Vercel Firewall / Attack Challenge 等），见 docs/vercel-deployment.md。
+// 速率限制：本地使用进程内状态；生产必须配置 Upstash Redis 兼容 REST API，
+// 通过单条 EVAL 原子完成滑动窗口、每日额度与跨实例并发占位。
 // ---------------------------------------------------------------------------
+
+const SHARED_ACQUIRE_SCRIPT = `
+local now = tonumber(ARGV[1])
+local per_minute = tonumber(ARGV[2])
+local daily_quota = tonumber(ARGV[3])
+local per_ip_concurrency = tonumber(ARGV[4])
+local total_concurrency = tonumber(ARGV[5])
+local lease_expires = tonumber(ARGV[6])
+local request_member = ARGV[7]
+local total_member = ARGV[8]
+
+redis.call("ZREMRANGEBYSCORE", KEYS[1], "-inf", now - 60000)
+redis.call("ZREMRANGEBYSCORE", KEYS[3], "-inf", now)
+redis.call("ZREMRANGEBYSCORE", KEYS[4], "-inf", now)
+
+if redis.call("ZCARD", KEYS[1]) >= per_minute then
+  return {0, "RATE_LIMITED"}
+end
+if tonumber(redis.call("GET", KEYS[2]) or "0") >= daily_quota then
+  return {0, "QUOTA_EXCEEDED"}
+end
+if redis.call("ZCARD", KEYS[3]) >= per_ip_concurrency then
+  return {0, "RATE_LIMITED"}
+end
+if redis.call("ZCARD", KEYS[4]) >= total_concurrency then
+  return {0, "RATE_LIMITED"}
+end
+
+redis.call("ZADD", KEYS[1], now, request_member)
+redis.call("PEXPIRE", KEYS[1], 120000)
+redis.call("INCR", KEYS[2])
+redis.call("PEXPIRE", KEYS[2], 172800000)
+redis.call("ZADD", KEYS[3], lease_expires, request_member)
+redis.call("PEXPIRE", KEYS[3], lease_expires - now + 60000)
+redis.call("ZADD", KEYS[4], lease_expires, total_member)
+redis.call("PEXPIRE", KEYS[4], lease_expires - now + 60000)
+return {1, "OK"}
+`;
+
+const SHARED_RELEASE_SCRIPT = `
+redis.call("ZREM", KEYS[1], ARGV[1])
+redis.call("ZREM", KEYS[2], ARGV[2])
+return 1
+`;
+
+export function sharedRateLimitConfig(env = {}) {
+  const url = String(
+    env.OCR_RATE_LIMIT_REST_URL ??
+      env.UPSTASH_REDIS_REST_URL ??
+      env.KV_REST_API_URL ??
+      "",
+  ).trim().replace(/\/$/, "");
+  const token = String(
+    env.OCR_RATE_LIMIT_REST_TOKEN ??
+      env.UPSTASH_REDIS_REST_TOKEN ??
+      env.KV_REST_API_TOKEN ??
+      "",
+  ).trim();
+  if (!url || !token) return null;
+
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:") return null;
+  } catch {
+    return null;
+  }
+
+  return {
+    url,
+    token,
+    timeoutMs: numberFromEnv(env.OCR_RATE_LIMIT_TIMEOUT_MS, 3000),
+    prefix:
+      String(env.OCR_RATE_LIMIT_PREFIX || "brotato:ocr").replace(/[^A-Za-z0-9:_-]/g, "_") ||
+      "brotato:ocr",
+  };
+}
+
+async function runSharedRateLimitCommand(config, command) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), config.timeoutMs);
+  try {
+    const response = await fetch(config.url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${config.token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(command),
+      signal: controller.signal,
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || payload.error || !("result" in payload)) {
+      throw new Error("shared rate limiter rejected command");
+    }
+    return payload.result;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+function rateLimitMessage(code) {
+  return code === "QUOTA_EXCEEDED"
+    ? "今日 OCR 额度已用完，请明天再试。"
+    : "OCR 请求过于频繁或当前并发过多，请稍后再试。";
+}
+
+async function acquireSharedOcrRateLimit(env, clientIp) {
+  const config = sharedRateLimitConfig(env);
+  if (!config) {
+    return {
+      allowed: false,
+      status: 503,
+      code: "OCR_SHARED_RATE_LIMIT_REQUIRED",
+      message: "生产 OCR 缺少共享限流配置。",
+    };
+  }
+
+  const now = Date.now();
+  const ipHash = createHash("sha256").update(clientIp || "unknown").digest("hex").slice(0, 32);
+  const requestId = randomUUID();
+  const totalMember = `${ipHash}:${requestId}`;
+  const dayKey = new Date(now).toISOString().slice(0, 10);
+  const leaseMs = numberFromEnv(env.OCR_RATE_LIMIT_LEASE_MS, buildAiConfig(env).timeoutMs + 30_000);
+  // 同一 hash tag 保证集群型 Redis 也能用一条 EVAL 原子访问四个 key。
+  const keyPrefix = `${config.prefix}:{limits}`;
+  const keys = {
+    minute: `${keyPrefix}:minute:${ipHash}`,
+    daily: `${keyPrefix}:daily:${dayKey}:${ipHash}`,
+    activeIp: `${keyPrefix}:active:${ipHash}`,
+    activeTotal: `${keyPrefix}:active:total`,
+  };
+
+  try {
+    const result = await runSharedRateLimitCommand(config, [
+      "EVAL",
+      SHARED_ACQUIRE_SCRIPT,
+      "4",
+      keys.minute,
+      keys.daily,
+      keys.activeIp,
+      keys.activeTotal,
+      String(now),
+      String(numberFromEnv(env.OCR_MAX_REQUESTS_PER_MINUTE, 10)),
+      String(numberFromEnv(env.OCR_DAILY_QUOTA, 100)),
+      String(numberFromEnv(env.OCR_MAX_CONCURRENCY, 2)),
+      String(numberFromEnv(env.OCR_MAX_TOTAL_CONCURRENCY, 4)),
+      String(now + leaseMs),
+      requestId,
+      totalMember,
+    ]);
+    const allowed = Array.isArray(result) && Number(result[0]) === 1;
+    const code = Array.isArray(result) ? String(result[1] || "RATE_LIMITED") : "RATE_LIMITED";
+    if (!allowed) {
+      return { allowed: false, status: 429, code, message: rateLimitMessage(code) };
+    }
+    return { allowed: true, kind: "shared", config, keys, requestId, totalMember };
+  } catch {
+    return {
+      allowed: false,
+      status: 503,
+      code: "RATE_LIMIT_BACKEND_UNAVAILABLE",
+      message: "OCR 限流服务暂时不可用，请稍后再试。",
+    };
+  }
+}
 
 const rateLimitState = {
   windows: new Map(),
@@ -348,7 +464,7 @@ export function checkOcrRateLimit(env = {}, clientIp = "unknown") {
 
   pruneRateLimitMaps();
 
-  // 全局并发：保护 API Key 免受多 IP 聚合滥用（单实例内生效）。
+  // 本地开发的全局并发：保护 API Key 免受多 IP 聚合滥用。
   if (rateLimitState.totalActive >= maxTotalConcurrency) {
     return { allowed: false, code: "RATE_LIMITED", message: "当前 OCR 并发请求过多，请稍后再试。" };
   }
@@ -385,6 +501,35 @@ export function releaseOcrSlot(clientIp) {
   if (active <= 0) rateLimitState.active.delete(ip);
   else rateLimitState.active.set(ip, active);
   if (rateLimitState.totalActive > 0) rateLimitState.totalActive -= 1;
+}
+
+export async function acquireOcrRateLimit(env = {}, clientIp = "unknown") {
+  if (isProductionEnv(env)) return acquireSharedOcrRateLimit(env, clientIp);
+  const result = checkOcrRateLimit(env, clientIp);
+  return result.allowed ? { ...result, kind: "memory", clientIp } : { ...result, status: 429 };
+}
+
+export async function releaseOcrRateLimit(lease) {
+  if (!lease?.allowed) return;
+  if (lease.kind === "memory") {
+    releaseOcrSlot(lease.clientIp);
+    return;
+  }
+  if (lease.kind !== "shared") return;
+
+  try {
+    await runSharedRateLimitCommand(lease.config, [
+      "EVAL",
+      SHARED_RELEASE_SCRIPT,
+      "2",
+      lease.keys.activeIp,
+      lease.keys.activeTotal,
+      lease.requestId,
+      lease.totalMember,
+    ]);
+  } catch {
+    // 并发槽带租约 TTL，释放失败不会造成永久占用；不能覆盖 OCR 主请求结果。
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -560,6 +705,16 @@ export async function parseScreenshotWithOpenAi({
     };
   }
 
+  if (isProductionEnv(env) && !sharedRateLimitConfig(env)) {
+    return {
+      status: 503,
+      body: {
+        error: "生产 OCR 缺少共享限流配置。",
+        code: "OCR_SHARED_RATE_LIMIT_REQUIRED",
+      },
+    };
+  }
+
   const config = buildAiConfig(env);
   if (!config.apiKey || !config.apiUrl || !config.model) {
     return {
@@ -571,6 +726,7 @@ export async function parseScreenshotWithOpenAi({
   const validation = validateImageDataUrl(imageDataUrl, {
     maxBytes: maxImageBytesFromEnv(env),
     maxDimension: maxImageDimensionFromEnv(env),
+    maxPixels: maxImagePixelsFromEnv(env),
   });
   if (!validation.ok) {
     return { status: validation.status, body: { error: validation.message, code: validation.code } };
@@ -578,9 +734,9 @@ export async function parseScreenshotWithOpenAi({
 
   const character = resolveSelectedCharacter(selectedCharacter);
 
-  const limit = checkOcrRateLimit(env, clientIp);
+  const limit = await acquireOcrRateLimit(env, clientIp);
   if (!limit.allowed) {
-    return { status: 429, body: { error: limit.message, code: limit.code } };
+    return { status: limit.status ?? 429, body: { error: limit.message, code: limit.code } };
   }
 
   try {
@@ -591,6 +747,6 @@ export async function parseScreenshotWithOpenAi({
       body: { error: "内部服务器错误。", code: "INTERNAL_ERROR" },
     };
   } finally {
-    releaseOcrSlot(clientIp);
+    await releaseOcrRateLimit(limit);
   }
 }

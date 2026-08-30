@@ -22,6 +22,7 @@ import {
   getAvailableUnlockOptions,
 } from "./strategyGenerator.js";
 import { escapeHtml, metric, metricDelta, renderList, renderPills } from "./renderUtils.js";
+import { readImageDimensions } from "./imageValidation.js";
 
 const statLabels = {
   maxHp: "最大生命",
@@ -1489,6 +1490,7 @@ const OCR_MAX_FILE_BYTES = 25 * 1024 * 1024;
 const OCR_MAX_DATA_URL_CHARS = 4 * 1024 * 1024;
 // 与服务端 OCR_MAX_IMAGE_DIMENSION 保持一致。
 const OCR_MAX_IMAGE_DIMENSION = 12000;
+const OCR_MAX_IMAGE_PIXELS = 20_000_000;
 
 let ocrAbortController = null;
 
@@ -1510,6 +1512,25 @@ function loadImageFromDataUrl(dataUrl) {
 // 横向截图（含 16:9、4:3、超宽屏，宽高比 >1.2）只保留右侧 40% 区域，
 // 与隐私说明一致；竖版/方形图片视为已裁剪到面板，不再裁剪。
 async function prepareScreenshot(file) {
+  const subtype = file.type === "image/jpeg"
+    ? "jpeg"
+    : file.type === "image/webp"
+      ? "webp"
+      : /\.webp$/i.test(file.name || "")
+        ? "webp"
+        : /\.jpe?g$/i.test(file.name || "")
+          ? "jpeg"
+          : "png";
+  const inspectedDimensions = readImageDimensions(new Uint8Array(await file.arrayBuffer()), subtype);
+  if (!inspectedDimensions) throw new Error("图片内容损坏或与声明格式不符。");
+  if (
+    inspectedDimensions.width > OCR_MAX_IMAGE_DIMENSION ||
+    inspectedDimensions.height > OCR_MAX_IMAGE_DIMENSION ||
+    inspectedDimensions.width * inspectedDimensions.height > OCR_MAX_IMAGE_PIXELS
+  ) {
+    throw new Error("图片像素尺寸过大，请裁剪后再上传。");
+  }
+
   const originalDataUrl = await fileToDataUrl(file);
   const image = await loadImageFromDataUrl(originalDataUrl);
   const width = image.naturalWidth || image.width;
@@ -1517,6 +1538,9 @@ async function prepareScreenshot(file) {
   if (!width || !height) throw new Error("无法读取图片尺寸。");
   if (width > OCR_MAX_IMAGE_DIMENSION || height > OCR_MAX_IMAGE_DIMENSION) {
     throw new Error("图片尺寸过大，请裁剪后再上传。");
+  }
+  if (width * height > OCR_MAX_IMAGE_PIXELS) {
+    throw new Error("图片像素尺寸过大，请裁剪后再上传。");
   }
 
   const isLandscape = width / height > 1.2;

@@ -22,8 +22,7 @@ function clientIpFromRequest(request) {
 // Vercel 会把 application/json 请求体自动解析成对象；
 // 本地开发服务器（和部分客户端）传的是原始字符串。两种形态都要支持，
 // 否则正常上传会被当成空对象而返回 MISSING_IMAGE。
-function extractPayload(request) {
-  const body = request.body;
+function extractPayload(body) {
   if (body === undefined || body === null) return {};
 
   let parsed;
@@ -55,15 +54,16 @@ export default function handler(request, response) {
     return;
   }
 
-  // 字符串请求体做长度检查；对象请求体已由平台（Vercel 4.5MB）限制过。
-  if (typeof request.body === "string" && request.body.length > MAX_BODY_BYTES) {
-    response.status(413).json({ error: "请求体过大。", code: "BODY_TOO_LARGE" });
-    return;
-  }
-
   let payload;
   try {
-    payload = extractPayload(request);
+    // request.body 在 Vercel 上可能是一个会抛出 JSON 解析异常的 getter；
+    // 读取、大小检查和载荷解析必须全部位于同一个异常边界内。
+    const body = request.body;
+    if (typeof body === "string" && Buffer.byteLength(body, "utf8") > MAX_BODY_BYTES) {
+      response.status(413).json({ error: "请求体过大。", code: "BODY_TOO_LARGE" });
+      return;
+    }
+    payload = extractPayload(body);
   } catch {
     response.status(400).json({ error: "请求体不是有效 JSON。", code: "INVALID_JSON" });
     return;

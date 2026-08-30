@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   buildAiConfig,
   isOcrEnabled,
@@ -8,7 +9,17 @@ import {
   checkOcrRateLimit,
   releaseOcrSlot,
   resetOcrRateLimitState,
+  acquireOcrRateLimit,
+  releaseOcrRateLimit,
 } from "../src/ocrService.js";
+import {
+  makeHeaderOnlyPng,
+  makeJpeg,
+  makePng,
+  makeWebpExtended,
+  makeWebpLossless,
+  makeWebpLossy,
+} from "./imageFixtures.mjs";
 
 // ---------------------------------------------------------------------------
 // buildAiConfig 超时行为（原有断言，必须保持通过）
@@ -57,6 +68,18 @@ assert.equal(isOcrEnabled({ OCR_ENABLED: "yes" }), true, "truthy string should e
   assert.equal(prod.enabled, false);
   assert.equal(prod.mode, "production");
   assert.equal(prod.timeoutSeconds, 285);
+
+  const prodMissingSharedLimiter = getOcrStatus({ VERCEL: "1", OCR_ENABLED: "true" });
+  assert.equal(prodMissingSharedLimiter.enabled, false);
+  assert.equal(prodMissingSharedLimiter.reasonCode, "OCR_SHARED_RATE_LIMIT_REQUIRED");
+
+  const prodReady = getOcrStatus({
+    VERCEL: "1",
+    OCR_ENABLED: "true",
+    UPSTASH_REDIS_REST_URL: "https://rate-limit.example",
+    UPSTASH_REDIS_REST_TOKEN: "test-token",
+  });
+  assert.equal(prodReady.enabled, true);
 }
 
 // ---------------------------------------------------------------------------
@@ -65,77 +88,6 @@ assert.equal(isOcrEnabled({ OCR_ENABLED: "yes" }), true, "truthy string should e
 const VALID_PNG =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
 
-// 用真实格式的头部构造测试图片（校验器会检查魔数和像素尺寸）
-function makePng(width, height, padBytes = 0) {
-  const header = Buffer.alloc(33);
-  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(header, 0);
-  header.writeUInt32BE(13, 8); // IHDR length
-  Buffer.from("IHDR").copy(header, 12);
-  header.writeUInt32BE(width, 16);
-  header.writeUInt32BE(height, 20);
-  header[24] = 8; // bit depth
-  header[25] = 2; // color type RGB
-  const pad = padBytes ? Buffer.alloc(padBytes, 0) : Buffer.alloc(0);
-  return Buffer.concat([header, pad]);
-}
-
-function makeJpeg(width, height) {
-  const soi = Buffer.from([0xff, 0xd8]);
-  const sof = Buffer.alloc(15);
-  sof[0] = 0xff;
-  sof[1] = 0xc0; // SOF0
-  sof.writeUInt16BE(0x000b, 2);
-  sof[4] = 0x08; // precision
-  sof.writeUInt16BE(height, 5);
-  sof.writeUInt16BE(width, 7);
-  sof[9] = 0x01; // one component
-  const eoi = Buffer.from([0xff, 0xd9]);
-  return Buffer.concat([soi, sof, eoi]);
-}
-
-function makeWebpLossless(width, height) {
-  const data = Buffer.alloc(25);
-  Buffer.from("RIFF").copy(data, 0);
-  data.writeUInt32LE(22, 4);
-  Buffer.from("WEBP").copy(data, 8);
-  Buffer.from("VP8L").copy(data, 12);
-  data.writeUInt32LE(10, 16);
-  data[20] = 0x2f; // VP8L signature
-  data.writeUInt32LE(((height - 1) << 14) | (width - 1), 21);
-  return data;
-}
-
-function makeWebpLossy(width, height) {
-  const data = Buffer.alloc(30);
-  Buffer.from("RIFF").copy(data, 0);
-  data.writeUInt32LE(26, 4);
-  Buffer.from("WEBP").copy(data, 8);
-  Buffer.from("VP8 ").copy(data, 12);
-  data.writeUInt32LE(14, 16);
-  data[20] = 0x30;
-  data[21] = 0x01;
-  data[22] = 0x00;
-  data[23] = 0x9d;
-  data[24] = 0x01;
-  data[25] = 0x2a; // start code
-  data.writeUInt16LE(width & 0x3fff, 26);
-  data.writeUInt16LE(height & 0x3fff, 28);
-  return data;
-}
-
-function makeWebpExtended(width, height) {
-  const data = Buffer.alloc(30);
-  Buffer.from("RIFF").copy(data, 0);
-  data.writeUInt32LE(26, 4);
-  Buffer.from("WEBP").copy(data, 8);
-  Buffer.from("VP8X").copy(data, 12);
-  data.writeUInt32LE(10, 16);
-  data[20] = 0x00; // flags
-  data.writeUIntLE(width - 1, 24, 3);
-  data.writeUIntLE(height - 1, 27, 3);
-  return data;
-}
-
 const VALID_JPEG = `data:image/jpeg;base64,${makeJpeg(1, 1).toString("base64")}`;
 const VALID_WEBP = `data:image/webp;base64,${makeWebpLossless(1, 1).toString("base64")}`;
 
@@ -143,6 +95,13 @@ const VALID_WEBP = `data:image/webp;base64,${makeWebpLossless(1, 1).toString("ba
 assert.equal(validateImageDataUrl(VALID_PNG).ok, true, "valid 1x1 png should pass");
 assert.equal(validateImageDataUrl(VALID_JPEG).ok, true, "valid 1x1 jpeg should pass");
 assert.equal(validateImageDataUrl(VALID_WEBP).ok, true, "valid 1x1 webp should pass");
+assert.equal(
+  validateImageDataUrl(
+    `data:image/webp;base64,${readFileSync("data/assets/characters/character_ranger.webp").toString("base64")}`,
+  ).ok,
+  true,
+  "a real repository WebP asset should pass",
+);
 assert.equal(validateImageDataUrl(null).ok, false);
 assert.equal(validateImageDataUrl("").ok, false);
 assert.equal(validateImageDataUrl("https://evil.example/x.png").ok, false, "external URL should be rejected");
@@ -150,6 +109,11 @@ assert.equal(validateImageDataUrl("data:text/plain;base64,SGVsbG8=").ok, false, 
 assert.equal(validateImageDataUrl("data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=").ok, false, "svg should be rejected");
 assert.equal(validateImageDataUrl("data:image/gif;base64,R0lGODdh").ok, false, "gif should be rejected");
 assert.equal(validateImageDataUrl("data:image/png;utf8,notbase64").ok, false, "non-base64 charset should be rejected");
+assert.equal(
+  validateImageDataUrl(`data:image/png;base64evil,${makePng(1, 1).toString("base64")}`).code,
+  "UNSUPPORTED_IMAGE_ENCODING",
+  "base64 must be an exact data URL parameter",
+);
 
 // MIME 大小写不敏感（用真实 PNG 内容）
 assert.equal(
@@ -190,6 +154,20 @@ assert.equal(
   false,
   "truncated PNG without full IHDR should be rejected",
 );
+assert.equal(
+  validateImageDataUrl(`data:image/png;base64,${makeHeaderOnlyPng(1, 1).toString("base64")}`).code,
+  "INVALID_IMAGE_DATA",
+  "PNG signature and IHDR alone must not be accepted",
+);
+{
+  const corruptCrc = Buffer.from(makePng(1, 1));
+  corruptCrc[29] ^= 0xff;
+  assert.equal(
+    validateImageDataUrl(`data:image/png;base64,${corruptCrc.toString("base64")}`).code,
+    "INVALID_IMAGE_DATA",
+    "PNG chunks with a bad CRC must be rejected",
+  );
+}
 
 // 尺寸解析
 assert.deepEqual(
@@ -230,9 +208,18 @@ assert.equal(
 assert.equal(
   validateImageDataUrl(`data:image/png;base64,${makePng(12000, 10).toString("base64")}`, {
     maxDimension: 12000,
+    maxPixels: 20_000_000,
   }).ok,
   true,
   "dimensions at the limit should pass",
+);
+assert.equal(
+  validateImageDataUrl(`data:image/png;base64,${makePng(5000, 5000).toString("base64")}`, {
+    maxDimension: 12000,
+    maxPixels: 20_000_000,
+  }).code,
+  "IMAGE_PIXELS_TOO_LARGE",
+  "total pixel count must be limited even when both sides are below the edge limit",
 );
 
 // 字节上限（真实 PNG 头部 + 填充）
@@ -326,6 +313,60 @@ assert.equal(
   assert.equal(overTotal.code, "RATE_LIMITED");
   releaseOcrSlot("ip-e");
   assert.equal(checkOcrRateLimit(totalEnv, "ip-g").allowed, true, "released global slot should allow a new request");
+}
+
+// 生产限流必须走共享 REST 后端；获取和释放都使用原子 EVAL。
+{
+  const originalFetch = globalThis.fetch;
+  const commands = [];
+  const env = {
+    VERCEL: "1",
+    OCR_ENABLED: "true",
+    API_KEY: "test-key",
+    API_URL: "https://model.example/v1",
+    MODEL: "test-model",
+    UPSTASH_REDIS_REST_URL: "https://rate-limit.example",
+    UPSTASH_REDIS_REST_TOKEN: "secret-token",
+  };
+  globalThis.fetch = async (_url, options) => {
+    commands.push({
+      authorization: options.headers.Authorization,
+      body: JSON.parse(options.body),
+    });
+    return { ok: true, json: async () => ({ result: [1, "OK"] }) };
+  };
+
+  const lease = await acquireOcrRateLimit(env, "203.0.113.8");
+  assert.equal(lease.allowed, true);
+  assert.equal(lease.kind, "shared");
+  assert.equal(commands[0].body[0], "EVAL");
+  assert.equal(commands[0].body[2], "4", "acquire must update all four keys atomically");
+  assert.ok(
+    commands[0].body.slice(3, 7).every((key) => key.includes("{limits}")),
+    "all EVAL keys must share one Redis cluster hash tag",
+  );
+  assert.equal(commands[0].authorization, "Bearer secret-token");
+
+  globalThis.fetch = async (_url, options) => {
+    commands.push({ body: JSON.parse(options.body) });
+    return { ok: true, json: async () => ({ result: 1 }) };
+  };
+  await releaseOcrRateLimit(lease);
+  assert.equal(commands[1].body[0], "EVAL");
+  assert.equal(commands[1].body[2], "2", "release must remove both concurrency leases atomically");
+
+  globalThis.fetch = async () => ({ ok: true, json: async () => ({ result: [0, "QUOTA_EXCEEDED"] }) });
+  const quota = await acquireOcrRateLimit(env, "203.0.113.8");
+  assert.equal(quota.allowed, false);
+  assert.equal(quota.status, 429);
+  assert.equal(quota.code, "QUOTA_EXCEEDED");
+
+  globalThis.fetch = async () => { throw new Error("redis unavailable"); };
+  const unavailable = await acquireOcrRateLimit(env, "203.0.113.8");
+  assert.equal(unavailable.allowed, false);
+  assert.equal(unavailable.status, 503);
+  assert.equal(unavailable.code, "RATE_LIMIT_BACKEND_UNAVAILABLE");
+  globalThis.fetch = originalFetch;
 }
 
 console.log("OCR service tests passed");

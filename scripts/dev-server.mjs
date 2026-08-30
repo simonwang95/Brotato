@@ -88,6 +88,7 @@ function httpError(message, status, code) {
 function readRequestJson(request) {
   return new Promise((resolveJson, rejectJson) => {
     let body = "";
+    let bodyBytes = 0;
     let oversized = false;
     let settled = false;
 
@@ -101,8 +102,9 @@ function readRequestJson(request) {
       // 超过上限后继续消费但不累积：不能 destroy socket，
       // 否则客户端还在发送剩余数据时连接被切断，fetch 会报错而不是收到 413。
       if (oversized) return;
+      bodyBytes += chunk.length;
       body += chunk;
-      if (body.length > MAX_BODY_BYTES) {
+      if (bodyBytes > MAX_BODY_BYTES) {
         oversized = true;
         body = "";
       }
@@ -120,6 +122,10 @@ function readRequestJson(request) {
         parsed = JSON.parse(body || "{}");
       } catch {
         fail(httpError("请求体不是有效 JSON。", 400, "INVALID_JSON"));
+        return;
+      }
+      if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+        fail(httpError("请求体不是有效 JSON 对象。", 400, "INVALID_JSON"));
         return;
       }
       settled = true;

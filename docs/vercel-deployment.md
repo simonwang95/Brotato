@@ -17,7 +17,8 @@
 2. 在 Vercel Project Settings 里配置环境变量。
    - **生产环境默认关闭 OCR**（`VERCEL=1` 或存在 `VERCEL_ENV` 时 `OCR_ENABLED` 默认为 `false`）。不配置 `OCR_ENABLED=true` 时，线上页面不展示上传入口，接口返回 503。
    - 如需线上启用：`OCR_ENABLED=true`，并配置 `API_KEY`、`API_URL`、`MODEL`、`MAX_TOKENS`、`OCR_TIMEOUT_SECONDS`、`USE_RESPONSE_FORMAT_JSON`。
-   - 可选保护参数：`OCR_MAX_IMAGE_BYTES`、`OCR_MAX_IMAGE_DIMENSION`、`OCR_MAX_REQUESTS_PER_MINUTE`、`OCR_DAILY_QUOTA`、`OCR_MAX_CONCURRENCY`、`OCR_MAX_TOTAL_CONCURRENCY`（均有默认值）。
+   - **必须配置共享限流**：`UPSTASH_REDIS_REST_URL`、`UPSTASH_REDIS_REST_TOKEN`。也可使用 `OCR_RATE_LIMIT_REST_URL/TOKEN` 或 Vercel KV 的 `KV_REST_API_URL/TOKEN` 兼容变量；REST URL 必须是 HTTPS。
+   - 可选保护参数：`OCR_MAX_IMAGE_BYTES`、`OCR_MAX_IMAGE_DIMENSION`、`OCR_MAX_IMAGE_PIXELS`、`OCR_MAX_REQUESTS_PER_MINUTE`、`OCR_DAILY_QUOTA`、`OCR_MAX_CONCURRENCY`、`OCR_MAX_TOTAL_CONCURRENCY`、`OCR_RATE_LIMIT_TIMEOUT_MS`（均有默认值）。
    - 环境变量修改后只会作用于新的部署，需要重新部署。
    - 第一阶段如果不启用截图 OCR，可以先不配置这些变量；图鉴和攻略生成器仍可正常使用。
 3. 选择线上可访问的 OpenAI 兼容 API。
@@ -63,8 +64,8 @@ npm run start
 - Vercel 无法访问你电脑上的 `127.0.0.1:1234`。
 - **生产环境默认关闭 OCR**；只有显式设置 `OCR_ENABLED=true` 后接口才可用。
 - 启用后，上传图片会经过 Vercel Serverless Function 转发到外部模型 API，注意 API 成本和隐私；页面会向用户展示这一说明。
-- 客户端上传前会把横向截图（宽高比 >1.2）裁剪为右侧属性面板区域（右侧 40%）并自适应压缩（JPEG，data URL 上限 4MB），只支持 PNG/JPEG/WebP，单文件不超过 25MB，单条边长不超过 12000 像素。
-- 服务端对图片做严格校验：严格 base64 填充、格式魔数（PNG/JPEG/WebP）、像素尺寸解析，超限或格式不符的请求在调用上游模型前就被拒绝。
-- 服务端按 IP 做滑动窗口限流、每日额度、每 IP 并发和全局并发（默认 10 次/分钟、100 次/天、每 IP 并发 2、全局并发 4），超限返回 429 且不调用上游模型。**限流状态保存在函数实例内存中：Vercel 实例会随流量创建与回收，实例间不共享状态，冷启动会重置，因此线上限流是尽力而为的最小防护，不是严格配额。**
-- 线上启用 OCR 前建议叠加平台级防护：Vercel Firewall（IP 速率限制）或 Attack Challenge，对 `/api/parse-screenshot` 的未认证流量做平台层拦截；如后续需要跨实例的严格配额，可引入共享存储（如 Vercel KV）重写限流层（当前为零依赖策略，未内置）。
+- 客户端上传前会验证格式结构与像素上限，再把横向截图（宽高比 >1.2）裁剪为右侧属性面板区域（右侧 40%）并自适应压缩（JPEG，data URL 上限 4MB）。只支持 PNG/JPEG/WebP，单文件不超过 25MB、单条边长不超过 12000 像素、总像素不超过 2000 万。
+- 服务端对图片做严格校验：规范 base64、PNG/JPEG/WebP 格式结构、像素尺寸，超限或格式不符的请求在调用上游模型前就被拒绝。
+- 服务端按 IP 做滑动窗口限流、每日额度、每 IP 并发和全局并发（默认 10 次/分钟、100 次/天、每 IP 并发 2、全局并发 4），通过共享 Redis 的原子 Lua 脚本跨实例生效。超限返回 429；共享限流未配置或不可用时返回 503。两种情况都不会调用上游模型。
+- 线上仍建议叠加 Vercel Firewall（IP 速率限制）或 Attack Challenge，对 `/api/parse-screenshot` 的未认证流量做平台层纵深防御。
 - 生产错误响应只返回稳定错误码，不透传上游 `detail`。

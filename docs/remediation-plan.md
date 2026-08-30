@@ -144,9 +144,9 @@
 完成说明（2026-08-30，分支 fix/security-batch-1）：
 
 - 新增 `OCR_ENABLED` 显式开关：本地默认开启，生产（`VERCEL=1` 或存在 `VERCEL_ENV`）默认关闭；关闭时接口返回 503 `OCR_DISABLED`，页面隐藏上传入口并说明原因。
-- 服务端只接受 `data:image/png|jpeg|webp;base64,...`：外部 URL 400、非允许 MIME 415、非 base64 编码 400、坏 Base64 400、超过 `OCR_MAX_IMAGE_BYTES`（默认 15MB）413；请求体超过 25MB 直接 413。
-- 按 IP 的滑动窗口限流（`OCR_MAX_REQUESTS_PER_MINUTE`，默认 10）、每日额度（`OCR_DAILY_QUOTA`，默认 100）、并发上限（`OCR_MAX_CONCURRENCY`，默认 2），超限返回 429 且不调用上游模型；限流状态为进程内内存态（Vercel 上按函数实例隔离，作为最小防护）。
-- 客户端：上传前裁剪右侧属性栏（宽高比 >2.2 时取右侧 40%）并压缩（maxDim 1600/1120/784，JPEG 0.85，上限 8MB）；只提交角色 id（名称由服务端从内部表解析）；请求期间禁用按钮，`AbortController` + 单调请求序号忽略过期响应；清空按钮可取消在途请求。
+- 服务端只接受 `data:image/png|jpeg|webp;base64,...`：外部 URL 400、非允许 MIME 415、非 base64 编码 400、坏 Base64 400、超过 `OCR_MAX_IMAGE_BYTES`（默认 4MB）413；请求体超过 4.5MB 直接 413。
+- 按 IP 的滑动窗口限流（`OCR_MAX_REQUESTS_PER_MINUTE`，默认 10）、每日额度（`OCR_DAILY_QUOTA`，默认 100）、每 IP 并发（默认 2）与全局并发（默认 4），超限返回 429 且不调用上游模型；本地使用内存态，生产使用共享 Redis 原子限流。
+- 客户端：上传前验证格式与像素上限，横向截图（宽高比 >1.2）取右侧 40% 并逐级压缩（maxDim 1600/1120/784/512，data URL 上限 4MB）；只提交角色 id（名称由服务端从内部表解析）；请求期间禁用按钮，`AbortController` + 单调请求序号忽略过期响应；清空按钮可取消在途请求。
 - 生产错误不透传上游 `detail`，返回稳定错误码；本地保留 detail 便于调试。
 - 页面区分本地模式与线上代理模式，并展示隐私说明（`#screenshot-privacy`）。
 - 新增 `tests/apiContract.test.mjs`（成功、坏输入、限流、并发、额度、超时、上游非 JSON、上游错误语义）与 `tests/ocrService.test.mjs` 扩展用例。
@@ -157,9 +157,12 @@
 - 接口同时支持 Vercel 自动解析出的对象型请求体（此前只处理字符串 body，Vercel 上正常上传会被当成空对象而返回 MISSING_IMAGE）；数组与 JSON 原始值 body 返回 400 `INVALID_JSON`。
 - 客户端裁剪规则由“宽高比 >2.2”改为“宽高比 >1.2”：16:9、4:3、超宽屏横向截图都裁剪为右侧 40% 属性面板，与隐私说明一致；画布处理失败时横向图片直接拒绝（不发送未裁剪原图）；压缩改为自适应阶段（1600/0.85 → 1120/0.8 → 784/0.75 → 512/0.6），data URL 上限 4MB。
 - 服务端图片校验收紧：严格 base64 填充、格式魔数（PNG/JPEG/WebP）、像素尺寸解析（PNG IHDR / JPEG SOF / WebP VP8L/VP8X/VP8），新增 `OCR_MAX_IMAGE_DIMENSION`（默认 12000）；`OCR_MAX_IMAGE_BYTES` 默认改为 4MB；新增错误码 `EMPTY_IMAGE` / `INVALID_IMAGE_DATA` / `IMAGE_DIMENSIONS_TOO_LARGE`。
-- 限流新增全局并发上限 `OCR_MAX_TOTAL_CONCURRENCY`（默认 4），防止多 IP 聚合滥用；限流状态仍为进程内存，Vercel 上按实例隔离，属尽力而为防护而非严格配额——跨实例共享存储（KV）限流作为后续项（零依赖策略）。
+- 限流新增全局并发上限 `OCR_MAX_TOTAL_CONCURRENCY`（默认 4），防止多 IP 聚合滥用。
 - 尺寸口径对齐：请求体上限统一为 4.5MB（Vercel Functions 平台限制），客户端 data URL 上限 4MB。
-- 结论：生产 OCR 仅在 `OCR_ENABLED=false` 时安全；启用线上 OCR 前必须先叠加平台级防护（Vercel Firewall / Attack Challenge）或共享存储限流层。
+- 生产共享限流补充修复：支持 Upstash Redis REST（以及兼容的 Vercel KV 变量），通过原子 Lua 脚本一次完成滑动窗口、每日额度、每 IP 并发和全局并发判断/占位；缺配置时状态接口返回 `enabled:false`，POST 返回 503 `OCR_SHARED_RATE_LIMIT_REQUIRED`；后端故障时 fail closed 为 503 `RATE_LIMIT_BACKEND_UNAVAILABLE`。
+- 图片校验补充修复：data URL 头必须精确匹配 `;base64`；PNG 校验 chunk 边界、CRC、IDAT 与 IEND，JPEG 校验 scan 与 EOI，WebP 校验 RIFF 大小和 chunk 边界；新增 `OCR_MAX_IMAGE_PIXELS`（默认 2000 万）并在客户端解码前同步拦截，避免超大像素图造成资源耗尽。
+- 请求体补充修复：`request.body` 的读取也纳入异常边界，平台 JSON getter 抛错时稳定返回 400 `INVALID_JSON`。
+- 结论：生产 OCR 只有在显式启用且共享限流配置完整时才可用；平台级防护仍建议作为纵深防御。
 
 ## P1：高优先级修复
 

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import handler from "../api/parse-screenshot.js";
+import { makeHeaderOnlyPng, makePng } from "./imageFixtures.mjs";
 
 // ---------------------------------------------------------------------------
 // 测试工具
@@ -17,10 +18,20 @@ const ENV_KEYS = [
   "USE_RESPONSE_FORMAT_JSON",
   "OCR_MAX_IMAGE_BYTES",
   "OCR_MAX_IMAGE_DIMENSION",
+  "OCR_MAX_IMAGE_PIXELS",
   "OCR_MAX_REQUESTS_PER_MINUTE",
   "OCR_DAILY_QUOTA",
   "OCR_MAX_CONCURRENCY",
   "OCR_MAX_TOTAL_CONCURRENCY",
+  "OCR_RATE_LIMIT_REST_URL",
+  "OCR_RATE_LIMIT_REST_TOKEN",
+  "OCR_RATE_LIMIT_TIMEOUT_MS",
+  "OCR_RATE_LIMIT_LEASE_MS",
+  "OCR_RATE_LIMIT_PREFIX",
+  "UPSTASH_REDIS_REST_URL",
+  "UPSTASH_REDIS_REST_TOKEN",
+  "KV_REST_API_URL",
+  "KV_REST_API_TOKEN",
 ];
 
 const savedEnv = {};
@@ -62,9 +73,9 @@ function makeResponse() {
 }
 
 // handler 内部通过 promise 链设置响应，这里等待宏任务让链完成。
-async function callHandler({ method = "POST", body = "", headers = {} } = {}) {
+async function callHandler({ method = "POST", body = "", headers = {}, request = null } = {}) {
   const response = makeResponse();
-  handler({ method, body, headers }, response);
+  handler(request ?? { method, body, headers }, response);
   await new Promise((resolve) => setTimeout(resolve, 0));
   return response;
 }
@@ -73,27 +84,23 @@ async function callHandler({ method = "POST", body = "", headers = {} } = {}) {
 const VALID_PNG =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
 
-// 真实 PNG 头部 + 填充（校验器会检查魔数和尺寸）
-function makePng(width, height, padBytes = 0) {
-  const header = Buffer.alloc(33);
-  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(header, 0);
-  header.writeUInt32BE(13, 8);
-  Buffer.from("IHDR").copy(header, 12);
-  header.writeUInt32BE(width, 16);
-  header.writeUInt32BE(height, 20);
-  header[24] = 8;
-  header[25] = 2;
-  const pad = padBytes ? Buffer.alloc(padBytes, 0) : Buffer.alloc(0);
-  return Buffer.concat([header, pad]);
-}
-
 function jsonBody(object) {
   return JSON.stringify(object);
 }
 
-function mockFetch(behavior) {
+function mockFetch(behavior, { rateLimitBehavior } = {}) {
   const calls = [];
   globalThis.fetch = (url, options) => {
+    if (url === "https://rate-limit.example") {
+      const command = JSON.parse(options.body);
+      if (rateLimitBehavior) return rateLimitBehavior(command, options);
+      const isAcquire = command[2] === "4";
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        json: async () => ({ result: isAcquire ? [1, "OK"] : 1 }),
+      });
+    }
     calls.push({ url, options });
     return behavior(url, options, calls.length);
   };
@@ -117,6 +124,14 @@ function okCompletionResponse(text) {
 const PRODUCTION_BASE = {
   VERCEL: "1",
   OCR_ENABLED: "true",
+  API_KEY: "test-key",
+  API_URL: "http://model.example/v1",
+  MODEL: "test-model",
+  UPSTASH_REDIS_REST_URL: "https://rate-limit.example",
+  UPSTASH_REDIS_REST_TOKEN: "test-token",
+};
+
+const LOCAL_BASE = {
   API_KEY: "test-key",
   API_URL: "http://model.example/v1",
   MODEL: "test-model",
@@ -146,6 +161,26 @@ setEnv({});
   assert.equal(status.body.mode, "local");
 }
 
+// 生产显式启用 OCR 时，共享限流配置是强制项并以关闭状态对前端呈现。
+setEnv({
+  VERCEL: "1",
+  OCR_ENABLED: "true",
+  API_KEY: "test-key",
+  API_URL: "http://model.example/v1",
+  MODEL: "test-model",
+});
+{
+  const status = await callHandler({ method: "GET" });
+  assert.equal(status.body.enabled, false);
+  assert.equal(status.body.reasonCode, "OCR_SHARED_RATE_LIMIT_REQUIRED");
+  const calls = mockFetch(() => Promise.resolve(okCompletionResponse("{}")));
+  const res = await callHandler({ body: jsonBody({ imageDataUrl: VALID_PNG }) });
+  assert.equal(res.statusCode, 503);
+  assert.equal(res.body.code, "OCR_SHARED_RATE_LIMIT_REQUIRED");
+  assert.equal(calls.length, 0);
+  restoreFetch();
+}
+
 // ---------------------------------------------------------------------------
 // 方法限制
 // ---------------------------------------------------------------------------
@@ -163,6 +198,16 @@ setEnv(PRODUCTION_BASE);
   const res = await callHandler({ body: "not-json" });
   assert.equal(res.statusCode, 400);
   assert.equal(res.body.code, "INVALID_JSON");
+
+  const throwingRequest = { method: "POST", headers: {} };
+  Object.defineProperty(throwingRequest, "body", {
+    get() {
+      throw new SyntaxError("malformed JSON from platform parser");
+    },
+  });
+  const resThrowingGetter = await callHandler({ request: throwingRequest });
+  assert.equal(resThrowingGetter.statusCode, 400, "抛异常的请求体 getter 也必须统一返回 400");
+  assert.equal(resThrowingGetter.body.code, "INVALID_JSON");
 
   const resEmpty = await callHandler({ body: "" });
   assert.equal(resEmpty.statusCode, 400, "空请求体应缺少 imageDataUrl");
@@ -210,10 +255,20 @@ setEnv(PRODUCTION_BASE);
     [{ imageDataUrl: "data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=" }, 415, "UNSUPPORTED_MEDIA_TYPE"],
     [{ imageDataUrl: "data:image/gif;base64,R0lGODdh" }, 415, "UNSUPPORTED_MEDIA_TYPE"],
     [{ imageDataUrl: "data:image/png;utf8,notbase64" }, 400, "UNSUPPORTED_IMAGE_ENCODING"],
+    [
+      { imageDataUrl: `data:image/png;base64evil,${makePng(1, 1).toString("base64")}` },
+      400,
+      "UNSUPPORTED_IMAGE_ENCODING",
+    ],
     [{ imageDataUrl: "data:image/png;base64,!!!" }, 400, "MALFORMED_BASE64"],
     [{ imageDataUrl: "data:image/png;base64," }, 400, "EMPTY_IMAGE"],
     [{ imageDataUrl: "data:image/png;base64,====" }, 400, "MALFORMED_BASE64"],
     [{ imageDataUrl: "data:image/png;base64,SGVsbG8=" }, 400, "INVALID_IMAGE_DATA"],
+    [
+      { imageDataUrl: `data:image/png;base64,${makeHeaderOnlyPng(1, 1).toString("base64")}` },
+      400,
+      "INVALID_IMAGE_DATA",
+    ],
     [
       { imageDataUrl: `data:image/jpeg;base64,${makePng(1, 1).toString("base64")}` },
       400,
@@ -223,6 +278,11 @@ setEnv(PRODUCTION_BASE);
       { imageDataUrl: `data:image/png;base64,${makePng(20000, 10).toString("base64")}` },
       413,
       "IMAGE_DIMENSIONS_TOO_LARGE",
+    ],
+    [
+      { imageDataUrl: `data:image/png;base64,${makePng(5000, 5000).toString("base64")}` },
+      413,
+      "IMAGE_PIXELS_TOO_LARGE",
     ],
   ];
 
@@ -252,6 +312,18 @@ setEnv(PRODUCTION_BASE);
 // ---------------------------------------------------------------------------
 // 成功路径
 // ---------------------------------------------------------------------------
+{
+  const calls = mockFetch(
+    () => Promise.resolve(okCompletionResponse("{}")),
+    { rateLimitBehavior: () => Promise.reject(new Error("redis unavailable")) },
+  );
+  const res = await callHandler({ body: jsonBody({ imageDataUrl: VALID_PNG }) });
+  assert.equal(res.statusCode, 503, "共享限流后端故障时必须 fail closed");
+  assert.equal(res.body.code, "RATE_LIMIT_BACKEND_UNAVAILABLE");
+  assert.equal(calls.length, 0, "限流状态未知时不应调用上游模型");
+  restoreFetch();
+}
+
 {
   const calls = mockFetch(() =>
     Promise.resolve(okCompletionResponse('{"statsOcr": [{"label": "幸运", "value": 25}]}')),
@@ -349,7 +421,7 @@ setEnv(PRODUCTION_BASE);
 // ---------------------------------------------------------------------------
 {
   const { resetOcrRateLimitState } = await import("../src/ocrService.js");
-  setEnv({ ...PRODUCTION_BASE, OCR_MAX_REQUESTS_PER_MINUTE: "2", OCR_MAX_CONCURRENCY: "5" });
+  setEnv({ ...LOCAL_BASE, OCR_MAX_REQUESTS_PER_MINUTE: "2", OCR_MAX_CONCURRENCY: "5" });
   resetOcrRateLimitState();
 
   const calls = mockFetch(() => Promise.resolve(okCompletionResponse("{}")));
@@ -369,7 +441,7 @@ setEnv(PRODUCTION_BASE);
 // ---------------------------------------------------------------------------
 {
   const { resetOcrRateLimitState } = await import("../src/ocrService.js");
-  setEnv({ ...PRODUCTION_BASE, OCR_MAX_REQUESTS_PER_MINUTE: "100", OCR_MAX_CONCURRENCY: "1" });
+  setEnv({ ...LOCAL_BASE, OCR_MAX_REQUESTS_PER_MINUTE: "100", OCR_MAX_CONCURRENCY: "1" });
   resetOcrRateLimitState();
 
   let releaseFetch;
@@ -397,7 +469,7 @@ setEnv(PRODUCTION_BASE);
 // ---------------------------------------------------------------------------
 {
   const { resetOcrRateLimitState } = await import("../src/ocrService.js");
-  setEnv({ ...PRODUCTION_BASE, OCR_MAX_REQUESTS_PER_MINUTE: "100", OCR_DAILY_QUOTA: "1" });
+  setEnv({ ...LOCAL_BASE, OCR_MAX_REQUESTS_PER_MINUTE: "100", OCR_DAILY_QUOTA: "1" });
   resetOcrRateLimitState();
 
   const calls = mockFetch(() => Promise.resolve(okCompletionResponse("{}")));
@@ -416,7 +488,7 @@ setEnv(PRODUCTION_BASE);
 {
   const { resetOcrRateLimitState } = await import("../src/ocrService.js");
   setEnv({
-    ...PRODUCTION_BASE,
+    ...LOCAL_BASE,
     OCR_MAX_REQUESTS_PER_MINUTE: "100",
     OCR_MAX_CONCURRENCY: "5",
     OCR_MAX_TOTAL_CONCURRENCY: "1",

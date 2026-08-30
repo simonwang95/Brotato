@@ -191,6 +191,15 @@ try {
     assert.equal(badJson.status, 400, "坏 JSON 应返回 400");
     assert.equal(JSON.parse(badJson.text).code, "INVALID_JSON");
 
+    for (const invalidObject of ["null", "123", "[]"]) {
+      const invalid = await http("/api/parse-screenshot", {
+        method: "POST",
+        body: invalidObject,
+      });
+      assert.equal(invalid.status, 400, `${invalidObject} 不应导致本地服务异常`);
+      assert.equal(JSON.parse(invalid.text).code, "INVALID_JSON");
+    }
+
     const oversized = await http("/api/parse-screenshot", {
       method: "POST",
       body: JSON.stringify({ imageDataUrl: "a".repeat(25 * 1024 * 1024 + 1) }),

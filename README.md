@@ -94,19 +94,24 @@ OCR 开关与保护参数（可选）：
 OCR_ENABLED="true"            # 显式开关；本地默认 true，生产默认 false
 OCR_MAX_IMAGE_BYTES="4194304" # 单张图片解码后上限，默认 4MB（Vercel 请求体平台上限 4.5MB）
 OCR_MAX_IMAGE_DIMENSION="12000" # 单条边长上限（像素），默认 12000
+OCR_MAX_IMAGE_PIXELS="20000000" # 单张图片总像素上限，默认 2000 万
 OCR_MAX_REQUESTS_PER_MINUTE="10" # 按 IP 的滑动窗口限流
 OCR_DAILY_QUOTA="100"          # 按 IP 的每日额度
 OCR_MAX_CONCURRENCY="2"        # 按 IP 的并发上限
-OCR_MAX_TOTAL_CONCURRENCY="4"  # 全局并发上限（单实例内生效）
+OCR_MAX_TOTAL_CONCURRENCY="4"  # 全局并发上限
+
+# 生产启用 OCR 时必填，用于跨实例原子限流
+UPSTASH_REDIS_REST_URL="https://...upstash.io"
+UPSTASH_REDIS_REST_TOKEN="..."
 ```
 
 **生产环境默认关闭 OCR**（`VERCEL=1` 或存在 `VERCEL_ENV` 时）。如需在线上启用，必须显式设置 `OCR_ENABLED=true`，并理解：线上图片会经 Vercel 转发给外部模型 API，存在隐私与成本影响。本地 OCR 默认最多等待 1200 秒；Vercel 部署受函数时长限制，程序会自动把线上等待时间限制为 285 秒，并在 300 秒的平台截止时间前返回。
 
-服务端会对图片做严格校验：只接受 PNG/JPEG/WebP 的 base64 data URL，校验严格 base64 填充、格式魔数与像素尺寸（解析 PNG IHDR / JPEG SOF / WebP 头部），并限制解码字节数（默认 4MB）与单条边长（默认 12000 像素）。
+服务端会对图片做严格校验：只接受 PNG/JPEG/WebP 的规范 base64 data URL，校验格式结构（包括 PNG chunk/CRC/IDAT/IEND、JPEG scan/EOI 和 WebP RIFF/chunk）、像素尺寸，并限制解码字节数（默认 4MB）、单条边长（默认 12000 像素）和总像素数（默认 2000 万）。
 
-限流说明：滑动窗口、每日额度、每 IP 并发与全局并发都是**进程内存状态**。本地单进程下完全生效；Vercel 上函数实例会随流量创建与回收，实例间不共享状态，因此线上限流是尽力而为的最小防护，不是严格配额。线上启用 OCR 时应叠加平台级防护（如 Vercel Firewall / Attack Challenge），详见 `docs/vercel-deployment.md`。
+限流说明：本地开发使用进程内状态；生产环境必须配置 Upstash Redis 兼容 REST API（支持 `UPSTASH_REDIS_REST_URL/TOKEN`、`OCR_RATE_LIMIT_REST_URL/TOKEN` 或 Vercel KV 的兼容变量）。滑动窗口、每日额度、每 IP 并发与全局并发由一条 Redis Lua 脚本原子获取，跨函数实例共享；缺少配置或限流后端不可用时会 fail closed，OCR 返回 503 且不会调用模型 API。平台级防护仍建议作为纵深防御，详见 `docs/vercel-deployment.md`。
 
-上传前客户端会把横向截图（宽高比 >1.2，含 16:9、4:3、超宽屏）裁剪为右侧属性面板区域（右侧 40%），竖版/方形图片视为已裁剪不再裁剪；然后自适应压缩为 JPEG（逐级降低分辨率与质量，data URL 上限 4MB），只发送处理后的图片。只支持 PNG/JPEG/WebP，单文件不超过 25MB，单条边长不超过 12000 像素。页面会展示当前模式（本地/线上代理）与隐私说明。
+上传前客户端会先验证图片结构、边长和总像素数，再把横向截图（宽高比 >1.2，含 16:9、4:3、超宽屏）裁剪为右侧属性面板区域（右侧 40%）；竖版/方形图片视为已裁剪不再裁剪。之后自适应压缩为 JPEG（逐级降低分辨率与质量，data URL 上限 4MB），只发送处理后的图片。只支持 PNG/JPEG/WebP，单文件不超过 25MB、单条边长不超过 12000 像素、总像素不超过 2000 万。页面会展示当前模式（本地/线上代理）与隐私说明。
 
 截图解析目前只做右侧属性栏 OCR，输出属性名和数字，再由前端映射到角色面板。只看静态页面时仍可用（静态模式不含 OCR 接口）：
 
