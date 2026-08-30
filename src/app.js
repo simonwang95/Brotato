@@ -1485,7 +1485,10 @@ function applyParsedSimulatorData(parsed) {
 
 const OCR_ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "image/webp"];
 const OCR_MAX_FILE_BYTES = 25 * 1024 * 1024;
-const OCR_MAX_DATA_URL_CHARS = 8 * 1024 * 1024;
+// Vercel Functions 请求体上限 4.5 MB，data URL 限制在 4 MB 以内留出 JSON 开销余量。
+const OCR_MAX_DATA_URL_CHARS = 4 * 1024 * 1024;
+// 与服务端 OCR_MAX_IMAGE_DIMENSION 保持一致。
+const OCR_MAX_IMAGE_DIMENSION = 12000;
 
 let ocrAbortController = null;
 
@@ -1503,27 +1506,34 @@ function loadImageFromDataUrl(dataUrl) {
   });
 }
 
-// 裁剪右侧属性栏区域并压缩，限制上传体积；
-// 处理失败时退回原始 data URL，由服务端校验兜底。
+// 裁剪右侧属性面板区域并压缩，限制上传体积。
+// 横向截图（含 16:9、4:3、超宽屏，宽高比 >1.2）只保留右侧 40% 区域，
+// 与隐私说明一致；竖版/方形图片视为已裁剪到面板，不再裁剪。
 async function prepareScreenshot(file) {
   const originalDataUrl = await fileToDataUrl(file);
-  try {
-    const image = await loadImageFromDataUrl(originalDataUrl);
-    const width = image.naturalWidth || image.width;
-    const height = image.naturalHeight || image.height;
-    if (!width || !height) throw new Error("空图片");
+  const image = await loadImageFromDataUrl(originalDataUrl);
+  const width = image.naturalWidth || image.width;
+  const height = image.naturalHeight || image.height;
+  if (!width || !height) throw new Error("无法读取图片尺寸。");
+  if (width > OCR_MAX_IMAGE_DIMENSION || height > OCR_MAX_IMAGE_DIMENSION) {
+    throw new Error("图片尺寸过大，请裁剪后再上传。");
+  }
 
-    let sourceX = 0;
-    let sourceWidth = width;
-    let cropped = false;
-    if (width / height > 2.2) {
-      // 整张游戏窗口截图：只保留右侧属性面板区域。
-      sourceWidth = Math.round(width * 0.4);
-      sourceX = width - sourceWidth;
-      cropped = true;
-    }
+  const isLandscape = width / height > 1.2;
+  const sourceWidth = isLandscape ? Math.round(width * 0.4) : width;
+  const sourceX = isLandscape ? width - sourceWidth : 0;
+  const cropped = isLandscape;
 
-    for (const maxDim of [1600, 1120, 784]) {
+  // 逐级降低分辨率和 JPEG 质量，直到 data URL 进入上限。
+  const stages = [
+    { maxDim: 1600, quality: 0.85 },
+    { maxDim: 1120, quality: 0.8 },
+    { maxDim: 784, quality: 0.75 },
+    { maxDim: 512, quality: 0.6 },
+  ];
+  let canvasFailed = false;
+  for (const { maxDim, quality } of stages) {
+    try {
       const scale = Math.min(1, maxDim / Math.max(sourceWidth, height));
       const canvas = document.createElement("canvas");
       canvas.width = Math.max(1, Math.round(sourceWidth * scale));
@@ -1532,18 +1542,32 @@ async function prepareScreenshot(file) {
       context.fillStyle = "#ffffff";
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.drawImage(image, sourceX, 0, sourceWidth, height, 0, 0, canvas.width, canvas.height);
-      const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+      const dataUrl = canvas.toDataURL("image/jpeg", quality);
       if (dataUrl.length <= OCR_MAX_DATA_URL_CHARS) {
         return { dataUrl, cropped };
       }
+    } catch {
+      canvasFailed = true;
+      break;
     }
-    throw new Error("图片压缩后仍过大");
-  } catch {
-    if (originalDataUrl.length > OCR_MAX_DATA_URL_CHARS) {
-      throw new Error("图片过大，请裁剪或压缩后再上传。");
+  }
+
+  if (canvasFailed) {
+    // 画布处理失败：横向图片未裁剪不能发送（隐私承诺），直接拒绝；
+    // 竖版图片（视为已裁剪）在上限内可退回原图。
+    if (isLandscape) throw new Error("图片处理失败，请手动裁剪到属性面板区域后重试。");
+    if (originalDataUrl.length <= OCR_MAX_DATA_URL_CHARS) {
+      return { dataUrl: originalDataUrl, cropped: false };
     }
+    throw new Error("图片过大，请裁剪或压缩后再上传。");
+  }
+
+  // 各阶段都成功但仍超限
+  if (isLandscape) throw new Error("图片压缩后仍过大，请手动裁剪到属性面板区域后重试。");
+  if (originalDataUrl.length <= OCR_MAX_DATA_URL_CHARS) {
     return { dataUrl: originalDataUrl, cropped: false };
   }
+  throw new Error("图片过大，请裁剪或压缩后再上传。");
 }
 
 async function checkOcrAvailability() {
@@ -1581,8 +1605,8 @@ function renderScreenshotPanel() {
   if (privacy) {
     privacy.textContent =
       state.ocr.mode === "production"
-        ? "线上代理模式：截图会先裁剪为属性面板区域并压缩，然后发送到线上服务，由线上服务转发给外部模型 API 识别。请注意隐私与成本。"
-        : "本地模式：截图会先裁剪为属性面板区域并压缩，然后只发送到 env.local 配置的本地服务（如 LM Studio），不会上传到任何线上服务。";
+        ? "线上代理模式：横向截图会先裁剪为右侧属性面板区域并压缩，然后发送到线上服务，由线上服务转发给外部模型 API 识别。请注意隐私与成本。"
+        : "本地模式：横向截图会先裁剪为右侧属性面板区域并压缩，然后只发送到 env.local 配置的本地服务（如 LM Studio），不会上传到任何线上服务。";
   }
   renderScreenshotParseOutput();
 }

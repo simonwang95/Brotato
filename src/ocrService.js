@@ -83,17 +83,104 @@ export function getOcrStatus(env = {}) {
 
 // ---------------------------------------------------------------------------
 // 图片输入校验：只接受 data:image/png|jpeg|webp;base64,...，
-// 拒绝外部 URL、SVG 和其他内容；限制解码后字节数。
+// 拒绝外部 URL、SVG 和其他内容；严格 base64、魔数、像素尺寸校验，
+// 并限制解码后字节数与最大边长。
 // ---------------------------------------------------------------------------
 
 export const ALLOWED_IMAGE_MIMES = ["png", "jpeg", "webp"];
-export const DEFAULT_MAX_IMAGE_BYTES = 15 * 1024 * 1024;
+// 默认 4MB：Vercel Functions 请求体上限 4.5MB，base64 解码后必然低于 4MB，
+// 本地与线上保持同一口径。
+export const DEFAULT_MAX_IMAGE_BYTES = 4 * 1024 * 1024;
+export const DEFAULT_MAX_IMAGE_DIMENSION = 12000;
 
 export function maxImageBytesFromEnv(env = {}) {
   return numberFromEnv(env.OCR_MAX_IMAGE_BYTES, DEFAULT_MAX_IMAGE_BYTES);
 }
 
-export function validateImageDataUrl(imageDataUrl, { maxBytes = DEFAULT_MAX_IMAGE_BYTES } = {}) {
+export function maxImageDimensionFromEnv(env = {}) {
+  return numberFromEnv(env.OCR_MAX_IMAGE_DIMENSION, DEFAULT_MAX_IMAGE_DIMENSION);
+}
+
+// 严格 base64：完整 4 字符组 + 正确填充（无填充 / 一个 = / 两个 ==）。
+const STRICT_BASE64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})?$/;
+
+const SIGNATURES = {
+  png: [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
+  jpeg: [0xff, 0xd8, 0xff],
+  webp: [0x52, 0x49, 0x46, 0x46], // "RIFF"
+};
+
+function hasSignature(buffer, signature) {
+  if (buffer.length < signature.length) return false;
+  for (let index = 0; index < signature.length; index += 1) {
+    if (buffer[index] !== signature[index]) return false;
+  }
+  return true;
+}
+
+function pngDimensions(buffer) {
+  // 8 字节签名 + IHDR：length(4) "IHDR"(4) width(4 BE) height(4 BE)
+  if (buffer.length < 24) return null;
+  return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
+}
+
+function jpegDimensions(buffer) {
+  // 扫描 marker：按段长跳过，遇到 SOF 读取宽高。
+  let offset = 2; // 跳过 SOI
+  while (offset + 4 <= buffer.length) {
+    if (buffer[offset] !== 0xff) return null;
+    const marker = buffer[offset + 1];
+    if (marker === 0xd9) return null; // EOI 之前没有 SOF
+    if (marker === 0xd8 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd3)) {
+      offset += 2; // 无段长的 marker
+      continue;
+    }
+    const segmentLength = buffer.readUInt16BE(offset + 2);
+    if (segmentLength < 2) return null;
+    if (marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc) {
+      if (segmentLength < 8) return null;
+      return { height: buffer.readUInt16BE(offset + 5), width: buffer.readUInt16BE(offset + 7) };
+    }
+    offset += 2 + segmentLength;
+  }
+  return null;
+}
+
+function webpDimensions(buffer) {
+  if (buffer.length < 16) return null;
+  if (buffer.toString("ascii", 8, 12) !== "WEBP") return null;
+  const chunk = buffer.toString("ascii", 12, 16);
+  if (chunk === "VP8L") {
+    // 0x2F 签名 + 14bit width-1 + 14bit height-1 + 1bit 颜色模式（LSB 优先）
+    if (buffer.length < 25 || buffer[20] !== 0x2f) return null;
+    const bits = buffer.readUInt32LE(21);
+    return { width: (bits & 0x3fff) + 1, height: ((bits >>> 14) & 0x3fff) + 1 };
+  }
+  if (chunk === "VP8X") {
+    // flags(1) reserved(3) width-1(3 LE) height-1(3 LE)
+    if (buffer.length < 30) return null;
+    return { width: buffer.readUIntLE(24, 3) + 1, height: buffer.readUIntLE(27, 3) + 1 };
+  }
+  if (chunk === "VP8 ") {
+    // 帧标签(3) + 起始码 0x9D 0x01 0x2A + width(2 LE, 14bit) + height(2 LE, 14bit)
+    if (buffer.length < 30) return null;
+    if (!(buffer[23] === 0x9d && buffer[24] === 0x01 && buffer[25] === 0x2a)) return null;
+    return { width: buffer.readUInt16LE(26) & 0x3fff, height: buffer.readUInt16LE(28) & 0x3fff };
+  }
+  return null;
+}
+
+const DIMENSION_PARSERS = { png: pngDimensions, jpeg: jpegDimensions, webp: webpDimensions };
+
+export function readImageDimensions(buffer, subtype) {
+  const parser = DIMENSION_PARSERS[subtype];
+  return parser ? parser(buffer) : null;
+}
+
+export function validateImageDataUrl(
+  imageDataUrl,
+  { maxBytes = DEFAULT_MAX_IMAGE_BYTES, maxDimension = DEFAULT_MAX_IMAGE_DIMENSION } = {},
+) {
   if (typeof imageDataUrl !== "string" || imageDataUrl.length === 0) {
     return { ok: false, status: 400, code: "MISSING_IMAGE", message: "请求缺少 imageDataUrl。" };
   }
@@ -136,12 +223,16 @@ export function validateImageDataUrl(imageDataUrl, { maxBytes = DEFAULT_MAX_IMAG
     };
   }
 
-  if (!/^[A-Za-z0-9+/=]*$/.test(payload)) {
+  if (payload.length === 0) {
+    return { ok: false, status: 400, code: "EMPTY_IMAGE", message: "图片数据为空。" };
+  }
+
+  if (!STRICT_BASE64.test(payload)) {
     return { ok: false, status: 400, code: "MALFORMED_BASE64", message: "图片数据不是有效的 base64。" };
   }
 
-  const approxBytes = Math.floor(payload.length / 4) * 3;
-  if (approxBytes > maxBytes) {
+  // 快速预判：base64 解码后最多为长度的 3/4，超限直接拒绝，避免解码大字符串。
+  if (Math.floor(payload.length / 4) * 3 > maxBytes) {
     return {
       ok: false,
       status: 413,
@@ -150,7 +241,54 @@ export function validateImageDataUrl(imageDataUrl, { maxBytes = DEFAULT_MAX_IMAG
     };
   }
 
-  return { ok: true, mime: `image/${subtype}` };
+  const buffer = Buffer.from(payload, "base64");
+  if (buffer.length === 0) {
+    return { ok: false, status: 400, code: "EMPTY_IMAGE", message: "图片数据为空。" };
+  }
+  if (buffer.length > maxBytes) {
+    return {
+      ok: false,
+      status: 413,
+      code: "IMAGE_TOO_LARGE",
+      message: "图片过大，请裁剪或压缩后重试。",
+    };
+  }
+
+  if (!hasSignature(buffer, SIGNATURES[subtype])) {
+    return {
+      ok: false,
+      status: 400,
+      code: "INVALID_IMAGE_DATA",
+      message: "图片内容与声明的格式不符。",
+    };
+  }
+
+  const dimensions = readImageDimensions(buffer, subtype);
+  if (
+    !dimensions ||
+    !Number.isFinite(dimensions.width) ||
+    !Number.isFinite(dimensions.height) ||
+    dimensions.width < 1 ||
+    dimensions.height < 1
+  ) {
+    return {
+      ok: false,
+      status: 400,
+      code: "INVALID_IMAGE_DATA",
+      message: "无法解析图片尺寸。",
+    };
+  }
+
+  if (dimensions.width > maxDimension || dimensions.height > maxDimension) {
+    return {
+      ok: false,
+      status: 413,
+      code: "IMAGE_DIMENSIONS_TOO_LARGE",
+      message: "图片尺寸过大，请裁剪后重试。",
+    };
+  }
+
+  return { ok: true, mime: `image/${subtype}`, dimensions };
 }
 
 // ---------------------------------------------------------------------------
@@ -173,20 +311,24 @@ export function resolveSelectedCharacter(selectedCharacter) {
 }
 
 // ---------------------------------------------------------------------------
-// 速率限制：按客户端 IP 的滑动窗口 + 每日额度 + 并发上限。
-// 内存状态在 Vercel 上按函数实例隔离，作为最小防护；本地单进程下完全生效。
+// 速率限制：按客户端 IP 的滑动窗口 + 每日额度 + 每 IP 并发 + 全局并发。
+// 注意：内存状态在 Vercel 上按函数实例隔离（冷启动重置、实例间不共享），
+// 属于尽力而为的最小防护，不是严格配额；生产启用 OCR 时应叠加平台级
+// 防护（Vercel Firewall / Attack Challenge 等），见 docs/vercel-deployment.md。
 // ---------------------------------------------------------------------------
 
 const rateLimitState = {
   windows: new Map(),
   daily: new Map(),
   active: new Map(),
+  totalActive: 0,
 };
 
 export function resetOcrRateLimitState() {
   rateLimitState.windows.clear();
   rateLimitState.daily.clear();
   rateLimitState.active.clear();
+  rateLimitState.totalActive = 0;
 }
 
 function pruneRateLimitMaps() {
@@ -201,9 +343,15 @@ export function checkOcrRateLimit(env = {}, clientIp = "unknown") {
   const perMinute = numberFromEnv(env.OCR_MAX_REQUESTS_PER_MINUTE, 10);
   const dailyQuota = numberFromEnv(env.OCR_DAILY_QUOTA, 100);
   const maxConcurrency = numberFromEnv(env.OCR_MAX_CONCURRENCY, 2);
+  const maxTotalConcurrency = numberFromEnv(env.OCR_MAX_TOTAL_CONCURRENCY, 4);
   const ip = clientIp || "unknown";
 
   pruneRateLimitMaps();
+
+  // 全局并发：保护 API Key 免受多 IP 聚合滥用（单实例内生效）。
+  if (rateLimitState.totalActive >= maxTotalConcurrency) {
+    return { allowed: false, code: "RATE_LIMITED", message: "当前 OCR 并发请求过多，请稍后再试。" };
+  }
 
   const active = rateLimitState.active.get(ip) ?? 0;
   if (active >= maxConcurrency) {
@@ -227,6 +375,7 @@ export function checkOcrRateLimit(env = {}, clientIp = "unknown") {
   rateLimitState.windows.set(ip, entries);
   rateLimitState.daily.set(ip, { day: dayKey, count: dailyCount + 1 });
   rateLimitState.active.set(ip, active + 1);
+  rateLimitState.totalActive += 1;
   return { allowed: true };
 }
 
@@ -235,6 +384,7 @@ export function releaseOcrSlot(clientIp) {
   const active = (rateLimitState.active.get(ip) ?? 1) - 1;
   if (active <= 0) rateLimitState.active.delete(ip);
   else rateLimitState.active.set(ip, active);
+  if (rateLimitState.totalActive > 0) rateLimitState.totalActive -= 1;
 }
 
 // ---------------------------------------------------------------------------
@@ -418,7 +568,10 @@ export async function parseScreenshotWithOpenAi({
     };
   }
 
-  const validation = validateImageDataUrl(imageDataUrl, { maxBytes: maxImageBytesFromEnv(env) });
+  const validation = validateImageDataUrl(imageDataUrl, {
+    maxBytes: maxImageBytesFromEnv(env),
+    maxDimension: maxImageDimensionFromEnv(env),
+  });
   if (!validation.ok) {
     return { status: validation.status, body: { error: validation.message, code: validation.code } };
   }

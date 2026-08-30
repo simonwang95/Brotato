@@ -16,9 +16,11 @@ const ENV_KEYS = [
   "OCR_TIMEOUT_SECONDS",
   "USE_RESPONSE_FORMAT_JSON",
   "OCR_MAX_IMAGE_BYTES",
+  "OCR_MAX_IMAGE_DIMENSION",
   "OCR_MAX_REQUESTS_PER_MINUTE",
   "OCR_DAILY_QUOTA",
   "OCR_MAX_CONCURRENCY",
+  "OCR_MAX_TOTAL_CONCURRENCY",
 ];
 
 const savedEnv = {};
@@ -70,6 +72,20 @@ async function callHandler({ method = "POST", body = "", headers = {} } = {}) {
 // 1x1 PNG
 const VALID_PNG =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
+
+// 真实 PNG 头部 + 填充（校验器会检查魔数和尺寸）
+function makePng(width, height, padBytes = 0) {
+  const header = Buffer.alloc(33);
+  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(header, 0);
+  header.writeUInt32BE(13, 8);
+  Buffer.from("IHDR").copy(header, 12);
+  header.writeUInt32BE(width, 16);
+  header.writeUInt32BE(height, 20);
+  header[24] = 8;
+  header[25] = 2;
+  const pad = padBytes ? Buffer.alloc(padBytes, 0) : Buffer.alloc(0);
+  return Buffer.concat([header, pad]);
+}
 
 function jsonBody(object) {
   return JSON.stringify(object);
@@ -156,6 +172,29 @@ setEnv(PRODUCTION_BASE);
   const resLarge = await callHandler({ body: oversized });
   assert.equal(resLarge.statusCode, 413, "超过请求体上限应返回 413");
   assert.equal(resLarge.body.code, "BODY_TOO_LARGE");
+
+  // Vercel 会把 application/json 请求体解析成对象：正常上传不能被丢弃
+  const objectCalls = mockFetch(() =>
+    Promise.resolve(okCompletionResponse('{"statsOcr": [{"label": "幸运", "value": 25}]}')),
+  );
+  const resObject = await callHandler({ body: { imageDataUrl: VALID_PNG } });
+  assert.equal(resObject.statusCode, 200, "对象型请求体（Vercel 已解析）应正常处理");
+  assert.deepEqual(resObject.body.parsed, { statsOcr: [{ label: "幸运", value: 25 }] });
+  assert.equal(objectCalls.length, 1, "对象型请求体应走上游模型");
+  restoreFetch();
+
+  // 数组和 JSON 原始值不是合法载荷
+  const resArray = await callHandler({ body: [VALID_PNG] });
+  assert.equal(resArray.statusCode, 400, "数组请求体应返回 400");
+  assert.equal(resArray.body.code, "INVALID_JSON");
+
+  const resPrimitive = await callHandler({ body: "123" });
+  assert.equal(resPrimitive.statusCode, 400, "JSON 原始值请求体应返回 400");
+  assert.equal(resPrimitive.body.code, "INVALID_JSON");
+
+  const resNull = await callHandler({ body: null });
+  assert.equal(resNull.statusCode, 400, "null 请求体应缺少 imageDataUrl");
+  assert.equal(resNull.body.code, "MISSING_IMAGE");
 }
 
 // ---------------------------------------------------------------------------
@@ -172,6 +211,19 @@ setEnv(PRODUCTION_BASE);
     [{ imageDataUrl: "data:image/gif;base64,R0lGODdh" }, 415, "UNSUPPORTED_MEDIA_TYPE"],
     [{ imageDataUrl: "data:image/png;utf8,notbase64" }, 400, "UNSUPPORTED_IMAGE_ENCODING"],
     [{ imageDataUrl: "data:image/png;base64,!!!" }, 400, "MALFORMED_BASE64"],
+    [{ imageDataUrl: "data:image/png;base64," }, 400, "EMPTY_IMAGE"],
+    [{ imageDataUrl: "data:image/png;base64,====" }, 400, "MALFORMED_BASE64"],
+    [{ imageDataUrl: "data:image/png;base64,SGVsbG8=" }, 400, "INVALID_IMAGE_DATA"],
+    [
+      { imageDataUrl: `data:image/jpeg;base64,${makePng(1, 1).toString("base64")}` },
+      400,
+      "INVALID_IMAGE_DATA",
+    ],
+    [
+      { imageDataUrl: `data:image/png;base64,${makePng(20000, 10).toString("base64")}` },
+      413,
+      "IMAGE_DIMENSIONS_TOO_LARGE",
+    ],
   ];
 
   const calls = mockFetch(() => Promise.resolve(okCompletionResponse("{}")));
@@ -184,12 +236,12 @@ setEnv(PRODUCTION_BASE);
   restoreFetch();
 }
 
-// 超大图片（OCR_MAX_IMAGE_BYTES 收紧后触发 413）
+// 超大图片（OCR_MAX_IMAGE_BYTES 收紧后触发 413；真实 PNG 头部 + 填充）
 {
   setEnv({ ...PRODUCTION_BASE, OCR_MAX_IMAGE_BYTES: "1000" });
-  const bigBase64 = "A".repeat(4096);
+  const bigPng = makePng(1, 1, 2000);
   const calls = mockFetch(() => Promise.resolve(okCompletionResponse("{}")));
-  const res = await callHandler({ body: jsonBody({ imageDataUrl: `data:image/png;base64,${bigBase64}` }) });
+  const res = await callHandler({ body: jsonBody({ imageDataUrl: `data:image/png;base64,${bigPng.toString("base64")}` }) });
   assert.equal(res.statusCode, 413);
   assert.equal(res.body.code, "IMAGE_TOO_LARGE");
   assert.equal(calls.length, 0, "超大图片不应调用上游模型");
@@ -355,6 +407,45 @@ setEnv(PRODUCTION_BASE);
   assert.equal(second.statusCode, 429);
   assert.equal(second.body.code, "QUOTA_EXCEEDED");
   assert.equal(calls.length, 1, "超额度请求不应调用上游模型");
+  restoreFetch();
+}
+
+// ---------------------------------------------------------------------------
+// 全局并发（多 IP 聚合滥用保护）
+// ---------------------------------------------------------------------------
+{
+  const { resetOcrRateLimitState } = await import("../src/ocrService.js");
+  setEnv({
+    ...PRODUCTION_BASE,
+    OCR_MAX_REQUESTS_PER_MINUTE: "100",
+    OCR_MAX_CONCURRENCY: "5",
+    OCR_MAX_TOTAL_CONCURRENCY: "1",
+  });
+  resetOcrRateLimitState();
+
+  let releaseFetch;
+  const calls = mockFetch(
+    () =>
+      new Promise((resolve) => {
+        releaseFetch = () => resolve(okCompletionResponse("{}"));
+      }),
+  );
+  const first = callHandler({
+    body: jsonBody({ imageDataUrl: VALID_PNG }),
+    headers: { "x-forwarded-for": "10.0.0.1" },
+  });
+  const second = await callHandler({
+    body: jsonBody({ imageDataUrl: VALID_PNG }),
+    headers: { "x-forwarded-for": "10.0.0.2" },
+  });
+  assert.equal(second.statusCode, 429, "不同 IP 的第二个并发请求应被全局并发限制拒绝");
+  assert.equal(second.body.code, "RATE_LIMITED");
+  const firstResponse = await first;
+  assert.equal(firstResponse.statusCode, null, "第一个请求仍在途");
+  releaseFetch();
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(firstResponse.statusCode, 200);
+  assert.equal(calls.length, 1, "被全局并发限制拒绝的请求不应调用上游模型");
   restoreFetch();
 }
 

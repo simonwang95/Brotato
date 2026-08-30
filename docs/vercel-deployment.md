@@ -17,7 +17,7 @@
 2. 在 Vercel Project Settings 里配置环境变量。
    - **生产环境默认关闭 OCR**（`VERCEL=1` 或存在 `VERCEL_ENV` 时 `OCR_ENABLED` 默认为 `false`）。不配置 `OCR_ENABLED=true` 时，线上页面不展示上传入口，接口返回 503。
    - 如需线上启用：`OCR_ENABLED=true`，并配置 `API_KEY`、`API_URL`、`MODEL`、`MAX_TOKENS`、`OCR_TIMEOUT_SECONDS`、`USE_RESPONSE_FORMAT_JSON`。
-   - 可选保护参数：`OCR_MAX_IMAGE_BYTES`、`OCR_MAX_REQUESTS_PER_MINUTE`、`OCR_DAILY_QUOTA`、`OCR_MAX_CONCURRENCY`（均有默认值）。
+   - 可选保护参数：`OCR_MAX_IMAGE_BYTES`、`OCR_MAX_IMAGE_DIMENSION`、`OCR_MAX_REQUESTS_PER_MINUTE`、`OCR_DAILY_QUOTA`、`OCR_MAX_CONCURRENCY`、`OCR_MAX_TOTAL_CONCURRENCY`（均有默认值）。
    - 环境变量修改后只会作用于新的部署，需要重新部署。
    - 第一阶段如果不启用截图 OCR，可以先不配置这些变量；图鉴和攻略生成器仍可正常使用。
 3. 选择线上可访问的 OpenAI 兼容 API。
@@ -41,6 +41,7 @@
 - `vercel.json` 为 `api/parse-screenshot.js` 设置 `maxDuration: 300`，兼容当前 Vercel 套餐限制。
 - `vercel.json` 对全部响应发送同源 Content-Security-Policy（`script-src 'self'` 等，无 `unsafe-inline`），与 `index.html` 的 CSP meta 一致。
 - `OCR_TIMEOUT_SECONDS` 本地默认是 1200；在 Vercel 环境中会自动限制为最多 285 秒，为函数返回错误和清理请求预留 15 秒。
+- Vercel Functions 的请求体平台上限是 4.5 MB，超过的请求在函数代码运行前就被平台拒绝。服务端与本地开发服务器都把请求体上限设为 4.5 MB，客户端把 data URL 限制在 4 MB 以内（自适应压缩），保证正常请求不会被平台丢弃。
 
 ## 本地验证
 
@@ -62,6 +63,8 @@ npm run start
 - Vercel 无法访问你电脑上的 `127.0.0.1:1234`。
 - **生产环境默认关闭 OCR**；只有显式设置 `OCR_ENABLED=true` 后接口才可用。
 - 启用后，上传图片会经过 Vercel Serverless Function 转发到外部模型 API，注意 API 成本和隐私；页面会向用户展示这一说明。
-- 客户端上传前会把截图裁剪为右侧属性栏区域并压缩（JPEG，上限 8MB），只支持 PNG/JPEG/WebP，单文件不超过 25MB。
-- 服务端按 IP 做滑动窗口限流、每日额度和并发上限（默认 10 次/分钟、100 次/天、并发 2），超限返回 429 且不调用上游模型。限流状态保存在函数实例内存中，Vercel 冷启动会重置，属于最小防护而非严格配额。
+- 客户端上传前会把横向截图（宽高比 >1.2）裁剪为右侧属性面板区域（右侧 40%）并自适应压缩（JPEG，data URL 上限 4MB），只支持 PNG/JPEG/WebP，单文件不超过 25MB，单条边长不超过 12000 像素。
+- 服务端对图片做严格校验：严格 base64 填充、格式魔数（PNG/JPEG/WebP）、像素尺寸解析，超限或格式不符的请求在调用上游模型前就被拒绝。
+- 服务端按 IP 做滑动窗口限流、每日额度、每 IP 并发和全局并发（默认 10 次/分钟、100 次/天、每 IP 并发 2、全局并发 4），超限返回 429 且不调用上游模型。**限流状态保存在函数实例内存中：Vercel 实例会随流量创建与回收，实例间不共享状态，冷启动会重置，因此线上限流是尽力而为的最小防护，不是严格配额。**
+- 线上启用 OCR 前建议叠加平台级防护：Vercel Firewall（IP 速率限制）或 Attack Challenge，对 `/api/parse-screenshot` 的未认证流量做平台层拦截；如后续需要跨实例的严格配额，可引入共享存储（如 Vercel KV）重写限流层（当前为零依赖策略，未内置）。
 - 生产错误响应只返回稳定错误码，不透传上游 `detail`。

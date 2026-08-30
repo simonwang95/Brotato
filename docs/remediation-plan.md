@@ -152,6 +152,15 @@
 - 新增 `tests/apiContract.test.mjs`（成功、坏输入、限流、并发、额度、超时、上游非 JSON、上游错误语义）与 `tests/ocrService.test.mjs` 扩展用例。
 - 浏览器/移动端/键盘手工验收随 P1-4（第三批 CI 与入口烟测）统一执行。
 
+验收修复说明（2026-08-30，分支 fix/security-batch-1，验收反馈轮）：
+
+- 接口同时支持 Vercel 自动解析出的对象型请求体（此前只处理字符串 body，Vercel 上正常上传会被当成空对象而返回 MISSING_IMAGE）；数组与 JSON 原始值 body 返回 400 `INVALID_JSON`。
+- 客户端裁剪规则由“宽高比 >2.2”改为“宽高比 >1.2”：16:9、4:3、超宽屏横向截图都裁剪为右侧 40% 属性面板，与隐私说明一致；画布处理失败时横向图片直接拒绝（不发送未裁剪原图）；压缩改为自适应阶段（1600/0.85 → 1120/0.8 → 784/0.75 → 512/0.6），data URL 上限 4MB。
+- 服务端图片校验收紧：严格 base64 填充、格式魔数（PNG/JPEG/WebP）、像素尺寸解析（PNG IHDR / JPEG SOF / WebP VP8L/VP8X/VP8），新增 `OCR_MAX_IMAGE_DIMENSION`（默认 12000）；`OCR_MAX_IMAGE_BYTES` 默认改为 4MB；新增错误码 `EMPTY_IMAGE` / `INVALID_IMAGE_DATA` / `IMAGE_DIMENSIONS_TOO_LARGE`。
+- 限流新增全局并发上限 `OCR_MAX_TOTAL_CONCURRENCY`（默认 4），防止多 IP 聚合滥用；限流状态仍为进程内存，Vercel 上按实例隔离，属尽力而为防护而非严格配额——跨实例共享存储（KV）限流作为后续项（零依赖策略）。
+- 尺寸口径对齐：请求体上限统一为 4.5MB（Vercel Functions 平台限制），客户端 data URL 上限 4MB。
+- 结论：生产 OCR 仅在 `OCR_ENABLED=false` 时安全；启用线上 OCR 前必须先叠加平台级防护（Vercel Firewall / Attack Challenge）或共享存储限流层。
+
 ## P1：高优先级修复
 
 ### [x] P1-1 消除用户输入和模型输出造成的 DOM 注入
@@ -571,7 +580,7 @@
 
 ### 第一批：安全热修
 
-状态：已完成（2026-08-30，分支 fix/security-batch-1）。自动化测试（`tests/devServer.test.mjs`、`tests/apiContract.test.mjs`、`tests/renderSecurity.test.mjs`、`tests/ocrService.test.mjs`）全部通过；浏览器/移动端/键盘端到端烟测按完成定义随 P1-4（第三批）统一执行。
+状态：已完成（2026-08-30，分支 fix/security-batch-1，含验收反馈修复轮）。自动化测试（`tests/devServer.test.mjs`、`tests/apiContract.test.mjs`、`tests/renderSecurity.test.mjs`、`tests/ocrService.test.mjs`）全部通过；浏览器/移动端/键盘端到端烟测按完成定义随 P1-4（第三批）统一执行。验收结论：P0-1、P1-1 通过；P0-2 在生产保持 `OCR_ENABLED=false` 时安全，线上启用 OCR 需先叠加平台级防护。
 
 1. P0-1 本地服务器静态根、路径边界和监听地址。
 2. P1-1 DOM 注入修复。

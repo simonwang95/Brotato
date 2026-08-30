@@ -11,7 +11,8 @@ import {
 const rootDir = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const host = "127.0.0.1";
 const port = Number(process.env.PORT || 5174);
-const MAX_BODY_BYTES = 25 * 1024 * 1024;
+// 与 api/parse-screenshot.js 保持一致：Vercel Functions 请求体平台上限 4.5 MB。
+const MAX_BODY_BYTES = Math.floor(4.5 * 1024 * 1024);
 
 // 静态资源严格 allowlist：只允许运行时页面需要的入口、样式、浏览器 JS 和公开数据。
 // env.local、.git、source、tests、scripts、api、docs 等一律不对外提供。
