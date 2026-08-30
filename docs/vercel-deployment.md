@@ -15,12 +15,9 @@
    - `data/assets/**`
    - 不依赖 Steam 安装目录或 `.pck` 文件。
 2. 在 Vercel Project Settings 里配置环境变量。
-   - `API_KEY`
-   - `API_URL`
-   - `MODEL`
-   - `MAX_TOKENS`
-   - `OCR_TIMEOUT_SECONDS`
-   - `USE_RESPONSE_FORMAT_JSON`
+   - **生产环境默认关闭 OCR**（`VERCEL=1` 或存在 `VERCEL_ENV` 时 `OCR_ENABLED` 默认为 `false`）。不配置 `OCR_ENABLED=true` 时，线上页面不展示上传入口，接口返回 503。
+   - 如需线上启用：`OCR_ENABLED=true`，并配置 `API_KEY`、`API_URL`、`MODEL`、`MAX_TOKENS`、`OCR_TIMEOUT_SECONDS`、`USE_RESPONSE_FORMAT_JSON`。
+   - 可选保护参数：`OCR_MAX_IMAGE_BYTES`、`OCR_MAX_REQUESTS_PER_MINUTE`、`OCR_DAILY_QUOTA`、`OCR_MAX_CONCURRENCY`（均有默认值）。
    - 环境变量修改后只会作用于新的部署，需要重新部署。
    - 第一阶段如果不启用截图 OCR，可以先不配置这些变量；图鉴和攻略生成器仍可正常使用。
 3. 选择线上可访问的 OpenAI 兼容 API。
@@ -42,6 +39,7 @@
 - Install Command：不需要依赖时可留空；如果 Vercel 要求安装，默认 `npm install` 也可以。
 - Node.js Version：建议 20.x 或更高。
 - `vercel.json` 为 `api/parse-screenshot.js` 设置 `maxDuration: 300`，兼容当前 Vercel 套餐限制。
+- `vercel.json` 对全部响应发送同源 Content-Security-Policy（`script-src 'self'` 等，无 `unsafe-inline`），与 `index.html` 的 CSP meta 一致。
 - `OCR_TIMEOUT_SECONDS` 本地默认是 1200；在 Vercel 环境中会自动限制为最多 285 秒，为函数返回错误和清理请求预留 15 秒。
 
 ## 本地验证
@@ -62,5 +60,8 @@ npm run start
 ## 上线后的限制
 
 - Vercel 无法访问你电脑上的 `127.0.0.1:1234`。
-- 上传图片会经过 Vercel Serverless Function 转发到模型 API，注意 API 成本和隐私。
-- 大图会增加请求体体积和函数耗时，必要时后续应在前端压缩截图。
+- **生产环境默认关闭 OCR**；只有显式设置 `OCR_ENABLED=true` 后接口才可用。
+- 启用后，上传图片会经过 Vercel Serverless Function 转发到外部模型 API，注意 API 成本和隐私；页面会向用户展示这一说明。
+- 客户端上传前会把截图裁剪为右侧属性栏区域并压缩（JPEG，上限 8MB），只支持 PNG/JPEG/WebP，单文件不超过 25MB。
+- 服务端按 IP 做滑动窗口限流、每日额度和并发上限（默认 10 次/分钟、100 次/天、并发 2），超限返回 429 且不调用上游模型。限流状态保存在函数实例内存中，Vercel 冷启动会重置，属于最小防护而非严格配额。
+- 生产错误响应只返回稳定错误码，不透传上游 `detail`。

@@ -75,7 +75,7 @@ npm run start
 
 然后访问 `http://localhost:5174`。
 
-截图/照片解析使用本地 OpenAI 兼容 API。开发阶段默认读取 `env.local`：
+截图/照片解析使用 OpenAI 兼容视觉 API。本地开发默认启用，读取 `env.local`：
 
 ```bash
 API_KEY="lm-studio"
@@ -88,9 +88,21 @@ USE_RESPONSE_FORMAT_JSON="false"
 
 `env.local` 是本机配置文件，不提交；仓库里保留 `env.local.example` 作为模板。LM Studio 对 `response_format` 支持不稳定，默认不要开启 JSON mode；如果换成明确支持 JSON mode 的 OpenAI 兼容服务，再把 `USE_RESPONSE_FORMAT_JSON` 设为 `true`。
 
-本地 OCR 默认最多等待 1200 秒。Vercel 部署受函数时长限制，程序会自动把线上等待时间限制为 285 秒，并在 300 秒的平台截止时间前返回。
+OCR 开关与保护参数（可选）：
 
-截图解析目前只做右侧属性栏 OCR，输出属性名和数字，再由前端映射到角色面板。只看静态页面时仍可用：
+```bash
+OCR_ENABLED="true"            # 显式开关；本地默认 true，生产默认 false
+OCR_MAX_IMAGE_BYTES="15728640" # 单张图片解码后上限，默认 15MB
+OCR_MAX_REQUESTS_PER_MINUTE="10" # 按 IP 的滑动窗口限流
+OCR_DAILY_QUOTA="100"          # 按 IP 的每日额度
+OCR_MAX_CONCURRENCY="2"        # 按 IP 的并发上限
+```
+
+**生产环境默认关闭 OCR**（`VERCEL=1` 或存在 `VERCEL_ENV` 时）。如需在线上启用，必须显式设置 `OCR_ENABLED=true`，并理解：线上图片会经 Vercel 转发给外部模型 API，存在隐私与成本影响。本地 OCR 默认最多等待 1200 秒；Vercel 部署受函数时长限制，程序会自动把线上等待时间限制为 285 秒，并在 300 秒的平台截止时间前返回。
+
+上传前客户端会把截图裁剪为右侧属性栏区域（整窗口截图取右侧 40%）并压缩为 JPEG（上限 8MB），只发送裁剪后的图片；只支持 PNG/JPEG/WebP，单文件不超过 25MB。页面会展示当前模式（本地/线上代理）与隐私说明。
+
+截图解析目前只做右侧属性栏 OCR，输出属性名和数字，再由前端映射到角色面板。只看静态页面时仍可用（静态模式不含 OCR 接口）：
 
 ```bash
 npm run start:static

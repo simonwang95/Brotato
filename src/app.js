@@ -21,6 +21,7 @@ import {
   getAvailablePreferences,
   getAvailableUnlockOptions,
 } from "./strategyGenerator.js";
+import { escapeHtml, metric, metricDelta, renderList, renderPills } from "./renderUtils.js";
 
 const statLabels = {
   maxHp: "最大生命",
@@ -120,6 +121,15 @@ const state = {
     rawText: "",
     parsed: null,
   },
+  ocr: {
+    // checking | available | unavailable
+    status: "checking",
+    // local | production
+    mode: null,
+    // 请求序号：过期响应不能覆盖当前状态
+    requestSeq: 0,
+    inFlight: false,
+  },
 };
 
 const compendiumTabs = {
@@ -149,15 +159,6 @@ function formatNumber(value, digits = 2) {
     maximumFractionDigits: digits,
     minimumFractionDigits: digits,
   });
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
 }
 
 function createNumberField({ label, value, onInput, step = "1" }) {
@@ -355,29 +356,11 @@ function renderItemFields() {
   });
 }
 
-function metric(label, value, hint = "") {
-  return `
-    <div class="metric">
-      <span>${label}</span>
-      <strong>${value}</strong>
-      ${hint ? `<small>${hint}</small>` : ""}
-    </div>
-  `;
-}
-
-function renderList(items, className = "plain-list") {
-  return `
-    <ul class="${className}">
-      ${items.map((item) => `<li>${item}</li>`).join("")}
-    </ul>
-  `;
-}
-
 function renderPriorityList(title, items) {
   return `
     <div class="priority-block">
-      <h4>${title}</h4>
-      ${renderList(items.map((item) => escapeHtml(item)))}
+      <h4>${escapeHtml(title)}</h4>
+      ${renderList(items)}
     </div>
   `;
 }
@@ -406,11 +389,6 @@ function renderRecommendationBreakdown(score, reasons = []) {
       }
     </div>
   `;
-}
-
-function renderPills(items) {
-  if (!items.length) return `<span class="pill muted-pill">无</span>`;
-  return items.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join("");
 }
 
 function renderCompendiumImage(entry, label) {
@@ -511,7 +489,7 @@ function matchesCompendiumSearch(row, query) {
 
 function renderCharacterCompendiumCard(character) {
   const evidenceBlock = character.unlockEvidenceLines?.length
-    ? `<div><dt>静态证据</dt><dd>${renderList(character.unlockEvidenceLines.map((line) => escapeHtml(line)), "compact-list")}</dd></div>`
+    ? `<div><dt>静态证据</dt><dd>${renderList(character.unlockEvidenceLines, "compact-list")}</dd></div>`
     : "";
 
   return `
@@ -525,7 +503,7 @@ function renderCharacterCompendiumCard(character) {
       </div>
       <p>${escapeHtml(character.summary)}</p>
       <dl class="compendium-meta">
-        <div><dt>角色特性</dt><dd>${character.traits.length ? renderList(character.traits.map((line) => escapeHtml(line)), "compact-list") : "未匹配到官方数值特性"}</dd></div>
+        <div><dt>角色特性</dt><dd>${character.traits.length ? renderList(character.traits, "compact-list") : "未匹配到官方数值特性"}</dd></div>
         <div><dt>解锁</dt><dd>${escapeHtml(character.unlock)}</dd></div>
         ${evidenceBlock}
       </dl>
@@ -535,7 +513,7 @@ function renderCharacterCompendiumCard(character) {
 
 function renderWeaponTierTable(entry) {
   if (!entry.weaponTierRows?.length) {
-    return renderList(entry.detailedAttributes.map((line) => escapeHtml(line)), "compact-list");
+    return renderList(entry.detailedAttributes, "compact-list");
   }
 
   return `
@@ -581,7 +559,7 @@ function renderWeaponTierTable(entry) {
     </div>
     ${
       entry.tierEffectLines?.length
-        ? `<div class="tier-effect-block"><span>等级效果</span>${renderList(entry.tierEffectLines.map((line) => escapeHtml(line)), "compact-list")}</div>`
+        ? `<div class="tier-effect-block"><span>等级效果</span>${renderList(entry.tierEffectLines, "compact-list")}</div>`
         : ""
     }
   `;
@@ -612,7 +590,7 @@ function renderCatalogCompendiumCard(entry, kindLabel) {
       <dl class="compendium-meta">
         <div><dt>官方状态</dt><dd>${escapeHtml(`${entry.unlockLabel}，${entry.lootLabel}`)}</dd></div>
         <div><dt>策略解锁</dt><dd>${escapeHtml(entry.strategyUnlock)}</dd></div>
-        <div><dt>详细属性</dt><dd>${entry.weaponTierRows?.length ? renderWeaponTierTable(entry) : renderList(entry.detailedAttributes.map((line) => escapeHtml(line)), "compact-list")}</dd></div>
+        <div><dt>详细属性</dt><dd>${entry.weaponTierRows?.length ? renderWeaponTierTable(entry) : renderList(entry.detailedAttributes, "compact-list")}</dd></div>
         <div><dt>功能说明</dt><dd>${escapeHtml(entry.strategyStatNote || "待补策略说明")}</dd></div>
         <div><dt>套装</dt><dd class="pill-list">${renderPills(entry.setLabels)}</dd></div>
         <div><dt>标签</dt><dd class="pill-list">${renderPills(tags)}</dd></div>
@@ -988,7 +966,7 @@ function renderStrategyGuide() {
 
       <div class="guide-section">
         <h3>购物和升级节奏</h3>
-        ${renderList(guide.rhythm.map((item) => escapeHtml(item)))}
+        ${renderList(guide.rhythm)}
       </div>
     </section>
 
@@ -1010,7 +988,7 @@ function renderStrategyGuide() {
 
     <section class="source-section">
       <h3>资料状态</h3>
-      ${renderList([...guide.optionNotes, ...guide.sourceNotes, catalogNote].map((item) => escapeHtml(item)))}
+      ${renderList([...guide.optionNotes, ...guide.sourceNotes, catalogNote])}
     </section>
   `;
 }
@@ -1119,23 +1097,22 @@ function renderResults() {
     scenarioBefore.totalDps === 0
       ? 0
       : (scenarioDelta / scenarioBefore.totalDps) * 100;
-  const deltaClass = comparison.dpsDelta >= 0 ? "positive" : "negative";
-  const scenarioDeltaClass = scenarioDelta >= 0 ? "positive" : "negative";
-
   $("#summary").innerHTML = `
     ${metric("当前 DPS", formatNumber(before.dps), `${before.weapon.quantity} 把 ${before.weapon.name}`)}
     ${metric("当前场景 DPS", formatNumber(scenarioBefore.totalDps), scenarioBefore.scenario.name)}
-    ${metric(
+    ${metricDelta(
       "DPS 变化",
-      `<span class="${deltaClass}">${comparison.dpsDelta >= 0 ? "+" : ""}${formatNumber(comparison.dpsDelta)}</span>`,
+      `${comparison.dpsDelta >= 0 ? "+" : ""}${formatNumber(comparison.dpsDelta)}`,
       `${comparison.dpsDelta >= 0 ? "+" : ""}${formatNumber(comparison.dpsDeltaPercent)}%`,
+      { positive: comparison.dpsDelta >= 0 },
     )}
     ${metric("购买后 DPS", formatNumber(after.dps), "只含基础命中模型")}
     ${metric("购买后场景 DPS", formatNumber(scenarioAfter.totalDps), "应用候选道具变化")}
-    ${metric(
+    ${metricDelta(
       "场景 DPS 变化",
-      `<span class="${scenarioDeltaClass}">${scenarioDelta >= 0 ? "+" : ""}${formatNumber(scenarioDelta)}</span>`,
+      `${scenarioDelta >= 0 ? "+" : ""}${formatNumber(scenarioDelta)}`,
       `${scenarioDelta >= 0 ? "+" : ""}${formatNumber(scenarioDeltaPercent)}%`,
+      { positive: scenarioDelta >= 0 },
     )}
   `;
 
@@ -1182,6 +1159,13 @@ function renderResults() {
 function renderScreenshotParseOutput() {
   const output = $("#screenshot-parse-output");
   if (!output) return;
+
+  if (state.ocr.status === "unavailable") {
+    output.classList.add("empty-state");
+    output.textContent =
+      "当前环境未启用 OCR。本地开发：使用 npm run start 启动本地服务并配置 env.local；线上环境：需要显式启用 OCR_ENABLED 后才能使用截图解析。";
+    return;
+  }
 
   const { status, message, rawText, parsed } = state.screenshotParse;
   const statusLabel = {
@@ -1499,30 +1483,170 @@ function applyParsedSimulatorData(parsed) {
   return changed;
 }
 
-async function parseScreenshotUpload() {
-  const input = $("#screenshot-file");
-  const file = input?.files?.[0];
-  if (!file) {
-    state.screenshotParse = {
-      status: "error",
-      message: "请先选择一张截图或照片。",
-      rawText: "",
-      parsed: null,
-    };
+const OCR_ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "image/webp"];
+const OCR_MAX_FILE_BYTES = 25 * 1024 * 1024;
+const OCR_MAX_DATA_URL_CHARS = 8 * 1024 * 1024;
+
+let ocrAbortController = null;
+
+function fileLooksLikeAcceptedImage(file) {
+  if (OCR_ACCEPTED_FILE_TYPES.includes(file.type)) return true;
+  return /\.(png|jpe?g|webp)$/i.test(file.name || "");
+}
+
+function loadImageFromDataUrl(dataUrl) {
+  return new Promise((resolveImage, rejectImage) => {
+    const image = new Image();
+    image.addEventListener("load", () => resolveImage(image));
+    image.addEventListener("error", () => rejectImage(new Error("无法读取图片。")));
+    image.src = dataUrl;
+  });
+}
+
+// 裁剪右侧属性栏区域并压缩，限制上传体积；
+// 处理失败时退回原始 data URL，由服务端校验兜底。
+async function prepareScreenshot(file) {
+  const originalDataUrl = await fileToDataUrl(file);
+  try {
+    const image = await loadImageFromDataUrl(originalDataUrl);
+    const width = image.naturalWidth || image.width;
+    const height = image.naturalHeight || image.height;
+    if (!width || !height) throw new Error("空图片");
+
+    let sourceX = 0;
+    let sourceWidth = width;
+    let cropped = false;
+    if (width / height > 2.2) {
+      // 整张游戏窗口截图：只保留右侧属性面板区域。
+      sourceWidth = Math.round(width * 0.4);
+      sourceX = width - sourceWidth;
+      cropped = true;
+    }
+
+    for (const maxDim of [1600, 1120, 784]) {
+      const scale = Math.min(1, maxDim / Math.max(sourceWidth, height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(sourceWidth * scale));
+      canvas.height = Math.max(1, Math.round(height * scale));
+      const context = canvas.getContext("2d");
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, sourceX, 0, sourceWidth, height, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+      if (dataUrl.length <= OCR_MAX_DATA_URL_CHARS) {
+        return { dataUrl, cropped };
+      }
+    }
+    throw new Error("图片压缩后仍过大");
+  } catch {
+    if (originalDataUrl.length > OCR_MAX_DATA_URL_CHARS) {
+      throw new Error("图片过大，请裁剪或压缩后再上传。");
+    }
+    return { dataUrl: originalDataUrl, cropped: false };
+  }
+}
+
+async function checkOcrAvailability() {
+  try {
+    const response = await fetch("/api/parse-screenshot", { method: "GET" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json().catch(() => ({}));
+    if (payload && payload.enabled === true) {
+      state.ocr.status = "available";
+      state.ocr.mode = payload.mode === "production" ? "production" : "local";
+    } else {
+      state.ocr.status = "unavailable";
+      state.ocr.mode = payload?.mode === "production" ? "production" : "local";
+    }
+  } catch {
+    state.ocr.status = "unavailable";
+    state.ocr.mode = null;
+  }
+  renderScreenshotPanel();
+}
+
+function renderScreenshotPanel() {
+  const uploader = $("#screenshot-uploader");
+  const privacy = $("#screenshot-privacy");
+  if (!uploader) return;
+
+  if (state.ocr.status === "unavailable") {
+    uploader.hidden = true;
+    if (privacy) privacy.textContent = "";
     renderScreenshotParseOutput();
     return;
   }
 
+  uploader.hidden = false;
+  if (privacy) {
+    privacy.textContent =
+      state.ocr.mode === "production"
+        ? "线上代理模式：截图会先裁剪为属性面板区域并压缩，然后发送到线上服务，由线上服务转发给外部模型 API 识别。请注意隐私与成本。"
+        : "本地模式：截图会先裁剪为属性面板区域并压缩，然后只发送到 env.local 配置的本地服务（如 LM Studio），不会上传到任何线上服务。";
+  }
+  renderScreenshotParseOutput();
+}
+
+function setScreenshotParseError(message) {
+  state.screenshotParse = {
+    status: "error",
+    message,
+    rawText: "",
+    parsed: null,
+  };
+  renderScreenshotParseOutput();
+}
+
+async function parseScreenshotUpload() {
+  const input = $("#screenshot-file");
+  const parseButton = $("#parse-screenshot");
+  const file = input?.files?.[0];
+
+  if (state.ocr.status !== "available") {
+    setScreenshotParseError("当前环境未启用 OCR，请检查服务状态后重试。");
+    return;
+  }
+
+  if (state.ocr.inFlight) {
+    // 请求进行中：按钮已禁用，这里是重复触发的兜底，直接忽略。
+    return;
+  }
+
+  if (!file) {
+    setScreenshotParseError("请先选择一张截图或照片。");
+    return;
+  }
+
+  if (!fileLooksLikeAcceptedImage(file)) {
+    setScreenshotParseError("只支持 PNG、JPEG 和 WebP 图片。");
+    return;
+  }
+
+  if (file.size > OCR_MAX_FILE_BYTES) {
+    setScreenshotParseError("图片过大，请裁剪或压缩后再上传。");
+    return;
+  }
+
+  state.ocr.inFlight = true;
+  state.ocr.requestSeq += 1;
+  const requestSeq = state.ocr.requestSeq;
+  ocrAbortController?.abort();
+  ocrAbortController = new AbortController();
+  parseButton.disabled = true;
+
   state.screenshotParse = {
     status: "loading",
-    message: "正在发送到本地解析服务。",
+    message:
+      state.ocr.mode === "production" ? "正在发送到线上解析服务…" : "正在发送到本地解析服务…",
     rawText: "",
     parsed: null,
   };
   renderScreenshotParseOutput();
 
   try {
-    const imageDataUrl = await fileToDataUrl(file);
+    const { dataUrl, cropped } = await prepareScreenshot(file);
+    if (state.ocr.requestSeq !== requestSeq) return;
+
     const selectedCharacter = getAvailableCharacters().find(
       (character) => character.id === state.simulatorCharacter,
     );
@@ -1530,21 +1654,18 @@ async function parseScreenshotUpload() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        imageDataUrl,
-        selectedCharacter: selectedCharacter
-          ? {
-              id: selectedCharacter.id,
-              name: selectedCharacter.name,
-              cnHint: selectedCharacter.cnHint,
-            }
-          : null,
+        imageDataUrl: dataUrl,
+        // 只提交角色 id，服务端从内部表查名称，不接受客户端文本。
+        selectedCharacter: selectedCharacter ? { id: selectedCharacter.id } : null,
+        cropped,
       }),
+      signal: ocrAbortController?.signal,
     });
+    if (state.ocr.requestSeq !== requestSeq) return;
+
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) {
-      const detailMessage =
-        payload.detail?.error?.message ?? payload.detail?.message ?? payload.error;
-      throw new Error(detailMessage || `HTTP ${response.status}`);
+      throw new Error(payload.error || `HTTP ${response.status}`);
     }
 
     const parsed =
@@ -1567,15 +1688,27 @@ async function parseScreenshotUpload() {
       renderResults();
     }
   } catch (error) {
-    state.screenshotParse = {
-      status: "error",
-      message: `解析失败：${error.message}。请确认使用 npm run start 启动，并且 env.local 指向可用的 LM Studio 服务。`,
-      rawText: "",
-      parsed: null,
-    };
+    if (error?.name === "AbortError") {
+      // 请求被取消（用户清空或发起了新请求），不覆盖当前状态。
+    } else if (state.ocr.requestSeq === requestSeq) {
+      state.screenshotParse = {
+        status: "error",
+        message:
+          state.ocr.mode === "production"
+            ? `解析失败：${error.message}。请检查线上服务状态后重试。`
+            : `解析失败：${error.message}。请确认使用 npm run start 启动本地服务，并且 env.local 指向可用的本地模型服务。`,
+        rawText: "",
+        parsed: null,
+      };
+    }
+  } finally {
+    if (state.ocr.requestSeq === requestSeq) {
+      state.ocr.inFlight = false;
+      ocrAbortController = null;
+      parseButton.disabled = false;
+    }
+    renderScreenshotParseOutput();
   }
-
-  renderScreenshotParseOutput();
 }
 
 function bindControls() {
@@ -1654,6 +1787,11 @@ function bindControls() {
   });
 
   $("#clear-screenshot-parse").addEventListener("click", () => {
+    // 取消进行中的请求，使过期响应无法覆盖当前状态。
+    ocrAbortController?.abort();
+    ocrAbortController = null;
+    state.ocr.requestSeq += 1;
+    state.ocr.inFlight = false;
     state.screenshotParse = {
       status: "idle",
       message: "",
@@ -1662,6 +1800,8 @@ function bindControls() {
     };
     const input = $("#screenshot-file");
     if (input) input.value = "";
+    const parseButton = $("#parse-screenshot");
+    if (parseButton) parseButton.disabled = false;
     renderScreenshotParseOutput();
   });
 
@@ -1809,3 +1949,4 @@ render();
 loadOfficialCatalog();
 loadOfficialLocalization();
 loadOfficialUnlocks();
+checkOcrAvailability();

@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
     <title>Brotato 数值实验台</title>
     <link rel="stylesheet" href="./styles.css?v=20260614-ocr-vercel" />
   </head>
@@ -93,22 +97,23 @@
         <section class="panel screenshot-panel">
           <div class="panel-header">
             <h2>截图/照片解析</h2>
-            <p>上传当前局内截图，使用本地 OpenAI 兼容 API 只做右侧属性栏 OCR；测试阶段读取 env.local 中的 LM Studio 配置。</p>
+            <p>上传当前局内截图，只做右侧属性栏 OCR。本地开发通过 npm run start 启动服务并读取 env.local 中的本地模型配置；线上默认关闭，需显式启用。</p>
           </div>
-          <div class="screenshot-uploader">
+          <div id="screenshot-uploader" class="screenshot-uploader">
             <label class="field">
               <span>当前角色（手动选择）</span>
               <select id="simulator-character"></select>
             </label>
             <label class="field">
-              <span>上传截图或照片</span>
-              <input id="screenshot-file" type="file" accept="image/*" />
+              <span>上传截图或照片（PNG / JPEG / WebP）</span>
+              <input id="screenshot-file" type="file" accept="image/png,image/jpeg,image/webp" />
             </label>
             <button id="parse-screenshot" type="button">解析并填入</button>
             <button id="clear-screenshot-parse" class="secondary" type="button">清空解析</button>
           </div>
+          <p id="screenshot-privacy" class="privacy-note"></p>
           <div id="screenshot-parse-output" class="parse-output empty-state">
-            尚未上传图片。解析服务需要通过 npm run start 启动本地 Node 服务。
+            正在检查解析服务状态…
           </div>
         </section>
 

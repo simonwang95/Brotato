@@ -60,7 +60,7 @@
 
 ## P0：立即处理
 
-### [ ] P0-1 限制本地开发服务器的文件与网络暴露范围
+### [x] P0-1 限制本地开发服务器的文件与网络暴露范围
 
 问题：
 
@@ -93,9 +93,18 @@
 - 路径穿越、同前缀目录、畸形 URI 和目录请求均不会退出进程。
 - 新增 HTTP 集成测试覆盖上述允许与拒绝路径。
 
+完成说明（2026-08-30，分支 fix/security-batch-1）：
+
+- `scripts/dev-server.mjs` 重写为严格 allowlist（`/index.html`、`/styles.css`、`/src/**`、`/data/**`），依次执行 dotfile 拒绝、allowlist、`path.relative` 逻辑边界、`realpath` 符号链接边界（含对真实路径的二次 allowlist 检查，符号链接不能指向仓库内非公开文件）、`stat.isFile()` 普通文件检查。
+- 显式绑定 `127.0.0.1`，日志输出 `server.address()` 的真实地址；顶层请求处理包裹 try/catch，单个请求异常不再终止进程。
+- 错误语义：坏 URL/坏编码 400，非 allowlist 403，缺失/目录 404，内部异常 500，非 GET/HEAD 405。
+- `start:static` 改为 `python3 -m http.server 5174 --bind 127.0.0.1 --directory public`。
+- 新增 `tests/devServer.test.mjs` HTTP 集成测试：正常资源 200、`/env.local`、`/.git/config`、`/source/*`、`/scripts/*`、`/tests/*`、`/api/*`、`/package.json` 等拒绝、编码穿越、同前缀目录、符号链接逃逸、畸形 URI、超大请求体、进程存活。
+- 浏览器/移动端/键盘手工验收随 P1-4（第三批 CI 与入口烟测）统一执行。
+
 临时措施：在该项完成前，不要把开发端口暴露到不可信局域网或公网；不需要服务时停止当前开发进程。
 
-### [ ] P0-2 关闭或保护未设防的生产 OCR 代理
+### [x] P0-2 关闭或保护未设防的生产 OCR 代理
 
 问题：
 
@@ -132,9 +141,20 @@
 - 页面清楚区分本地模式和线上代理模式，并展示隐私说明。
 - API 合约测试覆盖成功、坏输入、限流、超时、上游非 JSON 和上游错误。
 
+完成说明（2026-08-30，分支 fix/security-batch-1）：
+
+- 新增 `OCR_ENABLED` 显式开关：本地默认开启，生产（`VERCEL=1` 或存在 `VERCEL_ENV`）默认关闭；关闭时接口返回 503 `OCR_DISABLED`，页面隐藏上传入口并说明原因。
+- 服务端只接受 `data:image/png|jpeg|webp;base64,...`：外部 URL 400、非允许 MIME 415、非 base64 编码 400、坏 Base64 400、超过 `OCR_MAX_IMAGE_BYTES`（默认 15MB）413；请求体超过 25MB 直接 413。
+- 按 IP 的滑动窗口限流（`OCR_MAX_REQUESTS_PER_MINUTE`，默认 10）、每日额度（`OCR_DAILY_QUOTA`，默认 100）、并发上限（`OCR_MAX_CONCURRENCY`，默认 2），超限返回 429 且不调用上游模型；限流状态为进程内内存态（Vercel 上按函数实例隔离，作为最小防护）。
+- 客户端：上传前裁剪右侧属性栏（宽高比 >2.2 时取右侧 40%）并压缩（maxDim 1600/1120/784，JPEG 0.85，上限 8MB）；只提交角色 id（名称由服务端从内部表解析）；请求期间禁用按钮，`AbortController` + 单调请求序号忽略过期响应；清空按钮可取消在途请求。
+- 生产错误不透传上游 `detail`，返回稳定错误码；本地保留 detail 便于调试。
+- 页面区分本地模式与线上代理模式，并展示隐私说明（`#screenshot-privacy`）。
+- 新增 `tests/apiContract.test.mjs`（成功、坏输入、限流、并发、额度、超时、上游非 JSON、上游错误语义）与 `tests/ocrService.test.mjs` 扩展用例。
+- 浏览器/移动端/键盘手工验收随 P1-4（第三批 CI 与入口烟测）统一执行。
+
 ## P1：高优先级修复
 
-### [ ] P1-1 消除用户输入和模型输出造成的 DOM 注入
+### [x] P1-1 消除用户输入和模型输出造成的 DOM 注入
 
 问题：
 
@@ -158,6 +178,13 @@
 - 输入 HTML 标签、事件属性或脚本片段时，页面只显示普通文本，不创建额外 DOM 节点，也不发起外部请求。
 - OCR 返回同类内容时仍不可执行。
 - 浏览器安全回归测试和 CSP 检查通过。
+
+完成说明（2026-08-30，分支 fix/security-batch-1）：
+
+- 新增 `src/renderUtils.js`：`escapeHtml`、`metric`、`metricDelta`、`renderList`、`renderPills` 全部按纯文本转义参数，样式类只来自固定集合；`src/app.js` 的 8 处 `innerHTML` 渲染点全部改为这些助手，移除调用点的手工预转义。
+- `index.html` 增加同源 CSP meta（`script-src 'self'` 等，无 `unsafe-inline`）；`vercel.json` 与本地开发服务器对全部响应发送同一 CSP 头。
+- 新增 `tests/renderSecurity.test.mjs`：覆盖 `metric`/`metricDelta`/`renderList`/`renderPills` 的注入回归与三处 CSP 声明检查。
+- 浏览器/移动端/键盘手工验收随 P1-4（第三批 CI 与入口烟测）统一执行。
 
 ### [ ] P1-2 为 OCR 输入、模型输出和文本兜底建立严格 Schema
 
@@ -543,6 +570,8 @@
 ## 推荐实施顺序
 
 ### 第一批：安全热修
+
+状态：已完成（2026-08-30，分支 fix/security-batch-1）。自动化测试（`tests/devServer.test.mjs`、`tests/apiContract.test.mjs`、`tests/renderSecurity.test.mjs`、`tests/ocrService.test.mjs`）全部通过；浏览器/移动端/键盘端到端烟测按完成定义随 P1-4（第三批）统一执行。
 
 1. P0-1 本地服务器静态根、路径边界和监听地址。
 2. P1-1 DOM 注入修复。
