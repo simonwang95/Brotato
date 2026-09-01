@@ -1,6 +1,7 @@
 import {
   calculateWeaponDamage,
   clamp,
+  finiteOr,
   normalizeStats,
   normalizeWeapon,
   toNumber,
@@ -887,8 +888,8 @@ export function calculateItemEffectDps(stats, scenarioId, itemEffectId = "none",
   );
   const damageMultiplier = Math.max(0, 1 + normalizedStats.damagePercent / 100);
   const modifiedExpectedDamage = expectedDamage * damageMultiplier;
-  const rawDps = triggerRate * chance * modifiedExpectedDamage;
-  const dps = rawDps * enemyArmorMultiplier;
+  const rawDps = finiteOr(triggerRate * chance * modifiedExpectedDamage);
+  const dps = finiteOr(rawDps * enemyArmorMultiplier);
 
   return {
     itemEffect,
@@ -976,12 +977,13 @@ export function calculateBurningDps(stats, weapon, scenarioId, options = {}) {
     Math.max(0, scenario.averageTargetsInRange - 1),
   );
   const spreadMultiplier = 1 + spreadTargets * clamp(context.burnSpreadChance / 100, 0, 1);
-  const dps =
+  const dps = finiteOr(
     burnDamage *
-    context.burnTickRate *
-    uptime *
-    spreadMultiplier *
-    hitModel.enemyArmorMultiplier;
+      context.burnTickRate *
+      uptime *
+      spreadMultiplier *
+      hitModel.enemyArmorMultiplier,
+  );
 
   return {
     applicationRate,
@@ -1020,7 +1022,9 @@ export function calculateStructureDps(stats, scenarioId, options = {}) {
   const uptime = clamp(context.structureUptime / 100, 0, 1);
   const hitChance = clamp(context.structureHitChance / 100, 0, 1);
   const enemyArmorMultiplier = calculateArmorDamageMultiplier(context.enemyArmor);
-  const dps = structureDamage * attacksPerSecond * targetMultiplier * uptime * hitChance * enemyArmorMultiplier;
+  const dps = finiteOr(
+    structureDamage * attacksPerSecond * targetMultiplier * uptime * hitChance * enemyArmorMultiplier,
+  );
 
   return {
     structureDamage,
@@ -1058,7 +1062,8 @@ export function calculateSurvivalModel(stats, options = {}) {
   );
   const effectiveAvoidance = 1 - (1 - dodgeChance) * (1 - speedAvoidance);
   const incomingDamageMultiplier = (1 - effectiveAvoidance) * curse.enemyPowerMultiplier;
-  const relativeSurvival = incomingDamageMultiplier <= 0 ? Infinity : 1 / incomingDamageMultiplier;
+  const relativeSurvival =
+    incomingDamageMultiplier <= 0 ? Infinity : finiteOr(1 / incomingDamageMultiplier, 0);
 
   return {
     dodgeChance,
@@ -1082,8 +1087,11 @@ export function calculateScenarioDps(
   const structures = calculateStructureDps(stats, scenarioId, options);
   const curse = calculateCurseModel(options);
   const survival = calculateSurvivalModel(stats, options);
-  const totalDps = hitModel.scenarioWeaponDps + itemEffect.dps + burning.dps + structures.dps;
-  const effectiveClearScore = totalDps === 0 ? 0 : (totalDps * curse.rewardMultiplier) / curse.enemyPowerMultiplier;
+  const totalDps = finiteOr(hitModel.scenarioWeaponDps + itemEffect.dps + burning.dps + structures.dps);
+  const effectiveClearScore =
+    totalDps === 0
+      ? 0
+      : finiteOr((totalDps * curse.rewardMultiplier) / curse.enemyPowerMultiplier);
 
   return {
     ...hitModel,

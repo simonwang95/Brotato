@@ -23,78 +23,44 @@ import {
 } from "./strategyGenerator.js";
 import { escapeHtml, metric, metricDelta, renderList, renderPills } from "./renderUtils.js";
 import { readImageDimensions } from "./imageValidation.js";
+import {
+  COMBAT_CONTEXT_FIELD_SCHEMAS,
+  ITEM_DELTA_FIELD_SCHEMAS,
+  SCALING_FIELD_SCHEMAS,
+  STAT_FIELD_SCHEMAS,
+  WEAPON_FIELD_SCHEMAS,
+  labelMap,
+  validateNumberValue,
+} from "./fieldSchema.js";
 
-const statLabels = {
-  maxHp: "最大生命",
-  hpRegen: "生命再生",
-  lifeSteal: "生命窃取 %",
-  armor: "护甲",
-  dodge: "闪避 %",
-  damagePercent: "总伤害 %",
-  attackSpeed: "攻速 %",
-  critChance: "暴击率 %",
-  meleeDamage: "近战伤害",
-  rangedDamage: "远程伤害",
-  elementalDamage: "元素伤害",
-  engineering: "工程学",
-  speed: "移速 %",
-  harvesting: "收获",
-  luck: "幸运",
-};
+// 标签统一来自 fieldSchema 注册表，保证 UI 文案与约束同源（P1-3）。
+const statLabels = labelMap(STAT_FIELD_SCHEMAS);
+const combatContextLabels = labelMap(COMBAT_CONTEXT_FIELD_SCHEMAS);
+const scalingLabels = labelMap(SCALING_FIELD_SCHEMAS);
+const itemDeltaLabels = labelMap(ITEM_DELTA_FIELD_SCHEMAS);
+const weaponLabels = { name: "武器名", ...labelMap(WEAPON_FIELD_SCHEMAS) };
 
-const combatContextLabels = {
-  enemyArmor: "敌人护甲",
-  averageEnemyHp: "平均敌人血量（0 用场景默认）",
-  positioningHitLoss: "走位命中损失 %",
-  burnBaseDamage: "燃烧基础每跳伤害",
-  burnElementalScaling: "燃烧元素缩放 %",
-  burnApplicationChance: "燃烧施加概率 %",
-  burnDuration: "燃烧持续 秒",
-  burnTickRate: "燃烧每秒跳数",
-  burnSpreadChance: "燃烧传播概率 %",
-  burnSpreadTargets: "传播额外目标",
-  curseIntensity: "诅咒强度",
-  curseEnemyPowerPerPoint: "每点诅咒敌人增强 %",
-  curseRewardPerPoint: "每点诅咒奖励增强 %",
-  structureCount: "结构物数量",
-  structureBaseDamage: "结构物基础伤害",
-  structureCooldown: "结构物冷却 秒",
-  structureEngineeringScaling: "结构物工程缩放 %",
-  structureUptime: "结构物有效时间 %",
-  structureHitChance: "结构物命中率 %",
-  structureTargets: "结构物目标数",
-  speedAvoidancePerPoint: "每点移速规避 %",
-  speedAvoidanceCap: "移速规避上限 %",
-};
+// fieldId -> 中文标签，供结果区提示“哪个字段无法计算”（P1-3）。
+const FIELD_LABEL_BY_ID = {};
+Object.values(STAT_FIELD_SCHEMAS).forEach((s) => (FIELD_LABEL_BY_ID[`stats:${s.key}`] = s.label));
+Object.values(WEAPON_FIELD_SCHEMAS).forEach((s) => (FIELD_LABEL_BY_ID[`weapon:${s.key}`] = s.label));
+Object.values(SCALING_FIELD_SCHEMAS).forEach((s) => (FIELD_LABEL_BY_ID[`scaling:${s.key}`] = s.label));
+Object.values(ITEM_DELTA_FIELD_SCHEMAS).forEach((s) => (FIELD_LABEL_BY_ID[`itemDelta:${s.key}`] = s.label));
+Object.values(COMBAT_CONTEXT_FIELD_SCHEMAS).forEach((s) => (FIELD_LABEL_BY_ID[`context:${s.key}`] = s.label));
 
-const scalingLabels = {
-  meleeDamage: "近战缩放 %",
-  rangedDamage: "远程缩放 %",
-  elementalDamage: "元素缩放 %",
-  engineering: "工程缩放 %",
-};
-
-const weaponLabels = {
-  name: "武器名",
-  quantity: "武器数量",
-  baseDamage: "基础伤害",
-  cooldown: "基础冷却 秒",
-  hitsPerAttack: "每次命中数",
-  piercing: "穿透次数",
-  piercingDamageMultiplier: "穿透伤害保留",
-  bounces: "弹射次数",
-  bounceDamageMultiplier: "弹射伤害保留",
-  explosionTargets: "爆炸额外目标",
-  explosionDamageMultiplier: "爆炸伤害倍率",
-  critChance: "武器暴击率 %",
-  critMultiplier: "暴击倍率",
-};
+function fieldLabelFor(fieldId) {
+  return FIELD_LABEL_BY_ID[fieldId] ?? fieldId;
+}
 
 const state = {
   stats: { ...DEFAULT_STATS },
   weapon: structuredClone(DEFAULT_WEAPON),
   itemDelta: { ...DEFAULT_ITEM_DELTA },
   roundingMode: "none",
+  // 当前被标记为非法的数字字段：fieldId -> 中文错误说明（P1-3）。
+  // 非法输入不会写入 state.stats/weapon/itemDelta/combatContext，
+  // 计算继续使用最近一次有效值，结果区会明确提示哪些字段无法计算。
+  invalidFields: {},
   scenarioId: "normalWave",
   itemEffectId: "none",
   combatContext: { ...DEFAULT_COMBAT_CONTEXT },
@@ -155,14 +121,16 @@ const $ = (selector) => document.querySelector(selector);
 
 function formatNumber(value, digits = 2) {
   const number = Number(value);
-  if (!Number.isFinite(number)) return "0";
+  // 非有限值不再静默显示为 0：NaN 显示 “—”，±Infinity 显示 “±∞”（P1-3）。
+  if (Number.isNaN(number)) return "—";
+  if (!Number.isFinite(number)) return number > 0 ? "∞" : "-∞";
   return number.toLocaleString("zh-CN", {
     maximumFractionDigits: digits,
     minimumFractionDigits: digits,
   });
 }
 
-function createNumberField({ label, value, onInput, step = "1" }) {
+function createNumberField({ label, value, schema, fieldId, onInput }) {
   const wrapper = document.createElement("label");
   wrapper.className = "field";
 
@@ -171,12 +139,50 @@ function createNumberField({ label, value, onInput, step = "1" }) {
 
   const input = document.createElement("input");
   input.type = "number";
-  input.step = step;
+  input.step = String(schema.step);
+  input.min = String(schema.min);
+  input.max = String(schema.max);
   input.value = value;
-  input.addEventListener("input", () => onInput(Number(input.value)));
+  input.setAttribute("aria-label", label);
 
-  wrapper.append(span, input);
+  const errorEl = document.createElement("small");
+  errorEl.className = "field-error";
+  errorEl.hidden = true;
+
+  const existingError = state.invalidFields[fieldId];
+  if (existingError) {
+    input.classList.add("invalid");
+    errorEl.textContent = existingError;
+    errorEl.hidden = false;
+  }
+
+  input.addEventListener("input", () => {
+    const result = validateNumberValue(input.value, schema);
+    if (result.ok) {
+      input.classList.remove("invalid");
+      errorEl.hidden = true;
+      errorEl.textContent = "";
+      delete state.invalidFields[fieldId];
+      onInput(result.value);
+    } else {
+      // 非法输入：保留原输入并明确报错，不写入 state，停止对应计算（P1-3）。
+      input.classList.add("invalid");
+      errorEl.textContent = result.error;
+      errorEl.hidden = false;
+      state.invalidFields[fieldId] = result.error;
+      renderResults();
+    }
+  });
+
+  wrapper.append(span, input, errorEl);
   return wrapper;
+}
+
+// 重建某组字段前，清掉该组遗留的非法标记，避免“输入显示有效值却挂着错误”。
+function clearInvalidFields(prefix) {
+  Object.keys(state.invalidFields).forEach((key) => {
+    if (key.startsWith(prefix)) delete state.invalidFields[key];
+  });
 }
 
 function createTextField({ label, value, onInput }) {
@@ -198,12 +204,15 @@ function createTextField({ label, value, onInput }) {
 function renderStatFields() {
   const root = $("#stats-fields");
   root.replaceChildren();
+  clearInvalidFields("stats:");
 
   Object.entries(statLabels).forEach(([key, label]) => {
     root.append(
       createNumberField({
         label,
         value: state.stats[key],
+        schema: STAT_FIELD_SCHEMAS[key],
+        fieldId: `stats:${key}`,
         onInput: (value) => {
           state.stats[key] = value;
           renderResults();
@@ -216,6 +225,8 @@ function renderStatFields() {
 function renderWeaponFields() {
   const root = $("#weapon-fields");
   root.replaceChildren();
+  clearInvalidFields("weapon:");
+  clearInvalidFields("scaling:");
 
   root.append(
     createTextField({
@@ -228,25 +239,13 @@ function renderWeaponFields() {
     }),
   );
 
-  [
-    ["quantity", "1"],
-    ["baseDamage", "1"],
-    ["cooldown", "0.01"],
-    ["hitsPerAttack", "1"],
-    ["piercing", "1"],
-    ["piercingDamageMultiplier", "0.05"],
-    ["bounces", "1"],
-    ["bounceDamageMultiplier", "0.05"],
-    ["explosionTargets", "1"],
-    ["explosionDamageMultiplier", "0.05"],
-    ["critChance", "1"],
-    ["critMultiplier", "0.1"],
-  ].forEach(([key, step]) => {
+  Object.keys(WEAPON_FIELD_SCHEMAS).forEach((key) => {
     root.append(
       createNumberField({
         label: weaponLabels[key],
         value: state.weapon[key],
-        step,
+        schema: WEAPON_FIELD_SCHEMAS[key],
+        fieldId: `weapon:${key}`,
         onInput: (value) => {
           state.weapon[key] = value;
           renderResults();
@@ -260,6 +259,8 @@ function renderWeaponFields() {
       createNumberField({
         label: scalingLabels[key],
         value: state.weapon.scaling[key],
+        schema: SCALING_FIELD_SCHEMAS[key],
+        fieldId: `scaling:${key}`,
         onInput: (value) => {
           state.weapon.scaling[key] = value;
           renderResults();
@@ -322,12 +323,14 @@ function renderScenarioFields() {
   const contextFields = document.createElement("div");
   contextFields.className = "fields context-fields";
 
+  clearInvalidFields("context:");
   Object.entries(combatContextLabels).forEach(([key, label]) => {
     contextFields.append(
       createNumberField({
         label,
         value: state.combatContext[key],
-        step: key.includes("Cooldown") || key.includes("Duration") || key.includes("Rate") ? "0.1" : "1",
+        schema: COMBAT_CONTEXT_FIELD_SCHEMAS[key],
+        fieldId: `context:${key}`,
         onInput: (value) => {
           state.combatContext[key] = value;
           renderResults();
@@ -342,12 +345,15 @@ function renderScenarioFields() {
 function renderItemFields() {
   const root = $("#item-fields");
   root.replaceChildren();
+  clearInvalidFields("itemDelta:");
 
-  Object.entries(statLabels).forEach(([key, label]) => {
+  Object.entries(itemDeltaLabels).forEach(([key, label]) => {
     root.append(
       createNumberField({
-        label: `${label} 变化`,
+        label,
         value: state.itemDelta[key],
+        schema: ITEM_DELTA_FIELD_SCHEMAS[key],
+        fieldId: `itemDelta:${key}`,
         onInput: (value) => {
           state.itemDelta[key] = value;
           renderResults();
@@ -1098,7 +1104,20 @@ function renderResults() {
     scenarioBefore.totalDps === 0
       ? 0
       : (scenarioDelta / scenarioBefore.totalDps) * 100;
+
+  // 存在非法输入时，结果区明确说明哪些字段无法计算（P1-3）。
+  const invalidEntries = Object.entries(state.invalidFields);
+  const invalidBanner = invalidEntries.length
+    ? `<div class="input-warning" role="alert">
+        <strong>${invalidEntries.length} 个输入不合法，结果基于最近一次有效值</strong>
+        <span>${invalidEntries
+          .map(([id, error]) => `${escapeHtml(fieldLabelFor(id))}：${escapeHtml(error)}`)
+          .join("；")}</span>
+      </div>`
+    : "";
+
   $("#summary").innerHTML = `
+    ${invalidBanner}
     ${metric("当前 DPS", formatNumber(before.dps), `${before.weapon.quantity} 把 ${before.weapon.name}`)}
     ${metric("当前场景 DPS", formatNumber(scenarioBefore.totalDps), scenarioBefore.scenario.name)}
     ${metricDelta(
@@ -1407,56 +1426,74 @@ function applyParsedSimulatorData(parsed) {
     changed = true;
   }
 
+  // OCR / 导入与手动输入复用同一套 Schema 校验（P1-3）：
+  // 非法值不写入 state，保留最近一次有效值。
   if (parsed.stats && typeof parsed.stats === "object") {
-    Object.keys(statLabels).forEach((key) => {
+    Object.keys(STAT_FIELD_SCHEMAS).forEach((key) => {
       if (parsed.stats[key] !== undefined) {
-        state.stats[key] = numberOrExisting(parsed.stats[key], state.stats[key]);
-        changed = true;
+        const result = validateNumberValue(parsed.stats[key], STAT_FIELD_SCHEMAS[key]);
+        if (result.ok) {
+          state.stats[key] = result.value;
+          changed = true;
+        }
       }
     });
   }
 
   if (parsed.weapon && typeof parsed.weapon === "object") {
-    Object.keys(weaponLabels).forEach((key) => {
-      if (key === "name" && parsed.weapon.name) {
-        state.weapon.name = String(parsed.weapon.name);
-        changed = true;
-      } else if (parsed.weapon[key] !== undefined) {
-        state.weapon[key] = numberOrExisting(parsed.weapon[key], state.weapon[key]);
-        changed = true;
+    if (parsed.weapon.name) {
+      state.weapon.name = String(parsed.weapon.name);
+      changed = true;
+    }
+    Object.keys(WEAPON_FIELD_SCHEMAS).forEach((key) => {
+      if (parsed.weapon[key] !== undefined) {
+        const result = validateNumberValue(parsed.weapon[key], WEAPON_FIELD_SCHEMAS[key]);
+        if (result.ok) {
+          state.weapon[key] = result.value;
+          changed = true;
+        }
       }
     });
 
     if (parsed.weapon.scaling && typeof parsed.weapon.scaling === "object") {
       DAMAGE_TYPES.forEach((key) => {
         if (parsed.weapon.scaling[key] !== undefined) {
-          state.weapon.scaling[key] = numberOrExisting(
+          const result = validateNumberValue(
             parsed.weapon.scaling[key],
-            state.weapon.scaling[key],
+            SCALING_FIELD_SCHEMAS[key],
           );
-          changed = true;
+          if (result.ok) {
+            state.weapon.scaling[key] = result.value;
+            changed = true;
+          }
         }
       });
     }
   }
 
   if (parsed.itemDelta && typeof parsed.itemDelta === "object") {
-    Object.keys(statLabels).forEach((key) => {
+    Object.keys(ITEM_DELTA_FIELD_SCHEMAS).forEach((key) => {
       if (parsed.itemDelta[key] !== undefined) {
-        state.itemDelta[key] = numberOrExisting(parsed.itemDelta[key], state.itemDelta[key]);
-        changed = true;
+        const result = validateNumberValue(parsed.itemDelta[key], ITEM_DELTA_FIELD_SCHEMAS[key]);
+        if (result.ok) {
+          state.itemDelta[key] = result.value;
+          changed = true;
+        }
       }
     });
   }
 
   if (parsed.combatContext && typeof parsed.combatContext === "object") {
-    Object.keys(combatContextLabels).forEach((key) => {
+    Object.keys(COMBAT_CONTEXT_FIELD_SCHEMAS).forEach((key) => {
       if (parsed.combatContext[key] !== undefined) {
-        state.combatContext[key] = numberOrExisting(
+        const result = validateNumberValue(
           parsed.combatContext[key],
-          state.combatContext[key],
+          COMBAT_CONTEXT_FIELD_SCHEMAS[key],
         );
-        changed = true;
+        if (result.ok) {
+          state.combatContext[key] = result.value;
+          changed = true;
+        }
       }
     });
   }

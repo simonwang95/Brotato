@@ -74,6 +74,12 @@ export function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
+// 防御性有限值保护：任何中间或最终计算结果若出现 NaN/Infinity，
+// 都回退到 fallback，避免非有限值静默流入展示层（P1-3）。
+export function finiteOr(value, fallback = 0) {
+  return Number.isFinite(value) ? value : fallback;
+}
+
 export function roundDamage(value, mode = "none") {
   if (mode === "floor") return Math.floor(value);
   if (mode === "round") return Math.round(value);
@@ -193,11 +199,11 @@ export function calculateWeaponDamage(stats, weapon, options = {}) {
   const expectedDamage =
     nonCritDamage * (1 - totalCritChance) + critDamage * totalCritChance;
   const speedMultiplier = Math.max(0.1, 1 + normalizedStats.attackSpeed / 100);
-  const attackInterval = normalizedWeapon.cooldown / speedMultiplier;
-  const attacksPerSecond = 1 / attackInterval;
+  const attackInterval = finiteOr(normalizedWeapon.cooldown / speedMultiplier, normalizedWeapon.cooldown);
+  const attacksPerSecond = finiteOr(1 / attackInterval);
   const totalHitMultiplier =
     normalizedWeapon.hitsPerAttack * normalizedWeapon.quantity;
-  const dps = expectedDamage * totalHitMultiplier * attacksPerSecond;
+  const dps = finiteOr(expectedDamage * totalHitMultiplier * attacksPerSecond);
 
   return {
     weapon: normalizedWeapon,
@@ -221,8 +227,8 @@ export function compareItem(stats, weapon, itemDelta = {}, options = {}) {
   const before = calculateWeaponDamage(stats, weapon, options);
   const afterStats = applyItemDelta(stats, itemDelta);
   const after = calculateWeaponDamage(afterStats, weapon, options);
-  const dpsDelta = after.dps - before.dps;
-  const dpsDeltaPercent = before.dps === 0 ? 0 : (dpsDelta / before.dps) * 100;
+  const dpsDelta = finiteOr(after.dps - before.dps);
+  const dpsDeltaPercent = before.dps === 0 ? 0 : finiteOr((dpsDelta / before.dps) * 100);
 
   return {
     before,
