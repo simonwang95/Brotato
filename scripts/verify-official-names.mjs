@@ -102,6 +102,21 @@ console.log(`\nVerified ${found.length}/${results.length} Chinese terms.`);
 printGroup("Found in installed packages", found);
 printGroup("Not found, needs manual check", missing);
 
-if (process.argv.includes("--strict") && missing.length > 0) {
+// P1-4：默认即为严格门禁，消除“有缺失但成功退出”的假绿语义。
+// - 存在缺失的官方中文名称时以退出码 2 阻止（发布/合并前必须清零）。
+// - 该检查依赖本机游戏安装包（BROTATO_INSTALL_DIR），属于本地发布前门禁，
+//   不在 CI 的干净检出环境中运行（CI 走 portable 校验，见 scripts/verify-build.mjs）。
+// - 如需仅查看不阻断（例如排查中），可传 --warn 退回旧的非阻断行为。
+const warnOnly = process.argv.includes("--warn");
+if (missing.length > 0 && !warnOnly) {
+  console.error(
+    `\n[verify:names] 严格门禁未通过：${missing.length} 个官方中文名称未在本机安装包中找到。` +
+      "请修正 src 中的名称（对照 data/official-localization.json）后重试；排查中可临时用 --warn。",
+  );
   process.exit(2);
+}
+if (missing.length > 0 && warnOnly) {
+  console.error(
+    `\n[verify:names] --warn：${missing.length} 个名称未找到（未阻断）。`,
+  );
 }

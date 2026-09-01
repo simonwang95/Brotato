@@ -228,7 +228,7 @@
 - 未知、重复、空值、`NaN`、`Infinity` 和越界数据会被拒绝或明确忽略。
 - Schema 和标签映射有正向、负向、乱序及缺字段测试。
 
-### [ ] P1-3 统一数字输入范围与错误反馈
+### [x] P1-3 统一数字输入范围与错误反馈
 
 问题：
 
@@ -256,7 +256,15 @@
 - 冷却、概率、次数、倍率、诅咒和结构物参数的边界测试通过。
 - 最终结果不会出现未解释的 `NaN`、`Infinity` 或静默 0。
 
-### [ ] P1-4 建立 CI、发布门禁和入口级测试
+完成说明（2026-09-01，分支 fix/p1-remediation，提交 7e75b74）：
+
+- 新增 `src/fieldSchema.js` 作为全部数字字段约束的唯一事实来源：`STAT_FIELD_SCHEMAS`、`WEAPON_FIELD_SCHEMAS`、`SCALING_FIELD_SCHEMAS`、`ITEM_DELTA_FIELD_SCHEMAS`、`COMBAT_CONTEXT_FIELD_SCHEMAS`，每个字段含 `label/unit/step/min/max/integer/default`；导出 `labelMap`、`toNumeric`、`validateNumberValue`。
+- `src/app.js` 的 `createNumberField` 复用 `validateNumberValue`：设置 `min/max/step`，输入不合法时保留原文、内联 `.field-error`、记入 `state.invalidFields` 并用最近一次有效值渲染，结果区顶部显示 `.input-warning` 汇总；`formatNumber` 对 `NaN` 显示 “—”、对 `±Infinity` 显示 “∞”。
+- `src/calculator.js` 与 `src/scenarioCalculator.js` 对分母/倍率/概率增加 `finiteOr` 显式有限性检查，不再把非有限数静默显示成 0。
+- 新增 `tests/fieldSchema.test.mjs`（14 组：合法/空/非数字/越界/边界/整数/负值/倍率/诅咒-结构物/`toNumeric` 解析/键集一致性/默认值一致性/`labelMap`），并加入 `npm test`。
+- 桌面与移动端（390×844）浏览器验收：合法输入即时更新 DPS；非法输入（如暴击率 150）保留原文、内联 “不能大于 100” + 顶部警告，DPS 保持最近有效值；修正后清除错误。
+
+### [x] P1-4 建立 CI、发布门禁和入口级测试
 
 问题：
 
@@ -288,6 +296,16 @@
 - 干净检出环境可以重复构建出完整站点。
 - `verify:names` 不再出现“有缺失但成功退出”的假绿语义。
 - 浏览器、服务器、API、OCR 和安全关键路径至少各有一组自动测试。
+
+完成说明（2026-09-01，分支 fix/p1-remediation）：
+
+- **查清并修正 `Bag / 袋子` 来源差异**：本机 `Brotato.pck` 中不存在 “袋子”（0 次），官方中文名为 “背包”（`data/official-localization.json` 与 `.pck` 均确认，4 次）；`src/scenarioData.js` 中 `bag` 的 `cnName` 由误写的 “袋子” 修正为 “背包”。修正后 `verify:names` 报告 168/168、0 缺失。
+- **`verify:names` 消除假绿**：默认即为严格门禁，存在缺失的官方中文名称时以退出码 2 阻止；新增 `--warn` 供排查时临时非阻断。该检查依赖本机游戏安装包，属本地发布前门禁，不在 CI 干净检出环境运行。
+- **CI（`.github/workflows/ci.yml`）**：push/PR 到 main 时自动运行——语法检查（`node --check` 全部 52 个 src/scripts/tests 文件）、`git diff --check`、`npm test`（18 个 portable 单测）、6 个 portable 校验器（catalog/recommendations/effects/unlocks/localization/official-data:diff）、干净构建、构建产物校验、浏览器烟测；失败即阻止合并。依赖用 `package-lock.json` 锁定（新增 `playwright` devDependency），`npm ci` 可复现。
+- **构建产物校验（`scripts/verify-build.mjs`）**：校验构建产物存在且非空、6 个 JSON 数据文件可解析且顶层结构完整、全部 569 条资产图片引用可解析（跳过 `res://` 源路径元数据）、构建后 `app.js` 的 fetch 路径与模块引用可解析、总体积不超预算（12 MiB）。
+- **浏览器烟测（`tests/browserSmoke.test.mjs`，Playwright）**：优先自带 Chromium、回退系统 Chrome/Edge（本地未装浏览器时跳过、CI 中显式安装故为真实门禁）。覆盖三路由（`#guide`/`#compendium/characters`/`#simulator`）、官方数据加载、图鉴卡片渲染与搜索过滤（65→1）、角色切换（64 角色下拉）、模拟器计算（68 数字输入）、错误降级（无未捕获异常、404 仅限预期资源、控制台干净）。10 项全部通过。
+- **发布后健康检查（`scripts/health-check.mjs`）**：`npm run health:check -- --base <url> [--api]` 体检首页/样式/入口脚本/核心 JS 模块/JSON 数据/抽样 WebP/可选 API，关键资源失败即非零退出，可作发布后门禁。
+- 服务器（`devServer.test.mjs`）、API（`apiContract.test.mjs`）、OCR（`ocrService.test.mjs`，372 行含超时/开关/图片校验/角色解析/限流）、安全（`renderSecurity.test.mjs`）测试组均已存在；浏览器组为本批新增，五类关键路径各有一组自动测试。
 
 ### [ ] P1-5 降低攻略页的信息密度
 

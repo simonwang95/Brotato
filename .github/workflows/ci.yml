@@ -1,0 +1,82 @@
+# P1-4：统一 CI 门禁。
+#
+# 每次 push / PR 到 main 时自动运行统一检查，失败即阻止合并：
+#   1) 语法检查（node --check 全部 src / scripts / tests）。
+#   2) 单元测试（npm test，18 个纯 Node 测试，portable）。
+#   3) portable 校验器（catalog / recommendations / effects / unlocks / localization / official-data:diff）。
+#   4) 干净构建（npm run build）。
+#   5) 构建产物校验（npm run verify:build：JSON 结构、图片引用、模块/fetch 路径、体积预算）。
+#   6) 浏览器烟测（npm run test:browser：三路由、数据加载、角色切换、图鉴搜索、模拟器计算、错误降级）。
+#   7) git diff --check（空白/冲突标记）。
+#
+# 注意：`verify:names` 依赖本机游戏安装包，属于本地发布前门禁，不在 CI 运行（见 scripts/verify-official-names.mjs）。
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  checks:
+    name: 统一检查
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # official-data:diff 需要 git 历史做参照。
+
+      - name: 安装 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 安装 Playwright Chromium
+        run: npx playwright install chromium
+
+      - name: 语法检查
+        run: |
+          set -e
+          for f in src/*.js scripts/*.mjs tests/*.mjs; do
+            node --check "$f"
+          done
+          echo "语法检查通过"
+
+      - name: 空白与冲突标记检查
+        run: git diff --check
+
+      - name: 单元测试
+        run: npm test
+
+      - name: portable 校验器
+        run: |
+          npm run verify:catalog
+          npm run verify:recommendations
+          npm run verify:effects
+          npm run verify:unlocks
+          npm run localization:coverage
+          npm run official-data:diff
+
+      - name: 干净构建
+        run: npm run build
+
+      - name: 构建产物校验
+        run: npm run verify:build
+
+      - name: 浏览器烟测
+        run: npm run test:browser
+
+      - name: 上传构建产物（供排查）
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-public
+          path: public/
+          retention-days: 7

@@ -154,7 +154,8 @@ export const ITEM_EFFECTS = {
   bag: {
     id: "bag",
     name: "Bag",
-    cnName: "袋子",
+    // 官方中文名为“背包”（见 data/official-localization.json）；早期误写为“袋子”。
+    cnName: "背包",
     trigger: "crateMaterialBonus",
     chance: 100,
     baseDamage: 0,

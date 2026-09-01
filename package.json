@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-static.mjs",
+    "verify:build": "node scripts/verify-build.mjs",
     "test": "node tests/calculator.test.mjs && node tests/fieldSchema.test.mjs && node tests/strategyGenerator.test.mjs && node tests/recommendationRegression.test.mjs && node tests/scenarioCalculator.test.mjs && node tests/officialCatalog.test.mjs && node tests/officialLocalization.test.mjs && node tests/strategyCatalog.test.mjs && node tests/compendium.test.mjs && node tests/effectDecoding.test.mjs && node tests/unlockAudit.test.mjs && node tests/pendingUnlocks.test.mjs && node tests/optimizedTranslation.test.mjs && node tests/officialDataDiff.test.mjs && node tests/ocrService.test.mjs && node tests/renderSecurity.test.mjs && node tests/apiContract.test.mjs && node tests/devServer.test.mjs",
+    "test:browser": "node tests/browserSmoke.test.mjs",
+    "health:check": "node scripts/health-check.mjs",
     "extract:catalog": "node scripts/extract-official-catalog.mjs --write && node scripts/extract-official-assets.mjs && node scripts/report-effect-decoding.mjs --write",
     "extract:assets": "node scripts/extract-official-assets.mjs",
     "extract:localization": "node scripts/extract-official-localization.mjs --write",
@@ -21,5 +24,8 @@
     "official-data:diff": "node scripts/compare-official-data.mjs --ref HEAD",
     "start": "node scripts/dev-server.mjs",
     "start:static": "python3 -m http.server 5174 --bind 127.0.0.1 --directory public"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
   }
 }
