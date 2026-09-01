@@ -607,6 +607,22 @@ tr:last-child td {
   color: #49606f;
 }
 
+/* P1-9：效果解码状态标注（待解码/部分解码时明确不确定性） */
+.guide-card .decode-status {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.decode-status.decode-partial-static-decode {
+  color: #8a6116;
+}
+
+.decode-status.decode-pending-runtime-decode {
+  color: #b0532f;
+}
+
 /* P1-5：候选卡片头部（标题 + 徽章） */
 .guide-card-head {
   display: flex;

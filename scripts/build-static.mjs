@@ -13,11 +13,12 @@ import { dirname, extname, join } from "node:path";
 
 const outputDir = "public";
 
-// 需要内容哈希 + manifest 的运行时数据文件（页面 fetch 的 3 个）
+// 需要内容哈希 + manifest 的运行时数据文件（页面 fetch 的 4 个）
 const DATA_FILES = [
   "official-catalog.json",
   "official-localization.json",
   "official-unlocks.json",
+  "official-effect-decoding.json",
 ];
 // 浏览器可达的 src 模块（排除服务端专用的 ocrService.js，避免泄漏到公开目录）
 const BROWSER_SRC_FILES = [

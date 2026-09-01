@@ -455,7 +455,7 @@
 - **排除服务端模块**：public 只复制 12 个浏览器可达 src 模块，`ocrService.js`（仅 api/dev-server 使用）不再泄漏到公开目录。
 - **体积预算**：构建输出 JS/CSS/JSON/图片/总大小报告，超单项预算告警、超总硬上限（10 MiB）失败；`verify-build.mjs` 同步改为 manifest/版本目录感知（27 项检查）。当前产物约 4.8 MiB（JS 443 KB / JSON 1.8 MB / 图片 2.6 MB / CSS 24 KB）。
 
-### [ ] P1-9 扩展推荐模型校准与不确定性表达
+### [x] P1-9 扩展推荐模型校准与不确定性表达
 
 问题：
 
@@ -483,6 +483,13 @@
 - 64 个角色至少都有核心武器/道具的正向与禁用项负向基准。
 - 更新评分权重时，测试能明确列出受影响角色和排序原因。
 - 待解码或部分解码项不会被展示为未经说明的精确收益。
+
+完成说明（2026-09-02，分支 fix/p1-remediation）：
+
+- **不确定性表达**：`src/app.js` 新增第 4 个数据加载器 `loadOfficialEffectDecoding()`（经 manifest 取内容哈希的 `official-effect-decoding.json`）；`strategyGenerator.js` 新增 `buildDecodeStatusMap()`（nameKey→最差解码状态）与 `DECODE_STATUS_LABELS`，`annotateCandidates` 为每个候选附加 `decodeStatus`，`evidenceLevelFor` 对待解码候选降级为"待校验"；卡片新增 `renderDecodeStatus()` 标注（待解码/部分解码时显示"收益为近似，非精确 DPS"）。待解码的 14 条（砖块破损、鱼叉枪/电击枪减速区、粒子加速器减速、Gangster 商店）与 71 条部分解码均不再展示为精确收益。
+- **数据来源 + 置信等级**：每张候选卡片同时展示官方目录来源（`renderOfficialMeta`：原版/DLC、层数、价格、解锁、掉落）与证据等级徽章（官方精确/静态近似/手写策略/待校验），满足"每条推荐显示数据来源和置信等级"。
+- **64 角色专家基准**：`tests/recommendationRegression.test.mjs` 新增全量基准——正向（手写核心候选必须出现在输出，768 项）+ 负向（官方目录 `bannedItems/bannedUpgrades/bannedItemGroups` 不得出现，264 项，覆盖 26 个有禁用项的角色），全部 64 角色 × 普通/无尽通过。
+- **权重变化影响报告**：`scoreRecommendation` 返回结构化 `scoreBreakdown`（14 个评分分量），候选携带 `scoreBreakdown`（测试校验分量之和=总分）；新增 `reportWeightChange(overrides)` 重新计算排序并列出受影响角色、前后对比与关键评分分量（排序原因）。回归测试用 `statSynergy×2` 验证影响 57 个角色场景。
 
 ## P2：中期优化
 

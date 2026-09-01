@@ -13,6 +13,7 @@ import {
 } from "./scenarioData.js";
 import { buildCompendium } from "./compendium.js";
 import {
+  DECODE_STATUS_LABELS,
   EVIDENCE_LEVELS,
   TIER_LABELS,
   generateStrategyGuide,
@@ -102,6 +103,8 @@ const state = {
   localizationLoadState: "loading",
   officialUnlocks: null,
   unlocksLoadState: "loading",
+  officialEffectDecoding: null,
+  effectDecodingLoadState: "loading",
   activePage: "guide",
   compendiumPage: "overview",
   compendiumTab: "characters",
@@ -572,6 +575,16 @@ function renderCandidateBadges(candidate) {
 }
 
 // P1-5：评分理由默认折叠，摘要只显示最重要的 2～3 条，其余按需展开（<details> 原生可键盘操作）。
+// P1-9：展示候选的最差效果解码状态。待解码/部分解码时明确标注不确定性，
+// 避免把未知命中率/触发率伪造成精确收益。
+function renderDecodeStatus(candidate) {
+  const status = candidate.decodeStatus;
+  if (!status || status === "decoded-static-parameters") return "";
+  const meta = DECODE_STATUS_LABELS[status];
+  if (!meta) return "";
+  return `<small class="decode-status decode-${status}" title="${escapeHtml(meta.hint)}">效果解码：${escapeHtml(meta.label)}（收益为近似，非精确 DPS）</small>`;
+}
+
 function renderRecommendationBreakdown(candidate) {
   const { rank, recommendationReasons } = candidate;
   const reasonList = Array.isArray(recommendationReasons) ? recommendationReasons.filter(Boolean) : [];
@@ -1184,6 +1197,7 @@ function renderWeaponCard(candidate) {
       ${weapon.setNote ? `<small>套装：${escapeHtml(weapon.setNote)}</small>` : ""}
       <small>解锁：${escapeHtml(weapon.unlock)}</small>
       ${renderOfficialMeta(official)}
+      ${renderDecodeStatus(candidate)}
       ${weapon.officialNameKey ? `<button type="button" class="guide-import" data-import-weapon="${escapeHtml(weapon.officialNameKey)}">带入模拟器</button>` : ""}
     </article>
   `;
@@ -1205,6 +1219,7 @@ function renderItemCard(candidate) {
       <small>属性：${escapeHtml(item.statNote)}</small>
       <small>解锁：${escapeHtml(item.unlock)}</small>
       ${renderOfficialMeta(official)}
+      ${renderDecodeStatus(candidate)}
     </article>
   `;
 }
@@ -1254,6 +1269,7 @@ function renderStrategyGuide() {
   const guide = generateStrategyGuide(state.strategyCharacter, state.strategyMode, {
     officialCatalog: state.officialCatalog,
     officialLocalization: state.officialLocalization,
+    effectDecoding: state.officialEffectDecoding,
     dangerLevelId: state.strategyDanger,
     dlcOptionId: state.strategyDlc,
     unlockOptionId: state.strategyUnlock,
@@ -2439,10 +2455,24 @@ async function loadOfficialUnlocks() {
   if (state.activePage === "compendium") renderCompendium();
 }
 
+async function loadOfficialEffectDecoding() {
+  try {
+    state.officialEffectDecoding = await loadDataFile("official-effect-decoding.json", "/data/official-effect-decoding.json");
+    state.effectDecodingLoadState = "loaded";
+  } catch (error) {
+    console.warn("Failed to load official effect decoding", error);
+    state.officialEffectDecoding = null;
+    state.effectDecodingLoadState = "error";
+  }
+
+  renderActivePageContent();
+}
+
 bindControls();
 syncAppRoute();
 render();
 loadOfficialCatalog();
 loadOfficialLocalization();
 loadOfficialUnlocks();
+loadOfficialEffectDecoding();
 checkOcrAvailability();

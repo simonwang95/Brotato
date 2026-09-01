@@ -2225,24 +2225,25 @@ function scoreRecommendation(entry, preference, plan, mode) {
   const scenarioModel = scoreScenarioModel(entry, plan, mode);
   reasons.push(...scenarioModel.reasons);
 
-  return {
-    score:
-      keywordScore +
-      targetTagScore +
-      routeTagScore +
-      routeFitScore +
-      planScore +
-      manualRouteScore +
-      availabilityFit.score +
-      rarityFit.score +
-      setFit.score +
-      officialStatSynergy.score +
-      mechanicFit.score +
-      characterInteraction.score +
-      modeFit.score +
-      scenarioModel.score,
-    reasons,
+  // P1-9：结构化评分分解，让权重变化时能定位到具体贡献项与受影响角色。
+  const breakdown = {
+    keyword: keywordScore,
+    targetTag: targetTagScore,
+    routeTag: routeTagScore,
+    routeFit: routeFitScore,
+    plan: planScore,
+    manualRoute: manualRouteScore,
+    availability: availabilityFit.score,
+    rarity: rarityFit.score,
+    set: setFit.score,
+    statSynergy: officialStatSynergy.score,
+    mechanic: mechanicFit.score,
+    characterInteraction: characterInteraction.score,
+    mode: modeFit.score,
+    scenario: scenarioModel.score,
   };
+  const score = Object.values(breakdown).reduce((sum, value) => sum + value, 0);
+  return { score, reasons, breakdown };
 }
 
 function sortByRecommendationScore(entries, preference, plan, mode) {
@@ -2257,6 +2258,8 @@ function sortByRecommendationScore(entries, preference, plan, mode) {
       ...entry,
       recommendationScore: scoring.score,
       recommendationReasons: scoring.reasons.slice(0, 12),
+      // P1-9：结构化评分分解，供权重变化影响报告使用。
+      scoreBreakdown: scoring.breakdown,
     }));
 }
 
@@ -2375,10 +2378,47 @@ export const TIER_LABELS = {
   research: "研究候选",
 };
 
-function evidenceLevelFor(entry, score) {
+// P1-9：效果解码状态（来自 data/official-effect-decoding.json）。
+// 待解码 / 部分解码的效果不应被展示为未经说明的精确收益。
+export const DECODE_STATUS_LABELS = {
+  "decoded-static-parameters": { label: "已解码", hint: "复杂效果的静态参数已解码" },
+  "partial-static-decode": { label: "部分解码", hint: "部分参数已解码，其余待运行时确认，收益为近似值" },
+  "pending-runtime-decode": { label: "待解码", hint: "效果参数待运行时解码，收益暂不可精确估算" },
+};
+
+// 从效果解码 manifest 构建 nameKey -> 最差解码状态 映射。
+// 一个武器/物品可能有多条复杂效果记录，取其中最差（最不确定）的状态。
+export function buildDecodeStatusMap(effectDecoding) {
+  const map = {};
+  if (!effectDecoding || !Array.isArray(effectDecoding.records)) return map;
+  const rank = { "decoded-static-parameters": 0, "partial-static-decode": 1, "pending-runtime-decode": 2 };
+  for (const record of effectDecoding.records) {
+    const key = record.nameKey;
+    const status = record.status;
+    if (!key || !status) continue;
+    if (!map[key]) map[key] = { worst: "decoded-static-parameters", total: 0, pending: 0, partial: 0 };
+    map[key].total += 1;
+    if (status === "pending-runtime-decode") map[key].pending += 1;
+    if (status === "partial-static-decode") map[key].partial += 1;
+    if ((rank[status] ?? 0) > (rank[map[key].worst] ?? 0)) map[key].worst = status;
+  }
+  return map;
+}
+
+// 取某候选（武器/物品）的最差解码状态；不在 manifest 中视为已解码。
+function decodeStatusFor(entry, decodeMap) {
+  const key = entry.official?.nameKey;
+  if (!key || !decodeMap) return null;
+  const info = decodeMap[key];
+  return info ? info.worst : null;
+}
+
+function evidenceLevelFor(entry, score, decodeMap) {
   if (!entry.officialCandidate) return "hand-written";
-  if (Number.isFinite(score) && score > 0) return "static-approx";
-  return "pending";
+  const base = Number.isFinite(score) && score > 0 ? "static-approx" : "pending";
+  // P1-9：待解码效果不应被展示为未经说明的精确收益，降级为"待校验"。
+  if (decodeStatusFor(entry, decodeMap) === "pending-runtime-decode") return "pending";
+  return base;
 }
 
 function gradeFor(rank, total) {
@@ -2397,7 +2437,7 @@ function tierFor(entry, rank, total) {
   return "research";
 }
 
-function annotateCandidates(sorted, kind) {
+function annotateCandidates(sorted, kind, decodeMap) {
   const total = sorted.length;
   return sorted.map((entry, index) => {
     const rank = index + 1;
@@ -2406,8 +2446,10 @@ function annotateCandidates(sorted, kind) {
       ...entry,
       rank,
       tier: tierFor(entry, rank, total),
-      evidenceLevel: evidenceLevelFor(entry, score),
+      evidenceLevel: evidenceLevelFor(entry, score, decodeMap),
       grade: gradeFor(rank, total),
+      // P1-9：携带最差解码状态，UI 据此展示不确定性（不展示为精确收益）。
+      decodeStatus: decodeStatusFor(entry, decodeMap),
     };
   });
 }
@@ -2444,12 +2486,16 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
   const itemPool = options.officialCatalog
     ? expandOfficialItemPool(manualItems, options, scoringPlan)
     : manualItems;
+  // P1-9：从效果解码 manifest 构建 nameKey -> 最差解码状态 映射，
+  // 让待解码/部分解码的候选被标注不确定性，而非展示为精确收益。
+  const decodeMap = buildDecodeStatusMap(options.effectDecoding);
   const recommendedWeapons = annotateCandidates(
     filterAndSort(weaponPool, resolvedOptions, scoringPlan, mode).slice(
       0,
       visibleRecommendationLimit(weaponPool, manualWeapons.length, 5),
     ),
     "weapon",
+    decodeMap,
   );
   const keyItems = annotateCandidates(
     filterAndSort(itemPool, resolvedOptions, scoringPlan, mode).slice(
@@ -2457,6 +2503,7 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
       visibleRecommendationLimit(itemPool, manualItems.length, 24),
     ),
     "item",
+    decodeMap,
   );
 
   return {
@@ -2545,4 +2592,61 @@ export function validateStrategyData() {
   });
 
   return errors;
+}
+
+// P1-9：权重变化影响报告。
+// 给定一组权重覆盖（各评分分量的缩放因子），重新计算每个角色的候选排序，
+// 列出受影响的角色、排序变化与关键评分分量（排序原因）。
+// 覆盖示例：{ keyword: 2 } 表示关键词匹配权重翻倍；{ statSynergy: 0 } 表示关闭属性协同。
+export function reportWeightChange(overrides, options = {}) {
+  const { officialCatalog } = options;
+  const characters = getAvailableCharacters();
+  const modes = ["normal20", "endless"];
+  const affected = [];
+  for (const character of characters) {
+    for (const modeId of modes) {
+      const guide = generateStrategyGuide(character.id, modeId, { officialCatalog });
+      const before = guide.recommendedWeapons.slice(0, 5).map(candidateKeyOf);
+      const resorted = [...guide.recommendedWeapons]
+        .map((candidate) => ({ candidate, newScore: recomputeScore(candidate.scoreBreakdown, overrides) }))
+        .sort((a, b) => b.newScore - a.newScore);
+      const after = resorted.slice(0, 5).map(({ candidate }) => candidateKeyOf(candidate));
+      if (JSON.stringify(before) !== JSON.stringify(after)) {
+        affected.push({
+          character: character.id,
+          mode: modeId,
+          before,
+          after,
+          // 排序原因：Top-N 中各候选的关键评分分量（已应用覆盖）
+          reasons: resorted.slice(0, 5).map(({ candidate, newScore }) => ({
+            key: candidateKeyOf(candidate),
+            score: Math.round(newScore * 100) / 100,
+            topComponents: topComponents(candidate.scoreBreakdown, overrides),
+          })),
+        });
+      }
+    }
+  }
+  return affected;
+}
+
+function candidateKeyOf(candidate) {
+  return candidate.weaponId ?? candidate.itemId ?? candidate.official?.nameKey;
+}
+
+function recomputeScore(breakdown, overrides) {
+  if (!breakdown) return 0;
+  return Object.entries(breakdown).reduce((sum, [component, value]) => {
+    const scale = overrides[component] ?? 1;
+    return sum + value * scale;
+  }, 0);
+}
+
+function topComponents(breakdown, overrides, count = 3) {
+  if (!breakdown) return [];
+  return Object.entries(breakdown)
+    .map(([component, value]) => ({ component, value: value * (overrides[component] ?? 1) }))
+    .filter((entry) => entry.value !== 0)
+    .sort((a, b) => b.value - a.value)
+    .slice(0, count);
 }

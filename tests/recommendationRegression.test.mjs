@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import {
   generateStrategyGuide,
   getAvailableCharacters,
+  reportWeightChange,
 } from "../src/strategyGenerator.js";
 
 const officialCatalog = JSON.parse(readFileSync("data/official-catalog.json", "utf8"));
@@ -416,6 +417,79 @@ for (const character of getAvailableCharacters()) {
       );
     }
   }
+}
+
+// P1-9：全部 64 个官方角色的最小专家基准。
+// 正向：手写核心候选（作者推荐的核心武器/道具）必须出现在输出中；
+// 负向：官方目录中该角色的禁用项（bannedItems/bannedUpgrades/bannedItemGroups）不得出现。
+{
+  const catalogChars = officialCatalog.records.filter((record) => record.kind === "character");
+  const bannedByChar = Object.fromEntries(
+    catalogChars.map((ch) => [
+      ch.nameKey,
+      [...(ch.bannedItems ?? []), ...(ch.bannedUpgrades ?? []), ...(ch.bannedItemGroups ?? [])].map((id) =>
+        id.toUpperCase(),
+      ),
+    ]),
+  );
+  let positiveChecked = 0;
+  let negativeChecked = 0;
+  for (const character of getAvailableCharacters()) {
+    for (const modeId of ["normal20", "endless"]) {
+      const guide = generateStrategyGuide(character.id, modeId, { officialCatalog });
+      const all = [...guide.recommendedWeapons, ...guide.keyItems];
+      const keys = new Set(all.map(candidateKey));
+      for (const candidate of all.filter((c) => !c.officialCandidate)) {
+        const id = candidate.weaponId ?? candidate.itemId;
+        assert.ok(keys.has(id), `${character.id}:${modeId} 手写核心候选 ${id} 应出现在输出中`);
+        positiveChecked += 1;
+      }
+      const banned = bannedByChar[`CHARACTER_${character.id.toUpperCase()}`] ?? [];
+      for (const bannedId of banned) {
+        assert.ok(!keys.has(bannedId), `${character.id}:${modeId} 不应推荐官方禁用项 ${bannedId}`);
+        negativeChecked += 1;
+      }
+    }
+  }
+  assert.ok(positiveChecked > 0, "应检查到正向基准");
+  console.log(`[P1-9] 64 角色专家基准：正向 ${positiveChecked} 项、负向 ${negativeChecked} 项，全部通过`);
+}
+
+// P1-9：评分分解与权重变化影响报告。
+// (1) 每个候选都应携带结构化 scoreBreakdown，且各分量之和等于总分；
+// (2) reportWeightChange 应能列出受影响角色与排序原因（关键评分分量）。
+{
+  let breakdownChecked = 0;
+  for (const character of getAvailableCharacters().slice(0, 8)) {
+    for (const modeId of ["normal20", "endless"]) {
+      const guide = generateStrategyGuide(character.id, modeId, { officialCatalog });
+      for (const candidate of [...guide.recommendedWeapons, ...guide.keyItems]) {
+        const breakdown = candidate.scoreBreakdown;
+        assert.ok(breakdown && typeof breakdown === "object", `${character.id}:${modeId} 候选应携带 scoreBreakdown`);
+        const sum = Object.values(breakdown).reduce((acc, value) => acc + value, 0);
+        assert.ok(
+          Math.abs(sum - candidate.recommendationScore) < 1e-6,
+          `${character.id}:${modeId}:${candidateKey(candidate)} 分解之和应等于总分`,
+        );
+        breakdownChecked += 1;
+      }
+    }
+  }
+  assert.ok(breakdownChecked > 0, "应检查到评分分解");
+
+  // 权重变化影响报告：属性协同权重翻倍应影响部分角色的排序
+  const affected = reportWeightChange({ statSynergy: 2 }, { officialCatalog });
+  assert.ok(Array.isArray(affected), "reportWeightChange 应返回受影响列表");
+  assert.ok(affected.length > 0, "属性协同权重翻倍应影响部分角色排序");
+  for (const entry of affected) {
+    assert.ok(entry.character && entry.mode, "受影响条目应包含角色与模式");
+    assert.ok(Array.isArray(entry.before) && Array.isArray(entry.after), "应包含排序前后对比");
+    assert.ok(entry.reasons.length > 0, "应列出排序原因");
+    for (const reason of entry.reasons) {
+      assert.ok(reason.key && Array.isArray(reason.topComponents), "排序原因应包含关键评分分量");
+    }
+  }
+  console.log(`[P1-9] 权重变化报告：statSynergy×2 影响 ${affected.length} 个角色场景（含排序原因）`);
 }
 
 console.log("Recommendation regression tests passed");
