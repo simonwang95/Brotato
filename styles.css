@@ -1072,9 +1072,54 @@ tr:last-child td {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  max-height: 720px;
-  overflow: auto;
-  padding-right: 2px;
+}
+
+.compendium-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.compendium-filters select {
+  width: auto;
+  flex: 1 1 150px;
+  min-width: 0;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.compendium-loadmore {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.compendium-card-detail {
+  margin-top: 10px;
+  border-top: 1px dashed var(--line);
+  padding-top: 8px;
+}
+
+.compendium-card-detail summary {
+  cursor: pointer;
+  color: var(--accent-strong);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.compendium-card-detail[open] summary {
+  margin-bottom: 8px;
+}
+
+.compendium-meta-detail {
+  margin-top: 0;
 }
 
 .compendium-grid-weapons {

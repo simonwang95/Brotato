@@ -84,6 +84,12 @@ const state = {
   compendiumTab: "characters",
   compendiumSearch: "",
   compendiumSearchDraft: "",
+  // 图鉴分页：首批渲染数量，"加载更多"逐步增加
+  compendiumVisibleCount: 24,
+  // 图鉴筛选（武器/物品）
+  compendiumDlcFilter: "all",
+  compendiumTierFilter: "all",
+  compendiumUnlockFilter: "all",
   screenshotParse: {
     status: "idle",
     message: "",
@@ -525,6 +531,36 @@ function matchesCompendiumSearch(row, query) {
   return haystack.includes(query.toLowerCase());
 }
 
+// 图鉴筛选：DLC / 阶级 / 解锁状态。仅对武器、物品生效（角色忽略）。
+function matchesCompendiumFilters(row, kind) {
+  if (kind === "characters") return true;
+  const packages = row.sourcePackages ?? [];
+  const isDlc = packages.some((pkg) => pkg !== "base");
+  const dlc = state.compendiumDlcFilter;
+  if (dlc === "dlc" && !isDlc) return false;
+  if (dlc === "official" && isDlc) return false;
+
+  const tier = state.compendiumTierFilter;
+  if (tier !== "all") {
+    const tiers = row.tiers ?? [];
+    if (!tiers.includes(Number(tier))) return false;
+  }
+
+  const unlock = state.compendiumUnlockFilter;
+  if (unlock === "unlocked" && row.unlockLabel !== "默认解锁") return false;
+  if (unlock === "locked" && row.unlockLabel !== "需解锁") return false;
+
+  return true;
+}
+
+function activeCompendiumFilters() {
+  return [
+    state.compendiumDlcFilter !== "all",
+    state.compendiumTierFilter !== "all",
+    state.compendiumUnlockFilter !== "all",
+  ].some(Boolean);
+}
+
 function renderCharacterCompendiumCard(character) {
   const evidenceBlock = character.unlockEvidenceLines?.length
     ? `<div><dt>静态证据</dt><dd>${renderList(character.unlockEvidenceLines, "compact-list")}</dd></div>`
@@ -628,11 +664,16 @@ function renderCatalogCompendiumCard(entry, kindLabel) {
       <dl class="compendium-meta">
         <div><dt>官方状态</dt><dd>${escapeHtml(`${entry.unlockLabel}，${entry.lootLabel}`)}</dd></div>
         <div><dt>策略解锁</dt><dd>${escapeHtml(entry.strategyUnlock)}</dd></div>
-        <div><dt>详细属性</dt><dd>${entry.weaponTierRows?.length ? renderWeaponTierTable(entry) : renderList(entry.detailedAttributes, "compact-list")}</dd></div>
-        <div><dt>功能说明</dt><dd>${escapeHtml(entry.strategyStatNote || "待补策略说明")}</dd></div>
         <div><dt>套装</dt><dd class="pill-list">${renderPills(entry.setLabels)}</dd></div>
         <div><dt>标签</dt><dd class="pill-list">${renderPills(tags)}</dd></div>
       </dl>
+      <details class="compendium-card-detail">
+        <summary>展开详细属性与功能说明</summary>
+        <dl class="compendium-meta compendium-meta-detail">
+          <div><dt>详细属性</dt><dd>${entry.weaponTierRows?.length ? renderWeaponTierTable(entry) : renderList(entry.detailedAttributes, "compact-list")}</dd></div>
+          <div><dt>功能说明</dt><dd>${escapeHtml(entry.strategyStatNote || "待补策略说明")}</dd></div>
+        </dl>
+      </details>
     </article>
   `;
 }
@@ -659,6 +700,7 @@ function renderCompendiumTabs() {
 
 function applyCompendiumSearch() {
   state.compendiumSearch = state.compendiumSearchDraft.trim();
+  state.compendiumVisibleCount = 24;
   renderCompendium();
 }
 
@@ -677,7 +719,9 @@ function syncCompendiumRoute() {
 
   if (compendiumTabIds.includes(tabId)) {
     state.compendiumPage = "detail";
+    const tabChanged = previousTab !== tabId;
     state.compendiumTab = tabId;
+    if (tabChanged) state.compendiumVisibleCount = 24;
     if (query !== undefined) {
       state.compendiumSearch = decodeURIComponent(query);
       state.compendiumSearchDraft = state.compendiumSearch;
@@ -703,8 +747,7 @@ function syncAppRoute() {
   }
 
   renderPageShell();
-  renderCompendium();
-  renderStrategyGuide();
+  renderActivePageContent();
   renderScreenshotParseOutput();
 }
 
@@ -784,8 +827,13 @@ function renderCompendium() {
   }
 
   const active = tabConfig[state.compendiumTab] ?? tabConfig.characters;
+  const kind = state.compendiumTab;
   const query = state.compendiumSearch.trim();
-  const rows = active.rows.filter((row) => matchesCompendiumSearch(row, query));
+  const filtered = active.rows.filter(
+    (row) => matchesCompendiumSearch(row, query) && matchesCompendiumFilters(row, kind),
+  );
+  const visible = filtered.slice(0, state.compendiumVisibleCount);
+  const hasMore = filtered.length > visible.length;
 
   output.innerHTML = `
     <div class="compendium-page-actions">
@@ -793,14 +841,52 @@ function renderCompendium() {
     </div>
     <div class="compendium-summary">
       <strong>${escapeHtml(active.title)}图鉴</strong>
-      <span>${escapeHtml(String(rows.length))} / ${escapeHtml(String(active.rows.length))} 条</span>
+      <span>${escapeHtml(String(filtered.length))} / ${escapeHtml(String(active.rows.length))} 条</span>
       <span>武器 ${escapeHtml(String(compendium.weapons.length))}，物品 ${escapeHtml(String(compendium.items.length))}，角色 ${escapeHtml(String(compendium.characters.length))}</span>
     </div>
+    ${kind !== "characters" ? renderCompendiumFilterBar() : ""}
     ${
-      rows.length
-        ? `<div class="compendium-grid compendium-grid-${escapeHtml(state.compendiumTab)}">${rows.map((row) => active.render(row)).join("")}</div>`
-        : `<div class="empty-state">没有匹配的图鉴条目。</div>`
+      filtered.length
+        ? `<div class="compendium-grid compendium-grid-${escapeHtml(kind)}">${visible.map((row) => active.render(row)).join("")}</div>
+           ${
+             hasMore
+               ? `<div class="compendium-loadmore">
+                    <button class="button" type="button" data-compendium-loadmore>加载更多（已显示 ${escapeHtml(String(visible.length))} / ${escapeHtml(String(filtered.length))}）</button>
+                  </div>`
+               : ""
+           }`
+        : `<div class="empty-state">没有匹配的图鉴条目。${activeCompendiumFilters() ? "可尝试清除筛选。" : ""}</div>`
     }
+  `;
+}
+
+function renderCompendiumFilterBar() {
+  const sel = (id, value, options) =>
+    `<select id="${id}" aria-label="${id}">` +
+    options.map(([v, label]) => `<option value="${v}"${v === value ? " selected" : ""}>${label}</option>`).join("") +
+    `</select>`;
+  return `
+    <div class="compendium-filters">
+      ${sel("compendium-filter-dlc", state.compendiumDlcFilter, [
+        ["all", "全部来源"],
+        ["official", "仅官方"],
+        ["dlc", "仅 DLC"],
+      ])}
+      ${sel("compendium-filter-tier", state.compendiumTierFilter, [
+        ["all", "全部阶级"],
+        ["0", "T1"],
+        ["1", "T2"],
+        ["2", "T3"],
+        ["3", "T4"],
+        ["4", "T5"],
+      ])}
+      ${sel("compendium-filter-unlock", state.compendiumUnlockFilter, [
+        ["all", "全部解锁状态"],
+        ["unlocked", "默认解锁"],
+        ["locked", "需解锁"],
+      ])}
+      ${activeCompendiumFilters() ? `<button class="button secondary" type="button" data-compendium-clear-filters>清除筛选</button>` : ""}
+    </div>
   `;
 }
 
@@ -1918,6 +2004,38 @@ function bindControls() {
     if (event.target.closest("#compendium-clear-search")) {
       clearCompendiumSearchState();
       renderCompendium();
+      return;
+    }
+
+    if (event.target.closest("[data-compendium-loadmore]")) {
+      state.compendiumVisibleCount += 24;
+      renderCompendium();
+      return;
+    }
+
+    if (event.target.closest("[data-compendium-clear-filters]")) {
+      state.compendiumDlcFilter = "all";
+      state.compendiumTierFilter = "all";
+      state.compendiumUnlockFilter = "all";
+      state.compendiumVisibleCount = 24;
+      renderCompendium();
+    }
+  });
+
+  $(".compendium-panel").addEventListener("change", (event) => {
+    const target = event.target;
+    if (target.id === "compendium-filter-dlc") {
+      state.compendiumDlcFilter = target.value;
+      state.compendiumVisibleCount = 24;
+      renderCompendium();
+    } else if (target.id === "compendium-filter-tier") {
+      state.compendiumTierFilter = target.value;
+      state.compendiumVisibleCount = 24;
+      renderCompendium();
+    } else if (target.id === "compendium-filter-unlock") {
+      state.compendiumUnlockFilter = target.value;
+      state.compendiumVisibleCount = 24;
+      renderCompendium();
     }
   });
 
@@ -2045,12 +2163,17 @@ function bindControls() {
   });
 }
 
+// 按需渲染：只渲染当前激活页面的重内容（攻略 / 图鉴），避免构建隐藏页面 DOM。
+function renderActivePageContent() {
+  if (state.activePage === "guide") renderStrategyGuide();
+  else if (state.activePage === "compendium") renderCompendium();
+}
+
 function render() {
   renderPageShell();
   renderStrategyControls();
   renderSimulatorCharacterControl();
-  renderStrategyGuide();
-  renderCompendium();
+  renderActivePageContent();
   renderStatFields();
   renderWeaponFields();
   renderScenarioFields();
@@ -2071,8 +2194,7 @@ async function loadOfficialCatalog() {
     state.catalogLoadState = "error";
   }
 
-  renderStrategyGuide();
-  renderCompendium();
+  renderActivePageContent();
 }
 
 async function loadOfficialLocalization() {
@@ -2087,8 +2209,7 @@ async function loadOfficialLocalization() {
     state.localizationLoadState = "error";
   }
 
-  renderStrategyGuide();
-  renderCompendium();
+  renderActivePageContent();
 }
 
 async function loadOfficialUnlocks() {
@@ -2103,7 +2224,7 @@ async function loadOfficialUnlocks() {
     state.unlocksLoadState = "error";
   }
 
-  renderCompendium();
+  if (state.activePage === "compendium") renderCompendium();
 }
 
 bindControls();

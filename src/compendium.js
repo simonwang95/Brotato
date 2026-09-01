@@ -1098,6 +1098,7 @@ function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEnt
     imageAssetPath: firstRecord?.imageAssetPath ?? null,
     sourcePackages: sources,
     sourceLabel: sources.map(sourceLabel).join(" / "),
+    tiers: unique(records.map((record) => record.tier)),
     tierLabel: rangeLabel(records.map((record) => record.tier), (tier) => `T${tier + 1}`),
     valueLabel: rangeLabel(records.map((record) => record.value), (value) => `${value}`),
     unlockLabel: boolStateLabel(
