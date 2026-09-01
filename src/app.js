@@ -13,6 +13,8 @@ import {
 } from "./scenarioData.js";
 import { buildCompendium } from "./compendium.js";
 import {
+  EVIDENCE_LEVELS,
+  TIER_LABELS,
   generateStrategyGuide,
   getAvailableCharacters,
   getAvailableDangerLevels,
@@ -384,14 +386,43 @@ function renderOfficialMeta(official) {
   return `<small class="official-meta">官方目录：${escapeHtml(official.display)}</small>`;
 }
 
-function renderRecommendationBreakdown(score, reasons = []) {
-  const reasonList = Array.isArray(reasons) ? reasons.filter(Boolean) : [];
+function renderCandidateBadges(candidate) {
+  const tier = candidate.tier ?? "core";
+  const evidence = candidate.evidenceLevel ?? "static-approx";
+  const grade = candidate.grade ?? "C";
+  const evidenceMeta = EVIDENCE_LEVELS[evidence] ?? EVIDENCE_LEVELS["static-approx"];
+  const tierLabel = TIER_LABELS[tier] ?? tier;
+  return `
+    <span class="badge badge-tier tier-${tier}">${escapeHtml(tierLabel)}</span>
+    <span class="badge badge-evidence evidence-${evidence}" title="${escapeHtml(evidenceMeta.hint)}">${escapeHtml(evidenceMeta.label)}</span>
+    <span class="badge badge-grade grade-${grade}" title="相对等级：按当前候选池内排序，非跨角色绝对分">等级 ${escapeHtml(grade)}</span>
+  `;
+}
+
+// P1-5：评分理由默认折叠，摘要只显示最重要的 2～3 条，其余按需展开（<details> 原生可键盘操作）。
+function renderRecommendationBreakdown(candidate) {
+  const { rank, recommendationReasons } = candidate;
+  const reasonList = Array.isArray(recommendationReasons) ? recommendationReasons.filter(Boolean) : [];
+  const top = reasonList.slice(0, 3);
+  const rest = reasonList.slice(3);
   return `
     <div class="recommendation-breakdown">
-      <span>推荐评分：${escapeHtml(String(score ?? 0))}</span>
+      <div class="breakdown-head">
+        <span class="rank-label">候选排序 #${escapeHtml(String(rank ?? "-"))}</span>
+        <span class="breakdown-hint">相对排序，仅在当前角色候选池内可比</span>
+      </div>
       ${
-        reasonList.length
-          ? `<ul>${reasonList.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>`
+        top.length
+          ? `<ul class="reasons-top">${top.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>`
+          : ""
+      }
+      ${
+        rest.length
+          ? `
+          <details class="reasons-more">
+            <summary>展开全部 ${escapeHtml(String(reasonList.length))} 条理由</summary>
+            <ul class="reasons-rest">${rest.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>
+          </details>`
           : ""
       }
     </div>
@@ -883,6 +914,88 @@ function renderGuideCharacterPortrait(character) {
   return `<div class="guide-character-portrait" aria-hidden="true"><span>${escapeHtml(fallback)}</span></div>`;
 }
 
+function renderWeaponCard(candidate) {
+  const { priority, reason, weapon, official } = candidate;
+  return `
+    <article class="guide-card tier-${candidate.tier}">
+      <div class="guide-card-head">
+        ${renderGuideCatalogLink("weapon", weapon.name, weapon.cnName, {
+          priority,
+          type: weapon.type,
+        }, official)}
+        ${renderCandidateBadges(candidate)}
+      </div>
+      <p>${escapeHtml(reason)}</p>
+      ${renderRecommendationBreakdown(candidate)}
+      <small>属性：${escapeHtml(weapon.statNote)}</small>
+      ${weapon.setNote ? `<small>套装：${escapeHtml(weapon.setNote)}</small>` : ""}
+      <small>解锁：${escapeHtml(weapon.unlock)}</small>
+      ${renderOfficialMeta(official)}
+    </article>
+  `;
+}
+
+function renderItemCard(candidate) {
+  const { priority, reason, item, official } = candidate;
+  return `
+    <article class="guide-card tier-${candidate.tier}">
+      <div class="guide-card-head">
+        ${renderGuideCatalogLink("item", item.name, item.cnName, {
+          priority,
+          type: item.role,
+        }, official)}
+        ${renderCandidateBadges(candidate)}
+      </div>
+      <p>${escapeHtml(reason)}</p>
+      ${renderRecommendationBreakdown(candidate)}
+      <small>属性：${escapeHtml(item.statNote)}</small>
+      <small>解锁：${escapeHtml(item.unlock)}</small>
+      ${renderOfficialMeta(official)}
+    </article>
+  `;
+}
+
+// P1-5：首屏只展示核心候选，替代/研究候选放入可键盘操作的“展开更多”。
+function renderCandidateGroup(candidates, renderCard) {
+  const core = candidates.filter((candidate) => candidate.tier === "core");
+  const rest = candidates.filter((candidate) => candidate.tier !== "core");
+  return `
+    <div class="card-list">
+      ${core.map(renderCard).join("")}
+    </div>
+    ${
+      rest.length
+        ? `
+        <details class="expand-more">
+          <summary>展开更多候选（替代 / 研究候选，共 ${escapeHtml(String(rest.length))} 个）</summary>
+          <div class="card-list">
+            ${rest.map(renderCard).join("")}
+          </div>
+        </details>`
+        : ""
+    }
+  `;
+}
+
+function renderEvidenceLegend() {
+  return `
+    <div class="evidence-legend">
+      <span class="legend-title">证据等级</span>
+      ${Object.entries(EVIDENCE_LEVELS)
+        .map(
+          ([key, meta]) => `
+        <span class="badge badge-evidence evidence-${key}" title="${escapeHtml(meta.hint)}">${escapeHtml(meta.label)}</span>`,
+        )
+        .join("")}
+      <span class="legend-divider" aria-hidden="true">·</span>
+      <span class="legend-title">候选分类</span>
+      ${Object.entries(TIER_LABELS)
+        .map(([key, label]) => `<span class="badge badge-tier tier-${key}">${escapeHtml(label)}</span>`)
+        .join("")}
+    </div>
+  `;
+}
+
 function renderStrategyGuide() {
   const guide = generateStrategyGuide(state.strategyCharacter, state.strategyMode, {
     officialCatalog: state.officialCatalog,
@@ -912,54 +1025,19 @@ function renderStrategyGuide() {
       </div>
     </section>
 
+    ${renderEvidenceLegend()}
+
     <section class="guide-grid">
       <div class="guide-section">
         <h3>推荐武器</h3>
-        <div class="card-list">
-          ${guide.recommendedWeapons
-            .map(
-              ({ priority, reason, weapon, official, recommendationScore, recommendationReasons }) => `
-                <article class="guide-card">
-                  ${renderGuideCatalogLink("weapon", weapon.name, weapon.cnName, {
-                    priority,
-                    type: weapon.type,
-                  }, official)}
-                  <p>${escapeHtml(reason)}</p>
-                  ${renderRecommendationBreakdown(recommendationScore, recommendationReasons)}
-                  <small>属性：${escapeHtml(weapon.statNote)}</small>
-                  ${weapon.setNote ? `<small>套装：${escapeHtml(weapon.setNote)}</small>` : ""}
-                  <small>解锁：${escapeHtml(weapon.unlock)}</small>
-                  ${renderOfficialMeta(official)}
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
+        ${renderCandidateGroup(guide.recommendedWeapons, renderWeaponCard)}
         <p class="route-note">${escapeHtml(guide.weaponRouteNote)}</p>
         <p class="avoid-line"><strong>避免：</strong>${escapeHtml(guide.avoid)}</p>
       </div>
 
       <div class="guide-section">
         <h3>关键道具</h3>
-        <div class="card-list">
-          ${guide.keyItems
-            .map(
-              ({ priority, reason, item, official, recommendationScore, recommendationReasons }) => `
-                <article class="guide-card">
-                  ${renderGuideCatalogLink("item", item.name, item.cnName, {
-                    priority,
-                    type: item.role,
-                  }, official)}
-                  <p>${escapeHtml(reason)}</p>
-                  ${renderRecommendationBreakdown(recommendationScore, recommendationReasons)}
-                  <small>属性：${escapeHtml(item.statNote)}</small>
-                  <small>解锁：${escapeHtml(item.unlock)}</small>
-                  ${renderOfficialMeta(official)}
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
+        ${renderCandidateGroup(guide.keyItems, renderItemCard)}
       </div>
 
       <div class="guide-section">

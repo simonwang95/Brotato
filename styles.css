@@ -607,6 +607,206 @@ tr:last-child td {
   color: #49606f;
 }
 
+/* P1-5：候选卡片头部（标题 + 徽章） */
+.guide-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+}
+
+.guide-card-head .guide-card-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* 候选分类徽章 */
+.badge-tier {
+  margin-left: auto;
+}
+
+.tier-core {
+  background: rgba(184, 77, 42, 0.12);
+  border-color: rgba(184, 77, 42, 0.3);
+  color: var(--accent-strong);
+}
+
+.tier-alternate {
+  background: rgba(22, 101, 133, 0.1);
+  border-color: rgba(22, 101, 133, 0.28);
+  color: #166585;
+}
+
+.tier-research {
+  background: rgba(109, 98, 86, 0.1);
+  border-color: rgba(109, 98, 86, 0.28);
+  color: var(--muted);
+}
+
+/* 证据等级徽章 */
+.evidence-official-exact {
+  background: rgba(17, 119, 63, 0.1);
+  border-color: rgba(17, 119, 63, 0.3);
+  color: var(--positive);
+}
+
+.evidence-static-approx {
+  background: rgba(180, 130, 20, 0.12);
+  border-color: rgba(180, 130, 20, 0.32);
+  color: #8a6116;
+}
+
+.evidence-hand-written {
+  background: rgba(109, 40, 110, 0.1);
+  border-color: rgba(109, 40, 110, 0.3);
+  color: #6d286e;
+}
+
+.evidence-pending {
+  background: rgba(109, 98, 86, 0.1);
+  border-color: rgba(109, 98, 86, 0.3);
+  color: var(--muted);
+}
+
+/* 相对等级徽章 */
+.grade-A {
+  background: rgba(17, 119, 63, 0.12);
+  border-color: rgba(17, 119, 63, 0.32);
+  color: var(--positive);
+}
+
+.grade-B {
+  background: rgba(180, 130, 20, 0.12);
+  border-color: rgba(180, 130, 20, 0.32);
+  color: #8a6116;
+}
+
+.grade-C {
+  background: rgba(109, 98, 86, 0.12);
+  border-color: rgba(109, 98, 86, 0.32);
+  color: var(--muted);
+}
+
+/* 卡片按分类着色边框 */
+.guide-card.tier-core {
+  border-color: rgba(184, 77, 42, 0.4);
+}
+
+.guide-card.tier-alternate {
+  border-color: rgba(22, 101, 133, 0.35);
+}
+
+.guide-card.tier-research {
+  border-color: var(--line);
+}
+
+/* 评分理由折叠（默认只显示最重要的 2～3 条） */
+.breakdown-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+
+.breakdown-head span {
+  display: inline;
+}
+
+.breakdown-head .rank-label {
+  color: var(--accent-strong);
+  font-weight: 800;
+}
+
+.breakdown-head .breakdown-hint {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.reasons-top {
+  display: grid;
+  gap: 3px;
+  margin: 6px 0 0;
+  padding-left: 16px;
+}
+
+.reasons-more {
+  margin-top: 6px;
+}
+
+.reasons-more summary {
+  cursor: pointer;
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.reasons-more[open] summary {
+  margin-bottom: 4px;
+}
+
+.reasons-rest {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding-left: 16px;
+}
+
+/* 展开更多候选（替代 / 研究候选） */
+.expand-more {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: rgba(109, 98, 86, 0.03);
+}
+
+.expand-more summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.expand-more[open] summary {
+  margin-bottom: 8px;
+}
+
+/* 证据等级 / 分类图例 */
+.evidence-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin: 0 0 14px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.legend-title {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.legend-divider {
+  color: var(--line);
+}
+
 .avoid-line {
   margin: 12px 0 0;
 }

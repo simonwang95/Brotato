@@ -2360,6 +2360,58 @@ function adjustWave20Targets(targets, danger) {
   });
 }
 
+// P1-5：为候选附加证据等级、相对等级与核心/替代/研究分类，
+// 让 UI 能区分高置信核心路线与低置信研究候选，避免单一原始评分显得过度精确。
+export const EVIDENCE_LEVELS = {
+  "official-exact": { label: "官方精确参数", hint: "数值直接来自官方目录（层数/价格/解锁/掉落）" },
+  "static-approx": { label: "静态近似", hint: "基于静态规则估算，非完整战斗模拟" },
+  "hand-written": { label: "手写策略", hint: "作者手写的路线推荐" },
+  pending: { label: "待校验", hint: "暂无可靠评分，需人工校验" },
+};
+
+export const TIER_LABELS = {
+  core: "核心",
+  alternate: "替代",
+  research: "研究候选",
+};
+
+function evidenceLevelFor(entry, score) {
+  if (!entry.officialCandidate) return "hand-written";
+  if (Number.isFinite(score) && score > 0) return "static-approx";
+  return "pending";
+}
+
+function gradeFor(rank, total) {
+  if (total <= 1) return "A";
+  const fraction = rank / total;
+  if (fraction <= 0.3) return "A";
+  if (fraction <= 0.65) return "B";
+  return "C";
+}
+
+function tierFor(entry, rank, total) {
+  if (!entry.officialCandidate) return "core";
+  const fraction = total > 0 ? rank / total : 0;
+  if (fraction <= 0.25) return "core";
+  if (fraction <= 0.6) return "alternate";
+  return "research";
+}
+
+function annotateCandidates(sorted, kind) {
+  const total = sorted.length;
+  return sorted.map((entry, index) => {
+    const rank = index + 1;
+    const score = entry.recommendationScore ?? 0;
+    return {
+      ...entry,
+      rank,
+      tier: tierFor(entry, rank, total),
+      evidenceLevel: evidenceLevelFor(entry, score),
+      grade: gradeFor(rank, total),
+    };
+  });
+}
+
 export function generateStrategyGuide(characterId, modeId = "normal20", options = {}) {
   const resolvedOptions = resolveOptions(options);
   const character = CHARACTER_GUIDES[characterId];
@@ -2392,13 +2444,19 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
   const itemPool = options.officialCatalog
     ? expandOfficialItemPool(manualItems, options, scoringPlan)
     : manualItems;
-  const recommendedWeapons = filterAndSort(weaponPool, resolvedOptions, scoringPlan, mode).slice(
-    0,
-    visibleRecommendationLimit(weaponPool, manualWeapons.length, 5),
+  const recommendedWeapons = annotateCandidates(
+    filterAndSort(weaponPool, resolvedOptions, scoringPlan, mode).slice(
+      0,
+      visibleRecommendationLimit(weaponPool, manualWeapons.length, 5),
+    ),
+    "weapon",
   );
-  const keyItems = filterAndSort(itemPool, resolvedOptions, scoringPlan, mode).slice(
-    0,
-    visibleRecommendationLimit(itemPool, manualItems.length, 24),
+  const keyItems = annotateCandidates(
+    filterAndSort(itemPool, resolvedOptions, scoringPlan, mode).slice(
+      0,
+      visibleRecommendationLimit(itemPool, manualItems.length, 24),
+    ),
+    "item",
   );
 
   return {
