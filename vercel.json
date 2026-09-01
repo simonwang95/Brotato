@@ -6,7 +6,25 @@
   },
   "headers": [
     {
-      "source": "/data/assets/(.*)",
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    },
+    {
+      "source": "/data/manifest.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.[a-f0-9]{10}\\.(js|css|json|webp|png|svg)",
       "headers": [
         {
           "key": "Cache-Control",

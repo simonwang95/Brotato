@@ -417,7 +417,7 @@
 - **从攻略/图鉴带入官方武器**：图鉴武器卡与攻略武器卡（有 `officialNameKey` 时）新增“带入模拟器”按钮，点击后按官方目录 `stats`（damage/cooldown/nb_projectiles/crit/piercing/bounce/scalingStats）映射到模拟器武器状态，自动切到高级模式并显示来源说明（`#sim-weapon-source`）。
 - **恢复默认**：`#sim-restore-defaults` 一键重置角色属性/武器/道具变化/场景/战斗上下文/取整模式到默认值。
 
-### [ ] P1-8 修正静态数据与图片缓存策略
+### [x] P1-8 修正静态数据与图片缓存策略
 
 问题：
 
@@ -445,6 +445,15 @@
 - 重复访问时静态数据可以命中缓存；入口更新仍能及时生效。
 - 构建报告包含 JS、CSS、JSON、图片和总大小，并在超预算时失败或告警。
 - 首次加载和路由切换不重复构建相同的完整图鉴数据。
+
+完成说明（2026-09-01，分支 fix/p1-remediation）：
+
+- **移除 no-store**：`src/app.js` 三个数据 fetch 不再用 `cache:"no-store"`；新增 `loadManifest()` + `loadDataFile()`，优先读取构建生成的 `data/manifest.json`（逻辑名→内容哈希路径），本地 dev-server 无 manifest 时回退稳定文件名。
+- **内容哈希 + 版本化**：`scripts/build-static.mjs` 重写——CSS/数据 JSON/图片按内容哈希（`<名>.<10位hex>.<ext>`）；浏览器 JS 放入 `/src/v<整体版本>/` 版本化目录（任一模块变化即整体换 URL，模块间相对 import 无需改写、无循环依赖）；index.html 自动改写 CSS/入口 JS/硬编码图片引用为哈希名。
+- **manifest 机制**：构建生成 `data/manifest.json`（含 version + 逻辑名→哈希路径映射），数据 JSON 内图片引用同步替换为哈希路径；客户端经 manifest 取新数据，旧 immutable 缓存不阻塞更新。
+- **缓存头（vercel.json）**：index.html `no-cache`（入口更新及时生效）；manifest `max-age=60, must-revalidate`；内容哈希资源（JS/CSS/JSON/图片）`max-age=31536000, immutable`。
+- **排除服务端模块**：public 只复制 12 个浏览器可达 src 模块，`ocrService.js`（仅 api/dev-server 使用）不再泄漏到公开目录。
+- **体积预算**：构建输出 JS/CSS/JSON/图片/总大小报告，超单项预算告警、超总硬上限（10 MiB）失败；`verify-build.mjs` 同步改为 manifest/版本目录感知（27 项检查）。当前产物约 4.8 MiB（JS 443 KB / JSON 1.8 MB / 图片 2.6 MB / CSS 24 KB）。
 
 ### [ ] P1-9 扩展推荐模型校准与不确定性表达
 

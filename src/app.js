@@ -2379,11 +2379,30 @@ function render() {
   renderResults();
 }
 
+// 构建产物会生成 data/manifest.json（逻辑名 -> 内容哈希路径）。
+// 本地 dev-server 直接服务源码、无 manifest，回退到稳定文件名。
+// 两者都不再用 no-store：哈希资源走浏览器长期缓存，manifest 走短缓存。
+let manifestPromise = null;
+function loadManifest() {
+  if (!manifestPromise) {
+    manifestPromise = fetch("/data/manifest.json")
+      .then((response) => (response.ok ? response.json() : null))
+      .catch(() => null);
+  }
+  return manifestPromise;
+}
+
+async function loadDataFile(logicalName, fallbackPath) {
+  const manifest = await loadManifest();
+  const path = manifest?.files?.[logicalName] ?? fallbackPath;
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`HTTP ${response.status} for ${path}`);
+  return response.json();
+}
+
 async function loadOfficialCatalog() {
   try {
-    const response = await fetch("./data/official-catalog.json", { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    state.officialCatalog = await response.json();
+    state.officialCatalog = await loadDataFile("official-catalog.json", "/data/official-catalog.json");
     state.catalogLoadState = "loaded";
   } catch (error) {
     console.warn("Failed to load official catalog", error);
@@ -2396,9 +2415,7 @@ async function loadOfficialCatalog() {
 
 async function loadOfficialLocalization() {
   try {
-    const response = await fetch("./data/official-localization.json", { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    state.officialLocalization = await response.json();
+    state.officialLocalization = await loadDataFile("official-localization.json", "/data/official-localization.json");
     state.localizationLoadState = "loaded";
   } catch (error) {
     console.warn("Failed to load official localization", error);
@@ -2411,9 +2428,7 @@ async function loadOfficialLocalization() {
 
 async function loadOfficialUnlocks() {
   try {
-    const response = await fetch("./data/official-unlocks.json", { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    state.officialUnlocks = await response.json();
+    state.officialUnlocks = await loadDataFile("official-unlocks.json", "/data/official-unlocks.json");
     state.unlocksLoadState = "loaded";
   } catch (error) {
     console.warn("Failed to load official unlocks", error);
