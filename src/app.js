@@ -42,6 +42,25 @@ const scalingLabels = labelMap(SCALING_FIELD_SCHEMAS);
 const itemDeltaLabels = labelMap(ITEM_DELTA_FIELD_SCHEMAS);
 const weaponLabels = { name: "武器名", ...labelMap(WEAPON_FIELD_SCHEMAS) };
 
+// 高级武器参数（基础模式隐藏，高级模式折叠展示）：穿透 / 弹射 / 爆炸 / 缩放
+const ADVANCED_WEAPON_KEYS = [
+  "piercing",
+  "piercingDamageMultiplier",
+  "bounces",
+  "bounceDamageMultiplier",
+  "explosionTargets",
+  "explosionDamageMultiplier",
+];
+
+// 高级场景参数分组（基础模式隐藏，高级模式按组折叠展示）
+const COMBAT_CONTEXT_GROUPS = [
+  { id: "base", title: "基础场景", keys: ["enemyArmor", "averageEnemyHp", "positioningHitLoss"] },
+  { id: "burn", title: "燃烧", keys: ["burnBaseDamage", "burnElementalScaling", "burnApplicationChance", "burnDuration", "burnTickRate", "burnSpreadChance", "burnSpreadTargets"] },
+  { id: "curse", title: "诅咒", keys: ["curseIntensity", "curseEnemyPowerPerPoint", "curseRewardPerPoint"] },
+  { id: "structure", title: "结构物", keys: ["structureCount", "structureBaseDamage", "structureCooldown", "structureEngineeringScaling", "structureUptime", "structureHitChance", "structureTargets"] },
+  { id: "speed", title: "移速规避", keys: ["speedAvoidancePerPoint", "speedAvoidanceCap"] },
+];
+
 // fieldId -> 中文标签，供结果区提示“哪个字段无法计算”（P1-3）。
 const FIELD_LABEL_BY_ID = {};
 Object.values(STAT_FIELD_SCHEMAS).forEach((s) => (FIELD_LABEL_BY_ID[`stats:${s.key}`] = s.label));
@@ -73,6 +92,10 @@ const state = {
   strategyUnlock: "allowUnlocks",
   strategyPreference: "stable",
   simulatorCharacter: "ranger",
+  // 模拟器基础/高级模式：基础模式隐藏高级武器参数与高级场景参数
+  simulatorMode: "basic",
+  // 从攻略/图鉴带入的官方武器来源说明
+  simulatorWeaponSource: "",
   officialCatalog: null,
   catalogLoadState: "loading",
   officialLocalization: null,
@@ -236,6 +259,8 @@ function renderWeaponFields() {
   clearInvalidFields("weapon:");
   clearInvalidFields("scaling:");
 
+  const advanced = state.simulatorMode === "advanced";
+
   root.append(
     createTextField({
       label: weaponLabels.name,
@@ -247,7 +272,9 @@ function renderWeaponFields() {
     }),
   );
 
-  Object.keys(WEAPON_FIELD_SCHEMAS).forEach((key) => {
+  // 核心武器字段（基础 + 高级模式都显示）
+  const coreKeys = ["quantity", "baseDamage", "cooldown", "hitsPerAttack", "critChance", "critMultiplier"];
+  coreKeys.forEach((key) => {
     root.append(
       createNumberField({
         label: weaponLabels[key],
@@ -262,20 +289,48 @@ function renderWeaponFields() {
     );
   });
 
-  DAMAGE_TYPES.forEach((key) => {
-    root.append(
-      createNumberField({
-        label: scalingLabels[key],
-        value: state.weapon.scaling[key],
-        schema: SCALING_FIELD_SCHEMAS[key],
-        fieldId: `scaling:${key}`,
-        onInput: (value) => {
-          state.weapon.scaling[key] = value;
-          renderResults();
-        },
-      }),
-    );
-  });
+  // 高级武器参数（仅高级模式，折叠展示）：穿透 / 弹射 / 爆炸 / 缩放
+  if (advanced) {
+    const advDetail = document.createElement("details");
+    advDetail.className = "sim-advanced-group";
+    const summary = document.createElement("summary");
+    summary.textContent = "高级武器参数（穿透 / 弹射 / 爆炸 / 缩放）";
+    const advFields = document.createElement("div");
+    advFields.className = "fields";
+
+    ADVANCED_WEAPON_KEYS.forEach((key) => {
+      advFields.append(
+        createNumberField({
+          label: weaponLabels[key],
+          value: state.weapon[key],
+          schema: WEAPON_FIELD_SCHEMAS[key],
+          fieldId: `weapon:${key}`,
+          onInput: (value) => {
+            state.weapon[key] = value;
+            renderResults();
+          },
+        }),
+      );
+    });
+
+    DAMAGE_TYPES.forEach((key) => {
+      advFields.append(
+        createNumberField({
+          label: scalingLabels[key],
+          value: state.weapon.scaling[key],
+          schema: SCALING_FIELD_SCHEMAS[key],
+          fieldId: `scaling:${key}`,
+          onInput: (value) => {
+            state.weapon.scaling[key] = value;
+            renderResults();
+          },
+        }),
+      );
+    });
+
+    advDetail.append(summary, advFields);
+    root.append(advDetail);
+  }
 }
 
 function renderScenarioFields() {
@@ -324,30 +379,36 @@ function renderScenarioFields() {
   });
   itemEffectField.append(itemEffectLabel, itemEffectSelect);
 
-  const contextTitle = document.createElement("div");
-  contextTitle.className = "field-group-title";
-  contextTitle.textContent = "高级场景参数";
+  root.append(scenarioField, itemEffectField);
 
-  const contextFields = document.createElement("div");
-  contextFields.className = "fields context-fields";
-
-  clearInvalidFields("context:");
-  Object.entries(combatContextLabels).forEach(([key, label]) => {
-    contextFields.append(
-      createNumberField({
-        label,
-        value: state.combatContext[key],
-        schema: COMBAT_CONTEXT_FIELD_SCHEMAS[key],
-        fieldId: `context:${key}`,
-        onInput: (value) => {
-          state.combatContext[key] = value;
-          renderResults();
-        },
-      }),
-    );
-  });
-
-  root.append(scenarioField, itemEffectField, contextTitle, contextFields);
+  // 高级场景参数：基础模式隐藏；高级模式按燃烧 / 诅咒 / 结构物等分组折叠展示
+  if (state.simulatorMode === "advanced") {
+    clearInvalidFields("context:");
+    COMBAT_CONTEXT_GROUPS.forEach((group) => {
+      const detail = document.createElement("details");
+      detail.className = "sim-advanced-group";
+      const summary = document.createElement("summary");
+      summary.textContent = `${group.title}（${group.keys.length} 项）`;
+      const fields = document.createElement("div");
+      fields.className = "fields context-fields";
+      group.keys.forEach((key) => {
+        fields.append(
+          createNumberField({
+            label: combatContextLabels[key],
+            value: state.combatContext[key],
+            schema: COMBAT_CONTEXT_FIELD_SCHEMAS[key],
+            fieldId: `context:${key}`,
+            onInput: (value) => {
+              state.combatContext[key] = value;
+              renderResults();
+            },
+          }),
+        );
+      });
+      detail.append(summary, fields);
+      root.append(detail);
+    });
+  }
 }
 
 function renderItemFields() {
@@ -369,6 +430,111 @@ function renderItemFields() {
       }),
     );
   });
+}
+
+// 恢复模拟器默认值（角色属性 / 武器 / 道具变化 / 场景 / 战斗上下文 / 取整模式）
+function restoreSimulatorDefaults() {
+  state.stats = { ...DEFAULT_STATS };
+  state.weapon = structuredClone(DEFAULT_WEAPON);
+  state.itemDelta = { ...DEFAULT_ITEM_DELTA };
+  state.roundingMode = "none";
+  state.scenarioId = "normalWave";
+  state.itemEffectId = "none";
+  state.combatContext = { ...DEFAULT_COMBAT_CONTEXT };
+  state.simulatorWeaponSource = "";
+  state.invalidFields = {};
+  renderSimulator();
+}
+
+// 显示从图鉴/攻略带入的官方武器来源说明
+function renderWeaponSource() {
+  const el = $("#sim-weapon-source");
+  if (!el) return;
+  if (state.simulatorWeaponSource) {
+    el.textContent = state.simulatorWeaponSource;
+    el.hidden = false;
+  } else {
+    el.hidden = true;
+  }
+}
+
+// 渲染模拟器全部输入与结果（基础/高级模式切换、恢复默认、带入武器后调用）
+function renderSimulator() {
+  renderStatFields();
+  renderWeaponFields();
+  renderScenarioFields();
+  renderItemFields();
+  renderWeaponSource();
+  renderResults();
+}
+
+// 把官方目录武器记录映射到模拟器武器状态（P1-7：从图鉴/攻略带入官方武器参数）
+function weaponRecordToSimulator(record) {
+  const s = record.stats ?? {};
+  const r2 = (x) => Math.round(x * 100) / 100;
+  const weapon = structuredClone(DEFAULT_WEAPON);
+  weapon.quantity = 1;
+  weapon.baseDamage = s.damage ?? weapon.baseDamage;
+  weapon.cooldown = r2((s.cooldown ?? 10) / 10);
+  weapon.hitsPerAttack = s.nb_projectiles ?? 1;
+  weapon.critChance = r2((s.crit_chance ?? 0) * 100);
+  weapon.critMultiplier = s.crit_damage ?? weapon.critMultiplier;
+  weapon.piercing = s.piercing ?? 0;
+  weapon.piercingDamageMultiplier = r2(1 - (s.piercing_dmg_reduction ?? 0.5));
+  weapon.bounces = s.bounce ?? 0;
+  weapon.bounceDamageMultiplier = r2(1 - (s.bounce_dmg_reduction ?? 0.5));
+  (s.scalingStats ?? []).forEach((entry) => {
+    const value = r2((entry.value ?? 0) * 100);
+    if (entry.stat === "stat_melee_damage") weapon.scaling.meleeDamage = value;
+    else if (entry.stat === "stat_ranged_damage") weapon.scaling.rangedDamage = value;
+    else if (entry.stat === "stat_elemental_damage") weapon.scaling.elementalDamage = value;
+    else if (entry.stat === "stat_engineering") weapon.scaling.engineering = value;
+  });
+  return weapon;
+}
+
+// 按 nameKey 查找官方目录武器记录（取最低阶级作为代表）
+function findCatalogWeaponRecord(nameKey) {
+  const records = state.officialCatalog?.records ?? [];
+  const matches = records.filter((r) => r.kind === "weapon" && r.nameKey === nameKey);
+  if (!matches.length) return null;
+  matches.sort((a, b) => (a.tier ?? 0) - (b.tier ?? 0));
+  return matches[0];
+}
+
+// 从图鉴/攻略把官方武器带入模拟器，并显示来源
+function importWeaponToSimulator(record) {
+  if (!record || record.kind !== "weapon") return;
+  const weapon = weaponRecordToSimulator(record);
+  const locEntry = state.officialLocalization?.entries?.[record.nameKey];
+  weapon.name = locEntry ? `${locEntry.cnName}（${locEntry.enName}）` : record.nameKey;
+  state.weapon = weapon;
+  state.simulatorWeaponSource = `已带入官方武器参数：${weapon.name}`;
+  // 高级武器参数（穿透/弹射/缩放）需要高级模式才可见
+  if (state.simulatorMode !== "advanced") {
+    state.simulatorMode = "advanced";
+    document.querySelectorAll("[data-sim-mode]").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.dataset.simMode === "advanced");
+    });
+  }
+  window.location.hash = "#simulator";
+  render();
+}
+
+// 切换基础 / 高级模式：只改变哪些高级输入可见，不改变当前值
+function setSimulatorMode(mode) {
+  state.simulatorMode = mode;
+  document.querySelectorAll("[data-sim-mode]").forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.simMode === mode);
+  });
+  const hint = $("#sim-mode-hint");
+  if (hint) {
+    hint.textContent =
+      mode === "advanced"
+        ? "高级模式显示高级武器参数与分组的高级场景参数（默认折叠，展开保留当前值）。"
+        : "基础模式只保留核心输入；高级参数默认折叠，展开后保留当前值。";
+  }
+  renderSimulator();
 }
 
 function renderPriorityList(title, items) {
@@ -674,6 +840,7 @@ function renderCatalogCompendiumCard(entry, kindLabel) {
           <div><dt>功能说明</dt><dd>${escapeHtml(entry.strategyStatNote || "待补策略说明")}</dd></div>
         </dl>
       </details>
+      ${kindLabel === "武器" ? `<button type="button" class="compendium-import" data-import-weapon="${escapeHtml(entry.nameKey)}">带入模拟器</button>` : ""}
     </article>
   `;
 }
@@ -1017,6 +1184,7 @@ function renderWeaponCard(candidate) {
       ${weapon.setNote ? `<small>套装：${escapeHtml(weapon.setNote)}</small>` : ""}
       <small>解锁：${escapeHtml(weapon.unlock)}</small>
       ${renderOfficialMeta(official)}
+      ${weapon.officialNameKey ? `<button type="button" class="guide-import" data-import-weapon="${escapeHtml(weapon.officialNameKey)}">带入模拟器</button>` : ""}
     </article>
   `;
 }
@@ -1338,6 +1506,17 @@ function renderResults() {
       </table>
     </section>
   `;
+
+  // 移动端吸底结果摘要：修改输入后无需滚动到底部即可看到关键结果变化（P1-7）
+  const sticky = $("#sim-sticky-summary");
+  if (sticky) {
+    const sign = (n) => (n >= 0 ? "+" : "");
+    sticky.innerHTML = `
+      <span class="sim-sticky-item">当前 <strong>${formatNumber(scenarioBefore.totalDps)}</strong></span>
+      <span class="sim-sticky-item">购买后 <strong>${formatNumber(scenarioAfter.totalDps)}</strong></span>
+      <span class="sim-sticky-item ${scenarioDelta >= 0 ? "pos" : "neg"}">场景 ${sign(scenarioDelta)}${formatNumber(scenarioDeltaPercent)}%</span>
+    `;
+  }
 }
 
 function renderScreenshotParseOutput() {
@@ -2022,6 +2201,14 @@ function bindControls() {
     }
   });
 
+  // 从攻略/图鉴“带入模拟器”（文档级委托，攻略与图鉴卡片通用）
+  document.addEventListener("click", (event) => {
+    const importBtn = event.target.closest("[data-import-weapon]");
+    if (!importBtn) return;
+    const record = findCatalogWeaponRecord(importBtn.dataset.importWeapon);
+    if (record) importWeaponToSimulator(record);
+  });
+
   $(".compendium-panel").addEventListener("change", (event) => {
     const target = event.target;
     if (target.id === "compendium-filter-dlc") {
@@ -2161,6 +2348,15 @@ function bindControls() {
     window.location.hash = "#simulator";
     render();
   });
+
+  // 模拟器基础 / 高级模式切换
+  document.querySelectorAll("[data-sim-mode]").forEach((btn) => {
+    btn.addEventListener("click", () => setSimulatorMode(btn.dataset.simMode));
+  });
+
+  // 恢复默认
+  const restoreBtn = $("#sim-restore-defaults");
+  if (restoreBtn) restoreBtn.addEventListener("click", () => restoreSimulatorDefaults());
 }
 
 // 按需渲染：只渲染当前激活页面的重内容（攻略 / 图鉴），避免构建隐藏页面 DOM。
@@ -2178,6 +2374,7 @@ function render() {
   renderWeaponFields();
   renderScenarioFields();
   renderItemFields();
+  renderWeaponSource();
   renderScreenshotParseOutput();
   renderResults();
 }

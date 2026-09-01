@@ -94,6 +94,16 @@
       </section>
 
       <section class="page-section simulator-page" data-page="simulator" hidden>
+        <div class="sim-toolbar">
+          <div class="sim-mode-toggle" role="group" aria-label="模拟器模式">
+            <button type="button" data-sim-mode="basic" class="is-active">基础模式</button>
+            <button type="button" data-sim-mode="advanced">高级模式</button>
+          </div>
+          <p class="sim-mode-hint" id="sim-mode-hint">基础模式只保留核心输入；高级参数默认折叠，展开后保留当前值。</p>
+          <div class="sim-toolbar-actions">
+            <button type="button" id="sim-restore-defaults" class="secondary">恢复默认</button>
+          </div>
+        </div>
         <section class="panel screenshot-panel">
           <div class="panel-header">
             <h2>截图/照片解析</h2>
@@ -132,6 +142,7 @@
               <h2>当前武器</h2>
               <p>先按单种武器建模，同类武器用“武器数量”乘起来；穿透、弹射和爆炸会进入场景估算。</p>
             </div>
+            <p id="sim-weapon-source" class="sim-source-note" hidden></p>
             <div id="weapon-fields" class="fields"></div>
           </section>
 
@@ -172,6 +183,8 @@
           <div id="details" class="details"></div>
         </aside>
         </section>
+
+        <div id="sim-sticky-summary" class="sim-sticky-summary" aria-live="polite"></div>
       </section>
 
       <p class="note">

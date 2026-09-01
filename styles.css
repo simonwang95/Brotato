@@ -927,6 +927,13 @@ tr:last-child td {
 
 .calculator-layout {
   margin-top: 0;
+  align-items: start;
+}
+
+/* 桌面端结果栏 sticky：滚动输入时结果始终可见 */
+.calculator-layout > aside {
+  position: sticky;
+  top: 16px;
 }
 
 .screenshot-panel {
@@ -1308,7 +1315,146 @@ tr:last-child td {
   text-align: center;
 }
 
+/* 模拟器工具栏（基础/高级切换 + 恢复默认） */
+.sim-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.sim-mode-toggle {
+  display: inline-flex;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.sim-mode-toggle button {
+  border: none;
+  background: #fff;
+  color: var(--accent);
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.sim-mode-toggle button.is-active {
+  background: var(--accent);
+  color: #fff;
+}
+.sim-mode-hint {
+  flex: 1;
+  min-width: 200px;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+}
+.sim-toolbar-actions {
+  display: flex;
+  gap: 8px;
+}
+/* 高级参数折叠组（基础模式隐藏，高级模式默认折叠） */
+.sim-advanced-group {
+  margin-top: 10px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: #faf7f2;
+}
+.sim-advanced-group summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.sim-advanced-group .fields {
+  margin-top: 8px;
+}
+/* 模拟器武器来源说明 */
+.sim-source-note {
+  margin: 0 0 10px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--accent);
+  background: #fbf1e8;
+  border: 1px dashed var(--accent);
+  border-radius: 8px;
+}
+/* 图鉴卡片“带入模拟器”按钮 */
+.compendium-import {
+  margin-top: 10px;
+  width: 100%;
+  border: 1px solid var(--accent);
+  background: #fff;
+  color: var(--accent);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.compendium-import:hover {
+  background: var(--accent);
+  color: #fff;
+}
+/* 攻略武器卡“带入模拟器”按钮 */
+.guide-import {
+  margin-top: 10px;
+  border: 1px solid var(--accent);
+  background: #fff;
+  color: var(--accent);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.guide-import:hover {
+  background: var(--accent);
+  color: #fff;
+}
+/* 移动端吸底结果摘要（桌面隐藏，结果栏可见） */
+.sim-sticky-summary {
+  display: none;
+}
+.sim-sticky-item {
+  font-size: 12px;
+  color: var(--muted);
+}
+.sim-sticky-item strong {
+  color: var(--text);
+  font-size: 14px;
+}
+.sim-sticky-item.pos {
+  color: #2e7d32;
+}
+.sim-sticky-item.neg {
+  color: #c62828;
+}
+
 @media (max-width: 920px) {
+  .sim-sticky-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 8px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    background: #fff;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  /* 为吸底摘要留出空间，避免遮挡页面底部内容 */
+  .simulator-page {
+    padding-bottom: 64px;
+  }
+
   .topbar {
     align-items: start;
     flex-direction: column;
