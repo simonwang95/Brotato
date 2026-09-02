@@ -912,6 +912,49 @@ tr:last-child td {
   font-weight: 800;
 }
 
+.set-bonus-block {
+  display: grid;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffdfa;
+}
+
+.set-bonus-title {
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.set-bonus-list {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.set-bonus-list li {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.set-bonus-count {
+  flex: 0 0 auto;
+  min-width: 64px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.set-bonus-effects {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
 .target-section,
 .source-section {
   margin-top: 14px;

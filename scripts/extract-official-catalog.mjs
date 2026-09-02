@@ -306,6 +306,67 @@ function parseEffectDetail(path, block, resources, seen = new Set()) {
   return effect;
 }
 
+// 套装（set）数据：每个 *_set_data.tres 描述一个武器类别（如 ethereal/幽魂），
+// 其 set_bonuses 是按「持有同套装武器数量」(2..6) 索引的加成数组，每个档位含 1-3 个
+// 属性效果（key + value）。这些效果文件与武器效果共用 effect.gd 结构。
+function parseSetBonusEffects(block, resources) {
+  const extResources = collectExtResources(block);
+  const bonusesLine = block
+    .split("\n")
+    .find((line) => line.trim().startsWith("set_bonuses"));
+  if (!bonusesLine) return [];
+  const inner = bonusesLine.slice(
+    bonusesLine.indexOf("[") + 1,
+    bonusesLine.lastIndexOf("]"),
+  );
+  const bonuses = [];
+  for (const tierMatch of inner.matchAll(/\[([^\]]*)\]/g)) {
+    const refs = [...tierMatch[1].matchAll(/ExtResource\(\s*(\d+)\s*\)/g)].map(
+      (item) => Number(item[1]),
+    );
+    const effects = refs
+      .map((ref) => extResources[ref]?.path)
+      .filter(Boolean)
+      .map((path) => {
+        const effectBlock = resources.get(path);
+        if (!effectBlock) return null;
+        const resourceBlock =
+          effectBlock.match(/\[resource\]\s*([\s\S]*)$/)?.[1] ?? effectBlock;
+        const key = getString(resourceBlock, "key");
+        const value = getNumber(resourceBlock, "value");
+        if (!key && value === null) return null;
+        return {
+          key,
+          value,
+          effectSign: getNumber(resourceBlock, "effect_sign"),
+        };
+      })
+      .filter(Boolean);
+    bonuses.push({ count: bonuses.length + 2, effects });
+  }
+  return bonuses;
+}
+
+function parseSets(pkg, sourcePackage) {
+  const sets = [];
+  if (!pkg.resources.size) return sets;
+  pkg.resources.forEach((block, path) => {
+    if (!/set_data\.tres$/.test(path)) return;
+    const myId = getString(block, "my_id");
+    if (!myId) return;
+    const setIdMatch = path.match(/\/sets\/([^/]+)\//);
+    sets.push({
+      id: myId,
+      setId: setIdMatch?.[1] ?? myId.replace(/^set_/, ""),
+      nameKey: getString(block, "name"),
+      sourcePackage,
+      setPath: path,
+      bonuses: parseSetBonusEffects(block, pkg.resources),
+    });
+  });
+  return sets.sort((a, b) => a.setId.localeCompare(b.setId));
+}
+
 function normalizeRecord(kind, block, sourcePackage, resources = new Map()) {
   const extResources = collectExtResources(block);
   const iconRef = getResourceRef(block, "icon");
@@ -405,12 +466,14 @@ function summarize(records) {
 
 const loadedPackages = [];
 const records = [];
+const sets = [];
 
 packageInputs.forEach((input) => {
   const pkg = readPackage(input.path);
   if (!pkg) return;
   loadedPackages.push(input);
   records.push(...parsePackage(pkg, input.id));
+  sets.push(...parseSets(pkg, input.id));
 });
 
 if (!loadedPackages.length) {
@@ -419,6 +482,7 @@ if (!loadedPackages.length) {
 }
 
 records.sort((a, b) => `${a.kind}:${a.id}`.localeCompare(`${b.kind}:${b.id}`));
+sets.sort((a, b) => a.setId.localeCompare(b.setId));
 
 const sourceMetadata = buildSourceMetadata(installDir, packageInputs);
 const catalog = {
@@ -427,19 +491,26 @@ const catalog = {
     id: sourcePackage.id,
     file: basename(sourcePackage.path),
   })),
-  summary: summarize(records),
+  summary: { ...summarize(records), sets: sets.length },
   records,
+  sets,
 };
 
 if (process.argv.includes("--write")) {
   writeFileSync(outputPath, `${JSON.stringify(catalog, null, 2)}\n`);
-  console.log(`Wrote ${records.length} records to ${outputPath}`);
+  console.log(`Wrote ${records.length} records and ${sets.length} sets to ${outputPath}`);
 } else {
   console.log(JSON.stringify(catalog.summary, null, 2));
   console.log("\nSample records:");
   records.slice(0, 12).forEach((record) => {
     console.log(
       `- ${record.kind} ${record.id} ${record.nameKey} tier=${record.tier} value=${record.value} source=${record.sourcePackage}`,
+    );
+  });
+  console.log("\nSample sets:");
+  sets.slice(0, 6).forEach((set) => {
+    console.log(
+      `- set ${set.setId} ${set.nameKey} tiers=${set.bonuses.length} source=${set.sourcePackage}`,
     );
   });
   console.log("\nRun with --write to generate data/official-catalog.json");

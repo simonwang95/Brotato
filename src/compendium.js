@@ -9,7 +9,7 @@ const SOURCE_LABELS = {
 const SET_LABELS = {
   blade: "刀刃",
   blunt: "钝器",
-  elemental: "元素",
+  fire: "元素",
   ethereal: "幽魂",
   explosive: "爆炸",
   gun: "枪械",
@@ -304,6 +304,13 @@ function formatPercent(value) {
 function formatStatValue(stat, value) {
   const suffix = PERCENT_STATS.has(stat) ? "%" : "";
   return `${signedNumber(value)}${suffix}`;
+}
+
+// 套装加成效果：把一组 { key, value } 属性效果格式化为中文，如「闪避 +6%，护甲 -1」。
+export function formatSetBonusEffects(effects) {
+  return (effects ?? [])
+    .map((effect) => `${statLabel(effect.key)} ${formatStatValue(effect.key, effect.value)}`)
+    .join("，");
 }
 
 function formatCooldown(frames) {
@@ -1079,7 +1086,7 @@ function groupCatalogRecords(catalog, kind) {
     }, new Map());
 }
 
-function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEntry) {
+function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEntry, setIndex) {
   const localized = localization?.entries?.[nameKey];
   const firstRecord = records[0];
   const sources = unique(records.map((record) => record.sourcePackage));
@@ -1115,6 +1122,17 @@ function summarizeCatalogRecordGroup(nameKey, records, localization, strategyEnt
       "掉落状态未知",
     ),
     setLabels: setIds.map((setId) => SET_LABELS[setId] ?? setId),
+    setBonuses: setIds
+      .map((setId) => {
+        const set = setIndex?.get(setId);
+        if (!set || !set.bonuses?.length) return null;
+        return {
+          setId,
+          label: SET_LABELS[setId] ?? setId,
+          bonuses: set.bonuses,
+        };
+      })
+      .filter(Boolean),
     effectCount: effectPaths.length,
     recordCount: records.length,
     isCursedLabel: boolStateLabel(cursedValues, "可诅咒", "普通", "诅咒状态混合", "诅咒状态未知"),
@@ -1201,10 +1219,17 @@ export function buildCharacterCompendium(catalog, localization, unlocks) {
 export function buildCatalogCompendium(catalog, localization, kind, strategyEntries) {
   const groups = groupCatalogRecords(catalog, kind);
   const strategyIndex = buildStrategyIndex(kind, strategyEntries);
+  const setIndex = new Map((catalog?.sets ?? []).map((set) => [set.setId, set]));
 
   return [...groups.entries()]
     .map(([nameKey, records]) =>
-      summarizeCatalogRecordGroup(nameKey, records, localization, strategyIndex.get(nameKey)),
+      summarizeCatalogRecordGroup(
+        nameKey,
+        records,
+        localization,
+        strategyIndex.get(nameKey),
+        setIndex,
+      ),
     )
     .sort((left, right) => {
       const sourceCompare = left.sourceLabel.localeCompare(right.sourceLabel, "zh-CN");

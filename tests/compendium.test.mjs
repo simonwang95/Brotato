@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { buildCompendium } from "../src/compendium.js";
+import { buildCompendium, formatSetBonusEffects } from "../src/compendium.js";
 
 const catalog = JSON.parse(readFileSync("data/official-catalog.json", "utf8"));
 const localization = JSON.parse(readFileSync("data/official-localization.json", "utf8"));
@@ -433,6 +433,43 @@ assert.ok(
 {
   const wellRounded = compendium.characters.find((entry) => entry.id === "wellRounded");
   assert.deepEqual(wellRounded?.traits, ["最大生命 +5", "移速 +5%", "收获 +8"]);
+}
+
+{
+  // 套装加成（set bonuses）：官方 *_set_data.tres 按持有同套装武器数量(2-6)给出属性加成
+  assert.equal(catalog.sets.length, 17, "catalog should include all 17 weapon sets");
+  assert.equal(catalog.summary.sets, 17, "catalog summary should count extracted sets");
+
+  const ghostAxe = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_GHOST_AXE");
+  assert.equal(ghostAxe?.setBonuses?.[0]?.setId, "ethereal", "Ghost Axe should belong to the ethereal set");
+  assert.equal(ghostAxe?.setBonuses?.[0]?.label, "幽魂", "ethereal set should use the Chinese label");
+  assert.equal(ghostAxe?.setBonuses?.[0]?.bonuses.length, 5, "ethereal set should expose 5 bonus tiers");
+  const ghostTier2 = ghostAxe?.setBonuses?.[0]?.bonuses.find((tier) => tier.count === 2);
+  assert.ok(
+    ghostTier2?.effects.some((effect) => effect.key === "stat_dodge" && effect.value === 6),
+    "ethereal set count-2 bonus should grant +6 dodge",
+  );
+  assert.ok(
+    ghostTier2?.effects.some((effect) => effect.key === "stat_armor" && effect.value === -1),
+    "ethereal set count-2 bonus should expose the -1 armor tradeoff",
+  );
+
+  const lute = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_LUTE");
+  const luteSetIds = (lute?.setBonuses ?? []).map((set) => set.setId);
+  assert.ok(luteSetIds.includes("musical"), "Lute should expose the musical set bonus");
+  assert.ok(luteSetIds.includes("support"), "Lute should expose the support set bonus");
+
+  const brassKnuckles = compendium.weapons.find((entry) => entry.nameKey === "WEAPON_BRASS_KNUCKLES");
+  assert.equal(brassKnuckles?.setBonuses?.length, 0, "Brass Knuckles has no set and no set bonus");
+
+  assert.equal(
+    formatSetBonusEffects([
+      { key: "stat_dodge", value: 6 },
+      { key: "stat_armor", value: -1 },
+    ]),
+    "闪避 +6%，护甲 -1",
+    "set bonus effects should localize stat keys with percent units",
+  );
 }
 
 console.log("compendium tests passed");

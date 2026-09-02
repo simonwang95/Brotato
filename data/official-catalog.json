@@ -1,7 +1,7 @@
 {
   "sourceMetadata": {
     "extractorVersion": "brotato-static-extractors@5",
-    "extractedAt": "2026-09-02T12:23:53.492Z",
+    "extractedAt": "2026-09-02T18:11:34.246Z",
     "productVersion": "1.1.12.0.beta-3",
     "productVersionEvidence": "Brotato.app/Contents/Info.plist:CFBundleShortVersionString",
     "packages": [
@@ -40,7 +40,8 @@
     "byPackage": {
       "base": 465,
       "abyssalTerrors": 104
-    }
+    },
+    "sets": 17
   },
   "records": [
     {
@@ -50079,6 +50080,1126 @@
         ]
       },
       "imageAssetPath": "data/assets/weapons/weapon_wrench_4.webp"
+    }
+  ],
+  "sets": [
+    {
+      "id": "set_blade",
+      "setId": "blade",
+      "nameKey": "WEAPON_CLASS_BLADE",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/blade/blade_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_melee_damage",
+              "value": 1,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_lifesteal",
+              "value": 1,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_melee_damage",
+              "value": 2,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_lifesteal",
+              "value": 2,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_melee_damage",
+              "value": 3,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_lifesteal",
+              "value": 3,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_melee_damage",
+              "value": 4,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_lifesteal",
+              "value": 4,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_melee_damage",
+              "value": 5,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_lifesteal",
+              "value": 5,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_blunt",
+      "setId": "blunt",
+      "nameKey": "WEAPON_CLASS_BLUNT",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/blunt/blunt_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_armor",
+              "value": 1,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_speed",
+              "value": -2,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_armor",
+              "value": 1,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_max_hp",
+              "value": 3,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_speed",
+              "value": -4,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_armor",
+              "value": 2,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_max_hp",
+              "value": 3,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_speed",
+              "value": -6,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_armor",
+              "value": 2,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_max_hp",
+              "value": 6,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_speed",
+              "value": -8,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_armor",
+              "value": 3,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_max_hp",
+              "value": 6,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_speed",
+              "value": -10,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_ethereal",
+      "setId": "ethereal",
+      "nameKey": "WEAPON_CLASS_ETHEREAL",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/ethereal/ethereal_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_dodge",
+              "value": 6,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_armor",
+              "value": -1,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_dodge",
+              "value": 12,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_armor",
+              "value": -2,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_dodge",
+              "value": 18,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_armor",
+              "value": -3,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_dodge",
+              "value": 24,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_armor",
+              "value": -4,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_dodge",
+              "value": 30,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_armor",
+              "value": -5,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_explosive",
+      "setId": "explosive",
+      "nameKey": "WEAPON_CLASS_EXPLOSIVE",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/explosive/explosive_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "explosion_size",
+              "value": 5,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "explosion_size",
+              "value": 10,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "explosion_size",
+              "value": 15,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "explosion_size",
+              "value": 20,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "explosion_size",
+              "value": 25,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_elemental",
+      "setId": "fire",
+      "nameKey": "WEAPON_CLASS_ELEMENTAL",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/fire/fire_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_elemental_damage",
+              "value": 1,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_elemental_damage",
+              "value": 2,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_elemental_damage",
+              "value": 3,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_elemental_damage",
+              "value": 4,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_elemental_damage",
+              "value": 5,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_gun",
+      "setId": "gun",
+      "nameKey": "WEAPON_CLASS_GUN",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/gun/gun_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_range",
+              "value": 10,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_range",
+              "value": 20,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_range",
+              "value": 30,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_range",
+              "value": 40,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_range",
+              "value": 50,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_heavy",
+      "setId": "heavy",
+      "nameKey": "WEAPON_CLASS_HEAVY",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/heavy/heavy_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_percent_damage",
+              "value": 5,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_percent_damage",
+              "value": 10,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_percent_damage",
+              "value": 15,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_percent_damage",
+              "value": 20,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_percent_damage",
+              "value": 25,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_legendary",
+      "setId": "legendary",
+      "nameKey": "WEAPON_CLASS_LEGENDARY",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/legendary/legendary_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_max_hp",
+              "value": -20,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_max_hp",
+              "value": -40,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_max_hp",
+              "value": -60,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_max_hp",
+              "value": -80,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_max_hp",
+              "value": -100,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_medical",
+      "setId": "medical",
+      "nameKey": "WEAPON_CLASS_MEDICAL",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/medical/medical_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_hp_regeneration",
+              "value": 1,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_hp_regeneration",
+              "value": 2,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_hp_regeneration",
+              "value": 3,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_hp_regeneration",
+              "value": 4,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_hp_regeneration",
+              "value": 5,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_medieval",
+      "setId": "medieval",
+      "nameKey": "WEAPON_CLASS_MEDIEVAL",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/medieval/medieval_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_armor",
+              "value": 1,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_armor",
+              "value": 1,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_dodge",
+              "value": 3,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_armor",
+              "value": 2,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_dodge",
+              "value": 3,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_armor",
+              "value": 2,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_dodge",
+              "value": 6,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_armor",
+              "value": 3,
+              "effectSign": 3
+            },
+            {
+              "key": "stat_dodge",
+              "value": 6,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_musical",
+      "setId": "musical",
+      "nameKey": "WEAPON_CLASS_MUSICAL",
+      "sourcePackage": "abyssalTerrors",
+      "setPath": "res://dlcs/dlc_1/sets/musical/musical_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_luck",
+              "value": 5,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_luck",
+              "value": 10,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_luck",
+              "value": 15,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_luck",
+              "value": 20,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_luck",
+              "value": 25,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_naval",
+      "setId": "naval",
+      "nameKey": "WEAPON_CLASS_NAVAL",
+      "sourcePackage": "abyssalTerrors",
+      "setPath": "res://dlcs/dlc_1/sets/naval/naval_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_curse",
+              "value": 1,
+              "effectSign": 5
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_curse",
+              "value": 2,
+              "effectSign": 5
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_curse",
+              "value": 3,
+              "effectSign": 5
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_curse",
+              "value": 4,
+              "effectSign": 5
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_curse",
+              "value": 5,
+              "effectSign": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_precise",
+      "setId": "precise",
+      "nameKey": "WEAPON_CLASS_PRECISE",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/precise/precise_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_crit_chance",
+              "value": 3,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_crit_chance",
+              "value": 6,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_crit_chance",
+              "value": 9,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_crit_chance",
+              "value": 12,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_crit_chance",
+              "value": 15,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_primitive",
+      "setId": "primitive",
+      "nameKey": "WEAPON_CLASS_PRIMITIVE",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/primitive/primitive_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_max_hp",
+              "value": 3,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_max_hp",
+              "value": 6,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_max_hp",
+              "value": 9,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_max_hp",
+              "value": 12,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_max_hp",
+              "value": 15,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_support",
+      "setId": "support",
+      "nameKey": "WEAPON_CLASS_SUPPORT",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/support/support_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_harvesting",
+              "value": 5,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_harvesting",
+              "value": 10,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_harvesting",
+              "value": 15,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_harvesting",
+              "value": 20,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_harvesting",
+              "value": 25,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_tool",
+      "setId": "tool",
+      "nameKey": "WEAPON_CLASS_TOOL",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/tool/tool_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_engineering",
+              "value": 1,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_engineering",
+              "value": 2,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_engineering",
+              "value": 3,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_engineering",
+              "value": 4,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_engineering",
+              "value": 5,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_unarmed",
+      "setId": "unarmed",
+      "nameKey": "WEAPON_CLASS_UNARMED",
+      "sourcePackage": "base",
+      "setPath": "res://items/sets/unarmed/unarmed_set_data.tres",
+      "bonuses": [
+        {
+          "count": 2,
+          "effects": [
+            {
+              "key": "stat_dodge",
+              "value": 3,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 3,
+          "effects": [
+            {
+              "key": "stat_dodge",
+              "value": 6,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 4,
+          "effects": [
+            {
+              "key": "stat_dodge",
+              "value": 9,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 5,
+          "effects": [
+            {
+              "key": "stat_dodge",
+              "value": 12,
+              "effectSign": 3
+            }
+          ]
+        },
+        {
+          "count": 6,
+          "effects": [
+            {
+              "key": "stat_dodge",
+              "value": 15,
+              "effectSign": 3
+            }
+          ]
+        }
+      ]
     }
   ]
 }

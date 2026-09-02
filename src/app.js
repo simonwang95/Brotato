@@ -11,7 +11,7 @@ import {
   getAvailableItemEffects,
   getAvailableScenarios,
 } from "./scenarioData.js";
-import { buildCompendium } from "./compendium.js";
+import { buildCompendium, formatSetBonusEffects } from "./compendium.js";
 import {
   DECODE_STATUS_LABELS,
   EVIDENCE_LEVELS,
@@ -797,6 +797,32 @@ function renderWeaponTierTable(entry) {
   `;
 }
 
+function renderSetBonusBlock(entry) {
+  const sets = entry.setBonuses ?? [];
+  if (!sets.length) return "";
+  return sets
+    .map((set) => {
+      const rows = (set.bonuses ?? [])
+        .map((tier) => {
+          const effects = formatSetBonusEffects(tier.effects);
+          return `
+            <li>
+              <span class="set-bonus-count">持有 ${escapeHtml(String(tier.count))} 把</span>
+              <span class="set-bonus-effects">${escapeHtml(effects || "无加成")}</span>
+            </li>
+          `;
+        })
+        .join("");
+      return `
+        <div class="set-bonus-block">
+          <div class="set-bonus-title">${escapeHtml(set.label)}套装加成</div>
+          <ul class="set-bonus-list">${rows}</ul>
+        </div>
+      `;
+    })
+    .join("");
+}
+
 function renderCatalogCompendiumCard(entry, kindLabel) {
   const tags = [
     entry.strategyType,
@@ -829,6 +855,11 @@ function renderCatalogCompendiumCard(entry, kindLabel) {
         <summary>展开详细属性与功能说明</summary>
         <dl class="compendium-meta compendium-meta-detail">
           <div><dt>详细属性</dt><dd>${entry.weaponTierRows?.length ? renderWeaponTierTable(entry) : renderList(entry.detailedAttributes, "compact-list")}</dd></div>
+          ${
+            entry.setBonuses?.length
+              ? `<div><dt>套装加成</dt><dd>${renderSetBonusBlock(entry)}</dd></div>`
+              : ""
+          }
           <div><dt>功能说明</dt><dd>${escapeHtml(entry.strategyStatNote || "待补策略说明")}</dd></div>
         </dl>
       </details>
