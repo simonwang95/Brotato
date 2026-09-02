@@ -17,8 +17,9 @@
   - 属性优先级。
   - 推荐第 20 关目标面板。
   - 支持危险等级、DLC、默认池/解锁池和流派偏好输入。
+  - 首屏只展示核心候选，替代/研究候选收进“展开更多”；候选卡片带证据等级、相对排序与 A/B/C 评级，并标注解码状态（待解码/部分解码显示收益为近似，非精确 DPS）。
 - 手动输入角色面板属性。
-- 手动输入单种武器的基础伤害、属性缩放、冷却、暴击、数量。
+- 手动输入单种武器的基础伤害、属性缩放、冷却、暴击、数量（基础模式）；高级模式另提供分组折叠的高级武器参数（穿透/弹射/爆炸/缩放）与 22 项高级场景参数。
 - 选择战斗场景，估算穿透、弹射、爆炸、燃烧、诅咒、结构物、护甲、溢出、走位损失和拾取触发道具的收益。
 - 手动输入一个候选道具带来的属性变化。
 - 对比购买前后：
@@ -27,10 +28,12 @@
   - 单次期望伤害
   - 攻击间隔
   - 总 DPS
+- 所有数字输入共用统一 Schema（默认值/单位/步长/上下界/整数约束）：越界输入行内报错、结果保持最近一次有效值并显示警示条。
+- 攻略/图鉴武器卡“带入模拟器”按官方目录参数一键映射并显示来源；移动端结果摘要吸底实时反馈；模拟器支持恢复默认。
 - 三个独立页面：
-  - 角色攻略页，默认展示；选择角色时同步展示角色图标。
-  - 图鉴页，支持分类浏览、搜索和详情跳转。
-  - 角色场景模拟器页，支持手动输入和上传截图/照片解析。
+  - 角色攻略页，默认展示；选择角色时同步展示角色图标；首屏为核心候选 + 证据等级/评级图例。
+  - 图鉴页，支持分类浏览、搜索、来源/阶级/解锁状态筛选，首批 24 张卡片 + “加载更多”；卡片详细属性与功能说明默认展开，可手动收起。
+  - 角色场景模拟器页，支持基础/高级模式、手动输入、上传截图/照片解析和恢复默认。
 
 ## 简化假设
 
@@ -126,6 +129,26 @@ npm test
 npm run verify:recommendations
 ```
 
+校验构建产物（产物非空、JSON 结构、图片引用、模块/fetch 路径、体积预算）：
+
+```bash
+npm run verify:build
+```
+
+运行浏览器烟测（Playwright，需先 `npm run build` 生成 `public/`）：
+
+```bash
+npm run test:browser
+```
+
+发布后健康检查（首页 / JS / JSON / WebP / 可选 API）：
+
+```bash
+npm run health:check
+```
+
+CI 门禁：`.github/workflows/ci.yml` 在每次推送/PR 上依次运行语法检查、`npm test`、portable 校验器、干净构建、构建产物校验和浏览器烟测，失败阻止合并。
+
 检查全部武器/物品图鉴效果是否泄露内部脚本名或资源键：
 
 ```bash
@@ -138,7 +161,7 @@ npm run verify:effects
 npm run build
 ```
 
-输出目录是 `public/`。Vercel 部署时建议设置 Build Command 为 `npm run build`，Output Directory 为 `public`。
+输出目录是 `public/`。CSS、数据 JSON 和图片按内容哈希命名，浏览器 JS 放入版本化目录 `/src/v<version>/`（任一模块变化即整体换 URL，旧 immutable 缓存不阻塞更新）；`data/manifest.json` 记录逻辑名到哈希路径的映射，页面经 manifest 取数（本地 dev-server 无 manifest 时回退稳定文件名）；构建会输出 JS/CSS/JSON/图片/总大小体积预算报告，超过总上限（10MB）失败。Vercel 部署时建议设置 Build Command 为 `npm run build`，Output Directory 为 `public`。
 
 校验当前资料库里的中文名称是否出现在本机安装包：
 
@@ -146,7 +169,7 @@ npm run build
 npm run verify:names
 ```
 
-默认读取 `***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato`。如果安装路径不同，可以设置 `BROTATO_INSTALL_DIR`。
+默认读取 `***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato`。如果安装路径不同，可以设置 `BROTATO_INSTALL_DIR`。该命令是严格门禁：任一名称缺失即以退出码 2 失败；排查时可加 `--warn` 只告警不失败。
 
 从本机安装包提取官方武器/道具目录：
 
@@ -208,6 +231,8 @@ Lucky 默认允许 DLC 时会优先显示 `Lute（琉特琴）`；切换到“�
 ## 后续目标
 
 二期攻略生成器已经接入 64 条官方角色策略模板；`Giant / CHARACTER_GIANT` 仅作为图鉴和校验报告中的已审计目录缺口保留，不进入普通攻略或模拟器选择器。角色、武器和物品图鉴本地化已覆盖当前官方目录，54 条已抽取角色挑战均有精确简中条件；攻略对象直接引用生成的 `src/officialUnlocks.js`，不再保留运行时二次覆盖的占位文案。复杂效果审计当前覆盖 128 条记录，运行时待解码已从 56 条降至 14 条；Lucky、Knight、Ghost、Engineer、Druid、Beast Master、Wounded 的普通/无尽 Top-N，以及 DLC、默认池和六类偏好组合均有固定回归。
+
+性能与质量整改（P0/P1）已完成：本地服务器暴露与生产 OCR 保护、DOM 注入、统一数字输入与错误反馈、CI/构建/烟测门禁、攻略页信息分层、图鉴分页与筛选、模拟器基础/高级模式、内容哈希缓存策略、推荐模型校准与不确定性表达；P1-2（OCR 严格 Schema）按用户要求降优先级，线上 OCR 保持关闭。P2 项（路由/加载/错误语义、可访问性、状态保存/分享/撤销、数据抽取原子性、模块拆分）待 P0/P1 稳定后推进。
 
 规格见 [docs/strategy-generator.md](docs/strategy-generator.md)。
 推荐规则维护见 [docs/recommendation-logic.md](docs/recommendation-logic.md)。
