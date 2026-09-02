@@ -2,7 +2,7 @@
 
 - 审查日期：2026-09-02
 - 审查分支：`fix/p1-remediation`
-- 审查提交：`18380c6`
+- 审查提交：`18380c6`（首轮）；`3fbc9e9`（复核，见文末“3fbc9e9 复核结论”）
 - 对比基线：`main`（`31ee7f2`）
 - 依据文档：`docs/remediation-plan.md`
 - 审查方式：分支差异审阅、实现追踪、自动化门禁、浏览器烟测、本地 HTTP 验证
@@ -222,3 +222,194 @@ npm run health:check -- --base http://127.0.0.1:5174
 6. 补版本化 JavaScript 的 immutable 缓存规则。
 
 完成以上修复后，应重新运行 `docs/remediation-plan.md` 中的全部通用验证、浏览器烟测和本地发布后健康检查，再决定是否合并。
+
+---
+
+## 3fbc9e9 复核结论
+
+- 复核日期：2026-09-02
+- 复核提交：`3fbc9e9278c2aca539b3eb9d65175169b60d051e`
+- 复核范围：`18380c6..3fbc9e9`
+- 复核目标：逐项验证首轮 R1–R6 修正，并重跑受影响的单元测试、portable 校验器、构建、浏览器烟测和发布健康检查
+
+### 总体结论
+
+`3fbc9e9` 已修正首轮问题的主要方向，但暂不建议按“R1–R6 全部完成”验收或合并。
+
+本轮仍发现 6 个 P1 问题：一个会使干净 CI 检出直接失败，三个属于门禁假绿，推荐禁用项回归仍有 ID 体系漏检，官方武器带入仍存在最高约 11.1% 的 DPS 精度误差。R2 负属性修复可以验收；R6 版本化 JavaScript 缓存规则在配置层可以验收。
+
+P1-2 继续按当前项目决定保留为待办：线上 OCR 保持关闭，本地可使用 MTPLX 的 Qwen3.8。本轮没有使用代表性游戏截图重新评价 OCR 语义准确率，也不以 P1-2 阻止本批修复。
+
+### R1–R6 复核状态
+
+| 首轮问题 | 复核结论 | 说明 |
+| --- | --- | --- |
+| R1 官方武器冷却换算 | 未通过 | `/60` 单位换算已修复，但导入时保留两位小数，2 帧和 4 帧武器仍产生明显 DPS 偏差 |
+| R2 合法负属性 | 通过 | Schema 已接受审查列举的官方负值，计算层仍明确夹取最终概率和倍率 |
+| R3 发布健康检查 | 未通过 | 哈希资源解析已修复，但测试依赖未跟踪的 `public/`，首页非 200 和 API 200 非 JSON 仍可假绿 |
+| R4 推荐专家基准 | 未通过 | 独立 fixture 和完整武器/道具权重报告已落地，但手写 ID 与官方 `nameKey` 未真正统一，禁用项仍可能漏检 |
+| R5 浏览器门禁 | 未通过 | 浏览器启动、搜索和角色切换已改为 fail closed，但武器带入流程始终在角色页跳过 |
+| R6 JavaScript immutable 缓存 | 配置层通过 | `vercel.json` 已增加 `/src/v<hash>/*.js` 专用长期缓存规则；本轮未检查实际线上响应头 |
+
+### F1（P1）：干净 CI 在构建前读取不存在的 `public/`
+
+位置：
+
+- `tests/healthCheckNegative.test.mjs:61-67`
+- `.github/workflows/ci.yml:55-68`
+- `.gitignore:14-18`
+
+`tempPublic()` 无条件复制仓库根目录的 `public/`，但该目录被 `.gitignore` 排除，不存在于干净检出中。CI 当前先执行 `npm test`，之后才执行 `npm run build`，因此新增的 `healthCheckNegative.test.mjs` 会在 CI 构建发生前失败。
+
+本地工作区由于已经存在此前生成的 `public/`，`npm test` 可以通过，掩盖了该问题。将 `3fbc9e9` 用 `git archive` 导出到干净临时目录后，直接运行该测试，实测结果为：
+
+```text
+Error: ENOENT: no such file or directory, lstat '<clean-checkout>/public'
+    at tempPublic (.../tests/healthCheckNegative.test.mjs:65:3)
+```
+
+建议：优先让负例测试自行构造最小、确定性的静态产物；或者把依赖构建产物的测试从 `npm test` 中拆出，并确保 CI 在运行它之前完成干净构建。不能继续依赖开发者工作区残留的忽略目录。
+
+验收条件：在没有 `public/` 的全新检出中，按 CI 当前顺序运行所有步骤能够通过。
+
+### F2（P1）：首页非 200 只打印错误，不计入失败
+
+位置：`scripts/health-check.mjs:92-115`
+
+首页请求未抛异常、但状态不是 200 时，当前分支只输出 `✗ 首页：HTTP ...`，没有增加 `checks` 和 `failures`。脚本随后仍会解析错误响应正文中的 CSS 和 JavaScript 引用。
+
+本轮构造了如下负例：`/index.html` 返回 HTTP 404，但响应正文使用真实构建首页，所有被引用资源均返回 200。健康检查打印首页错误后，最终仍报告：
+
+```text
+[health-check] 26 项检查，0 项失败。
+[health-check] 发布后健康检查通过。
+```
+
+进程退出码为 0。这属于明确的发布门禁假绿。
+
+建议：无论正文内容为何，首页状态不是 200 都应固定执行 `checks += 1` 和 `failures += 1`；同时为“404 + 有效首页正文”增加负例。
+
+验收条件：首页返回任意非 200 状态时，健康检查必须以非零退出码结束。
+
+### F3（P1）：推荐禁用项的两套 ID 仍未统一
+
+位置：
+
+- `tests/recommendationRegression.test.mjs:427-462`
+- `tests/fixtures/recommendationBaseline.json:4908-4967`
+- `src/strategyData.js:510-517`
+
+测试将 ID 转为大写，但输出候选优先取 `weaponId` 或 `itemId`，而 fixture 的禁用项使用官方 `nameKey`。两套 ID 不只是大小写不同：
+
+```text
+手写候选：coffee      -> COFFEE
+官方 nameKey：ITEM_COFFEE -> ITEM_COFFEE
+```
+
+例如 Bull 的两种模式都把 `ITEM_COFFEE` 列入 `mustExclude`。如果生成器错误地重新加入手写 Coffee，当前 `outputAll.has("ITEM_COFFEE")` 仍为 false，负向测试不会失败。这没有满足首轮 R4 要求的“统一手写候选 id 与官方 nameKey 后再检查禁用项”。
+
+建议：候选比较统一使用 `candidate.official.nameKey` 或官方记录 ID；对于无法映射的手写候选应显式报错，而不是退回另一套 ID 后继续断言。还应专门做一次“向 Bull 加入手写 Coffee”的突变测试。
+
+验收条件：手写候选和官方补充候选加入同一禁用项时都会触发明确的角色、模式和候选错误。
+
+### F4（P1）：浏览器烟测中的武器带入流程仍固定跳过
+
+位置：`tests/browserSmoke.test.mjs:168-220`
+
+测试先进入 `#compendium/characters`，完成角色搜索和加载更多后，没有切换到武器标签就查找 `.compendium-import`。该按钮只存在于武器卡片，因此实际测试输出为：
+
+```text
+✓ 图鉴带入模拟器（当前无武器卡片，跳过）
+```
+
+虽然整个浏览器烟测以 14 项通过结束，P1-7 的关键带入流程实际上没有执行。这里仍是首轮 R5 所指的 fail-open。
+
+建议：先导航到 `#compendium/weapons`，等待武器卡片和导入按钮出现，并把按钮存在设为强制断言；点击后除检查路由外，还应断言武器名称、冷却、伤害和缩放等关键字段确实来自所选官方记录。
+
+验收条件：删除导入按钮、破坏点击事件或写入错误武器参数时，浏览器烟测均必须失败。
+
+### F5（P1）：冷却换算后的两位小数舍入仍造成 DPS 失真
+
+位置：
+
+- `src/weaponImport.js:9-16`
+- `src/strategyGenerator.js:1168-1195`
+- `tests/weaponImport.test.mjs:35-64`
+
+`framesToSeconds()` 已正确使用 60 帧/秒，但 `weaponRecordToSimulator()` 随后调用 `r2()`，把冷却压缩为两位小数。实测：
+
+| 官方冷却 | 正确秒数 | 带入值 | 对 DPS 的相对影响 |
+| ---: | ---: | ---: | ---: |
+| 2 帧 | 0.033333… | 0.03 | 约 +11.1% |
+| 4 帧 | 0.066666… | 0.07 | 约 -4.8% |
+| 45 帧 | 0.75 | 0.75 | 0 |
+
+攻略模型的 `calculatorWeaponFromRecord()` 使用未舍入的 `framesToSeconds(stats.cooldown)`，而模拟器带入使用舍入值，因此相同官方武器在两个入口中可能得到不同结果。当前测试使用 `< 0.005` 的宽容差，把 2 帧的 `0.03` 当作“原样保留”，没有约束最终 DPS 精度。
+
+建议：状态与计算层保存完整的 `frames / 60` 精度，只在 UI 展示层格式化为两位小数；测试应使用严格数值容差，并直接比较带入前后的 DPS。
+
+验收条件：2 帧、4 帧和 45 帧武器在攻略模型、带入状态和计算器中使用同一精确冷却值。
+
+### F6（P1）：OCR 状态接口返回 200 非 JSON 时健康检查假绿
+
+位置：`scripts/health-check.mjs:216-251`
+
+`contractValid` 当前把任意 HTTP 200 响应视为合法，不要求前面 JSON 解析成功，也不验证状态对象结构。本轮模拟接口返回 `200 text/plain`、正文为 `not-json`，脚本仍输出：
+
+```text
+✓ OCR API（HTTP 200，本地启用）
+[health-check] 28 项检查，0 项失败。
+```
+
+这直接违反首轮 R3 的验收条件“非 JSON API 响应时稳定失败”。线上 OCR 是否关闭不影响这个判断：健康检查访问的是 GET 状态接口，合法 200 响应至少应为包含 `enabled`、`mode` 等字段的 JSON 对象。
+
+建议：200 分支要求 JSON 解析成功，并验证 `enabled` 为布尔值、`mode` 为 `local` 或 `production`；503 分支应验证稳定的错误码。新增 200 非 JSON、200 空对象和字段类型错误三个负例。
+
+验收条件：只有符合定义的 JSON 状态对象或明确允许的受控关闭响应可以通过 API 健康检查。
+
+### 本轮验证记录
+
+| 验证 | 结果 |
+| --- | --- |
+| `git diff --check 18380c6..3fbc9e9` | 通过 |
+| `npm test`（已有 `public/` 的当前工作区） | 通过 |
+| `node tests/healthCheckNegative.test.mjs`（干净导出） | 失败：缺少被忽略的 `public/`，见 F1 |
+| `npm run build` | 通过，约 4.9 MiB，590 个文件 |
+| `npm run verify:build` | 通过，29 项、0 失败 |
+| `npm run verify:catalog` | 通过，93/93 |
+| `npm run verify:recommendations` | 通过，但禁用 ID 漏检见 F3 |
+| `npm run verify:effects` | 通过，79 武器、244 物品、1546 条效果文本 |
+| `npm run verify:unlocks` | 通过，0 未维护项 |
+| `npm run localization:coverage` | 通过，武器、物品、角色全覆盖 |
+| `npm run official-data:diff` | 通过，无语义差异 |
+| `npm run test:browser` | 退出码 0，共报告 14 项；武器带入实际跳过，见 F4 |
+| `npm run health:check -- --base http://127.0.0.1:5174` | 通过，27 项、0 失败 |
+| `npm run health:check -- --base http://127.0.0.1:5174 --api`（纯静态服务） | 通过，API 404 按可选项跳过 |
+| 首页 404 + 有效正文定向负例 | 错误地退出 0，见 F2 |
+| OCR API 200 + 非 JSON 定向负例 | 错误地退出 0，见 F6 |
+
+### 建议修复顺序
+
+1. 先解除 `npm test` 对未跟踪 `public/` 的依赖，恢复干净 CI 可运行性。
+2. 修复首页状态和 OCR 200 响应的健康检查 fail-open，并补对应负例。
+3. 统一推荐候选的官方 ID 命名空间，重新做禁用项突变验证。
+4. 让浏览器测试真正进入武器页并验证完整带入结果。
+5. 保留官方帧冷却的完整计算精度，仅在展示层舍入。
+6. 重跑 CI 的全部步骤，并在没有任何预生成产物的干净检出中完成最终验收。
+
+---
+
+## F1–F6 修复状态（2026-09-02，分支 fix/p1-remediation）
+
+按上述建议修复顺序逐项完成，全部通过验收。
+
+| 问题 | 修复 | 验证 |
+| --- | --- | --- |
+| F1 负例测试依赖 gitignored `public/` | `tests/healthCheckNegative.test.mjs` 重写为自包含：临时目录生成最小确定性产物（固定哈希 CSS/JS、manifest、4 数据 JSON、6 图片），13 用例 | 干净检出中 `npm test` 通过（无 `public/` 预生成） |
+| F2 首页非 200 不计失败 | `scripts/health-check.mjs` 首页任何非 200（含 404+合法正文）计入失败；非 200 时跳过引用解析 | 负例"首页 404+合法正文"→ 退出码 1 |
+| F3 禁用项 ID 命名空间漏检 | 候选比较统一 `official.nameKey`（4450/4450 候选可映射，未映射显式报错）；fixture 1642 项 id 重新生成为官方 nameKey（新增 `scripts/generate-recommendation-baseline.mjs`）；禁用检查纯函数化 | Bull 两种模式：手写 `coffee`（映射 `ITEM_COFFEE`）与官方 `ITEM_COFFEE` 突变均触发明确角色+模式+候选错误；未映射候选显式报告 |
+| F4 浏览器测试未进入武器页 | `tests/browserSmoke.test.mjs` 导航 `#compendium/weapons`，导入按钮强制断言，点击后验证跳转、来源说明、13 个字段与官方记录一致 | 烟测 15 项通过（含"字段来源断言（13 个字段与官方记录 WEAPON_JAVELIN 一致）"） |
+| F5 冷却 2 位小数舍入 | `weaponRecordToSimulator` 保留 `framesToSeconds` 完整精度；`createNumberField` 展示层 2 位小数；`calculatorWeaponFromRecord` 导出 | 严格相等（SMG/Spear/Chain Gun/Blunderbuss）；258 武器双路径冷却严格一致；2 帧舍入突变 DPS 偏差 11.1%（>5% 阈值，旧 bug 可被捕获） |
+| F6 API 200 无契约校验 | 200 需合法 JSON 状态对象（`enabled` 布尔 + `mode` local\|production）；503 需 `code=OCR_DISABLED`；404 仍按未部署跳过 | 负例：200 非 JSON / 200 空对象 / 200 字段类型错误 → 退出码 1；200 合法状态对象 → 退出码 0 |
+
+最终验收（干净检出，无任何预生成产物）：`git clone` 全历史 → 应用本批变更 → `npm ci` → 按 CI 顺序运行：语法检查、`git diff --check`、`npm test`（18 组）、6 个 portable 校验器、干净构建（590 文件，JS v0f9b6973dd，与本地构建逐字节一致）、`verify:build`（29 项 0 失败）、`test:browser`（15 项）全部通过；构建产物健康检查 27/27（带 `--api` 28/28，API 404 按可选项跳过）。

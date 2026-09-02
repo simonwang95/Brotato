@@ -6,13 +6,17 @@ import { DEFAULT_WEAPON, framesToSeconds } from "./calculator.js";
 // 与图鉴显示（compendium.js formatCooldown）和攻略生成（strategyGenerator.js）同源，
 // 避免在 app.js 再维护一份单位转换。独立成模块以便单元测试直接覆盖 SMG / Spear /
 // 高阶武器等带入场景。
+//
+// F5：冷却保留完整帧精度（frames/60 原值），不做 2 位小数舍入——2 帧武器的
+// 0.0333… 秒舍入成 0.03 秒会虚增约 11% DPS。展示层（app.js createNumberField）
+// 负责 2 位小数显示，计算层（calculator/strategyGenerator）保持完整精度。
 export function weaponRecordToSimulator(record) {
   const s = record.stats ?? {};
   const r2 = (x) => Math.round(x * 100) / 100;
   const weapon = structuredClone(DEFAULT_WEAPON);
   weapon.quantity = 1;
   weapon.baseDamage = s.damage ?? weapon.baseDamage;
-  weapon.cooldown = r2(framesToSeconds(s.cooldown ?? 60));
+  weapon.cooldown = framesToSeconds(s.cooldown ?? 60);
   weapon.hitsPerAttack = s.nb_projectiles ?? 1;
   weapon.critChance = r2((s.crit_chance ?? 0) * 100);
   weapon.critMultiplier = s.crit_damage ?? weapon.critMultiplier;

@@ -309,6 +309,13 @@
 - **发布后健康检查（`scripts/health-check.mjs`）**：`npm run health:check -- --base <url> [--api]` 体检首页/样式/入口脚本/核心 JS 模块/JSON 数据/抽样 WebP/可选 API，关键资源失败即非零退出，可作发布后门禁。
 - 服务器（`devServer.test.mjs`）、API（`apiContract.test.mjs`）、OCR（`ocrService.test.mjs`，372 行含超时/开关/图片校验/角色解析/限流）、安全（`renderSecurity.test.mjs`）测试组均已存在；浏览器组为本批新增，五类关键路径各有一组自动测试。
 
+复核修正（2026-09-02，F1/F2/F4/F6，分支 fix/p1-remediation）：
+
+- **F1 负例测试自包含（消除对 gitignored `public/` 的依赖）**：原 `tests/healthCheckNegative.test.mjs` 依赖本地已构建的 `public/`（gitignored），干净 CI 检出直接 ENOENT。重写为完全自包含：在临时目录生成最小确定性构建产物（index.html + 固定哈希 CSS/JS + manifest + 4 个数据 JSON + 6 张采样图片），13 个用例（完整产物通过；缺失 JS/坏 manifest/缺 manifest/缺首页/首页 404+合法正文失败；API 503 契约通过、500/503 非 JSON/200 非 JSON/200 空对象/200 字段类型错误失败、200 合法状态对象通过），全部通过。
+- **F2 首页非 200 计入失败（消除假绿）**：原实现把首页非 200（含 404+合法正文）静默跳过，首页损坏时仍报"通过"。现首页任何非 200 状态都计入失败（`indexChecked` 标志保证恰好计一次），且非 200 时跳过 CSS/入口脚本引用解析（避免对错误正文解析出假引用）。
+- **F4 浏览器烟测进入武器页验证完整导入（消除静默跳过）**：原"带入模拟器"检查停留在角色页（无武器卡片）→ 恒走"跳过"分支，导入从未被验证。现导航到 `#compendium/weapons`，"带入模拟器"按钮改为强制断言（不存在即失败），读取 `data-import-weapon` nameKey，Node 侧按最低阶级查官方记录（与 `findCatalogWeaponRecord` 同源），点击后断言：跳转 `#simulator`、`#sim-weapon-source` 含"已带入官方武器参数"+武器名、13 个模拟器字段（9 核心 + 4 缩放）与官方记录一致（展示层 2 位小数）。
+- **F6 API 200 契约校验（消除假绿）**：原实现把任何 200 响应当作契约合法。现 200 必须返回合法 JSON 状态对象（`enabled` 布尔 + `mode` 为 local|production），503 必须携带稳定错误码 `OCR_DISABLED`；404 仍按"未部署"跳过（可选 API 语义不变），其余状态计入失败。
+
 ### [x] P1-5 降低攻略页的信息密度
 
 问题：
@@ -419,6 +426,10 @@
 - **从攻略/图鉴带入官方武器**：图鉴武器卡与攻略武器卡（有 `officialNameKey` 时）新增“带入模拟器”按钮，点击后按官方目录 `stats`（damage/cooldown/nb_projectiles/crit/piercing/bounce/scalingStats）映射到模拟器武器状态，自动切到高级模式并显示来源说明（`#sim-weapon-source`）。
 - **恢复默认**：`#sim-restore-defaults` 一键重置角色属性/武器/道具变化/场景/战斗上下文/取整模式到默认值。
 
+复核修正（2026-09-02，F5，分支 fix/p1-remediation）：
+
+- **完整帧精度 + 展示层舍入分离**：原 `weaponRecordToSimulator` 对冷却做 2 位小数舍入（`r2(frames/60)`），2 帧武器 0.0333… 秒被舍入成 0.03 秒，DPS 虚增约 11.1%（4 帧武器 0.0667→0.07 约 5.0%）。现计算层保留完整帧精度（`framesToSeconds` 原值）：`src/weaponImport.js` 去掉冷却的 `r2`；`src/app.js` `createNumberField` 在展示层四舍五入到 2 位小数（`input.value = Number(Number(value).toFixed(2))`），state 保留完整精度。`src/strategyGenerator.js` 导出 `calculatorWeaponFromRecord` 供测试对比。`tests/weaponImport.test.mjs` 改为严格相等（SMG=4/60、Spear=45/60、Chain Gun=2/60 不再用 0.005 容差）、全目录 258 个武器记录"模拟器带入 vs 攻略模型"双路径冷却严格一致、双路径 DPS 严格相等，并加突变敏感性检查（2 帧武器舍入到 2 位小数必须造成 >5% DPS 偏差，实测 11.1%，证明旧 bug 可被捕获）。
+
 ### [x] P1-8 修正静态数据与图片缓存策略
 
 问题：
@@ -497,6 +508,12 @@
 
 - **独立 fixture（消除循环论证）**：原 P1-9 正向基准把输出候选的 key 集合与同一输出比较，属循环论证（被剔除的候选从不检查）。现改为独立 fixture `tests/fixtures/recommendationBaseline.json`（128 个角色/模式，mustInclude 含排名 1642 项 + mustExclude 官方禁用项 264 项），fixture 与运行时输出解耦；大小写统一后再做禁用比较。删除任一核心候选、加入任一禁用项或排名越界都会让测试失败并指明角色 + 模式 + 候选（已做突变验证）。
 - **权重报告覆盖全池**：`reportWeightChange` 原只重排已截断的武器 Top-N。现 `generateStrategyGuide` 暴露完整候选池（`allWeaponCandidates`/`allItemCandidates`，截断前），报告同时覆盖武器 + 道具（`statSynergy×2` 影响武器 67、道具 128 个场景）。
+
+复核修正（2026-09-02，F3，分支 fix/p1-remediation）：
+
+- **统一官方 nameKey 命名空间**：原禁用检查对手写 id（`coffee`）与官方 nameKey（`ITEM_COFFEE`）只做大小写归一后比较，两套命名空间互不匹配——手写候选（经 `summarizeOfficialRecords` 映射到 `ITEM_COFFEE`）与官方补充候选 `ITEM_COFFEE` 都不会命中 `mustExclude` 的 `ITEM_COFFEE`，Bull 的禁用咖啡检查形同虚设。现候选比较统一使用 `candidate.official.nameKey`（已验证全部 4450 个输出候选均携带 nameKey）；无法映射的候选显式 `assert.fail`（指明角色+模式+候选），绝不回退另一套 id 后继续断言。
+- **fixture 重新生成 + 生成器入库**：新增 `scripts/generate-recommendation-baseline.mjs`（可复现），`tests/fixtures/recommendationBaseline.json` 的 mustInclude 1642 项 id 全部改为官方 nameKey（原 874 官方 + 768 手写），mustExclude 保留（本就是官方 nameKey/属性标记命名空间）。
+- **禁用检查纯函数化 + 突变验证**：禁用检查抽为纯函数 `findBannedViolations(characterId, modeId, candidates, bannedIds)`（返回含角色/模式/候选/原因的违规列表，未映射候选以 `reason="unmapped"` 显式报告）。测试加入突变验证：向 Bull（normal20/endless）加入同一禁用项 `ITEM_COFFEE` 的手写候选（`coffee`，official 映射 `ITEM_COFFEE`）与官方补充候选（`official:ITEM_COFFEE`）均触发明确的角色+模式+候选错误；无法映射候选（`official` 无 nameKey）被显式报告。
 
 ## P2：中期优化
 

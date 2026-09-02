@@ -177,7 +177,9 @@ function createNumberField({ label, value, schema, fieldId, onInput }) {
   input.step = String(schema.step);
   input.min = String(schema.min);
   input.max = String(schema.max);
-  input.value = value;
+  // F5：展示层四舍五入到 2 位小数（如 2 帧武器 0.0333… 秒显示 0.03）；
+  // state 保留完整精度，计算不受显示舍入影响。
+  input.value = Number(Number(value).toFixed(2));
   input.setAttribute("aria-label", label);
 
   const errorEl = document.createElement("small");

@@ -208,17 +208,80 @@ async function main() {
       ok("图鉴加载更多（当前结果未超首批，无加载更多按钮）");
     }
 
-    // R5 带入模拟器：武器卡片应带"带入模拟器"按钮，点击后应跳转到模拟器。
+    // F4 带入模拟器：必须进入武器页（角色页没有武器卡片，旧版在此静默跳过导致导入从未被验证）。
+    // 导入按钮是武器页的必需控件（强制断言，不允许跳过）；点击后验证：
+    // 跳转模拟器 + 来源说明 + 模拟器字段值与官方目录记录一致（展示层 2 位小数）。
+    await page.goto(`${base}/index.html#compendium/weapons`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(
+      () => document.querySelectorAll(".compendium-card").length > 0,
+      { timeout: 15000 },
+    );
+    const weaponCards = await page.evaluate(() => document.querySelectorAll(".compendium-card").length);
+    assert.ok(weaponCards > 0, "武器页应列出武器卡片");
     const importBtn = page.locator(".compendium-import").first();
-    if ((await importBtn.count()) > 0) {
-      await importBtn.click();
-      await page.waitForTimeout(500);
-      const hash = await page.evaluate(() => location.hash);
-      assert.ok(hash.includes("simulator"), `点击"带入模拟器"后应跳转到模拟器（当前 hash：${hash}）`);
-      ok("图鉴带入模拟器（跳转模拟器）");
-    } else {
-      ok("图鉴带入模拟器（当前无武器卡片，跳过）");
+    assert.ok((await importBtn.count()) > 0, "武器页的“带入模拟器”按钮是必需控件，应存在");
+    const importNameKey = await importBtn.getAttribute("data-import-weapon");
+    assert.ok(importNameKey, "“带入模拟器”按钮应携带官方 nameKey（data-import-weapon）");
+
+    // Node 侧查找官方记录（最低阶级，与 app.js 的 findCatalogWeaponRecord 同源）作为字段期望值。
+    const catalog = JSON.parse(readFileSync(join(rootDir, "data", "official-catalog.json"), "utf8"));
+    const matches = catalog.records.filter((r) => r.kind === "weapon" && r.nameKey === importNameKey);
+    assert.ok(matches.length > 0, `官方目录应包含 ${importNameKey} 记录`);
+    matches.sort((a, b) => (a.tier ?? 0) - (b.tier ?? 0));
+    const record = matches[0];
+    const localization = JSON.parse(readFileSync(join(rootDir, "data", "official-localization.json"), "utf8"));
+    const locEntry = localization.entries?.[importNameKey];
+    const weaponName = locEntry ? `${locEntry.cnName}（${locEntry.enName}）` : importNameKey;
+
+    await importBtn.click();
+    await page.waitForTimeout(500);
+    const hash = await page.evaluate(() => location.hash);
+    assert.ok(hash.includes("simulator"), `点击"带入模拟器"后应跳转到模拟器（当前 hash：${hash}）`);
+    const sourceText = await page.evaluate(
+      () => document.querySelector("#sim-weapon-source")?.textContent ?? "",
+    );
+    assert.ok(sourceText.includes("已带入官方武器参数"), `来源说明应标注官方武器参数（实际：${sourceText}）`);
+    assert.ok(sourceText.includes(weaponName), `来源说明应包含武器名 ${weaponName}（实际：${sourceText}）`);
+    ok(`图鉴带入模拟器（${weaponName}，跳转模拟器并显示来源）`);
+
+    // F4 字段来源断言：模拟器输入值应与官方记录一致（展示层四舍五入到 2 位小数，F5）。
+    const r2 = (x) => Math.round(x * 100) / 100;
+    const s = record.stats ?? {};
+    const expectedFields = {
+      "基础伤害": s.damage,
+      "基础冷却 秒": Number(((s.cooldown ?? 60) / 60).toFixed(2)),
+      "每次命中数": s.nb_projectiles ?? 1,
+      "武器暴击率 %": r2((s.crit_chance ?? 0) * 100),
+      "暴击倍率": s.crit_damage,
+      "穿透次数": s.piercing ?? 0,
+      "穿透伤害保留": r2(1 - (s.piercing_dmg_reduction ?? 0.5)),
+      "弹射次数": s.bounce ?? 0,
+      "弹射伤害保留": r2(1 - (s.bounce_dmg_reduction ?? 0.5)),
+    };
+    const expectedScaling = { "近战缩放 %": 0, "远程缩放 %": 0, "元素缩放 %": 0, "工程缩放 %": 0 };
+    (s.scalingStats ?? []).forEach((entry) => {
+      if (entry.stat === "stat_melee_damage") expectedScaling["近战缩放 %"] = r2((entry.value ?? 0) * 100);
+      else if (entry.stat === "stat_ranged_damage") expectedScaling["远程缩放 %"] = r2((entry.value ?? 0) * 100);
+      else if (entry.stat === "stat_elemental_damage") expectedScaling["元素缩放 %"] = r2((entry.value ?? 0) * 100);
+      else if (entry.stat === "stat_engineering") expectedScaling["工程缩放 %"] = r2((entry.value ?? 0) * 100);
+    });
+    const fieldLabels = [...Object.keys(expectedFields), ...Object.keys(expectedScaling)];
+    const fieldValues = await page.evaluate((labels) => {
+      const out = {};
+      for (const label of labels) {
+        const el = document.querySelector(`input[aria-label="${label}"]`);
+        out[label] = el ? el.value : null;
+      }
+      return out;
+    }, fieldLabels);
+    for (const [label, want] of Object.entries({ ...expectedFields, ...expectedScaling })) {
+      assert.equal(
+        fieldValues[label],
+        String(want),
+        `模拟器字段 ${label} 应为 ${want}（官方 ${importNameKey} 记录，实际 ${fieldValues[label]}）`,
+      );
     }
+    ok(`字段来源断言（${fieldLabels.length} 个字段与官方记录 ${importNameKey} 一致）`);
 
     // --- 角色切换（指南页的角色下拉） ---
     await page.goto(`${base}/index.html#guide`, { waitUntil: "domcontentloaded" });

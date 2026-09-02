@@ -1165,7 +1165,9 @@ function scenarioIdForEntry(entry, mode) {
   return "normalWave";
 }
 
-function calculatorWeaponFromRecord(record) {
+// F5：导出以便测试直接对比“攻略模型”与“模拟器带入”两条路径的冷却精度
+// （两者都应保留完整帧精度，避免展示层舍入污染计算）。
+export function calculatorWeaponFromRecord(record) {
   const stats = record?.stats;
   if (!stats?.damage || !stats?.cooldown) return null;
 

@@ -419,29 +419,71 @@ for (const character of getAvailableCharacters()) {
   }
 }
 
-// P1-9 / R4：全部 64 个官方角色的独立专家基准（fixture 与输出解耦，非循环论证）。
+// P1-9 / R4 / F3：全部 64 个官方角色的独立专家基准（fixture 与输出解耦，非循环论证）。
 // 正向（mustInclude）：fixture 中记录的核心候选（含排名）必须出现在输出中，且排名不越界；
-// 负向（mustExclude）：官方目录中该角色的禁用项不得出现（大小写统一后再比较）。
-// fixture 存于 tests/fixtures/recommendationBaseline.json（独立于运行时输出）。
+// 负向（mustExclude）：官方目录中该角色的禁用项不得出现。
+// fixture 存于 tests/fixtures/recommendationBaseline.json（独立于运行时输出，
+// 由 scripts/generate-recommendation-baseline.mjs 生成）。
+//
+// F3：候选比较统一使用官方 nameKey 命名空间（candidate.official.nameKey）。
+// 手写候选（coffee）与官方候选（ITEM_COFFEE）归一到同一 id，禁用检查对两者同等生效；
+// 无法映射到官方 nameKey 的候选必须显式报错，绝不回退另一套 id 后继续断言。
+const norm = (id) => String(id).toUpperCase();
+function officialId(candidate) {
+  const nameKey = candidate.official?.nameKey;
+  return nameKey ? String(nameKey).toUpperCase() : null;
+}
+
+// F3：禁用检查（纯函数，可独立做突变验证）。
+// 返回违规列表；无法映射的候选（official.nameKey 缺失）单独以 reason="unmapped" 报告。
+function findBannedViolations(characterId, modeId, candidates, bannedIds) {
+  const violations = [];
+  const bannedSet = new Set(bannedIds.map(norm));
+  const seen = new Set();
+  for (const candidate of candidates) {
+    const id = officialId(candidate);
+    if (!id) {
+      violations.push({
+        characterId,
+        modeId,
+        candidate: candidate.weaponId ?? candidate.itemId ?? "(unknown)",
+        bannedId: null,
+        reason: "unmapped",
+      });
+      continue;
+    }
+    if (seen.has(id)) continue;
+    seen.add(id);
+    if (bannedSet.has(id)) {
+      violations.push({ characterId, modeId, candidate: id, bannedId: id, reason: "banned" });
+    }
+  }
+  return violations;
+}
 {
   const fixture = JSON.parse(readFileSync("tests/fixtures/recommendationBaseline.json", "utf8"));
-  // 大小写统一：手写 id 与官方 nameKey 都归一到大写后再比较（R4 要求）。
-  const norm = (id) => String(id).toUpperCase();
   let positiveChecked = 0;
   let negativeChecked = 0;
   let rankChecked = 0;
   for (const character of getAvailableCharacters()) {
     for (const modeId of ["normal20", "endless"]) {
       const guide = generateStrategyGuide(character.id, modeId, { officialCatalog });
-      // 输出候选：武器 + 道具，按出现顺序记录排名（1-based）。
-      const outputWeapons = guide.recommendedWeapons.map((c) => norm(c.weaponId ?? c.itemId ?? c.official?.nameKey));
-      const outputItems = guide.keyItems.map((c) => norm(c.weaponId ?? c.itemId ?? c.official?.nameKey));
+      // F3：每个输出候选都必须能映射到官方 nameKey（显式报错，不静默回退）。
+      for (const candidate of [...guide.recommendedWeapons, ...guide.keyItems]) {
+        assert.ok(
+          officialId(candidate) !== null,
+          `${character.id}:${modeId} 候选 ${candidate.weaponId ?? candidate.itemId} 无法映射到官方 nameKey，禁用检查无法进行`,
+        );
+      }
+      // 输出候选：武器 + 道具，按出现顺序记录排名（1-based），统一官方 nameKey 命名空间。
+      const outputWeapons = guide.recommendedWeapons.map((c) => officialId(c));
+      const outputItems = guide.keyItems.map((c) => officialId(c));
       const outputAll = new Set([...outputWeapons, ...outputItems]);
       const entry = fixture[`${character.id}:${modeId}`];
       if (!entry) {
         assert.fail(`${character.id}:${modeId} 缺少 fixture 条目（应覆盖全部角色/模式）`);
       }
-      // 正向：核心候选必须出现，且排名不越界。
+      // 正向：核心候选必须出现，且排名不越界（fixture id 为官方 nameKey）。
       for (const { id, rank } of entry.mustInclude.weapons ?? []) {
         const idx = outputWeapons.indexOf(norm(id));
         assert.ok(idx >= 0, `${character.id}:${modeId} 核心武器 ${id} 应出现在输出中（fixture 记录但输出缺失）`);
@@ -456,15 +498,60 @@ for (const character of getAvailableCharacters()) {
         positiveChecked += 1;
         rankChecked += 1;
       }
-      // 负向：官方禁用项不得出现。
-      for (const bannedId of entry.mustExclude ?? []) {
-        assert.ok(!outputAll.has(norm(bannedId)), `${character.id}:${modeId} 不应推荐官方禁用项 ${bannedId}`);
-        negativeChecked += 1;
-      }
+      // 负向：官方禁用项不得出现（F3：与候选同一官方 nameKey 命名空间）。
+      const violations = findBannedViolations(character.id, modeId, [...guide.recommendedWeapons, ...guide.keyItems], entry.mustExclude ?? []);
+      assert.ok(
+        violations.length === 0,
+        `${character.id}:${modeId} 不应推荐官方禁用项：${violations.map((v) => v.candidate).join(", ")}`,
+      );
+      negativeChecked += (entry.mustExclude ?? []).length;
     }
   }
   assert.ok(positiveChecked > 0, "应检查到正向基准");
   console.log(`[P1-9] 64 角色独立基准：正向 ${positiveChecked} 项（含排名 ${rankChecked}）、负向 ${negativeChecked} 项，全部通过`);
+
+  // F3 突变验证：向 Bull 加入同一禁用项（ITEM_COFFEE）的手写候选与官方补充候选，
+  // 禁用检查都必须触发明确的角色、模式和候选错误（两套 id 命名空间同等生效）。
+  const bull = getAvailableCharacters().find((c) => c.id === "bull");
+  assert.ok(bull, "应存在 Bull 角色");
+  for (const modeId of ["normal20", "endless"]) {
+    const guide = generateStrategyGuide("bull", modeId, { officialCatalog });
+    const entry = fixture[`bull:${modeId}`];
+    assert.ok((entry.mustExclude ?? []).includes("ITEM_COFFEE"), `bull:${modeId} fixture 应把 ITEM_COFFEE 列入禁用`);
+    const baseCandidates = [...guide.recommendedWeapons, ...guide.keyItems];
+
+    // 突变 1：手写候选 coffee（official 映射到 ITEM_COFFEE）被错误加入输出。
+    const handWrittenCoffee = {
+      itemId: "coffee",
+      official: { nameKey: "ITEM_COFFEE", found: true, records: [] },
+    };
+    const v1 = findBannedViolations("bull", modeId, [...baseCandidates, handWrittenCoffee], entry.mustExclude);
+    assert.ok(
+      v1.some((v) => v.reason === "banned" && v.candidate === "ITEM_COFFEE" && v.characterId === "bull" && v.modeId === modeId),
+      `F3 突变：手写 coffee 加入 bull:${modeId} 应触发明确禁用错误（实际 ${JSON.stringify(v1)}）`,
+    );
+
+    // 突变 2：官方补充候选 ITEM_COFFEE 被错误加入输出。
+    const officialCoffee = {
+      itemId: "official:ITEM_COFFEE",
+      officialCandidate: true,
+      official: { nameKey: "ITEM_COFFEE", found: true, records: [] },
+    };
+    const v2 = findBannedViolations("bull", modeId, [...baseCandidates, officialCoffee], entry.mustExclude);
+    assert.ok(
+      v2.some((v) => v.reason === "banned" && v.candidate === "ITEM_COFFEE" && v.characterId === "bull" && v.modeId === modeId),
+      `F3 突变：官方 ITEM_COFFEE 加入 bull:${modeId} 应触发明确禁用错误（实际 ${JSON.stringify(v2)}）`,
+    );
+
+    // 突变 3：无法映射到官方 nameKey 的候选必须显式报告（不静默跳过）。
+    const unmapped = { itemId: "mystery", official: { found: false, records: [] } };
+    const v3 = findBannedViolations("bull", modeId, [...baseCandidates, unmapped], entry.mustExclude);
+    assert.ok(
+      v3.some((v) => v.reason === "unmapped" && v.candidate === "mystery"),
+      `F3 突变：无法映射候选加入 bull:${modeId} 应显式报告（实际 ${JSON.stringify(v3)}）`,
+    );
+  }
+  console.log("[F3] 突变验证：手写候选 / 官方候选 / 未映射候选加入禁用项均触发明确错误");
 }
 
 // P1-9：评分分解与权重变化影响报告。

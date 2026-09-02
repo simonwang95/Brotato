@@ -90,9 +90,12 @@ async function check(label, path, { expectJson = false, expectContent = null } =
 console.log(`[health-check] 目标：${base}\n`);
 
 // 1) 首页：200 且含关键内容；同时解析出 CSS / 入口脚本路径。
+// F2：任何非 200 状态（包括 404 + 合法正文）都必须计入失败。
+// 旧实现只打印不计数，且继续解析错误响应正文中的引用，导致假绿（exit 0）。
 console.log("首页 / 样式 / 入口脚本");
 let indexText = "";
 let indexStatus = 0;
+let indexChecked = false;
 try {
   const r = await fetchPath("/index.html");
   indexStatus = r.status;
@@ -100,23 +103,28 @@ try {
 } catch (error) {
   checks += 1;
   failures += 1;
+  indexChecked = true;
   console.error(`  ✗ 首页：请求失败（${error.message}）`);
 }
-if (indexStatus === 200 && indexText.includes("Brotato")) {
+if (!indexChecked) {
   checks += 1;
-  console.log(`  ✓ 首页（HTTP 200，${indexText.length} 字节）`);
-} else if (indexStatus === 200) {
-  checks += 1;
-  failures += 1;
-  console.error(`  ✗ 首页：HTTP 200 但缺少关键内容 “Brotato”`);
-} else if (checks === 0) {
-  // 上面 catch 已计一次
-  console.error(`  ✗ 首页：HTTP ${indexStatus}`);
+  if (indexStatus === 200 && indexText.includes("Brotato")) {
+    console.log(`  ✓ 首页（HTTP 200，${indexText.length} 字节）`);
+  } else if (indexStatus === 200) {
+    failures += 1;
+    console.error(`  ✗ 首页：HTTP 200 但缺少关键内容 “Brotato”`);
+  } else {
+    failures += 1;
+    console.error(`  ✗ 首页：HTTP ${indexStatus}（非 200 一律判失败，与正文内容无关）`);
+  }
 }
 
 // 从 index.html 解析 CSS 与入口脚本路径（哈希化）。
-const cssMatch = /href="([^"]+\.css)"/.exec(indexText);
-const scriptMatch = /src="([^"]+\.js)"/.exec(indexText);
+// F2：仅在首页 200 时解析引用；非 200 时根因已判失败，
+// 不再基于错误响应正文做后续资源检查（避免误导性输出）。
+const indexOk = indexStatus === 200;
+const cssMatch = indexOk ? /href="([^"]+\.css)"/.exec(indexText) : null;
+const scriptMatch = indexOk ? /src="([^"]+\.js)"/.exec(indexText) : null;
 const cssPath = cssMatch ? cssMatch[1].replace(/^\.\//, "/") : null;
 const scriptPath = scriptMatch ? scriptMatch[1].replace(/^\.\//, "/") : null;
 
@@ -214,6 +222,9 @@ if (catalogData?.records) {
 }
 
 // 5) 可选 API：线上默认关闭，允许契约合法的 503（OCR_DISABLED）。
+// F6：200 分支必须要求 JSON 解析成功 + enabled 布尔 + mode ∈ {local, production}；
+// 503 分支必须要求 JSON 解析成功 + 稳定错误码 code === "OCR_DISABLED"。
+// 旧实现把任何 HTTP 200（含 200 text/plain "not-json"）都判为契约合法，导致假绿。
 if (includeApi) {
   console.log("\n可选 API（线上默认关闭）");
   checks += 1;
@@ -222,29 +233,31 @@ if (includeApi) {
     const { status, text } = r;
     let body = null;
     try {
-      body = JSON.parse(text);
+      const parsed = JSON.parse(text);
+      if (parsed !== null && typeof parsed === "object" && !Array.isArray(parsed)) {
+        body = parsed;
+      }
     } catch {
       // 非 JSON
     }
-    // 契约合法：200（本地启用）或 503 + OCR_DISABLED（线上关闭）。
-    const contractValid =
-      status === 200 ||
-      (status === 503 && body && (body.error === "OCR_DISABLED" || /OCR_DISABLED/.test(text)));
-    if (contractValid) {
-      if (status === 503) {
-        console.log(`  ✓ OCR API（HTTP 503 OCR_DISABLED，契约合法：线上默认关闭）`);
-      } else {
-        console.log(`  ✓ OCR API（HTTP 200，本地启用）`);
-      }
-    } else if (status >= 500) {
-      failures += 1;
-      console.error(`  ✗ OCR API：HTTP ${status}（非契约合法的 5xx）`);
+    const status200Valid =
+      status === 200 &&
+      body !== null &&
+      typeof body.enabled === "boolean" &&
+      (body.mode === "local" || body.mode === "production");
+    const status503Valid = status === 503 && body !== null && body.code === "OCR_DISABLED";
+    if (status200Valid) {
+      console.log(`  ✓ OCR API（HTTP 200，enabled=${body.enabled}，mode=${body.mode}）`);
+    } else if (status503Valid) {
+      console.log(`  ✓ OCR API（HTTP 503 OCR_DISABLED，契约合法：线上默认关闭）`);
     } else if (status === 404) {
       // 404：API 未部署（本地静态服务无 API），视为可选跳过。
       console.log(`  ~ OCR API（HTTP 404，API 未部署，跳过）`);
     } else {
       failures += 1;
-      console.error(`  ✗ OCR API：HTTP ${status}（非预期状态）`);
+      console.error(
+        `  ✗ OCR API：HTTP ${status} 不符合契约（200 需 JSON 状态对象：enabled 布尔 + mode local|production；503 需 code=OCR_DISABLED）`,
+      );
     }
   } catch (error) {
     console.log(`  ~ OCR API（不可达：${error.message}，跳过）`);
