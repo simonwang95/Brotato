@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import {
   generateStrategyGuide,
   getAvailableCharacters,
+  itemMatchesGroup,
   reportWeightChange,
 } from "../src/strategyGenerator.js";
 
@@ -139,30 +140,33 @@ const TOP_N_BASELINES = {
       "ITEM_BABY_GECKO",
     ],
   },
+  // Druid 禁用 lifesteal / lifesteal_and_hp_regeneration / hp_regeneration 组。
+  // Penguin 标签集合恰为 ["stat_hp_regeneration"]，属 hp_regeneration 组，
+  // 游戏商店不会向 Druid 出售（标签集合精确相等规则，第三轮 P1-B 修正）。
   "druid:normal20": {
     weapons: ["sickle", "pruner", "wand", "WEAPON_LUTE", "WEAPON_TORCH"],
     items: [
       "crystal",
-      "penguin",
       "cauldron",
       "ITEM_PEARL",
       "ITEM_PIGGY_BANK",
       "ITEM_SNAKE",
       "ITEM_CROWN",
       "ITEM_EYES_SURGERY",
+      "ITEM_MEDAL",
     ],
   },
   "druid:endless": {
     weapons: ["sickle", "pruner", "wand", "WEAPON_LUTE", "WEAPON_TORCH"],
     items: [
       "crystal",
-      "penguin",
       "cauldron",
       "ITEM_PEARL",
       "ITEM_EYES_SURGERY",
       "ITEM_PIGGY_BANK",
       "ITEM_SNAKE",
       "ITEM_CROWN",
+      "ITEM_EXPLOSIVE_SHELLS",
     ],
   },
   "wounded:normal20": {
@@ -268,15 +272,16 @@ const OPTION_BASELINES = [
     modeId: "normal20",
     options: { preferenceId: "elemental" },
     weapons: ["sickle", "pruner", "wand", "WEAPON_TORCH", "WEAPON_LUTE"],
+    // Penguin 属 Druid 禁用的 hp_regeneration 组（标签精确相等），不再出现。
     items: [
       "crystal",
-      "penguin",
       "cauldron",
       "ITEM_SNAKE",
       "ITEM_EYES_SURGERY",
       "ITEM_CHARCOAL",
       "ITEM_ICE_CUBE",
       "ITEM_PEARL",
+      "ITEM_ALLOY",
     ],
   },
   {
@@ -434,11 +439,30 @@ function officialId(candidate) {
   return nameKey ? String(nameKey).toUpperCase() : null;
 }
 
-// F3：禁用检查（纯函数，可独立做突变验证）。
+// F3 / 第三轮 P1-B：禁用检查（纯函数，可独立做突变验证）。
 // 返回违规列表；无法映射的候选（official.nameKey 缺失）单独以 reason="unmapped" 报告。
+//
+// mustExclude 条目分两类，都必须真实可命中：
+// - ITEM_*/WEAPON_* 官方 nameKey：与候选 nameKey 相等即违规（reason="banned"）；
+// - 禁用组标记（LIFESTEAL 等，来自角色 bannedItemGroups）：候选的官方记录
+//   标签集合与该组标签集合精确相等（groupTagSet / itemMatchesGroup，与生成器
+//   同源，复刻游戏商店过滤规则）即违规（reason="banned-group"）。
+//   组标记不再做无意义的 nameKey 相等比较。
+// 角色 bannedUpgrades（升级商店禁用）不在此列：升级道具不在候选空间内
+// （目录与攻略输出均不含升级记录），单独存于 fixture 的 bannedUpgrades 字段
+// 做存在性校验，不计入候选级负向断言。
 function findBannedViolations(characterId, modeId, candidates, bannedIds) {
   const violations = [];
-  const bannedSet = new Set(bannedIds.map(norm));
+  const bannedNameKeys = new Set();
+  const bannedGroupMarkers = new Set();
+  for (const id of bannedIds) {
+    const n = norm(id);
+    if (n.startsWith("ITEM_") || n.startsWith("WEAPON_")) {
+      bannedNameKeys.add(n);
+    } else {
+      bannedGroupMarkers.add(n);
+    }
+  }
   const seen = new Set();
   for (const candidate of candidates) {
     const id = officialId(candidate);
@@ -454,8 +478,15 @@ function findBannedViolations(characterId, modeId, candidates, bannedIds) {
     }
     if (seen.has(id)) continue;
     seen.add(id);
-    if (bannedSet.has(id)) {
+    if (bannedNameKeys.has(id)) {
       violations.push({ characterId, modeId, candidate: id, bannedId: id, reason: "banned" });
+    }
+    const records = candidate.official?.records ?? [];
+    for (const marker of bannedGroupMarkers) {
+      const inBannedGroup = records.some((record) => itemMatchesGroup(record, marker));
+      if (inBannedGroup) {
+        violations.push({ characterId, modeId, candidate: id, bannedId: marker, reason: "banned-group" });
+      }
     }
   }
   return violations;
@@ -465,6 +496,7 @@ function findBannedViolations(characterId, modeId, candidates, bannedIds) {
   let positiveChecked = 0;
   let negativeChecked = 0;
   let rankChecked = 0;
+  let upgradeChecked = 0;
   for (const character of getAvailableCharacters()) {
     for (const modeId of ["normal20", "endless"]) {
       const guide = generateStrategyGuide(character.id, modeId, { officialCatalog });
@@ -498,17 +530,36 @@ function findBannedViolations(characterId, modeId, candidates, bannedIds) {
         positiveChecked += 1;
         rankChecked += 1;
       }
-      // 负向：官方禁用项不得出现（F3：与候选同一官方 nameKey 命名空间）。
+      // 负向：官方禁用项不得出现（F3：与候选同一官方 nameKey 命名空间；
+      // P1-B：组标记走标签集合精确匹配，每条断言都真实可命中）。
       const violations = findBannedViolations(character.id, modeId, [...guide.recommendedWeapons, ...guide.keyItems], entry.mustExclude ?? []);
       assert.ok(
         violations.length === 0,
-        `${character.id}:${modeId} 不应推荐官方禁用项：${violations.map((v) => v.candidate).join(", ")}`,
+        `${character.id}:${modeId} 不应推荐官方禁用项：${violations.map((v) => `${v.candidate}（${v.reason}：${v.bannedId ?? "-"}）`).join(", ")}`,
       );
       negativeChecked += (entry.mustExclude ?? []).length;
+      // 升级商店禁用（bannedUpgrades）：升级道具不在候选空间内，不做候选级断言，
+      // 但每条标记必须格式合法且其属性部分在目录效果键词汇中存在（防脏数据）。
+      for (const marker of entry.bannedUpgrades ?? []) {
+        assert.ok(
+          /^UPGRADE_[A-Z0-9_]+$/.test(marker),
+          `${character.id}:${modeId} bannedUpgrades 标记格式非法：${marker}`,
+        );
+        const statPart = marker.slice("UPGRADE_".length).toLowerCase();
+        const statExists = officialCatalog.records.some((record) =>
+          (record.effects ?? []).some((effect) => effect.key === `stat_${statPart}` || effect.key === statPart),
+        );
+        assert.ok(statExists, `${character.id}:${modeId} bannedUpgrades 标记 ${marker} 的属性部分在目录中不存在`);
+        upgradeChecked += 1;
+      }
     }
   }
   assert.ok(positiveChecked > 0, "应检查到正向基准");
-  console.log(`[P1-9] 64 角色独立基准：正向 ${positiveChecked} 项（含排名 ${rankChecked}）、负向 ${negativeChecked} 项，全部通过`);
+  console.log(
+    `[P1-9] 64 角色独立基准：正向 ${positiveChecked} 项（含排名 ${rankChecked}）、` +
+      `负向 ${negativeChecked} 项（nameKey + 禁用组标记，全部真实可命中）、` +
+      `升级商店禁用 ${upgradeChecked} 项（存在性校验，不计入候选级断言），全部通过`,
+  );
 
   // F3 突变验证：向 Bull 加入同一禁用项（ITEM_COFFEE）的手写候选与官方补充候选，
   // 禁用检查都必须触发明确的角色、模式和候选错误（两套 id 命名空间同等生效）。
@@ -550,8 +601,30 @@ function findBannedViolations(characterId, modeId, candidates, bannedIds) {
       v3.some((v) => v.reason === "unmapped" && v.candidate === "mystery"),
       `F3 突变：无法映射候选加入 bull:${modeId} 应显式报告（实际 ${JSON.stringify(v3)}）`,
     );
+
+    // 突变 4（第三轮 P1-B）：禁用组标记必须真实可命中。
+    // Whetstone 不在 Bull 的 bannedItems 中，但其标签集合恰为 ["stat_lifesteal"]，
+    // 属于 Bull 禁用的 lifesteal 组（游戏商店按标签集合精确相等过滤）——
+    // 加入输出应触发 banned-group 违规（旧实现只做 nameKey 相等比较，此类违规永远无法命中）。
+    assert.ok(
+      (entry.mustExclude ?? []).includes("LIFESTEAL"),
+      `bull:${modeId} fixture 应把禁用组标记 LIFESTEAL 列入 mustExclude`,
+    );
+    const whetstoneRecord = officialCatalog.records.find((r) => r.nameKey === "ITEM_WHETSTONE");
+    assert.ok(whetstoneRecord, "目录应包含 ITEM_WHETSTONE 记录");
+    assert.deepEqual(whetstoneRecord.tags, ["stat_lifesteal"], "Whetstone 标签集合应恰为 [stat_lifesteal]");
+    const syntheticWhetstone = {
+      itemId: "official:ITEM_WHETSTONE",
+      officialCandidate: true,
+      official: { nameKey: "ITEM_WHETSTONE", found: true, records: [whetstoneRecord] },
+    };
+    const v4 = findBannedViolations("bull", modeId, [...baseCandidates, syntheticWhetstone], entry.mustExclude);
+    assert.ok(
+      v4.some((v) => v.reason === "banned-group" && v.candidate === "ITEM_WHETSTONE" && v.bannedId === "LIFESTEAL"),
+      `P1-B 突变：禁用组成员 ITEM_WHETSTONE 加入 bull:${modeId} 应触发 banned-group 错误（实际 ${JSON.stringify(v4)}）`,
+    );
   }
-  console.log("[F3] 突变验证：手写候选 / 官方候选 / 未映射候选加入禁用项均触发明确错误");
+  console.log("[F3/P1-B] 突变验证：手写候选 / 官方候选 / 未映射候选 / 禁用组成员候选均触发明确错误");
 }
 
 // P1-9：评分分解与权重变化影响报告。

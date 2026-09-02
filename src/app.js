@@ -177,9 +177,10 @@ function createNumberField({ label, value, schema, fieldId, onInput }) {
   input.step = String(schema.step);
   input.min = String(schema.min);
   input.max = String(schema.max);
-  // F5：展示层四舍五入到 2 位小数（如 2 帧武器 0.0333… 秒显示 0.03）；
-  // state 保留完整精度，计算不受显示舍入影响。
-  input.value = Number(Number(value).toFixed(2));
+  // 显示值必须与传入计算器的值一致（fieldSchema 约定）：不做展示层舍入。
+  // 完整精度直接显示（如 2 帧武器冷却 0.03333333333333333 秒），
+  // 用户重新输入所见值时计算结果不变。
+  input.value = value;
   input.setAttribute("aria-label", label);
 
   const errorEl = document.createElement("small");

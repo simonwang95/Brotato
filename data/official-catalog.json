@@ -1,7 +1,7 @@
 {
   "sourceMetadata": {
     "extractorVersion": "brotato-static-extractors@5",
-    "extractedAt": "2026-08-06T08:07:50.553Z",
+    "extractedAt": "2026-09-02T12:23:53.492Z",
     "productVersion": "1.1.12.0.beta-3",
     "productVersionEvidence": "Brotato.app/Contents/Info.plist:CFBundleShortVersionString",
     "packages": [
@@ -10900,6 +10900,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_max_hp"
+      ],
       "imageAssetPath": "data/assets/items/item_acid.webp"
     },
     {
@@ -10967,6 +10970,9 @@
           }
         }
       ],
+      "tags": [
+        "stat_dodge"
+      ],
       "imageAssetPath": "data/assets/items/item_adrenaline.webp"
     },
     {
@@ -11030,6 +11036,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_max_hp"
       ],
       "imageAssetPath": "data/assets/items/item_alien_baby.webp"
     },
@@ -11099,6 +11108,9 @@
             }
           }
         }
+      ],
+      "tags": [
+        "stat_max_hp"
       ],
       "imageAssetPath": "data/assets/items/item_alien_eyes.webp"
     },
@@ -11186,6 +11198,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_max_hp",
+        "stat_hp_regeneration"
+      ],
       "imageAssetPath": "data/assets/items/item_alien_magic.webp"
     },
     {
@@ -11249,6 +11265,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "pickup",
+        "knockback"
       ],
       "imageAssetPath": "data/assets/items/item_alien_tongue.webp"
     },
@@ -11335,6 +11355,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_max_hp",
+        "stat_hp_regeneration"
       ],
       "imageAssetPath": "data/assets/items/item_alien_worm.webp"
     },
@@ -11488,6 +11512,13 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_ranged_damage",
+        "stat_engineering",
+        "stat_crit_chance",
+        "stat_elemental_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_alloy.webp"
     },
     {
@@ -11530,6 +11561,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_anvil.webp"
     },
     {
@@ -11638,6 +11670,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_attack_speed",
+        "stat_percent_damage",
+        "stat_range"
+      ],
       "imageAssetPath": "data/assets/items/item_ashes.webp"
     },
     {
@@ -11680,6 +11717,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_axolotl.webp"
     },
     {
@@ -11724,6 +11762,10 @@
             "chance": 25
           }
         }
+      ],
+      "tags": [
+        "stat_luck",
+        "pickup"
       ],
       "imageAssetPath": "data/assets/items/item_baby_elephant.webp"
     },
@@ -11789,6 +11831,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "pickup",
+        "stat_range"
+      ],
       "imageAssetPath": "data/assets/items/item_baby_gecko.webp"
     },
     {
@@ -11852,6 +11898,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_hp_regeneration"
       ],
       "imageAssetPath": "data/assets/items/item_baby_squid.webp"
     },
@@ -11944,6 +11993,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_ranged_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_baby_with_a_beard.webp"
     },
     {
@@ -12008,6 +12060,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_luck",
+        "exploration",
+        "economy"
+      ],
       "imageAssetPath": "data/assets/items/item_bag.webp"
     },
     {
@@ -12071,6 +12128,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_percent_damage",
+        "number_of_enemies"
       ],
       "imageAssetPath": "data/assets/items/item_bait.webp"
     },
@@ -12202,6 +12263,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_percent_damage",
+        "stat_armor",
+        "knockback"
+      ],
       "imageAssetPath": "data/assets/items/item_ball_and_chain.webp"
     },
     {
@@ -12265,6 +12331,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_ranged_damage"
       ],
       "imageAssetPath": "data/assets/items/item_bandana.webp"
     },
@@ -12352,6 +12421,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_range",
+        "stat_attack_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_banner.webp"
     },
     {
@@ -12415,6 +12488,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_curse",
+        "xp_gain"
       ],
       "imageAssetPath": "data/assets/items/item_barnacle.webp"
     },
@@ -12502,6 +12579,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_armor",
+        "stand_still",
+        "knockback"
+      ],
       "imageAssetPath": "data/assets/items/item_barricade.webp"
     },
     {
@@ -12565,6 +12647,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_lifesteal"
       ],
       "imageAssetPath": "data/assets/items/item_bat.webp"
     },
@@ -12630,6 +12715,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "xp_gain"
+      ],
       "imageAssetPath": "data/assets/items/item_bean_teacher.webp"
     },
     {
@@ -12693,6 +12781,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_speed"
       ],
       "imageAssetPath": "data/assets/items/item_beanie.webp"
     },
@@ -12824,6 +12915,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_ranged_damage",
+        "knockback"
+      ],
       "imageAssetPath": "data/assets/items/item_big_arms.webp"
     },
     {
@@ -12931,6 +13027,11 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_melee_damage",
+        "xp_gain",
+        "knockback"
       ],
       "imageAssetPath": "data/assets/items/item_black_belt.webp"
     },
@@ -13062,6 +13163,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_curse",
+        "more_enemies"
+      ],
       "imageAssetPath": "data/assets/items/item_black_flag.webp"
     },
     {
@@ -13159,6 +13264,10 @@
           }
         }
       ],
+      "tags": [
+        "stat_elemental_damage",
+        "pet"
+      ],
       "imageAssetPath": "data/assets/items/item_blazemander.webp"
     },
     {
@@ -13245,6 +13354,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_crit_chance",
+        "stat_dodge"
+      ],
       "imageAssetPath": "data/assets/items/item_blindfold.webp"
     },
     {
@@ -13308,6 +13421,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_harvesting"
       ],
       "imageAssetPath": "data/assets/items/item_blood_donation.webp"
     },
@@ -13395,6 +13511,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_lifesteal",
+        "stat_hp_regeneration"
+      ],
       "imageAssetPath": "data/assets/items/item_blood_leech.webp"
     },
     {
@@ -13481,6 +13601,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_lifesteal"
+      ],
       "imageAssetPath": "data/assets/items/item_bloody_hand.webp"
     },
     {
@@ -13544,6 +13667,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_elemental_damage"
       ],
       "imageAssetPath": "data/assets/items/item_boiling_water.webp"
     },
@@ -13614,6 +13740,9 @@
             "value2": 10
           }
         }
+      ],
+      "tags": [
+        "stat_percent_damage"
       ],
       "imageAssetPath": "data/assets/items/item_bone_dice.webp"
     },
@@ -13700,6 +13829,11 @@
           }
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "explosive",
+        "pet"
+      ],
       "imageAssetPath": "data/assets/items/item_bonk_dog.webp"
     },
     {
@@ -13785,6 +13919,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_engineering",
+        "stat_elemental_damage"
       ],
       "imageAssetPath": "data/assets/items/item_book.webp"
     },
@@ -13878,6 +14016,11 @@
             }
           }
         }
+      ],
+      "tags": [
+        "stat_engineering",
+        "pet",
+        "structure"
       ],
       "imageAssetPath": "data/assets/items/item_bot_o_mine.webp"
     },
@@ -13987,6 +14130,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_luck",
+        "stat_harvesting"
+      ],
       "imageAssetPath": "data/assets/items/item_bowler_hat.webp"
     },
     {
@@ -14050,6 +14197,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_melee_damage",
+        "knockback"
       ],
       "imageAssetPath": "data/assets/items/item_boxing_glove.webp"
     },
@@ -14115,6 +14266,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_broken_hourglass.webp"
     },
     {
@@ -14157,6 +14309,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_broken_mirror.webp"
     },
     {
@@ -14220,6 +14373,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_max_hp"
       ],
       "imageAssetPath": "data/assets/items/item_broken_mouth.webp"
     },
@@ -14288,6 +14444,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_builder_turret_0.webp"
     },
     {
@@ -14377,6 +14534,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_builder_turret_1.webp"
     },
     {
@@ -14466,6 +14624,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_builder_turret_2.webp"
     },
     {
@@ -14533,6 +14692,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_builder_turret_3.webp"
     },
     {
@@ -14597,6 +14757,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_lifesteal"
+      ],
       "imageAssetPath": "data/assets/items/item_butterfly.webp"
     },
     {
@@ -14660,6 +14823,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_max_hp"
       ],
       "imageAssetPath": "data/assets/items/item_cake.webp"
     },
@@ -14768,6 +14934,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_elemental_damage",
+        "stat_hp_regeneration"
       ],
       "imageAssetPath": "data/assets/items/item_campfire.webp"
     },
@@ -14899,6 +15069,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_elemental_damage",
+        "stat_hp_regeneration",
+        "less_enemies"
+      ],
       "imageAssetPath": "data/assets/items/item_candle.webp"
     },
     {
@@ -14966,6 +15141,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_candy_bag.webp"
     },
     {
@@ -15096,6 +15272,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_lifesteal",
+        "stat_dodge"
+      ],
       "imageAssetPath": "data/assets/items/item_cape.webp"
     },
     {
@@ -15161,6 +15341,10 @@
             }
           }
         }
+      ],
+      "tags": [
+        "pet",
+        "stat_ranged_damage"
       ],
       "imageAssetPath": "data/assets/items/item_catling_gun.webp"
     },
@@ -15251,6 +15435,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "pickup"
+      ],
       "imageAssetPath": "data/assets/items/item_cauldron.webp"
     },
     {
@@ -15336,6 +15523,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "xp_gain"
       ],
       "imageAssetPath": "data/assets/items/item_celery_tea.webp"
     },
@@ -15423,6 +15613,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_dodge",
+        "stand_still"
+      ],
       "imageAssetPath": "data/assets/items/item_chameleon.webp"
     },
     {
@@ -15508,6 +15702,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_elemental_damage",
+        "stat_melee_damage"
       ],
       "imageAssetPath": "data/assets/items/item_charcoal.webp"
     },
@@ -15595,6 +15793,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_crit_chance"
+      ],
       "imageAssetPath": "data/assets/items/item_claw_tree.webp"
     },
     {
@@ -15658,6 +15860,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "structure",
+        "stat_speed"
       ],
       "imageAssetPath": "data/assets/items/item_clockwork_wasp.webp"
     },
@@ -15745,6 +15951,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_luck",
+        "stat_dodge"
+      ],
       "imageAssetPath": "data/assets/items/item_clover.webp"
     },
     {
@@ -15808,6 +16018,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_attack_speed"
       ],
       "imageAssetPath": "data/assets/items/item_coffee.webp"
     },
@@ -15895,6 +16108,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_engineering",
+        "knockback"
+      ],
       "imageAssetPath": "data/assets/items/item_cog.webp"
     },
     {
@@ -15959,6 +16176,10 @@
           "permStatsOnly": false
         }
       ],
+      "tags": [
+        "stat_percent_damage",
+        "knockback"
+      ],
       "imageAssetPath": "data/assets/items/item_coil.webp"
     },
     {
@@ -16022,6 +16243,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_attack_speed"
       ],
       "imageAssetPath": "data/assets/items/item_community_support.webp"
     },
@@ -16109,6 +16333,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_speed",
+        "stat_engineering"
+      ],
       "imageAssetPath": "data/assets/items/item_compass.webp"
     },
     {
@@ -16172,6 +16400,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_hp_regeneration",
+        "stand_still"
       ],
       "imageAssetPath": "data/assets/items/item_coral.webp"
     },
@@ -16237,6 +16469,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_percent_damage",
+        "stat_curse"
+      ],
       "imageAssetPath": "data/assets/items/item_corrupted_shard.webp"
     },
     {
@@ -16279,6 +16515,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "economy"
+      ],
       "imageAssetPath": "data/assets/items/item_coupon.webp"
     },
     {
@@ -16320,6 +16559,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_harvesting"
       ],
       "imageAssetPath": "data/assets/items/item_crown.webp"
     },
@@ -16433,6 +16675,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_attack_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_crystal.webp"
     },
     {
@@ -16497,6 +16742,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "pickup"
+      ],
       "imageAssetPath": "data/assets/items/item_cute_monkey.webp"
     },
     {
@@ -16541,6 +16789,9 @@
             "chance": 25
           }
         }
+      ],
+      "tags": [
+        "stat_luck"
       ],
       "imageAssetPath": "data/assets/items/item_cyberball.webp"
     },
@@ -16606,6 +16857,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_percent_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_cyclops_worm.webp"
     },
     {
@@ -16647,6 +16901,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "economy"
       ],
       "imageAssetPath": "data/assets/items/item_dangerous_bunny.webp"
     },
@@ -16711,6 +16968,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_lifesteal"
       ],
       "imageAssetPath": "data/assets/items/item_decomposing_flesh.webp"
     },
@@ -16798,6 +17058,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_max_hp",
+        "stat_melee_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_defective_steroids.webp"
     },
     {
@@ -16884,6 +17148,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_engineering",
+        "xp_gain"
+      ],
       "imageAssetPath": "data/assets/items/item_diploma.webp"
     },
     {
@@ -16928,6 +17196,11 @@
             "boost_zone_scale": 1
           }
         }
+      ],
+      "tags": [
+        "stat_hp_regeneration",
+        "stat_lifesteal",
+        "pet"
       ],
       "imageAssetPath": "data/assets/items/item_doc_moth.webp"
     },
@@ -17015,6 +17288,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_armor",
+        "stat_engineering"
+      ],
       "imageAssetPath": "data/assets/items/item_duct_tape.webp"
     },
     {
@@ -17056,6 +17333,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "explosive"
       ],
       "imageAssetPath": "data/assets/items/item_dynamite.webp"
     },
@@ -17143,6 +17423,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_crit_chance",
+        "stat_elemental_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_energy_bracelet.webp"
     },
     {
@@ -17229,6 +17513,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_hp_regeneration",
+        "stat_max_hp"
+      ],
       "imageAssetPath": "data/assets/items/item_estys_couch.webp"
     },
     {
@@ -17314,6 +17602,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "economy",
+        "pickup"
       ],
       "imageAssetPath": "data/assets/items/item_evil_hat.webp"
     },
@@ -17467,6 +17759,12 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_armor",
+        "stat_crit_chance",
+        "stat_engineering",
+        "stat_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_exoskeleton.webp"
     },
     {
@@ -17553,6 +17851,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "explosive"
+      ],
       "imageAssetPath": "data/assets/items/item_explosive_shells.webp"
     },
     {
@@ -17597,6 +17898,10 @@
             "value2": 8
           }
         }
+      ],
+      "tags": [
+        "stat_max_hp",
+        "stat_luck"
       ],
       "imageAssetPath": "data/assets/items/item_extra_stomach.webp"
     },
@@ -17684,6 +17989,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_crit_chance",
+        "stat_ranged_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_eyepatch.webp"
     },
     {
@@ -17770,6 +18079,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_elemental_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_eyes_surgery.webp"
     },
     {
@@ -17833,6 +18145,9 @@
           "statScaled": "legendary_item",
           "permStatsOnly": false
         }
+      ],
+      "tags": [
+        "stat_hp_regeneration"
       ],
       "imageAssetPath": "data/assets/items/item_fairy.webp"
     },
@@ -17920,6 +18235,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_ranged_damage",
+        "stat_dodge"
+      ],
       "imageAssetPath": "data/assets/items/item_feather.webp"
     },
     {
@@ -17983,6 +18302,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_harvesting"
       ],
       "imageAssetPath": "data/assets/items/item_fertilizer.webp"
     },
@@ -18070,6 +18392,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_speed",
+        "stat_lifesteal"
+      ],
       "imageAssetPath": "data/assets/items/item_fin.webp"
     },
     {
@@ -18133,6 +18459,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_curse",
+        "lock"
       ],
       "imageAssetPath": "data/assets/items/item_fish_hook.webp"
     },
@@ -18198,6 +18528,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_percent_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_focus.webp"
     },
     {
@@ -18262,6 +18595,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_lifesteal"
+      ],
       "imageAssetPath": "data/assets/items/item_fresh_meat.webp"
     },
     {
@@ -18303,6 +18639,9 @@
           "statScaled": "burning_enemy",
           "permStatsOnly": false
         }
+      ],
+      "tags": [
+        "stat_hp_regeneration"
       ],
       "imageAssetPath": "data/assets/items/item_fried_rice.webp"
     },
@@ -18412,6 +18751,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_elemental_damage",
+        "stat_crit_chance"
+      ],
       "imageAssetPath": "data/assets/items/item_frozen_heart.webp"
     },
     {
@@ -18475,6 +18818,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "consumable"
       ],
       "imageAssetPath": "data/assets/items/item_fruit_basket.webp"
     },
@@ -18562,6 +18908,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_elemental_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_fuel_tank.webp"
     },
     {
@@ -18626,6 +18975,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_dodge"
+      ],
       "imageAssetPath": "data/assets/items/item_gambling_token.webp"
     },
     {
@@ -18688,6 +19040,10 @@
             }
           }
         }
+      ],
+      "tags": [
+        "consumable",
+        "structure"
       ],
       "imageAssetPath": "data/assets/items/item_garden.webp"
     },
@@ -18774,6 +19130,11 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_max_hp",
+        "stat_percent_damage",
+        "more_enemies"
       ],
       "imageAssetPath": "data/assets/items/item_gentle_alien.webp"
     },
@@ -18883,6 +19244,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_dodge"
+      ],
       "imageAssetPath": "data/assets/items/item_ghost_outfit.webp"
     },
     {
@@ -18927,6 +19291,9 @@
             "value2": 1
           }
         }
+      ],
+      "tags": [
+        "stat_crit_chance"
       ],
       "imageAssetPath": "data/assets/items/item_giant_belt.webp"
     },
@@ -18992,6 +19359,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_percent_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_glass_cannon.webp"
     },
     {
@@ -19033,6 +19403,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_range"
       ],
       "imageAssetPath": "data/assets/items/item_glasses.webp"
     },
@@ -19142,6 +19515,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_elemental_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_gnome.webp"
     },
     {
@@ -19205,6 +19582,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_melee_damage"
       ],
       "imageAssetPath": "data/assets/items/item_goat_skull.webp"
     },
@@ -19270,6 +19650,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_goblet.webp"
     },
     {
@@ -19312,6 +19693,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_goldfish.webp"
     },
     {
@@ -19354,6 +19736,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_goldfish_used.webp"
     },
     {
@@ -19420,6 +19803,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_elemental_damage"
       ],
       "imageAssetPath": "data/assets/items/item_greek_fire.webp"
     },
@@ -19507,6 +19893,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_max_hp",
+        "stat_hp_regeneration",
+        "stat_lifesteal"
+      ],
       "imageAssetPath": "data/assets/items/item_grinds_magical_leaf.webp"
     },
     {
@@ -19592,6 +19983,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_attack_speed",
+        "stat_range"
       ],
       "imageAssetPath": "data/assets/items/item_gummy_berserker.webp"
     },
@@ -19701,6 +20096,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_ranged_damage",
+        "stat_elemental_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_handcuffs.webp"
     },
     {
@@ -19764,6 +20164,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_percent_damage"
       ],
       "imageAssetPath": "data/assets/items/item_head_injury.webp"
     },
@@ -19895,6 +20298,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_ranged_damage",
+        "stat_percent_damage",
+        "stat_range"
+      ],
       "imageAssetPath": "data/assets/items/item_heavy_bullets.webp"
     },
     {
@@ -19981,6 +20389,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_ranged_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_hedgehog.webp"
     },
     {
@@ -20044,6 +20456,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_armor"
       ],
       "imageAssetPath": "data/assets/items/item_helmet.webp"
     },
@@ -20175,6 +20590,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_ranged_damage",
+        "explosive"
+      ],
       "imageAssetPath": "data/assets/items/item_honey.webp"
     },
     {
@@ -20239,6 +20658,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_hourglass.webp"
     },
     {
@@ -20280,6 +20700,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_crit_chance"
       ],
       "imageAssetPath": "data/assets/items/item_hunting_trophy.webp"
     },
@@ -20327,6 +20750,9 @@
             "max_procs": 1
           }
         }
+      ],
+      "tags": [
+        "stat_elemental_damage"
       ],
       "imageAssetPath": "data/assets/items/item_ice_cube.webp"
     },
@@ -20392,6 +20818,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "structure",
+        "stat_attack_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_improved_tools.webp"
     },
     {
@@ -20455,6 +20885,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_percent_damage"
       ],
       "imageAssetPath": "data/assets/items/item_injection.webp"
     },
@@ -20520,6 +20953,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_crit_chance"
+      ],
       "imageAssetPath": "data/assets/items/item_insanity.webp"
     },
     {
@@ -20561,6 +20997,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_max_hp"
       ],
       "imageAssetPath": "data/assets/items/item_jelly.webp"
     },
@@ -20626,6 +21065,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "pet"
+      ],
       "imageAssetPath": "data/assets/items/item_jellyshield.webp"
     },
     {
@@ -20689,6 +21131,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "consumable"
       ],
       "imageAssetPath": "data/assets/items/item_jerky.webp"
     },
@@ -20798,6 +21243,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_speed",
+        "stat_dodge"
+      ],
       "imageAssetPath": "data/assets/items/item_jetpack.webp"
     },
     {
@@ -20883,6 +21332,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_percent_damage",
+        "stat_max_hp"
       ],
       "imageAssetPath": "data/assets/items/item_knot.webp"
     },
@@ -20994,6 +21447,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "explosive",
+        "stat_max_hp",
+        "stat_curse"
+      ],
       "imageAssetPath": "data/assets/items/item_krakens_eye.webp"
     },
     {
@@ -21062,6 +21520,11 @@
             }
           }
         }
+      ],
+      "tags": [
+        "stat_engineering",
+        "explosive",
+        "structure"
       ],
       "imageAssetPath": "data/assets/items/item_landmines.webp"
     },
@@ -21193,6 +21656,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_percent_damage",
+        "stat_range",
+        "knockback"
+      ],
       "imageAssetPath": "data/assets/items/item_lantern.webp"
     },
     {
@@ -21279,6 +21747,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_armor",
+        "stat_dodge"
+      ],
       "imageAssetPath": "data/assets/items/item_leather_vest.webp"
     },
     {
@@ -21320,6 +21792,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "consumable"
       ],
       "imageAssetPath": "data/assets/items/item_lemonade.webp"
     },
@@ -21384,6 +21859,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_ranged_damage"
       ],
       "imageAssetPath": "data/assets/items/item_lens.webp"
     },
@@ -21471,6 +21949,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_engineering"
+      ],
       "imageAssetPath": "data/assets/items/item_lighthouse.webp"
     },
     {
@@ -21556,6 +22037,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_harvesting",
+        "pickup"
       ],
       "imageAssetPath": "data/assets/items/item_little_frog.webp"
     },
@@ -21643,6 +22128,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_max_hp"
+      ],
       "imageAssetPath": "data/assets/items/item_little_muscley_dude.webp"
     },
     {
@@ -21687,6 +22176,11 @@
             "double_chance": 0.1
           }
         }
+      ],
+      "tags": [
+        "economy",
+        "pickup",
+        "pet"
       ],
       "imageAssetPath": "data/assets/items/item_lootworm.webp"
     },
@@ -21751,6 +22245,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_luck"
       ],
       "imageAssetPath": "data/assets/items/item_lost_duck.webp"
     },
@@ -21838,6 +22335,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_luck"
+      ],
       "imageAssetPath": "data/assets/items/item_lucky_charm.webp"
     },
     {
@@ -21902,6 +22402,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_crit_chance",
+        "stat_luck"
+      ],
       "imageAssetPath": "data/assets/items/item_lucky_coin.webp"
     },
     {
@@ -21943,6 +22447,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "exploration"
       ],
       "imageAssetPath": "data/assets/items/item_lumberjack_shirt.webp"
     },
@@ -22007,6 +22514,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_hp_regeneration"
       ],
       "imageAssetPath": "data/assets/items/item_lure.webp"
     },
@@ -22138,6 +22648,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_hp_regeneration",
+        "knockback"
+      ],
       "imageAssetPath": "data/assets/items/item_mammoth.webp"
     },
     {
@@ -22201,6 +22716,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_melee_damage"
       ],
       "imageAssetPath": "data/assets/items/item_mastery.webp"
     },
@@ -22332,6 +22850,12 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_max_hp",
+        "stat_percent_damage",
+        "stat_armor",
+        "stat_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_medal.webp"
     },
     {
@@ -22421,6 +22945,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_hp_regeneration"
       ],
       "imageAssetPath": "data/assets/items/item_medikit.webp"
     },
@@ -22530,6 +23057,12 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_luck",
+        "stat_engineering",
+        "pickup",
+        "economy"
+      ],
       "imageAssetPath": "data/assets/items/item_metal_detector.webp"
     },
     {
@@ -22594,6 +23127,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_armor"
+      ],
       "imageAssetPath": "data/assets/items/item_metal_plate.webp"
     },
     {
@@ -22636,6 +23172,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_mirror.webp"
     },
     {
@@ -22699,6 +23236,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_percent_damage"
       ],
       "imageAssetPath": "data/assets/items/item_missile.webp"
     },
@@ -22786,6 +23326,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_lifesteal",
+        "more_enemies"
+      ],
       "imageAssetPath": "data/assets/items/item_mouse.webp"
     },
     {
@@ -22849,6 +23393,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_hp_regeneration"
       ],
       "imageAssetPath": "data/assets/items/item_mushroom.webp"
     },
@@ -22936,6 +23483,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_ranged_damage",
+        "stat_elemental_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_mutation.webp"
     },
     {
@@ -23021,6 +23572,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_engineering"
       ],
       "imageAssetPath": "data/assets/items/item_nail.webp"
     },
@@ -23130,6 +23684,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_crit_chance",
+        "stat_range"
+      ],
       "imageAssetPath": "data/assets/items/item_night_goggles.webp"
     },
     {
@@ -23238,6 +23796,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_max_hp",
+        "stat_lifesteal",
+        "stat_hp_regeneration"
+      ],
       "imageAssetPath": "data/assets/items/item_octopus.webp"
     },
     {
@@ -23301,6 +23864,9 @@
           "statScaled": "materials",
           "permStatsOnly": false
         }
+      ],
+      "tags": [
+        "stat_max_hp"
       ],
       "imageAssetPath": "data/assets/items/item_padding.webp"
     },
@@ -23387,6 +23953,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_max_hp",
+        "stat_luck"
       ],
       "imageAssetPath": "data/assets/items/item_panda.webp"
     },
@@ -23496,6 +24066,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_dodge",
+        "stat_harvesting"
+      ],
       "imageAssetPath": "data/assets/items/item_peaceful_bee.webp"
     },
     {
@@ -23582,6 +24156,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "xp_gain"
+      ],
       "imageAssetPath": "data/assets/items/item_peacock.webp"
     },
     {
@@ -23646,6 +24223,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_luck"
+      ],
       "imageAssetPath": "data/assets/items/item_pearl.webp"
     },
     {
@@ -23687,6 +24267,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_engineering"
       ],
       "imageAssetPath": "data/assets/items/item_pencil.webp"
     },
@@ -23752,6 +24335,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_hp_regeneration"
+      ],
       "imageAssetPath": "data/assets/items/item_penguin.webp"
     },
     {
@@ -23794,6 +24380,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_piggy_bank.webp"
     },
     {
@@ -23880,6 +24467,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_crit_chance",
+        "stat_engineering"
+      ],
       "imageAssetPath": "data/assets/items/item_pile_of_books.webp"
     },
     {
@@ -23944,6 +24535,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_hp_regeneration"
+      ],
       "imageAssetPath": "data/assets/items/item_plant.webp"
     },
     {
@@ -23985,6 +24579,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "explosive"
       ],
       "imageAssetPath": "data/assets/items/item_plastic_explosive.webp"
     },
@@ -24049,6 +24646,11 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_engineering",
+        "exploration",
+        "structure"
       ],
       "imageAssetPath": "data/assets/items/item_pocket_factory.webp"
     },
@@ -24157,6 +24759,11 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_attack_speed",
+        "stat_crit_chance",
+        "stat_range"
       ],
       "imageAssetPath": "data/assets/items/item_poisonous_tonic.webp"
     },
@@ -24376,6 +24983,13 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_max_hp",
+        "stat_hp_regeneration",
+        "stat_percent_damage",
+        "stat_speed",
+        "stat_luck"
+      ],
       "imageAssetPath": "data/assets/items/item_potato.webp"
     },
     {
@@ -24443,6 +25057,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_hp_regeneration"
+      ],
       "imageAssetPath": "data/assets/items/item_potion.webp"
     },
     {
@@ -24506,6 +25123,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_speed",
+        "stat_percent_damage"
       ],
       "imageAssetPath": "data/assets/items/item_power_generator.webp"
     },
@@ -24571,6 +25192,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_luck"
+      ],
       "imageAssetPath": "data/assets/items/item_propeller_hat.webp"
     },
     {
@@ -24635,6 +25259,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_ranged_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_pumpkin.webp"
     },
     {
@@ -24696,6 +25323,10 @@
           }
         }
       ],
+      "tags": [
+        "stat_max_hp",
+        "pet"
+      ],
       "imageAssetPath": "data/assets/items/item_ratzilla.webp"
     },
     {
@@ -24737,6 +25368,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "economy"
       ],
       "imageAssetPath": "data/assets/items/item_recycling_machine.webp"
     },
@@ -24824,6 +25458,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_ranged_damage",
+        "stat_engineering"
+      ],
       "imageAssetPath": "data/assets/items/item_reinforced_steel.webp"
     },
     {
@@ -24888,6 +25526,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_dodge"
+      ],
       "imageAssetPath": "data/assets/items/item_retromations_hoodie.webp"
     },
     {
@@ -24951,6 +25592,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_ranged_damage"
       ],
       "imageAssetPath": "data/assets/items/item_ricochet.webp"
     },
@@ -25040,6 +25684,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "explosive"
+      ],
       "imageAssetPath": "data/assets/items/item_rip_and_tear.webp"
     },
     {
@@ -25106,6 +25754,10 @@
             "chance": 100
           }
         }
+      ],
+      "tags": [
+        "stat_dodge",
+        "stat_melee_damage"
       ],
       "imageAssetPath": "data/assets/items/item_riposte.webp"
     },
@@ -25193,6 +25845,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_percent_damage",
+        "stat_lifesteal"
+      ],
       "imageAssetPath": "data/assets/items/item_ritual.webp"
     },
     {
@@ -25279,6 +25935,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_engineering"
+      ],
       "imageAssetPath": "data/assets/items/item_robot_arm.webp"
     },
     {
@@ -25342,6 +26002,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_hp_regeneration"
       ],
       "imageAssetPath": "data/assets/items/item_sad_tomato.webp"
     },
@@ -25454,6 +26117,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_attack_speed",
+        "stat_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_saltwater.webp"
     },
     {
@@ -25499,6 +26167,9 @@
             "revive_duration": 2
           }
         }
+      ],
+      "tags": [
+        "pet"
       ],
       "imageAssetPath": "data/assets/items/item_scapegoat.webp"
     },
@@ -25564,6 +26235,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "xp_gain"
+      ],
       "imageAssetPath": "data/assets/items/item_scar.webp"
     },
     {
@@ -25621,6 +26295,9 @@
             }
           }
         }
+      ],
+      "tags": [
+        "stat_elemental_damage"
       ],
       "imageAssetPath": "data/assets/items/item_scared_sausage.webp"
     },
@@ -25730,6 +26407,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_hp_regeneration",
+        "stat_melee_damage",
+        "stat_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_scarf.webp"
     },
     {
@@ -25815,6 +26497,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_ranged_damage",
+        "stat_range"
       ],
       "imageAssetPath": "data/assets/items/item_scope.webp"
     },
@@ -25902,6 +26588,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_ranged_damage"
       ],
       "imageAssetPath": "data/assets/items/item_seashell.webp"
     },
@@ -26011,6 +26700,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_range",
+        "stat_hp_regeneration",
+        "stat_engineering"
+      ],
       "imageAssetPath": "data/assets/items/item_shackles.webp"
     },
     {
@@ -26074,6 +26768,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_luck"
       ],
       "imageAssetPath": "data/assets/items/item_shady_potion.webp"
     },
@@ -26183,6 +26880,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_ranged_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_sharp_bullet.webp"
     },
     {
@@ -26291,6 +26991,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_max_hp",
+        "stat_hp_regeneration"
+      ],
       "imageAssetPath": "data/assets/items/item_shmoop.webp"
     },
     {
@@ -26355,6 +27059,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "pickup",
+        "stat_armor"
+      ],
       "imageAssetPath": "data/assets/items/item_sifds_relic.webp"
     },
     {
@@ -26396,6 +27104,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_percent_damage"
       ],
       "imageAssetPath": "data/assets/items/item_silver_bullet.webp"
     },
@@ -26463,6 +27174,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_percent_damage"
       ],
       "imageAssetPath": "data/assets/items/item_small_fish.webp"
     },
@@ -26550,6 +27264,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_ranged_damage",
+        "stat_attack_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_small_magazine.webp"
     },
     {
@@ -26613,6 +27331,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "less_enemy_speed"
       ],
       "imageAssetPath": "data/assets/items/item_snail.webp"
     },
@@ -26678,6 +27399,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_elemental_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_snake.webp"
     },
     {
@@ -26722,6 +27446,9 @@
             "value2": 0
           }
         }
+      ],
+      "tags": [
+        "stat_elemental_damage"
       ],
       "imageAssetPath": "data/assets/items/item_snowball.webp"
     },
@@ -26810,6 +27537,11 @@
             }
           }
         }
+      ],
+      "tags": [
+        "stat_max_hp",
+        "stat_luck",
+        "explosive"
       ],
       "imageAssetPath": "data/assets/items/item_spicy_sauce.webp"
     },
@@ -26919,6 +27651,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_percent_damage",
+        "stat_attack_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_spider.webp"
     },
     {
@@ -26982,6 +27718,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_range"
       ],
       "imageAssetPath": "data/assets/items/item_spyglass.webp"
     },
@@ -27069,6 +27808,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_harvesting"
+      ],
       "imageAssetPath": "data/assets/items/item_starfish.webp"
     },
     {
@@ -27133,6 +27875,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_attack_speed",
+        "stand_still"
+      ],
       "imageAssetPath": "data/assets/items/item_statue.webp"
     },
     {
@@ -27196,6 +27942,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_armor",
+        "stat_max_hp"
       ],
       "imageAssetPath": "data/assets/items/item_stone_skin.webp"
     },
@@ -27283,6 +28033,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_engineering",
+        "stat_elemental_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_strange_book.webp"
     },
     {
@@ -27346,6 +28100,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_crit_chance"
       ],
       "imageAssetPath": "data/assets/items/item_sunglasses.webp"
     },
@@ -27426,6 +28183,9 @@
           }
         }
       ],
+      "tags": [
+        "explosive"
+      ],
       "imageAssetPath": "data/assets/items/item_sunken_bell.webp"
     },
     {
@@ -27468,6 +28228,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_tardigrade.webp"
     },
     {
@@ -27531,6 +28292,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_crit_chance"
       ],
       "imageAssetPath": "data/assets/items/item_tentacle.webp"
     },
@@ -27596,6 +28360,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_terrified_onion.webp"
     },
     {
@@ -27659,6 +28426,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_engineering"
       ],
       "imageAssetPath": "data/assets/items/item_toolbox.webp"
     },
@@ -27724,6 +28494,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_max_hp"
+      ],
       "imageAssetPath": "data/assets/items/item_torture.webp"
     },
     {
@@ -27787,6 +28560,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_elemental_damage"
       ],
       "imageAssetPath": "data/assets/items/item_toxic_sludge.webp"
     },
@@ -27852,6 +28628,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_harvesting"
+      ],
       "imageAssetPath": "data/assets/items/item_tractor.webp"
     },
     {
@@ -27894,6 +28673,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_luck"
+      ],
       "imageAssetPath": "data/assets/items/item_treasure_map.webp"
     },
     {
@@ -27935,6 +28717,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "exploration"
       ],
       "imageAssetPath": "data/assets/items/item_tree.webp"
     },
@@ -28022,6 +28807,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_percent_damage"
+      ],
       "imageAssetPath": "data/assets/items/item_triangle_of_power.webp"
     },
     {
@@ -28091,6 +28879,10 @@
           }
         }
       ],
+      "tags": [
+        "stat_engineering",
+        "structure"
+      ],
       "imageAssetPath": "data/assets/items/item_turret.webp"
     },
     {
@@ -28153,6 +28945,10 @@
             }
           }
         }
+      ],
+      "tags": [
+        "stat_engineering",
+        "structure"
       ],
       "imageAssetPath": "data/assets/items/item_turret_flame.webp"
     },
@@ -28223,6 +29019,10 @@
           }
         }
       ],
+      "tags": [
+        "stat_engineering",
+        "structure"
+      ],
       "imageAssetPath": "data/assets/items/item_turret_healing.webp"
     },
     {
@@ -28292,6 +29092,10 @@
           }
         }
       ],
+      "tags": [
+        "stat_engineering",
+        "structure"
+      ],
       "imageAssetPath": "data/assets/items/item_turret_laser.webp"
     },
     {
@@ -28360,6 +29164,10 @@
             }
           }
         }
+      ],
+      "tags": [
+        "stat_engineering",
+        "structure"
       ],
       "imageAssetPath": "data/assets/items/item_turret_rocket.webp"
     },
@@ -28434,6 +29242,11 @@
           }
         }
       ],
+      "tags": [
+        "stat_engineering",
+        "stat_elemental_damage",
+        "structure"
+      ],
       "imageAssetPath": "data/assets/items/item_tyler.webp"
     },
     {
@@ -28501,6 +29314,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "less_enemy_speed"
+      ],
       "imageAssetPath": "data/assets/items/item_ugly_tooth.webp"
     },
     {
@@ -28542,6 +29358,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_percent_damage"
       ],
       "imageAssetPath": "data/assets/items/item_vigilante_ring.webp"
     },
@@ -28611,6 +29430,11 @@
             }
           }
         }
+      ],
+      "tags": [
+        "less_enemy_speed",
+        "structure",
+        "pet"
       ],
       "imageAssetPath": "data/assets/items/item_wandering_bot.webp"
     },
@@ -28698,6 +29522,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_armor",
+        "stat_max_hp"
+      ],
       "imageAssetPath": "data/assets/items/item_warrior_helmet.webp"
     },
     {
@@ -28762,6 +29590,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "consumable"
+      ],
       "imageAssetPath": "data/assets/items/item_weird_food.webp"
     },
     {
@@ -28825,6 +29656,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_max_hp"
       ],
       "imageAssetPath": "data/assets/items/item_weird_ghost.webp"
     },
@@ -28934,6 +29768,11 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_melee_damage",
+        "stat_ranged_damage",
+        "stat_harvesting"
+      ],
       "imageAssetPath": "data/assets/items/item_wheat.webp"
     },
     {
@@ -28998,6 +29837,9 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_harvesting"
+      ],
       "imageAssetPath": "data/assets/items/item_wheelbarrow.webp"
     },
     {
@@ -29061,6 +29903,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_lifesteal"
       ],
       "imageAssetPath": "data/assets/items/item_whetstone.webp"
     },
@@ -29148,6 +29993,7 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [],
       "imageAssetPath": "data/assets/items/item_whistle.webp"
     },
     {
@@ -29211,6 +30057,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_harvesting",
+        "less_enemies"
       ],
       "imageAssetPath": "data/assets/items/item_white_flag.webp"
     },
@@ -29278,6 +30128,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_elemental_damage"
       ],
       "imageAssetPath": "data/assets/items/item_will_o_the_wisp.webp"
     },
@@ -29365,6 +30218,10 @@
           "permStatsOnly": null
         }
       ],
+      "tags": [
+        "stat_speed",
+        "stat_range"
+      ],
       "imageAssetPath": "data/assets/items/item_wings.webp"
     },
     {
@@ -29432,6 +30289,9 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_percent_damage"
       ],
       "imageAssetPath": "data/assets/items/item_wisdom.webp"
     },
@@ -29518,6 +30378,10 @@
           "statScaled": null,
           "permStatsOnly": null
         }
+      ],
+      "tags": [
+        "stat_elemental_damage",
+        "stat_luck"
       ],
       "imageAssetPath": "data/assets/items/item_wolf_helmet.webp"
     },

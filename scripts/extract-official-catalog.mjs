@@ -337,7 +337,11 @@ function normalizeRecord(kind, block, sourcePackage, resources = new Map()) {
       .filter(Boolean),
   };
 
-  if (kind === "weapon") {
+  if (kind === "item") {
+    // 道具 tags（游戏商店按「标签集合精确相等」过滤角色禁用组，见
+    // groupTagSet / itemInBannedGroups）：如 ["stat_lifesteal"]、["consumable"]。
+    record.tags = getArrayStrings(block, "tags");
+  } else if (kind === "weapon") {
     const statsRef = getResourceRef(block, "stats");
     const statsPath = extResources[statsRef]?.path ?? null;
     record.weaponId = getString(block, "weapon_id");

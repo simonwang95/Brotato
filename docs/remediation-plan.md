@@ -430,6 +430,10 @@
 
 - **完整帧精度 + 展示层舍入分离**：原 `weaponRecordToSimulator` 对冷却做 2 位小数舍入（`r2(frames/60)`），2 帧武器 0.0333… 秒被舍入成 0.03 秒，DPS 虚增约 11.1%（4 帧武器 0.0667→0.07 约 5.0%）。现计算层保留完整帧精度（`framesToSeconds` 原值）：`src/weaponImport.js` 去掉冷却的 `r2`；`src/app.js` `createNumberField` 在展示层四舍五入到 2 位小数（`input.value = Number(Number(value).toFixed(2))`），state 保留完整精度。`src/strategyGenerator.js` 导出 `calculatorWeaponFromRecord` 供测试对比。`tests/weaponImport.test.mjs` 改为严格相等（SMG=4/60、Spear=45/60、Chain Gun=2/60 不再用 0.005 容差）、全目录 258 个武器记录"模拟器带入 vs 攻略模型"双路径冷却严格一致、双路径 DPS 严格相等，并加突变敏感性检查（2 帧武器舍入到 2 位小数必须造成 >5% DPS 偏差，实测 11.1%，证明旧 bug 可被捕获）。
 
+第三轮修正（2026-09-02，P1-A，分支 fix/p1-remediation）：
+
+- **显示值 === 计算值（消除所见/所算漂移）**：F5 的展示层 2 位小数舍入（`createNumberField` 的 `input.value = Number(Number(value).toFixed(2))`）导致"所见"与"所算"不一致——2 帧武器显示 0.03，重输 0.03 后 DPS 静默漂移。现 `createNumberField` 改为 `input.value = value`（原值直显，不做展示层舍入），state 与展示层同源。顺带修复 `weaponRecordToSimulator` 缩放维度：原从 `DEFAULT_WEAPON`（默认近战缩放 80）克隆后只覆盖武器"拥有"的缩放维度，链枪（仅远程+工程缩放）会错误显示 80% 近战缩放；现缩放先全部归零再按记录覆盖。浏览器烟测新增链枪 P1-A 块（13 字段完整精度 + 页面 DPS 与 Node 侧一致 + 重输所见冷却值 DPS 不变）。
+
 ### [x] P1-8 修正静态数据与图片缓存策略
 
 问题：
@@ -514,6 +518,12 @@
 - **统一官方 nameKey 命名空间**：原禁用检查对手写 id（`coffee`）与官方 nameKey（`ITEM_COFFEE`）只做大小写归一后比较，两套命名空间互不匹配——手写候选（经 `summarizeOfficialRecords` 映射到 `ITEM_COFFEE`）与官方补充候选 `ITEM_COFFEE` 都不会命中 `mustExclude` 的 `ITEM_COFFEE`，Bull 的禁用咖啡检查形同虚设。现候选比较统一使用 `candidate.official.nameKey`（已验证全部 4450 个输出候选均携带 nameKey）；无法映射的候选显式 `assert.fail`（指明角色+模式+候选），绝不回退另一套 id 后继续断言。
 - **fixture 重新生成 + 生成器入库**：新增 `scripts/generate-recommendation-baseline.mjs`（可复现），`tests/fixtures/recommendationBaseline.json` 的 mustInclude 1642 项 id 全部改为官方 nameKey（原 874 官方 + 768 手写），mustExclude 保留（本就是官方 nameKey/属性标记命名空间）。
 - **禁用检查纯函数化 + 突变验证**：禁用检查抽为纯函数 `findBannedViolations(characterId, modeId, candidates, bannedIds)`（返回含角色/模式/候选/原因的违规列表，未映射候选以 `reason="unmapped"` 显式报告）。测试加入突变验证：向 Bull（normal20/endless）加入同一禁用项 `ITEM_COFFEE` 的手写候选（`coffee`，official 映射 `ITEM_COFFEE`）与官方补充候选（`official:ITEM_COFFEE`）均触发明确的角色+模式+候选错误；无法映射候选（`official` 无 nameKey）被显式报告。
+
+第三轮修正（2026-09-02，P1-B + P2，分支 fix/p1-remediation）：
+
+- **P1-B：禁用组匹配改为游戏真实规则（标签集合精确相等）**：F3 用"效果键包含"匹配禁用组，与游戏真实规则不符（lifesteal 命中 18 条 vs wiki 的 6；Fruit Basket 被误判进 HP 再生组）。游戏真实规则（wiki "Restricted Items" 基准，2026-04-08）：商店按"道具标签集合 == 组标签集合"精确相等过滤该角色可购买的道具。`src/strategyGenerator.js` 新增 `groupTagSet`（已知组短名→标签集合显式映射：`consumable_heal`→`consumable`、`melee_and_ranged_damage` 的 "melee"→`stat_melee_damage`）与 `itemMatchesGroup`（标签集合精确相等）。`scripts/extract-official-catalog.mjs` 为 item 记录新增 `tags` 字段抽取（目录重建后 230 条道具含 tags）。测试的组标记断言改为标签精确相等（真实可命中），突变 4 用合成 `ITEM_WHETSTONE`（tags=["stat_lifesteal"]）验证 banned-group 触发。
+- **P2：基准生成器可复现负向基准**：`scripts/generate-recommendation-baseline.mjs` 的 mustExclude 现在完全从目录推导（nameKey 来自 `bannedItems`、组标记来自 `bannedItemGroups` 且经标签词汇校验、升级标记来自 `bannedUpgrades` 且经效果键词汇校验），不依赖旧 fixture 复制。组标记合法性校验用 `markerIsReal`（组内每个 stat 标签存在于目录标签词汇），不要求当前 pck 恰好有道具精确匹配（复合组如 `melee_and_ranged_damage` 当前 0 条精确匹配但组本身合法）。
+- **版本漂移说明（已知限制）**：wiki（2026-04）与 pck（2026-06）存在漂移（如 builder 当前 pck `banned_item_groups=[]`、各分类计数差异），属漂移而非规则错误；目录反映当前游戏 = 事实来源。
 
 ## P2：中期优化
 

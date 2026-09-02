@@ -413,3 +413,80 @@ Error: ENOENT: no such file or directory, lstat '<clean-checkout>/public'
 | F6 API 200 无契约校验 | 200 需合法 JSON 状态对象（`enabled` 布尔 + `mode` local\|production）；503 需 `code=OCR_DISABLED`；404 仍按未部署跳过 | 负例：200 非 JSON / 200 空对象 / 200 字段类型错误 → 退出码 1；200 合法状态对象 → 退出码 0 |
 
 最终验收（干净检出，无任何预生成产物）：`git clone` 全历史 → 应用本批变更 → `npm ci` → 按 CI 顺序运行：语法检查、`git diff --check`、`npm test`（18 组）、6 个 portable 校验器、干净构建（590 文件，JS v0f9b6973dd，与本地构建逐字节一致）、`verify:build`（29 项 0 失败）、`test:browser`（15 项）全部通过；构建产物健康检查 27/27（带 `--api` 28/28，API 404 按可选项跳过）。
+
+---
+
+## 第三轮复核状态（2026-09-02，提交 b62c432 之后）
+
+- 复核对象：`b62c432`（F1–F6 修复）之后的工作区变更
+- 复核结论（原话）："b62c432 修复了 F1、F2、F4、F6 的主体问题，但仍有 2 个 P1 和 1 个 P2，暂不建议宣布全部验收完成。"
+- 本轮修复：P1-A、P1-B、P2 三项全部完成，其余验证通过。
+
+### P1-A（P1）：输入框显示值与计算值不一致
+
+`createNumberField` 此前对显示值做 2 位小数舍入，导致"所见"与"所算"不一致：2 帧武器（0.0333… 秒）显示为 0.03，重新输入 0.03 后 DPS 发生静默漂移。
+
+修复：`src/app.js` 的 `createNumberField` 改为 `input.value = value`（原值直显，不做展示层舍入），计算层与展示层同源。
+
+验证：浏览器烟测新增链枪（2 帧冷却 = 0.03333333333333333 秒）P1-A 块，断言三件事——
+1. 13 个字段显示完整精度原值（冷却 0.03333333333333333 秒）；
+2. 页面 DPS 与 Node 侧同精度计算一致（182.70）；
+3. 重新输入所见冷却值后 DPS 不变（182.70 → 182.70）。
+
+顺带修复：`weaponRecordToSimulator` 此前从 `DEFAULT_WEAPON`（默认近战缩放 80）克隆后只覆盖武器"拥有"的缩放维度，链枪（仅远程+工程缩放）会错误显示 80% 近战缩放。现改为缩放先全部归零再按记录覆盖。
+
+### P1-B（P1）：100 条禁用组/升级断言实际不会命中
+
+`b62c432` 的 fixture 含 70 个禁用组标记 + 30 个升级标记，但测试用候选 `nameKey` 与标记做**相等**比较——组标记（如 `LIFESTEAL`）永远不等于任何候选 `nameKey`（如 `ITEM_WHETSTONE`），断言恒为空真（vacuous），无法捕获任何违规。
+
+根因：`b62c432` 用"效果键包含"匹配禁用组，与游戏真实规则不符。
+
+**游戏真实规则（wiki 基准，spellsandguns wiki "Restricted Items"，2026-04-08 最后编辑）**：商店按"道具的标签集合 == 组的标签集合"（**精确相等**）过滤该角色可购买的道具。复合组按 `_and_` 拆分；`consumable_heal` 映射到裸标签 `consumable`（非 `stat_consumable_heal`）；其余组名映射到 `stat_<组名>`。逐组验证精确吻合：harvesting 5/5、lifesteal 6/6、lifesteal_and_hp_regeneration 1/1（Blood Leech）、dodge 4/4。而"效果键包含"规则显著过度禁用（lifesteal 命中 18 条 vs wiki 的 6；Fruit Basket 属 Consumable 类而非 HP 再生组）。
+
+修复（`src/strategyGenerator.js`）：
+- 新增 `groupTagSet(group)`：已知禁用组短名 → 标签集合的显式映射（`consumable_heal`→`consumable`；`melee_and_ranged_damage` 的 "melee" 部分实为 `melee_damage` 简写 → `stat_melee_damage`；未知组按 `stat_<组名>` 兜底）。
+- 新增 `itemMatchesGroup(itemRecord, group)`：道具标签集合与组标签集合**精确相等**；空标签集合永不匹配。
+- `entryAllowedByCharacter` 道具分支：`bannedItems` 按 `record.id`（不变）+ `itemInBannedGroups`（标签精确相等）。
+
+修复（`tests/recommendationRegression.test.mjs`）：
+- `findBannedViolations` 改为：`ITEM_`/`WEAPON_` 前缀标记 → `nameKey` 相等（reason "banned"）；其余组标记 → 标签精确相等（reason "banned-group"，`records.some((record) => itemMatchesGroup(record, marker))`）。
+- 突变 4 重构：合成 `official:ITEM_WHETSTONE`（断言 `deepEqual(whetstoneRecord.tags, ["stat_lifesteal"])`）对 bull 必须触发 banned-group（LIFESTEAL）。
+- 升级标记（`bannedUpgrades`）单独字段：升级商店独立、不在目录/输出中，无法做候选级断言；改为存在性校验（`UPGRADE_<STAT>` 的属性部分须存在于目录效果键词汇）。
+
+修复（`scripts/extract-official-catalog.mjs`）：item 记录新增 `tags` 字段抽取（`getArrayStrings(block, "tags")`）。目录重建后 569 条记录全部含 `imageAssetPath`，230 条道具含 `tags`（17 条 DLC 道具无标签）。
+
+修复（`scripts/generate-recommendation-baseline.mjs`）：组标记合法性校验改为"组内每个 stat 标签存在于目录标签词汇"（`markerIsReal`），不要求当前 pck 恰好有道具精确匹配（复合组如 `melee_and_ranged_damage` 当前 0 条精确匹配但组本身合法，标记仍应写入）。
+
+**版本漂移说明（已知限制）**：wiki（2026-04）与 pck（2026-06）存在漂移——例如 builder 当前 pck 的 `banned_item_groups = []`（wiki 说 Structures 禁用，仍在 Endless）；各分类计数差异（ranged 6v1、HPReg 8v9、consumable 3v4 等）属漂移而非规则错误。目录反映**当前**游戏 = 事实来源。
+
+### P2（P2）：基准生成器不能重建负向基准
+
+`b62c432` 的 fixture 负向基准（mustExclude）是从旧 fixture 复制而来，生成器无法独立重建。
+
+修复（`scripts/generate-recommendation-baseline.mjs`）：mustExclude 现在从目录推导——nameKey 来自角色 `bannedItems`，组标记来自角色 `bannedItemGroups`（标签词汇校验），升级标记来自 `bannedUpgrades`（效果键词汇校验）。fixture 完全可复现，不依赖旧 fixture 复制。
+
+### 本轮验证记录
+
+| 验证 | 结果 |
+| --- | --- |
+| `node --check`（src/scripts/tests） | 通过 |
+| `git diff --check` | 通过 |
+| `npm test`（18 组） | 通过（含 strategyGenerator Druid/Fruit Basket、recommendationRegression P1-9） |
+| `npm run verify:catalog` | 通过 |
+| `npm run verify:recommendations` | 通过（正向 1642、负向 240 = nameKey 170 + 组标记 70、升级 30） |
+| `npm run verify:effects` | 通过（1546 条效果文本、128 条解码清单） |
+| `npm run verify:unlocks` | 通过 |
+| `npm run localization:coverage` | 通过（64/64 角色） |
+| `npm run official-data:diff` | 通过（247 条 item 记录新增 tags 字段，预期变更） |
+| `npm run build` | 通过，590 文件，约 4.9 MiB |
+| `npm run verify:build` | 通过，29 项 0 失败 |
+| `npm run test:browser` | 通过，18 项（含链枪 P1-A 块） |
+| `npm run health:check`（静态 public/） | 通过，27 项 0 失败 |
+
+### 已知设计取舍（Endless 模式）
+
+wiki 说明 Endless 模式下禁用限制解除（Builder/Gangster 除外）。当前生成器在 normal 与 endless 两种模式均应用禁用组过滤（保守策略：永不推荐角色在 normal 模式无法购买的道具）。endless 模式下属"少推荐"（漏掉合法选项）而非"错推荐"。此取舍已记录，后续如需精确对齐 wiki 的 Endless 语义（仅 Builder/Gangster 保留限制），可作为独立任务处理。
+
+### 结论
+
+P1-A、P1-B、P2 三项全部修复并通过验证。P1-2（OCR）按项目决定继续保留为待办。本批修复可宣布验收完成。

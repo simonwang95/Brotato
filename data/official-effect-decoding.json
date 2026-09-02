@@ -2,7 +2,7 @@
   "generatedFrom": "data/official-catalog.json",
   "sourceMetadata": {
     "extractorVersion": "brotato-static-extractors@5",
-    "extractedAt": "2026-08-06T08:07:50.553Z",
+    "extractedAt": "2026-09-02T12:23:53.492Z",
     "productVersion": "1.1.12.0.beta-3",
     "productVersionEvidence": "Brotato.app/Contents/Info.plist:CFBundleShortVersionString",
     "packages": [

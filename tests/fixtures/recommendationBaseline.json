@@ -58,7 +58,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "wellRounded:endless": {
     "mustInclude": {
@@ -119,7 +120,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "brawler:normal20": {
     "mustInclude": {
@@ -182,7 +184,8 @@
     },
     "mustExclude": [
       "RANGED_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "brawler:endless": {
     "mustInclude": {
@@ -245,7 +248,8 @@
     },
     "mustExclude": [
       "RANGED_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "crazy:normal20": {
     "mustInclude": {
@@ -306,7 +310,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "crazy:endless": {
     "mustInclude": {
@@ -367,7 +372,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "ranger:normal20": {
     "mustInclude": {
@@ -430,7 +436,8 @@
     },
     "mustExclude": [
       "MELEE_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "ranger:endless": {
     "mustInclude": {
@@ -493,7 +500,8 @@
     },
     "mustExclude": [
       "MELEE_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "mage:normal20": {
     "mustInclude": {
@@ -555,11 +563,13 @@
       ]
     },
     "mustExclude": [
-      "UPGRADE_MELEE_DAMAGE",
-      "UPGRADE_RANGED_DAMAGE",
+      "MELEE_AND_RANGED_DAMAGE",
       "MELEE_DAMAGE",
-      "RANGED_DAMAGE",
-      "MELEE_AND_RANGED_DAMAGE"
+      "RANGED_DAMAGE"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_MELEE_DAMAGE",
+      "UPGRADE_RANGED_DAMAGE"
     ]
   },
   "mage:endless": {
@@ -622,11 +632,13 @@
       ]
     },
     "mustExclude": [
-      "UPGRADE_MELEE_DAMAGE",
-      "UPGRADE_RANGED_DAMAGE",
+      "MELEE_AND_RANGED_DAMAGE",
       "MELEE_DAMAGE",
-      "RANGED_DAMAGE",
-      "MELEE_AND_RANGED_DAMAGE"
+      "RANGED_DAMAGE"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_MELEE_DAMAGE",
+      "UPGRADE_RANGED_DAMAGE"
     ]
   },
   "engineer:normal20": {
@@ -688,7 +700,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "engineer:endless": {
     "mustInclude": {
@@ -749,7 +762,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "lucky:normal20": {
     "mustInclude": {
@@ -810,7 +824,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "lucky:endless": {
     "mustInclude": {
@@ -871,7 +886,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "chunky:normal20": {
     "mustInclude": {
@@ -907,37 +923,39 @@
           "rank": 2
         },
         {
-          "id": "ITEM_WHETSTONE",
+          "id": "ITEM_JERKY",
           "rank": 3
         },
         {
-          "id": "ITEM_JERKY",
+          "id": "ITEM_MEDAL",
           "rank": 4
         },
         {
-          "id": "ITEM_MEDAL",
+          "id": "ITEM_VIGILANTE_RING",
           "rank": 5
         },
         {
-          "id": "ITEM_VIGILANTE_RING",
+          "id": "ITEM_DYNAMITE",
           "rank": 6
         },
         {
-          "id": "ITEM_DYNAMITE",
+          "id": "ITEM_METAL_DETECTOR",
           "rank": 7
         },
         {
-          "id": "ITEM_METAL_DETECTOR",
+          "id": "ITEM_SIFDS_RELIC",
           "rank": 8
         }
       ]
     },
     "mustExclude": [
       "ITEM_FIN",
-      "UPGRADE_SPEED",
       "LIFESTEAL",
       "LIFESTEAL_AND_HP_REGENERATION",
       "SPEED"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_SPEED"
     ]
   },
   "chunky:endless": {
@@ -974,37 +992,39 @@
           "rank": 2
         },
         {
-          "id": "ITEM_WHETSTONE",
+          "id": "ITEM_PIGGY_BANK",
           "rank": 3
         },
         {
-          "id": "ITEM_PIGGY_BANK",
+          "id": "ITEM_ADRENALINE",
           "rank": 4
         },
         {
-          "id": "ITEM_ADRENALINE",
+          "id": "ITEM_EXPLOSIVE_SHELLS",
           "rank": 5
         },
         {
-          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "id": "ITEM_JERKY",
           "rank": 6
         },
         {
-          "id": "ITEM_JERKY",
+          "id": "ITEM_LURE",
           "rank": 7
         },
         {
-          "id": "ITEM_LURE",
+          "id": "ITEM_RECYCLING_MACHINE",
           "rank": 8
         }
       ]
     },
     "mustExclude": [
       "ITEM_FIN",
-      "UPGRADE_SPEED",
       "LIFESTEAL",
       "LIFESTEAL_AND_HP_REGENERATION",
       "SPEED"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_SPEED"
     ]
   },
   "old:normal20": {
@@ -1066,7 +1086,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "old:endless": {
     "mustInclude": {
@@ -1127,7 +1148,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "loud:normal20": {
     "mustInclude": {
@@ -1188,7 +1210,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "loud:endless": {
     "mustInclude": {
@@ -1249,7 +1272,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "multitasker:normal20": {
     "mustInclude": {
@@ -1310,7 +1334,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "multitasker:endless": {
     "mustInclude": {
@@ -1371,7 +1396,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "wildling:normal20": {
     "mustInclude": {
@@ -1432,7 +1458,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "wildling:endless": {
     "mustInclude": {
@@ -1493,7 +1520,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "pacifist:normal20": {
     "mustInclude": {
@@ -1556,7 +1584,8 @@
     },
     "mustExclude": [
       "ENGINEERING"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "pacifist:endless": {
     "mustInclude": {
@@ -1619,7 +1648,8 @@
     },
     "mustExclude": [
       "ENGINEERING"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "gladiator:normal20": {
     "mustInclude": {
@@ -1683,7 +1713,8 @@
     "mustExclude": [
       "ITEM_SEASHELL",
       "RANGED_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "gladiator:endless": {
     "mustInclude": {
@@ -1747,7 +1778,8 @@
     "mustExclude": [
       "ITEM_SEASHELL",
       "RANGED_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "saver:normal20": {
     "mustInclude": {
@@ -1808,7 +1840,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "saver:endless": {
     "mustInclude": {
@@ -1869,7 +1902,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "sick:normal20": {
     "mustInclude": {
@@ -1931,10 +1965,11 @@
       ]
     },
     "mustExclude": [
-      "ITEM_WEIRD_GHOST",
+      "HP_REGENERATION",
       "ITEM_TARDIGRADE",
-      "HP_REGENERATION"
-    ]
+      "ITEM_WEIRD_GHOST"
+    ],
+    "bannedUpgrades": []
   },
   "sick:endless": {
     "mustInclude": {
@@ -1996,10 +2031,11 @@
       ]
     },
     "mustExclude": [
-      "ITEM_WEIRD_GHOST",
+      "HP_REGENERATION",
       "ITEM_TARDIGRADE",
-      "HP_REGENERATION"
-    ]
+      "ITEM_WEIRD_GHOST"
+    ],
+    "bannedUpgrades": []
   },
   "farmer:normal20": {
     "mustInclude": {
@@ -2060,7 +2096,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "farmer:endless": {
     "mustInclude": {
@@ -2121,7 +2158,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "ghost:normal20": {
     "mustInclude": {
@@ -2179,10 +2217,11 @@
       ]
     },
     "mustExclude": [
+      "ARMOR",
       "ITEM_DUCT_TAPE",
-      "ITEM_GHOST_OUTFIT",
-      "ARMOR"
-    ]
+      "ITEM_GHOST_OUTFIT"
+    ],
+    "bannedUpgrades": []
   },
   "ghost:endless": {
     "mustInclude": {
@@ -2240,10 +2279,11 @@
       ]
     },
     "mustExclude": [
+      "ARMOR",
       "ITEM_DUCT_TAPE",
-      "ITEM_GHOST_OUTFIT",
-      "ARMOR"
-    ]
+      "ITEM_GHOST_OUTFIT"
+    ],
+    "bannedUpgrades": []
   },
   "mutant:normal20": {
     "mustInclude": {
@@ -2304,7 +2344,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "mutant:endless": {
     "mustInclude": {
@@ -2365,7 +2406,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "generalist:normal20": {
     "mustInclude": {
@@ -2428,7 +2470,8 @@
     },
     "mustExclude": [
       "ITEM_MASTERY"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "generalist:endless": {
     "mustInclude": {
@@ -2491,7 +2534,8 @@
     },
     "mustExclude": [
       "ITEM_MASTERY"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "speedy:normal20": {
     "mustInclude": {
@@ -2552,7 +2596,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "speedy:endless": {
     "mustInclude": {
@@ -2613,7 +2658,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "entrepreneur:normal20": {
     "mustInclude": {
@@ -2674,7 +2720,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "entrepreneur:endless": {
     "mustInclude": {
@@ -2735,7 +2782,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "explorer:normal20": {
     "mustInclude": {
@@ -2796,7 +2844,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "explorer:endless": {
     "mustInclude": {
@@ -2857,7 +2906,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "doctor:normal20": {
     "mustInclude": {
@@ -2918,7 +2968,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "doctor:endless": {
     "mustInclude": {
@@ -2979,7 +3030,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "hunter:normal20": {
     "mustInclude": {
@@ -3041,8 +3093,10 @@
       ]
     },
     "mustExclude": [
-      "UPGRADE_HARVESTING",
       "HARVESTING"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_HARVESTING"
     ]
   },
   "hunter:endless": {
@@ -3105,8 +3159,10 @@
       ]
     },
     "mustExclude": [
-      "UPGRADE_HARVESTING",
       "HARVESTING"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_HARVESTING"
     ]
   },
   "artificer:normal20": {
@@ -3168,7 +3224,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "artificer:endless": {
     "mustInclude": {
@@ -3229,7 +3286,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "armsDealer:normal20": {
     "mustInclude": {
@@ -3290,7 +3348,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "armsDealer:endless": {
     "mustInclude": {
@@ -3351,7 +3410,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "streamer:normal20": {
     "mustInclude": {
@@ -3412,7 +3472,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "streamer:endless": {
     "mustInclude": {
@@ -3473,7 +3534,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "cyborg:normal20": {
     "mustInclude": {
@@ -3535,12 +3597,14 @@
       ]
     },
     "mustExclude": [
+      "ELEMENTAL_DAMAGE",
       "ITEM_CHARCOAL",
       "ITEM_GNOME",
-      "UPGRADE_MELEE_DAMAGE",
+      "MELEE_DAMAGE"
+    ],
+    "bannedUpgrades": [
       "UPGRADE_ELEMENTAL_DAMAGE",
-      "MELEE_DAMAGE",
-      "ELEMENTAL_DAMAGE"
+      "UPGRADE_MELEE_DAMAGE"
     ]
   },
   "cyborg:endless": {
@@ -3603,12 +3667,14 @@
       ]
     },
     "mustExclude": [
+      "ELEMENTAL_DAMAGE",
       "ITEM_CHARCOAL",
       "ITEM_GNOME",
-      "UPGRADE_MELEE_DAMAGE",
+      "MELEE_DAMAGE"
+    ],
+    "bannedUpgrades": [
       "UPGRADE_ELEMENTAL_DAMAGE",
-      "MELEE_DAMAGE",
-      "ELEMENTAL_DAMAGE"
+      "UPGRADE_MELEE_DAMAGE"
     ]
   },
   "glutton:normal20": {
@@ -3670,7 +3736,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "glutton:endless": {
     "mustInclude": {
@@ -3731,7 +3798,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "jack:normal20": {
     "mustInclude": {
@@ -3792,7 +3860,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "jack:endless": {
     "mustInclude": {
@@ -3853,7 +3922,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "lich:normal20": {
     "mustInclude": {
@@ -3914,7 +3984,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "lich:endless": {
     "mustInclude": {
@@ -3975,7 +4046,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "apprentice:normal20": {
     "mustInclude": {
@@ -4036,7 +4108,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "apprentice:endless": {
     "mustInclude": {
@@ -4097,7 +4170,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "cryptid:normal20": {
     "mustInclude": {
@@ -4160,7 +4234,8 @@
     },
     "mustExclude": [
       "LIFESTEAL"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "cryptid:endless": {
     "mustInclude": {
@@ -4223,7 +4298,8 @@
     },
     "mustExclude": [
       "LIFESTEAL"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "fisherman:normal20": {
     "mustInclude": {
@@ -4284,7 +4360,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "fisherman:endless": {
     "mustInclude": {
@@ -4345,7 +4422,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "golem:normal20": {
     "mustInclude": {
@@ -4381,47 +4459,49 @@
           "rank": 2
         },
         {
-          "id": "ITEM_WHETSTONE",
+          "id": "ITEM_BUILDER_TURRET",
           "rank": 3
         },
         {
-          "id": "ITEM_BUILDER_TURRET",
+          "id": "ITEM_METAL_DETECTOR",
           "rank": 4
         },
         {
-          "id": "ITEM_METAL_DETECTOR",
+          "id": "ITEM_MEDAL",
           "rank": 5
         },
         {
-          "id": "ITEM_MEDAL",
+          "id": "ITEM_VIGILANTE_RING",
           "rank": 6
         },
         {
-          "id": "ITEM_VIGILANTE_RING",
+          "id": "ITEM_DYNAMITE",
           "rank": 7
         },
         {
-          "id": "ITEM_DYNAMITE",
+          "id": "ITEM_SIFDS_RELIC",
           "rank": 8
         }
       ]
     },
     "mustExclude": [
-      "ITEM_TENTACLE",
-      "ITEM_GOBLET",
-      "ITEM_CUTE_MONKEY",
-      "ITEM_TURRET_HEALING",
-      "ITEM_GARDEN",
-      "ITEM_EXTRA_STOMACH",
-      "ITEM_ADRENALINE",
-      "ITEM_WEIRD_GHOST",
-      "ITEM_DOC_MOTH",
-      "UPGRADE_HP_REGENERATION",
-      "UPGRADE_LIFESTEAL",
+      "CONSUMABLE_HEAL",
       "HP_REGENERATION",
+      "ITEM_ADRENALINE",
+      "ITEM_CUTE_MONKEY",
+      "ITEM_DOC_MOTH",
+      "ITEM_EXTRA_STOMACH",
+      "ITEM_GARDEN",
+      "ITEM_GOBLET",
+      "ITEM_TENTACLE",
+      "ITEM_TURRET_HEALING",
+      "ITEM_WEIRD_GHOST",
       "LIFESTEAL",
-      "LIFESTEAL_AND_HP_REGENERATION",
-      "CONSUMABLE_HEAL"
+      "LIFESTEAL_AND_HP_REGENERATION"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_HP_REGENERATION",
+      "UPGRADE_LIFESTEAL"
     ]
   },
   "golem:endless": {
@@ -4458,47 +4538,49 @@
           "rank": 2
         },
         {
-          "id": "ITEM_WHETSTONE",
+          "id": "ITEM_PIGGY_BANK",
           "rank": 3
         },
         {
-          "id": "ITEM_PIGGY_BANK",
+          "id": "ITEM_BABY_GECKO",
           "rank": 4
         },
         {
-          "id": "ITEM_BABY_GECKO",
+          "id": "ITEM_METAL_DETECTOR",
           "rank": 5
         },
         {
-          "id": "ITEM_METAL_DETECTOR",
+          "id": "ITEM_BUILDER_TURRET",
           "rank": 6
         },
         {
-          "id": "ITEM_BUILDER_TURRET",
+          "id": "ITEM_EXPLOSIVE_SHELLS",
           "rank": 7
         },
         {
-          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "id": "ITEM_POTATO",
           "rank": 8
         }
       ]
     },
     "mustExclude": [
-      "ITEM_TENTACLE",
-      "ITEM_GOBLET",
-      "ITEM_CUTE_MONKEY",
-      "ITEM_TURRET_HEALING",
-      "ITEM_GARDEN",
-      "ITEM_EXTRA_STOMACH",
-      "ITEM_ADRENALINE",
-      "ITEM_WEIRD_GHOST",
-      "ITEM_DOC_MOTH",
-      "UPGRADE_HP_REGENERATION",
-      "UPGRADE_LIFESTEAL",
+      "CONSUMABLE_HEAL",
       "HP_REGENERATION",
+      "ITEM_ADRENALINE",
+      "ITEM_CUTE_MONKEY",
+      "ITEM_DOC_MOTH",
+      "ITEM_EXTRA_STOMACH",
+      "ITEM_GARDEN",
+      "ITEM_GOBLET",
+      "ITEM_TENTACLE",
+      "ITEM_TURRET_HEALING",
+      "ITEM_WEIRD_GHOST",
       "LIFESTEAL",
-      "LIFESTEAL_AND_HP_REGENERATION",
-      "CONSUMABLE_HEAL"
+      "LIFESTEAL_AND_HP_REGENERATION"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_HP_REGENERATION",
+      "UPGRADE_LIFESTEAL"
     ]
   },
   "king:normal20": {
@@ -4560,7 +4642,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "king:endless": {
     "mustInclude": {
@@ -4621,7 +4704,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "renegade:normal20": {
     "mustInclude": {
@@ -4682,7 +4766,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "renegade:endless": {
     "mustInclude": {
@@ -4743,7 +4828,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "oneArmed:normal20": {
     "mustInclude": {
@@ -4804,7 +4890,10 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [
+      "ITEM_JELLY"
+    ],
+    "bannedUpgrades": []
   },
   "oneArmed:endless": {
     "mustInclude": {
@@ -4865,7 +4954,10 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [
+      "ITEM_JELLY"
+    ],
+    "bannedUpgrades": []
   },
   "bull:normal20": {
     "mustInclude": {
@@ -4906,16 +4998,17 @@
       ]
     },
     "mustExclude": [
+      "ITEM_COFFEE",
+      "ITEM_COMMUNITY_SUPPORT",
+      "ITEM_CRYSTAL",
+      "ITEM_GLASSES",
       "ITEM_JELLY",
       "ITEM_NAIL",
-      "ITEM_CRYSTAL",
-      "ITEM_COFFEE",
       "ITEM_SEASHELL",
-      "ITEM_GLASSES",
-      "ITEM_COMMUNITY_SUPPORT",
       "ITEM_TARDIGRADE",
       "LIFESTEAL"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "bull:endless": {
     "mustInclude": {
@@ -4956,16 +5049,17 @@
       ]
     },
     "mustExclude": [
+      "ITEM_COFFEE",
+      "ITEM_COMMUNITY_SUPPORT",
+      "ITEM_CRYSTAL",
+      "ITEM_GLASSES",
       "ITEM_JELLY",
       "ITEM_NAIL",
-      "ITEM_CRYSTAL",
-      "ITEM_COFFEE",
       "ITEM_SEASHELL",
-      "ITEM_GLASSES",
-      "ITEM_COMMUNITY_SUPPORT",
       "ITEM_TARDIGRADE",
       "LIFESTEAL"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "soldier:normal20": {
     "mustInclude": {
@@ -5026,7 +5120,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "soldier:endless": {
     "mustInclude": {
@@ -5087,7 +5182,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "masochist:normal20": {
     "mustInclude": {
@@ -5148,7 +5244,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "masochist:endless": {
     "mustInclude": {
@@ -5209,7 +5306,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "knight:normal20": {
     "mustInclude": {
@@ -5271,10 +5369,11 @@
       ]
     },
     "mustExclude": [
-      "ITEM_SEASHELL",
       "HARVESTING",
+      "ITEM_SEASHELL",
       "RANGED_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "knight:endless": {
     "mustInclude": {
@@ -5336,10 +5435,11 @@
       ]
     },
     "mustExclude": [
-      "ITEM_SEASHELL",
       "HARVESTING",
+      "ITEM_SEASHELL",
       "RANGED_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "demon:normal20": {
     "mustInclude": {
@@ -5400,7 +5500,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "demon:endless": {
     "mustInclude": {
@@ -5461,7 +5562,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "sailor:normal20": {
     "mustInclude": {
@@ -5523,11 +5625,13 @@
       ]
     },
     "mustExclude": [
-      "ITEM_PEACEFUL_BEE",
-      "ITEM_GHOST_OUTFIT",
-      "UPGRADE_HARVESTING",
+      "DODGE",
       "HARVESTING",
-      "DODGE"
+      "ITEM_GHOST_OUTFIT",
+      "ITEM_PEACEFUL_BEE"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_HARVESTING"
     ]
   },
   "sailor:endless": {
@@ -5590,11 +5694,13 @@
       ]
     },
     "mustExclude": [
-      "ITEM_PEACEFUL_BEE",
-      "ITEM_GHOST_OUTFIT",
-      "UPGRADE_HARVESTING",
+      "DODGE",
       "HARVESTING",
-      "DODGE"
+      "ITEM_GHOST_OUTFIT",
+      "ITEM_PEACEFUL_BEE"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_HARVESTING"
     ]
   },
   "captain:normal20": {
@@ -5656,7 +5762,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "captain:endless": {
     "mustInclude": {
@@ -5717,7 +5824,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "builder:normal20": {
     "mustInclude": {
@@ -5778,7 +5886,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "builder:endless": {
     "mustInclude": {
@@ -5839,7 +5948,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "chef:normal20": {
     "mustInclude": {
@@ -5871,38 +5981,39 @@
           "rank": 1
         },
         {
-          "id": "ITEM_SNAKE",
+          "id": "ITEM_JERKY",
           "rank": 2
         },
         {
-          "id": "ITEM_SCARED_SAUSAGE",
+          "id": "ITEM_MEDAL",
           "rank": 3
         },
         {
-          "id": "ITEM_JERKY",
+          "id": "ITEM_PEARL",
           "rank": 4
         },
         {
-          "id": "ITEM_EYES_SURGERY",
+          "id": "ITEM_VIGILANTE_RING",
           "rank": 5
         },
         {
-          "id": "ITEM_MEDAL",
+          "id": "ITEM_DYNAMITE",
           "rank": 6
         },
         {
-          "id": "ITEM_PEARL",
+          "id": "ITEM_METAL_DETECTOR",
           "rank": 7
         },
         {
-          "id": "ITEM_VIGILANTE_RING",
+          "id": "ITEM_SIFDS_RELIC",
           "rank": 8
         }
       ]
     },
     "mustExclude": [
       "ELEMENTAL_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "chef:endless": {
     "mustInclude": {
@@ -5934,38 +6045,39 @@
           "rank": 1
         },
         {
-          "id": "ITEM_SNAKE",
+          "id": "ITEM_PEARL",
           "rank": 2
         },
         {
-          "id": "ITEM_SCARED_SAUSAGE",
+          "id": "ITEM_PIGGY_BANK",
           "rank": 3
         },
         {
-          "id": "ITEM_PEARL",
+          "id": "ITEM_BABY_GECKO",
           "rank": 4
         },
         {
-          "id": "ITEM_EYES_SURGERY",
+          "id": "ITEM_ADRENALINE",
           "rank": 5
         },
         {
-          "id": "ITEM_PIGGY_BANK",
+          "id": "ITEM_EXPLOSIVE_SHELLS",
           "rank": 6
         },
         {
-          "id": "ITEM_BABY_GECKO",
+          "id": "ITEM_JERKY",
           "rank": 7
         },
         {
-          "id": "ITEM_ADRENALINE",
+          "id": "ITEM_LURE",
           "rank": 8
         }
       ]
     },
     "mustExclude": [
       "ELEMENTAL_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "diver:normal20": {
     "mustInclude": {
@@ -5997,38 +6109,39 @@
           "rank": 1
         },
         {
-          "id": "ITEM_BANDANA",
+          "id": "ITEM_SCOPE",
           "rank": 2
         },
         {
-          "id": "ITEM_SCOPE",
+          "id": "ITEM_HONEY",
           "rank": 3
         },
         {
-          "id": "ITEM_HONEY",
+          "id": "ITEM_MEDAL",
           "rank": 4
         },
         {
-          "id": "ITEM_MEDAL",
+          "id": "ITEM_VIGILANTE_RING",
           "rank": 5
         },
         {
-          "id": "ITEM_VIGILANTE_RING",
+          "id": "ITEM_BLOODY_HAND",
           "rank": 6
         },
         {
-          "id": "ITEM_BLOODY_HAND",
+          "id": "ITEM_DYNAMITE",
           "rank": 7
         },
         {
-          "id": "ITEM_DYNAMITE",
+          "id": "ITEM_METAL_DETECTOR",
           "rank": 8
         }
       ]
     },
     "mustExclude": [
       "RANGED_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "diver:endless": {
     "mustInclude": {
@@ -6060,38 +6173,39 @@
           "rank": 1
         },
         {
-          "id": "ITEM_BANDANA",
+          "id": "ITEM_SCOPE",
           "rank": 2
         },
         {
-          "id": "ITEM_SCOPE",
+          "id": "ITEM_PIGGY_BANK",
           "rank": 3
         },
         {
-          "id": "ITEM_PIGGY_BANK",
+          "id": "ITEM_BABY_GECKO",
           "rank": 4
         },
         {
-          "id": "ITEM_BABY_GECKO",
+          "id": "ITEM_BLOODY_HAND",
           "rank": 5
         },
         {
-          "id": "ITEM_BLOODY_HAND",
+          "id": "ITEM_EXPLOSIVE_SHELLS",
           "rank": 6
         },
         {
-          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "id": "ITEM_POTATO",
           "rank": 7
         },
         {
-          "id": "ITEM_POTATO",
+          "id": "ITEM_RECYCLING_MACHINE",
           "rank": 8
         }
       ]
     },
     "mustExclude": [
       "RANGED_DAMAGE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "curious:normal20": {
     "mustInclude": {
@@ -6152,7 +6266,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "curious:endless": {
     "mustInclude": {
@@ -6213,7 +6328,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "beastMaster:normal20": {
     "mustInclude": {
@@ -6253,7 +6369,11 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [
+      "ITEM_GLASSES",
+      "ITEM_JELLY"
+    ],
+    "bannedUpgrades": []
   },
   "beastMaster:endless": {
     "mustInclude": {
@@ -6293,7 +6413,11 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [
+      "ITEM_GLASSES",
+      "ITEM_JELLY"
+    ],
+    "bannedUpgrades": []
   },
   "wounded:normal20": {
     "mustInclude": {
@@ -6357,24 +6481,28 @@
     "mustExclude": [
       "ITEM_ACID",
       "ITEM_ALIEN_BABY",
+      "ITEM_ALIEN_EYES",
       "ITEM_ALIEN_MAGIC",
       "ITEM_ALIEN_WORM",
       "ITEM_BABY_SQUID",
       "ITEM_BAT",
+      "ITEM_BLOODY_HAND",
       "ITEM_BLOOD_DONATION",
       "ITEM_BLOOD_LEECH",
-      "ITEM_BLOODY_HAND",
       "ITEM_BROKEN_MOUTH",
       "ITEM_BUTTERFLY",
       "ITEM_CAKE",
       "ITEM_CORAL",
       "ITEM_CUTE_MONKEY",
       "ITEM_DECOMPOSING_FLESH",
+      "ITEM_DOC_MOTH",
       "ITEM_ESTYS_COUCH",
       "ITEM_EXTRA_STOMACH",
       "ITEM_FAIRY",
       "ITEM_FRESH_MEAT",
       "ITEM_FRIED_RICE",
+      "ITEM_FRUIT_BASKET",
+      "ITEM_GARDEN",
       "ITEM_GOBLET",
       "ITEM_GRINDS_MAGICAL_LEAF",
       "ITEM_HELMET",
@@ -6396,19 +6524,17 @@
       "ITEM_STONE_SKIN",
       "ITEM_SUNKEN_BELL",
       "ITEM_TORTURE",
+      "ITEM_TURRET_HEALING",
       "ITEM_WARRIOR_HELMET",
       "ITEM_WEIRD_FOOD",
       "ITEM_WEIRD_GHOST",
-      "ITEM_WHETSTONE",
-      "ITEM_ALIEN_EYES",
-      "ITEM_GARDEN",
-      "ITEM_DOC_MOTH",
-      "ITEM_FRUIT_BASKET",
-      "ITEM_TURRET_HEALING",
+      "ITEM_WHETSTONE"
+    ],
+    "bannedUpgrades": [
       "UPGRADE_ARMOR",
-      "UPGRADE_MAX_HP",
       "UPGRADE_HP_REGENERATION",
-      "UPGRADE_LIFESTEAL"
+      "UPGRADE_LIFESTEAL",
+      "UPGRADE_MAX_HP"
     ]
   },
   "wounded:endless": {
@@ -6473,24 +6599,28 @@
     "mustExclude": [
       "ITEM_ACID",
       "ITEM_ALIEN_BABY",
+      "ITEM_ALIEN_EYES",
       "ITEM_ALIEN_MAGIC",
       "ITEM_ALIEN_WORM",
       "ITEM_BABY_SQUID",
       "ITEM_BAT",
+      "ITEM_BLOODY_HAND",
       "ITEM_BLOOD_DONATION",
       "ITEM_BLOOD_LEECH",
-      "ITEM_BLOODY_HAND",
       "ITEM_BROKEN_MOUTH",
       "ITEM_BUTTERFLY",
       "ITEM_CAKE",
       "ITEM_CORAL",
       "ITEM_CUTE_MONKEY",
       "ITEM_DECOMPOSING_FLESH",
+      "ITEM_DOC_MOTH",
       "ITEM_ESTYS_COUCH",
       "ITEM_EXTRA_STOMACH",
       "ITEM_FAIRY",
       "ITEM_FRESH_MEAT",
       "ITEM_FRIED_RICE",
+      "ITEM_FRUIT_BASKET",
+      "ITEM_GARDEN",
       "ITEM_GOBLET",
       "ITEM_GRINDS_MAGICAL_LEAF",
       "ITEM_HELMET",
@@ -6512,19 +6642,17 @@
       "ITEM_STONE_SKIN",
       "ITEM_SUNKEN_BELL",
       "ITEM_TORTURE",
+      "ITEM_TURRET_HEALING",
       "ITEM_WARRIOR_HELMET",
       "ITEM_WEIRD_FOOD",
       "ITEM_WEIRD_GHOST",
-      "ITEM_WHETSTONE",
-      "ITEM_ALIEN_EYES",
-      "ITEM_GARDEN",
-      "ITEM_DOC_MOTH",
-      "ITEM_FRUIT_BASKET",
-      "ITEM_TURRET_HEALING",
+      "ITEM_WHETSTONE"
+    ],
+    "bannedUpgrades": [
       "UPGRADE_ARMOR",
-      "UPGRADE_MAX_HP",
       "UPGRADE_HP_REGENERATION",
-      "UPGRADE_LIFESTEAL"
+      "UPGRADE_LIFESTEAL",
+      "UPGRADE_MAX_HP"
     ]
   },
   "ogre:normal20": {
@@ -6588,7 +6716,8 @@
     },
     "mustExclude": [
       "ITEM_SEASHELL"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "ogre:endless": {
     "mustInclude": {
@@ -6651,7 +6780,8 @@
     },
     "mustExclude": [
       "ITEM_SEASHELL"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "dwarf:normal20": {
     "mustInclude": {
@@ -6712,7 +6842,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "dwarf:endless": {
     "mustInclude": {
@@ -6773,7 +6904,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "creature:normal20": {
     "mustInclude": {
@@ -6834,7 +6966,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "creature:endless": {
     "mustInclude": {
@@ -6895,7 +7028,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "gangster:normal20": {
     "mustInclude": {
@@ -6956,7 +7090,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "gangster:endless": {
     "mustInclude": {
@@ -7017,7 +7152,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "romantic:normal20": {
     "mustInclude": {
@@ -7078,7 +7214,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "romantic:endless": {
     "mustInclude": {
@@ -7139,7 +7276,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "druid:normal20": {
     "mustInclude": {
@@ -7171,41 +7309,42 @@
           "rank": 1
         },
         {
-          "id": "ITEM_PENGUIN",
+          "id": "ITEM_CAULDRON",
           "rank": 2
         },
         {
-          "id": "ITEM_CAULDRON",
+          "id": "ITEM_PEARL",
           "rank": 3
         },
         {
-          "id": "ITEM_PEARL",
+          "id": "ITEM_PIGGY_BANK",
           "rank": 4
         },
         {
-          "id": "ITEM_PIGGY_BANK",
+          "id": "ITEM_SNAKE",
           "rank": 5
         },
         {
-          "id": "ITEM_SNAKE",
+          "id": "ITEM_CROWN",
           "rank": 6
         },
         {
-          "id": "ITEM_CROWN",
+          "id": "ITEM_EYES_SURGERY",
           "rank": 7
         },
         {
-          "id": "ITEM_EYES_SURGERY",
+          "id": "ITEM_MEDAL",
           "rank": 8
         }
       ]
     },
     "mustExclude": [
+      "HP_REGENERATION",
       "ITEM_DOC_MOTH",
       "LIFESTEAL",
-      "LIFESTEAL_AND_HP_REGENERATION",
-      "HP_REGENERATION"
-    ]
+      "LIFESTEAL_AND_HP_REGENERATION"
+    ],
+    "bannedUpgrades": []
   },
   "druid:endless": {
     "mustInclude": {
@@ -7237,41 +7376,42 @@
           "rank": 1
         },
         {
-          "id": "ITEM_PENGUIN",
+          "id": "ITEM_CAULDRON",
           "rank": 2
         },
         {
-          "id": "ITEM_CAULDRON",
+          "id": "ITEM_PEARL",
           "rank": 3
         },
         {
-          "id": "ITEM_PEARL",
+          "id": "ITEM_EYES_SURGERY",
           "rank": 4
         },
         {
-          "id": "ITEM_EYES_SURGERY",
+          "id": "ITEM_PIGGY_BANK",
           "rank": 5
         },
         {
-          "id": "ITEM_PIGGY_BANK",
+          "id": "ITEM_SNAKE",
           "rank": 6
         },
         {
-          "id": "ITEM_SNAKE",
+          "id": "ITEM_CROWN",
           "rank": 7
         },
         {
-          "id": "ITEM_CROWN",
+          "id": "ITEM_EXPLOSIVE_SHELLS",
           "rank": 8
         }
       ]
     },
     "mustExclude": [
+      "HP_REGENERATION",
       "ITEM_DOC_MOTH",
       "LIFESTEAL",
-      "LIFESTEAL_AND_HP_REGENERATION",
-      "HP_REGENERATION"
-    ]
+      "LIFESTEAL_AND_HP_REGENERATION"
+    ],
+    "bannedUpgrades": []
   },
   "hiker:normal20": {
     "mustInclude": {
@@ -7332,7 +7472,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "hiker:endless": {
     "mustInclude": {
@@ -7393,7 +7534,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "buccaneer:normal20": {
     "mustInclude": {
@@ -7454,7 +7596,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "buccaneer:endless": {
     "mustInclude": {
@@ -7515,7 +7658,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "baby:normal20": {
     "mustInclude": {
@@ -7578,7 +7722,8 @@
     },
     "mustExclude": [
       "ITEM_BARNACLE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "baby:endless": {
     "mustInclude": {
@@ -7641,7 +7786,8 @@
     },
     "mustExclude": [
       "ITEM_BARNACLE"
-    ]
+    ],
+    "bannedUpgrades": []
   },
   "technomage:normal20": {
     "mustInclude": {
@@ -7703,11 +7849,13 @@
       ]
     },
     "mustExclude": [
-      "UPGRADE_MELEE_DAMAGE",
-      "UPGRADE_RANGED_DAMAGE",
+      "MELEE_AND_RANGED_DAMAGE",
       "MELEE_DAMAGE",
-      "RANGED_DAMAGE",
-      "MELEE_AND_RANGED_DAMAGE"
+      "RANGED_DAMAGE"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_MELEE_DAMAGE",
+      "UPGRADE_RANGED_DAMAGE"
     ]
   },
   "technomage:endless": {
@@ -7770,11 +7918,13 @@
       ]
     },
     "mustExclude": [
-      "UPGRADE_MELEE_DAMAGE",
-      "UPGRADE_RANGED_DAMAGE",
+      "MELEE_AND_RANGED_DAMAGE",
       "MELEE_DAMAGE",
-      "RANGED_DAMAGE",
-      "MELEE_AND_RANGED_DAMAGE"
+      "RANGED_DAMAGE"
+    ],
+    "bannedUpgrades": [
+      "UPGRADE_MELEE_DAMAGE",
+      "UPGRADE_RANGED_DAMAGE"
     ]
   },
   "vagabond:normal20": {
@@ -7836,7 +7986,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "vagabond:endless": {
     "mustInclude": {
@@ -7897,7 +8048,8 @@
         }
       ]
     },
-    "mustExclude": []
+    "mustExclude": [],
+    "bannedUpgrades": []
   },
   "vampire:normal20": {
     "mustInclude": {
@@ -7959,9 +8111,10 @@
       ]
     },
     "mustExclude": [
-      "HP_REGENERATION",
-      "CONSUMABLE_HEAL"
-    ]
+      "CONSUMABLE_HEAL",
+      "HP_REGENERATION"
+    ],
+    "bannedUpgrades": []
   },
   "vampire:endless": {
     "mustInclude": {
@@ -8023,8 +8176,9 @@
       ]
     },
     "mustExclude": [
-      "HP_REGENERATION",
-      "CONSUMABLE_HEAL"
-    ]
+      "CONSUMABLE_HEAL",
+      "HP_REGENERATION"
+    ],
+    "bannedUpgrades": []
   }
 }

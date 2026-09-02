@@ -24,6 +24,10 @@ export function weaponRecordToSimulator(record) {
   weapon.piercingDamageMultiplier = r2(1 - (s.piercing_dmg_reduction ?? 0.5));
   weapon.bounces = s.bounce ?? 0;
   weapon.bounceDamageMultiplier = r2(1 - (s.bounce_dmg_reduction ?? 0.5));
+  // 缩放先全部归零再按记录覆盖：官方武器只声明它实际拥有的缩放维度，
+  // 未声明的维度应为 0（而非沿用 DEFAULT_WEAPON 的默认值，如默认近战缩放 80），
+  // 否则链枪（仅远程+工程缩放）会错误显示 80% 近战缩放。
+  weapon.scaling = { meleeDamage: 0, rangedDamage: 0, elementalDamage: 0, engineering: 0 };
   (s.scalingStats ?? []).forEach((entry) => {
     const value = r2((entry.value ?? 0) * 100);
     if (entry.stat === "stat_melee_damage") weapon.scaling.meleeDamage = value;

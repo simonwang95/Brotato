@@ -448,7 +448,7 @@ function resolveOptions(options) {
   };
 }
 
-function findOfficialCharacterRecord(catalog, character) {
+export function findOfficialCharacterRecord(catalog, character) {
   const nameKey =
     CHARACTER_NAME_KEY_OVERRIDES[character.id] ?? toOfficialNameKey("CHARACTER", character.name);
   return (catalog?.records ?? []).find(
@@ -474,13 +474,74 @@ function entryAllowedByOptions(entry, options) {
   return true;
 }
 
+// 已知禁用组（角色 bannedItemGroups 短名）→ 道具标签集合的显式映射。
+// 组名是短名，部分与 stat 标签并不一一对应：
+// - consumable_heal → 裸标签 "consumable"（无 stat_ 前缀）；
+// - melee_and_ranged_damage 的 "melee" 部分是 "melee_damage" 的简写 → stat_melee_damage。
+// 游戏商店按「道具标签集合 == 组标签集合」（精确相等）过滤该角色可购买的道具。
+// 依据：wiki Restricted Items 页记录了游戏实际禁用清单（lifesteal=6、
+// lifesteal_and_hp_regeneration=1、harvesting=5、dodge=4 等），与「标签集合精确相等」
+// 规则逐组吻合；而「含效果键」规则会显著过度禁用（lifesteal 会命中 18 条，
+// 且把仅带负值 hp_regeneration 效果的 Fruit Basket 误判进 HP 再生组）。
+const GROUP_TAG_SETS = {
+  ranged_damage: ["stat_ranged_damage"],
+  melee_damage: ["stat_melee_damage"],
+  lifesteal: ["stat_lifesteal"],
+  hp_regeneration: ["stat_hp_regeneration"],
+  elemental_damage: ["stat_elemental_damage"],
+  speed: ["stat_speed"],
+  armor: ["stat_armor"],
+  dodge: ["stat_dodge"],
+  engineering: ["stat_engineering"],
+  harvesting: ["stat_harvesting"],
+  consumable_heal: ["consumable"],
+  melee_and_ranged_damage: ["stat_melee_damage", "stat_ranged_damage"],
+  lifesteal_and_hp_regeneration: ["stat_lifesteal", "stat_hp_regeneration"],
+};
+
+// 单个禁用组标记对应的标签集合（组名/fixture 标记大小写混用，归一小写后查表；
+// 未知组按 stat_<组名> 兜底，由 markerIsReal 拦截不在词汇中的无效组）。
+export function groupTagSet(group) {
+  const key = String(group).toLowerCase();
+  const known = GROUP_TAG_SETS[key];
+  if (known) return new Set(known);
+  return new Set([`stat_${key}`]);
+}
+
+// 道具记录的标签集合是否与单个禁用组精确相等。
+// 无标签的道具（部分 DLC）不属于任何组。
+export function itemMatchesGroup(itemRecord, group) {
+  const itemTags = new Set(itemRecord?.tags ?? []);
+  if (!itemTags.size) return false;
+  const groupTags = groupTagSet(group);
+  if (itemTags.size !== groupTags.size) return false;
+  for (const tag of itemTags) {
+    if (!groupTags.has(tag)) return false;
+  }
+  return true;
+}
+
+// 道具记录是否属于角色的任一禁用组（标签集合精确相等）。
+export function itemInBannedGroups(itemRecord, characterRecord) {
+  return (characterRecord?.bannedItemGroups ?? []).some((group) =>
+    itemMatchesGroup(itemRecord, group),
+  );
+}
+
 function entryAllowedByCharacter(entry, plan) {
   if (!plan?.officialCharacter) return true;
   const characterEffects = officialCharacterEffects(plan);
   if (entry.item) {
     const bannedItems = new Set(plan.officialCharacter.bannedItems ?? []);
     const isBanned = entry.official.records.some((record) => bannedItems.has(record.id));
-    return !isBanned;
+    if (isBanned) return false;
+    // 禁用物品组：游戏商店不会向该角色出售属于这些组的道具（标签集合精确相等，
+    // 见 groupTagSet），推荐它们等于推荐买不到的东西（第三轮 P1-B）。
+    const inBannedGroup = entry.official.records.some((record) =>
+      itemInBannedGroups(record, plan.officialCharacter),
+    );
+    if (inBannedGroup) return false;
+    return true;
   }
   if (!entry.weapon) return true;
 

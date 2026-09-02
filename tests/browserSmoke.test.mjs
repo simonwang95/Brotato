@@ -13,6 +13,8 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import { join, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
+import { DEFAULT_ITEM_DELTA, DEFAULT_STATS, compareItem } from "../src/calculator.js";
+import { weaponRecordToSimulator } from "../src/weaponImport.js";
 
 const rootDir = fileURLToPath(new URL("..", import.meta.url));
 const publicDir = join(rootDir, "public");
@@ -244,12 +246,14 @@ async function main() {
     assert.ok(sourceText.includes(weaponName), `来源说明应包含武器名 ${weaponName}（实际：${sourceText}）`);
     ok(`图鉴带入模拟器（${weaponName}，跳转模拟器并显示来源）`);
 
-    // F4 字段来源断言：模拟器输入值应与官方记录一致（展示层四舍五入到 2 位小数，F5）。
+    // F4 字段来源断言：模拟器输入值应与官方记录一致。
+    // P1-A：显示值必须与传入计算器的值一致，不做展示层舍入——
+    // 期望值与 weaponRecordToSimulator 的 state 值完全相同（冷却为帧/60 原值）。
     const r2 = (x) => Math.round(x * 100) / 100;
     const s = record.stats ?? {};
     const expectedFields = {
       "基础伤害": s.damage,
-      "基础冷却 秒": Number(((s.cooldown ?? 60) / 60).toFixed(2)),
+      "基础冷却 秒": (s.cooldown ?? 60) / 60,
       "每次命中数": s.nb_projectiles ?? 1,
       "武器暴击率 %": r2((s.crit_chance ?? 0) * 100),
       "暴击倍率": s.crit_damage,
@@ -282,6 +286,109 @@ async function main() {
       );
     }
     ok(`字段来源断言（${fieldLabels.length} 个字段与官方记录 ${importNameKey} 一致）`);
+
+    // P1-A：显示值 === 计算值。用链枪（2 帧冷却 = 0.03333333333333333 秒，
+    // 非 2 位小数整值）验证三件事：
+    // (1) 字段显示完整精度原值（不做展示层舍入）；
+    // (2) 页面显示的 DPS 与 Node 侧同精度计算结果一致；
+    // (3) 重新输入所见冷却值后 DPS 不变（所见即所算，无静默漂移）。
+    // 注意：上一步导入标枪后已跳转到模拟器，链枪卡片在武器页（排序后第 49 位，
+    // 超出默认 24 张首屏），需返回武器页并"加载更多"到链枪可见后再导入。
+    await page.goto(`${base}/index.html#compendium/weapons`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(
+      () => document.querySelectorAll(".compendium-card").length > 0,
+      { timeout: 15000 },
+    );
+    for (let i = 0; i < 12; i++) {
+      if ((await page.locator('[data-import-weapon="WEAPON_CHAIN_GUN"]').count()) > 0) break;
+      const loadMore = page.locator("[data-compendium-loadmore]");
+      if ((await loadMore.count()) === 0) break;
+      await loadMore.click();
+      await page.waitForTimeout(300);
+    }
+    const chainGunBtn = page.locator('[data-import-weapon="WEAPON_CHAIN_GUN"]');
+    assert.ok((await chainGunBtn.count()) > 0, "武器页应包含链枪卡片（P1-A 显示/计算一致性样本）");
+    await chainGunBtn.click();
+    await page.waitForTimeout(500);
+
+    const chainRecord = catalog.records
+      .filter((r) => r.kind === "weapon" && r.nameKey === "WEAPON_CHAIN_GUN")
+      .sort((a, b) => (a.tier ?? 0) - (b.tier ?? 0))[0];
+    const cs = chainRecord.stats ?? {};
+    // 期望值与 weaponRecordToSimulator 的 state 值逐项一致（完整精度）。
+    const chainExpected = {
+      "基础伤害": cs.damage,
+      "基础冷却 秒": (cs.cooldown ?? 60) / 60,
+      "每次命中数": cs.nb_projectiles ?? 1,
+      "武器暴击率 %": r2((cs.crit_chance ?? 0) * 100),
+      "暴击倍率": cs.crit_damage,
+      "穿透次数": cs.piercing ?? 0,
+      "穿透伤害保留": r2(1 - (cs.piercing_dmg_reduction ?? 0.5)),
+      "弹射次数": cs.bounce ?? 0,
+      "弹射伤害保留": r2(1 - (cs.bounce_dmg_reduction ?? 0.5)),
+      "近战缩放 %": 0,
+      "远程缩放 %": 0,
+      "元素缩放 %": 0,
+      "工程缩放 %": 0,
+    };
+    (cs.scalingStats ?? []).forEach((entry) => {
+      if (entry.stat === "stat_melee_damage") chainExpected["近战缩放 %"] = r2((entry.value ?? 0) * 100);
+      else if (entry.stat === "stat_ranged_damage") chainExpected["远程缩放 %"] = r2((entry.value ?? 0) * 100);
+      else if (entry.stat === "stat_elemental_damage") chainExpected["元素缩放 %"] = r2((entry.value ?? 0) * 100);
+      else if (entry.stat === "stat_engineering") chainExpected["工程缩放 %"] = r2((entry.value ?? 0) * 100);
+    });
+    const chainFieldValues = await page.evaluate((labels) => {
+      const out = {};
+      for (const label of labels) {
+        const el = document.querySelector(`input[aria-label="${label}"]`);
+        out[label] = el ? el.value : null;
+      }
+      return out;
+    }, Object.keys(chainExpected));
+    for (const [label, want] of Object.entries(chainExpected)) {
+      assert.equal(
+        chainFieldValues[label],
+        String(want),
+        `链枪字段 ${label} 应显示完整精度值 ${want}（实际 ${chainFieldValues[label]}）`,
+      );
+    }
+    ok(`链枪字段显示完整精度（${Object.keys(chainExpected).length} 个字段，冷却 ${chainExpected["基础冷却 秒"]} 秒）`);
+
+    // (2) 页面 DPS 与 Node 侧全精度计算一致（同一 formatNumber：zh-CN 2 位小数）。
+    const chainWeapon = weaponRecordToSimulator(chainRecord);
+    const chainComparison = compareItem({ ...DEFAULT_STATS }, chainWeapon, { ...DEFAULT_ITEM_DELTA }, {
+      roundingMode: "none",
+    });
+    const formatPageNumber = (value) =>
+      Number(value).toLocaleString("zh-CN", { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+    const expectedChainDps = formatPageNumber(chainComparison.before.dps);
+    const readCurrentDps = () =>
+      page.evaluate(() => {
+        const metric = [...document.querySelectorAll("#summary .metric")].find((el) =>
+          el.querySelector("span")?.textContent === "当前 DPS",
+        );
+        return metric?.querySelector("strong")?.textContent ?? null;
+      });
+    const chainDpsBefore = await readCurrentDps();
+    assert.equal(
+      chainDpsBefore,
+      expectedChainDps,
+      `链枪页面 DPS 应为 ${expectedChainDps}（Node 侧全精度计算，实际 ${chainDpsBefore}）`,
+    );
+    ok(`链枪页面 DPS 与全精度计算一致（${expectedChainDps}）`);
+
+    // (3) 重新输入所见冷却值：DPS 必须不变（显示值 === 计算值，无静默漂移）。
+    const chainCooldown = page.locator('input[aria-label="基础冷却 秒"]');
+    const displayedCooldown = await chainCooldown.inputValue();
+    await chainCooldown.fill(displayedCooldown);
+    await page.waitForTimeout(300);
+    const chainDpsAfter = await readCurrentDps();
+    assert.equal(
+      chainDpsAfter,
+      chainDpsBefore,
+      `重新输入所见冷却值 ${displayedCooldown} 后 DPS 应不变（${chainDpsBefore} → ${chainDpsAfter}）`,
+    );
+    ok(`重输所见冷却值 ${displayedCooldown} 后 DPS 不变（${chainDpsAfter}）`);
 
     // --- 角色切换（指南页的角色下拉） ---
     await page.goto(`${base}/index.html#guide`, { waitUntil: "domcontentloaded" });
