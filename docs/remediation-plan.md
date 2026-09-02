@@ -432,7 +432,7 @@
 
 第三轮修正（2026-09-02，P1-A，分支 fix/p1-remediation）：
 
-- **显示值 === 计算值（消除所见/所算漂移）**：F5 的展示层 2 位小数舍入（`createNumberField` 的 `input.value = Number(Number(value).toFixed(2))`）导致"所见"与"所算"不一致——2 帧武器显示 0.03，重输 0.03 后 DPS 静默漂移。现 `createNumberField` 改为 `input.value = value`（原值直显，不做展示层舍入），state 与展示层同源。顺带修复 `weaponRecordToSimulator` 缩放维度：原从 `DEFAULT_WEAPON`（默认近战缩放 80）克隆后只覆盖武器"拥有"的缩放维度，链枪（仅远程+工程缩放）会错误显示 80% 近战缩放；现缩放先全部归零再按记录覆盖。浏览器烟测新增链枪 P1-A 块（13 字段完整精度 + 页面 DPS 与 Node 侧一致 + 重输所见冷却值 DPS 不变）。
+- **显示值 === 计算值（消除所见/所算漂移）**：F5 的展示层 2 位小数舍入（`createNumberField` 的 `input.value = Number(Number(value).toFixed(2))`）导致"所见"与"所算"不一致——2 帧武器显示 0.03，重输 0.03 后 DPS 静默漂移。现 `createNumberField` 改为 `input.value = value`（原值直显，不做展示层舍入），state 与展示层同源；冷却 Schema 使用 `step="any"`，避免浏览器把 `0.03333333333333333` 判为 `stepMismatch`，边界仍由 `min/max` 与统一校验器约束。顺带修复 `weaponRecordToSimulator` 缩放维度：原从 `DEFAULT_WEAPON`（默认近战缩放 80）克隆后只覆盖武器"拥有"的缩放维度，链枪（仅远程+工程缩放）会错误显示 80% 默认近战缩放；现缩放先全部归零再按记录覆盖。浏览器烟测新增链枪 P1-A 块（13 字段完整精度 + 原生 validity 合法 + 页面 DPS 与 Node 侧一致 + 重输所见冷却值 DPS 不变）。
 
 ### [x] P1-8 修正静态数据与图片缓存策略
 

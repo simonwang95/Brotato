@@ -212,7 +212,7 @@ async function main() {
 
     // F4 带入模拟器：必须进入武器页（角色页没有武器卡片，旧版在此静默跳过导致导入从未被验证）。
     // 导入按钮是武器页的必需控件（强制断言，不允许跳过）；点击后验证：
-    // 跳转模拟器 + 来源说明 + 模拟器字段值与官方目录记录一致（展示层 2 位小数）。
+    // 跳转模拟器 + 来源说明 + 模拟器字段值与官方目录记录一致（展示完整计算精度）。
     await page.goto(`${base}/index.html#compendium/weapons`, { waitUntil: "domcontentloaded" });
     await page.waitForFunction(
       () => document.querySelectorAll(".compendium-card").length > 0,
@@ -380,6 +380,18 @@ async function main() {
     // (3) 重新输入所见冷却值：DPS 必须不变（显示值 === 计算值，无静默漂移）。
     const chainCooldown = page.locator('input[aria-label="基础冷却 秒"]');
     const displayedCooldown = await chainCooldown.inputValue();
+    const cooldownValidity = await chainCooldown.evaluate((input) => ({
+      valid: input.validity.valid,
+      stepMismatch: input.validity.stepMismatch,
+      validationMessage: input.validationMessage,
+    }));
+    assert.equal(
+      cooldownValidity.valid,
+      true,
+      `完整精度冷却值应通过浏览器原生校验（实际：${JSON.stringify(cooldownValidity)}）`,
+    );
+    assert.equal(cooldownValidity.stepMismatch, false, "完整精度冷却值不应触发 stepMismatch");
+    ok(`链枪完整精度冷却通过浏览器原生校验（${displayedCooldown}）`);
     await chainCooldown.fill(displayedCooldown);
     await page.waitForTimeout(300);
     const chainDpsAfter = await readCurrentDps();

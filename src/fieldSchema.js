@@ -5,7 +5,7 @@
 // validateNumberValue，避免各处各自夹值或各自解析。
 //
 // 约定：
-// - min/max 同时反映游戏语义和计算器约束（例如冷却下限 0.05 秒、暴击倍率下限 1）。
+// - min/max 同时反映游戏语义和计算器约束（例如冷却下限 0.03 秒、暴击倍率下限 1）。
 //   合法范围内的值不会被计算层再次夹值，因此“页面显示值 === 传入计算器的值”。
 // - 越界、空值、NaN、Infinity 一律判为非法，由 UI 明确报错并停止对应计算，
 //   而不是静默夹值。
@@ -37,7 +37,9 @@ export const WEAPON_FIELD_SCHEMAS = {
   quantity: { key: "quantity", label: "武器数量", unit: "", step: 1, min: 0, max: 100, integer: true, default: 1 },
   baseDamage: { key: "baseDamage", label: "基础伤害", unit: "", step: 1, min: 0, max: 1000000, integer: false, default: 20 },
   // 下限 0.03 秒覆盖游戏内最快的 2 帧武器（0.0333 秒），与计算层 normalizeWeapon 的下限一致（R1）。
-  cooldown: { key: "cooldown", label: "基础冷却 秒", unit: "s", step: 0.01, min: 0.03, max: 10, integer: false, default: 1 },
+  // 冷却来自整数帧 / 60，可能是无限循环小数；step="any" 避免浏览器把完整精度值
+  // 判成 stepMismatch。合法性仍由 min/max 与 validateNumberValue 统一约束。
+  cooldown: { key: "cooldown", label: "基础冷却 秒", unit: "s", step: "any", min: 0.03, max: 10, integer: false, default: 1 },
   hitsPerAttack: { key: "hitsPerAttack", label: "每次命中数", unit: "", step: 1, min: 0, max: 100, integer: true, default: 1 },
   piercing: { key: "piercing", label: "穿透次数", unit: "", step: 1, min: 0, max: 100, integer: true, default: 0 },
   piercingDamageMultiplier: { key: "piercingDamageMultiplier", label: "穿透伤害保留", unit: "x", step: 0.05, min: 0, max: 1, integer: false, default: 0.5 },

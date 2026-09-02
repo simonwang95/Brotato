@@ -61,6 +61,11 @@ import { DEFAULT_COMBAT_CONTEXT } from "../src/scenarioData.js";
   assert.equal(validateNumberValue("0.03", WEAPON_FIELD_SCHEMAS.cooldown).ok, true, "冷却下界 0.03 应通过");
   assert.equal(validateNumberValue("0.0333", WEAPON_FIELD_SCHEMAS.cooldown).ok, true, "2 帧武器 0.0333s 应通过");
   assert.equal(validateNumberValue("10", WEAPON_FIELD_SCHEMAS.cooldown).ok, true, "冷却上界 10 应通过");
+  assert.equal(
+    WEAPON_FIELD_SCHEMAS.cooldown.step,
+    "any",
+    "冷却允许完整帧精度，不应被浏览器 0.01 步长判成 stepMismatch",
+  );
 }
 
 // 7) 整数字段：小数应报错。

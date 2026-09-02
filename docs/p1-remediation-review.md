@@ -428,6 +428,8 @@ Error: ENOENT: no such file or directory, lstat '<clean-checkout>/public'
 
 修复：`src/app.js` 的 `createNumberField` 改为 `input.value = value`（原值直显，不做展示层舍入），计算层与展示层同源。
 
+合并前复核补充修复：冷却字段原先仍设置 `step=0.01`，导致 Chromium 将链枪的 `0.03333333333333333` 判为 `stepMismatch`。现将冷却 Schema 的原生步长改为 `step="any"`；`min/max` 和 `validateNumberValue` 继续负责合法性边界，浏览器烟测新增 `validity.valid=true` 与 `stepMismatch=false` 断言。
+
 验证：浏览器烟测新增链枪（2 帧冷却 = 0.03333333333333333 秒）P1-A 块，断言三件事——
 1. 13 个字段显示完整精度原值（冷却 0.03333333333333333 秒）；
 2. 页面 DPS 与 Node 侧同精度计算一致（182.70）；
@@ -480,7 +482,7 @@ Error: ENOENT: no such file or directory, lstat '<clean-checkout>/public'
 | `npm run official-data:diff` | 通过（247 条 item 记录新增 tags 字段，预期变更） |
 | `npm run build` | 通过，590 文件，约 4.9 MiB |
 | `npm run verify:build` | 通过，29 项 0 失败 |
-| `npm run test:browser` | 通过，18 项（含链枪 P1-A 块） |
+| `npm run test:browser` | 通过，19 项（含链枪 P1-A 与原生 validity 块） |
 | `npm run health:check`（静态 public/） | 通过，27 项 0 失败 |
 
 ### 已知设计取舍（Endless 模式）

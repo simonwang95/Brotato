@@ -9,7 +9,7 @@ import { DEFAULT_WEAPON, framesToSeconds } from "./calculator.js";
 //
 // F5：冷却保留完整帧精度（frames/60 原值），不做 2 位小数舍入——2 帧武器的
 // 0.0333… 秒舍入成 0.03 秒会虚增约 11% DPS。展示层（app.js createNumberField）
-// 负责 2 位小数显示，计算层（calculator/strategyGenerator）保持完整精度。
+// 也显示完整精度，保证所见即所算；计算层（calculator/strategyGenerator）保持原值。
 export function weaponRecordToSimulator(record) {
   const s = record.stats ?? {};
   const r2 = (x) => Math.round(x * 100) / 100;
