@@ -10,28 +10,34 @@
 // - 越界、空值、NaN、Infinity 一律判为非法，由 UI 明确报错并停止对应计算，
 //   而不是静默夹值。
 
+// R2：面板属性允许游戏内合法负值（官方目录中 Druid/Sick/Vampire 生命再生 -100、
+// Crazy 闪避 -30、Diver 远程伤害 -100、Pacifist 工程 -100、Hiker/Ogre/Old 负移速、
+// Loud 负收获、Gladiator 负幸运等）。概率、倍率和生存模型的有效范围继续由计算层
+// 明确夹取（见 scenarioCalculator.js 的 clamp），因此“面板可输入负值”不等于
+// “最终概率/倍率为负”。
 export const STAT_FIELD_SCHEMAS = {
   maxHp: { key: "maxHp", label: "最大生命", unit: "", step: 1, min: 0, max: 100000, integer: false, default: 0 },
-  hpRegen: { key: "hpRegen", label: "生命再生", unit: "", step: 1, min: 0, max: 10000, integer: false, default: 0 },
-  lifeSteal: { key: "lifeSteal", label: "生命窃取 %", unit: "%", step: 1, min: 0, max: 100, integer: false, default: 0 },
+  hpRegen: { key: "hpRegen", label: "生命再生", unit: "", step: 1, min: -100, max: 10000, integer: false, default: 0 },
+  lifeSteal: { key: "lifeSteal", label: "生命窃取 %", unit: "%", step: 1, min: -100, max: 100, integer: false, default: 0 },
   armor: { key: "armor", label: "护甲", unit: "", step: 1, min: -1000, max: 10000, integer: false, default: 0 },
-  dodge: { key: "dodge", label: "闪避 %", unit: "%", step: 1, min: 0, max: 100, integer: false, default: 0 },
+  dodge: { key: "dodge", label: "闪避 %", unit: "%", step: 1, min: -100, max: 100, integer: false, default: 0 },
   damagePercent: { key: "damagePercent", label: "总伤害 %", unit: "%", step: 1, min: -100, max: 10000, integer: false, default: 0 },
   attackSpeed: { key: "attackSpeed", label: "攻速 %", unit: "%", step: 1, min: -100, max: 10000, integer: false, default: 0 },
-  critChance: { key: "critChance", label: "暴击率 %", unit: "%", step: 1, min: 0, max: 100, integer: false, default: 0 },
-  meleeDamage: { key: "meleeDamage", label: "近战伤害", unit: "", step: 1, min: 0, max: 100000, integer: false, default: 0 },
-  rangedDamage: { key: "rangedDamage", label: "远程伤害", unit: "", step: 1, min: 0, max: 100000, integer: false, default: 0 },
-  elementalDamage: { key: "elementalDamage", label: "元素伤害", unit: "", step: 1, min: 0, max: 100000, integer: false, default: 0 },
-  engineering: { key: "engineering", label: "工程学", unit: "", step: 1, min: 0, max: 100000, integer: false, default: 0 },
-  speed: { key: "speed", label: "移速 %", unit: "%", step: 1, min: 0, max: 1000, integer: false, default: 0 },
-  harvesting: { key: "harvesting", label: "收获", unit: "", step: 1, min: 0, max: 10000, integer: false, default: 0 },
-  luck: { key: "luck", label: "幸运", unit: "", step: 1, min: 0, max: 10000, integer: false, default: 0 },
+  critChance: { key: "critChance", label: "暴击率 %", unit: "%", step: 1, min: -100, max: 100, integer: false, default: 0 },
+  meleeDamage: { key: "meleeDamage", label: "近战伤害", unit: "", step: 1, min: -100, max: 100000, integer: false, default: 0 },
+  rangedDamage: { key: "rangedDamage", label: "远程伤害", unit: "", step: 1, min: -100, max: 100000, integer: false, default: 0 },
+  elementalDamage: { key: "elementalDamage", label: "元素伤害", unit: "", step: 1, min: -100, max: 100000, integer: false, default: 0 },
+  engineering: { key: "engineering", label: "工程学", unit: "", step: 1, min: -100, max: 100000, integer: false, default: 0 },
+  speed: { key: "speed", label: "移速 %", unit: "%", step: 1, min: -100, max: 1000, integer: false, default: 0 },
+  harvesting: { key: "harvesting", label: "收获", unit: "", step: 1, min: -100, max: 10000, integer: false, default: 0 },
+  luck: { key: "luck", label: "幸运", unit: "", step: 1, min: -100, max: 10000, integer: false, default: 0 },
 };
 
 export const WEAPON_FIELD_SCHEMAS = {
   quantity: { key: "quantity", label: "武器数量", unit: "", step: 1, min: 0, max: 100, integer: true, default: 1 },
   baseDamage: { key: "baseDamage", label: "基础伤害", unit: "", step: 1, min: 0, max: 1000000, integer: false, default: 20 },
-  cooldown: { key: "cooldown", label: "基础冷却 秒", unit: "s", step: 0.01, min: 0.05, max: 10, integer: false, default: 1 },
+  // 下限 0.03 秒覆盖游戏内最快的 2 帧武器（0.0333 秒），与计算层 normalizeWeapon 的下限一致（R1）。
+  cooldown: { key: "cooldown", label: "基础冷却 秒", unit: "s", step: 0.01, min: 0.03, max: 10, integer: false, default: 1 },
   hitsPerAttack: { key: "hitsPerAttack", label: "每次命中数", unit: "", step: 1, min: 0, max: 100, integer: true, default: 1 },
   piercing: { key: "piercing", label: "穿透次数", unit: "", step: 1, min: 0, max: 100, integer: true, default: 0 },
   piercingDamageMultiplier: { key: "piercingDamageMultiplier", label: "穿透伤害保留", unit: "x", step: 0.05, min: 0, max: 1, integer: false, default: 0.5 },

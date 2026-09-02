@@ -93,12 +93,32 @@ async function main() {
 
   const launched = await launchBrowser();
   if (!launched.browser) {
-    console.log(
-      "[browserSmoke] 未找到可用浏览器（Chromium/Chrome/Edge），跳过浏览器烟测。" +
-        "CI 中会通过 `npx playwright install chromium` 安装，因此该检查在 CI 中生效。",
+    // R5 fail-closed：CI 中浏览器启动失败必须非零退出（真实门禁）；
+    // 本地仅当显式设置 BROWSER_SMOKE_SKIP=1 时才跳过（避免未装浏览器阻断单元测试）。
+    const isCI = Boolean(process.env.CI);
+    if (isCI) {
+      console.error(
+        `[browserSmoke] CI 中未找到可用浏览器（Chromium/Chrome/Edge），烟测失败。` +
+          `请先运行 \`npx playwright install chromium\`。原因：${launched.error?.message ?? "unknown"}`,
+      );
+      server.close();
+      process.exit(1);
+    }
+    if (process.env.BROWSER_SMOKE_SKIP === "1") {
+      console.log(
+        "[browserSmoke] 本地未找到可用浏览器且 BROWSER_SMOKE_SKIP=1，显式跳过浏览器烟测。",
+      );
+      server.close();
+      process.exit(0);
+    }
+    // 本地未设显式 flag：默认仍视为失败（fail-closed），提示安装或显式跳过。
+    console.error(
+      `[browserSmoke] 本地未找到可用浏览器（Chromium/Chrome/Edge）。` +
+        `请运行 \`npx playwright install chromium\`，或设置 BROWSER_SMOKE_SKIP=1 显式跳过。` +
+        `原因：${launched.error?.message ?? "unknown"}`,
     );
     server.close();
-    process.exit(0);
+    process.exit(1);
   }
 
   const browser = launched.browser;
@@ -156,23 +176,48 @@ async function main() {
     assert.ok(compendiumCount > 0, "图鉴应列出条目");
     ok(`图鉴加载（${compendiumCount} 张角色卡片）`);
 
-    // 搜索：输入查询词，结果应被过滤。
+    // 搜索（R5）：搜索框是必需控件，必须存在；搜索后结果应严格减少且包含查询词。
     const searchInput = page.locator("#compendium-search");
-    if ((await searchInput.count()) > 0) {
-      const before = await page.evaluate(
-        () => document.querySelectorAll(".compendium-card").length,
-      );
-      await searchInput.fill("Ranger");
-      // 搜索在按下 Enter 或点击搜索按钮时才应用（见 app.js 的 keydown 处理）。
-      await searchInput.press("Enter");
+    assert.ok((await searchInput.count()) > 0, "图鉴搜索框（#compendium-search）是必需控件，应存在");
+    const before = await page.evaluate(() => document.querySelectorAll(".compendium-card").length);
+    await searchInput.fill("Ranger");
+    // 搜索在按下 Enter 或点击搜索按钮时才应用（见 app.js 的 keydown 处理）。
+    await searchInput.press("Enter");
+    await page.waitForTimeout(300);
+    const after = await page.evaluate(() => document.querySelectorAll(".compendium-card").length);
+    const afterText = await page.evaluate(() =>
+      [...document.querySelectorAll(".compendium-card")].map((c) => c.innerText).join("\n"),
+    );
+    assert.ok(after < before, `搜索 "Ranger" 后条目数应严格减少（${before} → ${after}）`);
+    assert.ok(/Ranger|游侠/i.test(afterText), `搜索结果应包含 "Ranger"（游侠）卡片`);
+    ok(`图鉴搜索过滤（${before} → ${after}，含 Ranger）`);
+
+    // R5 加载更多：清空搜索后，若存在"加载更多"按钮，点击应增加可见卡片数。
+    await searchInput.fill("");
+    await searchInput.press("Enter");
+    await page.waitForTimeout(300);
+    const loadMoreBtn = page.locator("[data-compendium-loadmore]");
+    if ((await loadMoreBtn.count()) > 0) {
+      const beforeMore = await page.evaluate(() => document.querySelectorAll(".compendium-card").length);
+      await loadMoreBtn.click();
       await page.waitForTimeout(300);
-      const after = await page.evaluate(
-        () => document.querySelectorAll(".compendium-card").length,
-      );
-      assert.ok(after <= before, "搜索后条目数应减少或不变");
-      ok(`图鉴搜索过滤（${before} → ${after}）`);
+      const afterMore = await page.evaluate(() => document.querySelectorAll(".compendium-card").length);
+      assert.ok(afterMore > beforeMore, `点击"加载更多"后卡片数应增加（${beforeMore} → ${afterMore}）`);
+      ok(`图鉴加载更多（${beforeMore} → ${afterMore}）`);
     } else {
-      ok("图鉴搜索（未找到搜索框，跳过输入）");
+      ok("图鉴加载更多（当前结果未超首批，无加载更多按钮）");
+    }
+
+    // R5 带入模拟器：武器卡片应带"带入模拟器"按钮，点击后应跳转到模拟器。
+    const importBtn = page.locator(".compendium-import").first();
+    if ((await importBtn.count()) > 0) {
+      await importBtn.click();
+      await page.waitForTimeout(500);
+      const hash = await page.evaluate(() => location.hash);
+      assert.ok(hash.includes("simulator"), `点击"带入模拟器"后应跳转到模拟器（当前 hash：${hash}）`);
+      ok("图鉴带入模拟器（跳转模拟器）");
+    } else {
+      ok("图鉴带入模拟器（当前无武器卡片，跳过）");
     }
 
     // --- 角色切换（指南页的角色下拉） ---
@@ -181,16 +226,17 @@ async function main() {
       timeout: 15000,
     });
     const characterSelect = page.locator("#strategy-character");
-    if ((await characterSelect.count()) > 0) {
-      const options = await characterSelect.locator("option").count();
-      assert.ok(options >= 2, "角色下拉应至少有两个角色");
-      // 切换到第二个角色。
-      await characterSelect.selectOption({ index: 1 });
-      await page.waitForTimeout(300);
-      ok(`角色切换（下拉含 ${options} 个角色，已切换）`);
-    } else {
-      ok("角色切换（未找到角色下拉，跳过）");
-    }
+    // R5：角色下拉是必需控件，必须存在。
+    assert.ok((await characterSelect.count()) > 0, "角色下拉（#strategy-character）是必需控件，应存在");
+    const options = await characterSelect.locator("option").count();
+    assert.ok(options >= 2, "角色下拉应至少有两个角色");
+    // 记录切换前的指南内容，切换后应变化（R5：断言内容变化而非仅"已切换"）。
+    const contentBefore = await page.evaluate(() => document.body.innerText);
+    await characterSelect.selectOption({ index: 1 });
+    await page.waitForTimeout(300);
+    const contentAfter = await page.evaluate(() => document.body.innerText);
+    assert.notEqual(contentAfter, contentBefore, "切换角色后指南内容应变化");
+    ok(`角色切换（下拉含 ${options} 个角色，内容已变化）`);
 
     // --- 路由 3：模拟器 + 计算 ---
     await page.goto(`${base}/index.html#simulator`, { waitUntil: "domcontentloaded" });
@@ -208,6 +254,28 @@ async function main() {
     const resultText = await page.evaluate(() => document.body.innerText);
     assert.ok(/[\d.]+/.test(resultText), "模拟器应显示数值结果");
     ok("模拟器计算产生数值结果");
+
+    // R5 非法输入：输入极端/非法值（负数、超大数）应被夹取或拒绝，不产生 NaN/Infinity。
+    await firstNumber.fill("-1000");
+    await page.waitForTimeout(300);
+    const invalidResult = await page.evaluate(() => document.body.innerText);
+    assert.ok(!/NaN|Infinity/.test(invalidResult), "非法输入（-1000）不应产生 NaN/Infinity");
+    ok("非法输入被安全夹取（无 NaN/Infinity）");
+
+    // R5 移动端 sticky：缩小到移动端视口（≤920px），模拟器吸底摘要应出现（position: fixed）。
+    await page.setViewportSize({ width: 480, height: 800 });
+    await page.waitForTimeout(300);
+    const stickyVisible = await page.evaluate(() => {
+      const el = document.querySelector(".sim-sticky-summary");
+      if (!el) return false;
+      const style = getComputedStyle(el);
+      return style.display !== "none" && (style.position === "fixed" || style.position === "sticky");
+    });
+    assert.ok(stickyVisible, "移动端视口下模拟器吸底摘要应可见（sticky/fixed）");
+    ok("移动端 sticky 摘要可见");
+    // 恢复桌面视口。
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.waitForTimeout(200);
 
     // --- 错误降级：OCR API 不可用时不应崩溃 ---
     // 静态服务器没有 /api/parse-screenshot，页面加载时若尝试调用应优雅降级。

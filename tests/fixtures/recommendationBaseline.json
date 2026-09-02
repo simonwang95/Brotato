@@ -1,0 +1,8030 @@
+{
+  "wellRounded:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "stick",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "potato",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_LURE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "wellRounded:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "stick",
+          "rank": 2
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_ROCK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_SHARP_TOOTH",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "potato",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "powerGenerator",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "brawler:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "fist",
+          "rank": 1
+        },
+        {
+          "id": "powerFist",
+          "rank": 2
+        },
+        {
+          "id": "hand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CLAW",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_PRUNER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "RANGED_DAMAGE"
+    ]
+  },
+  "brawler:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "powerFist",
+          "rank": 1
+        },
+        {
+          "id": "fist",
+          "rank": 2
+        },
+        {
+          "id": "WEAPON_HAND",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CLAW",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_FLAMING_BRASS_KNUCKLES",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "wings",
+          "rank": 1
+        },
+        {
+          "id": "whetstone",
+          "rank": 2
+        },
+        {
+          "id": "powerGenerator",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "RANGED_DAMAGE"
+    ]
+  },
+  "crazy:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "knife",
+          "rank": 1
+        },
+        {
+          "id": "thiefDagger",
+          "rank": 2
+        },
+        {
+          "id": "shuriken",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_SHARP_TOOTH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_CLAW",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "huntingTrophy",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "crazy:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "thiefDagger",
+          "rank": 1
+        },
+        {
+          "id": "knife",
+          "rank": 2
+        },
+        {
+          "id": "shuriken",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_SHARP_TOOTH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_CLAW",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "huntingTrophy",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "ranger:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "revolver",
+          "rank": 2
+        },
+        {
+          "id": "pistol",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "nightGoggles",
+          "rank": 1
+        },
+        {
+          "id": "bandana",
+          "rank": 2
+        },
+        {
+          "id": "ricochet",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "MELEE_DAMAGE"
+    ]
+  },
+  "ranger:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "revolver",
+          "rank": 2
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_MEDICAL_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "nightGoggles",
+          "rank": 1
+        },
+        {
+          "id": "ricochet",
+          "rank": 2
+        },
+        {
+          "id": "bandana",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "MELEE_DAMAGE"
+    ]
+  },
+  "mage:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "wand",
+          "rank": 1
+        },
+        {
+          "id": "torch",
+          "rank": 2
+        },
+        {
+          "id": "taser",
+          "rank": 3
+        },
+        {
+          "id": "thunderSword",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "snake",
+          "rank": 1
+        },
+        {
+          "id": "scaredSausage",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "UPGRADE_MELEE_DAMAGE",
+      "UPGRADE_RANGED_DAMAGE",
+      "MELEE_DAMAGE",
+      "RANGED_DAMAGE",
+      "MELEE_AND_RANGED_DAMAGE"
+    ]
+  },
+  "mage:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "wand",
+          "rank": 1
+        },
+        {
+          "id": "thunderSword",
+          "rank": 2
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_PLANK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_ICICLE",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "snake",
+          "rank": 1
+        },
+        {
+          "id": "powerGenerator",
+          "rank": 2
+        },
+        {
+          "id": "scaredSausage",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "UPGRADE_MELEE_DAMAGE",
+      "UPGRADE_RANGED_DAMAGE",
+      "MELEE_DAMAGE",
+      "RANGED_DAMAGE",
+      "MELEE_AND_RANGED_DAMAGE"
+    ]
+  },
+  "engineer:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "wrench",
+          "rank": 1
+        },
+        {
+          "id": "screwdriver",
+          "rank": 2
+        },
+        {
+          "id": "WEAPON_CHAINSAW",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CHAIN_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DRILL",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "turret",
+          "rank": 1
+        },
+        {
+          "id": "robotArm",
+          "rank": 2
+        },
+        {
+          "id": "coupon",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_LURE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "engineer:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "wrench",
+          "rank": 1
+        },
+        {
+          "id": "screwdriver",
+          "rank": 2
+        },
+        {
+          "id": "WEAPON_CHAINSAW",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CHAIN_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DRILL",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "robotArm",
+          "rank": 1
+        },
+        {
+          "id": "turret",
+          "rank": 2
+        },
+        {
+          "id": "coupon",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "lucky:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "rock",
+          "rank": 2
+        },
+        {
+          "id": "lute",
+          "rank": 3
+        },
+        {
+          "id": "pruner",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_FLUTE",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "cyberball",
+          "rank": 1
+        },
+        {
+          "id": "sifdsRelic",
+          "rank": 2
+        },
+        {
+          "id": "babyGecko",
+          "rank": 3
+        },
+        {
+          "id": "babyElephant",
+          "rank": 4
+        },
+        {
+          "id": "luckyCharm",
+          "rank": 5
+        },
+        {
+          "id": "babyWithABeard",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "lucky:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "lute",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "pruner",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FLUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_POTATO_THROWER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "sifdsRelic",
+          "rank": 1
+        },
+        {
+          "id": "babyGecko",
+          "rank": 2
+        },
+        {
+          "id": "cyberball",
+          "rank": 3
+        },
+        {
+          "id": "babyElephant",
+          "rank": 4
+        },
+        {
+          "id": "babyWithABeard",
+          "rank": 5
+        },
+        {
+          "id": "luckyCharm",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "chunky:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "rock",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "stick",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HATCHET",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "wings",
+          "rank": 1
+        },
+        {
+          "id": "potato",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_FIN",
+      "UPGRADE_SPEED",
+      "LIFESTEAL",
+      "LIFESTEAL_AND_HP_REGENERATION",
+      "SPEED"
+    ]
+  },
+  "chunky:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "rock",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "stick",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "wings",
+          "rank": 1
+        },
+        {
+          "id": "potato",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_LURE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_FIN",
+      "UPGRADE_SPEED",
+      "LIFESTEAL",
+      "LIFESTEAL_AND_HP_REGENERATION",
+      "SPEED"
+    ]
+  },
+  "old:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "coupon",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SIFDS_RELIC",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "old:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "coupon",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "loud:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "spear",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyWithABeard",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "loud:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "spear",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_STICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyWithABeard",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "multitasker:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "stick",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "screwdriver",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "potato",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_LURE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "multitasker:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "stick",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "screwdriver",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_SHARP_TOOTH",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "potato",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "wildling:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "stick",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "rock",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HATCHET",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_SPEAR",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "babyGecko",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SIFDS_RELIC",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "wildling:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "stick",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "rock",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HATCHET",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "babyGecko",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "pacifist:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "hand",
+          "rank": 1
+        },
+        {
+          "id": "pruner",
+          "rank": 2
+        },
+        {
+          "id": "taser",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_CLAW",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyGecko",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "coupon",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ENGINEERING"
+    ]
+  },
+  "pacifist:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "hand",
+          "rank": 1
+        },
+        {
+          "id": "pruner",
+          "rank": 2
+        },
+        {
+          "id": "taser",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_CLAW",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyGecko",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "coupon",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ENGINEERING"
+    ]
+  },
+  "gladiator:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "knife",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "fist",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CLAW",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "whetstone",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_SEASHELL",
+      "RANGED_DAMAGE"
+    ]
+  },
+  "gladiator:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "knife",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "fist",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CLAW",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "whetstone",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_SEASHELL",
+      "RANGED_DAMAGE"
+    ]
+  },
+  "saver:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "stick",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "potato",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "saver:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "stick",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_ROCK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "potato",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "sick:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "fist",
+          "rank": 2
+        },
+        {
+          "id": "knife",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CLAW",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "whetstone",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_WEIRD_GHOST",
+      "ITEM_TARDIGRADE",
+      "HP_REGENERATION"
+    ]
+  },
+  "sick:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "fist",
+          "rank": 2
+        },
+        {
+          "id": "knife",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CLAW",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HAND",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "whetstone",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_WEIRD_GHOST",
+      "ITEM_TARDIGRADE",
+      "HP_REGENERATION"
+    ]
+  },
+  "farmer:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "pruner",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "taser",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_POTATO_THROWER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "babyGecko",
+          "rank": 2
+        },
+        {
+          "id": "sifdsRelic",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "farmer:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "pruner",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "taser",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_POTATO_THROWER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "babyGecko",
+          "rank": 2
+        },
+        {
+          "id": "sifdsRelic",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "ghost:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "ghostAxe",
+          "rank": 1
+        },
+        {
+          "id": "ghostFlint",
+          "rank": 2
+        },
+        {
+          "id": "ghostScepter",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_SCYTHE",
+          "rank": 4
+        }
+      ],
+      "items": [
+        {
+          "id": "wings",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_DUCT_TAPE",
+      "ITEM_GHOST_OUTFIT",
+      "ARMOR"
+    ]
+  },
+  "ghost:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "ghostAxe",
+          "rank": 1
+        },
+        {
+          "id": "ghostFlint",
+          "rank": 2
+        },
+        {
+          "id": "ghostScepter",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_SCYTHE",
+          "rank": 4
+        }
+      ],
+      "items": [
+        {
+          "id": "wings",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_DUCT_TAPE",
+      "ITEM_GHOST_OUTFIT",
+      "ARMOR"
+    ]
+  },
+  "mutant:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SIFDS_RELIC",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "mutant:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "generalist:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "spear",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "potato",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "coupon",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SIFDS_RELIC",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_MASTERY"
+    ]
+  },
+  "generalist:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "spear",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "potato",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "coupon",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SIFDS_RELIC",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_MASTERY"
+    ]
+  },
+  "speedy:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "spear",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "powerGenerator",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "speedy:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "spear",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "powerGenerator",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SIFDS_RELIC",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "entrepreneur:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "stick",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "potato",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "entrepreneur:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "stick",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_ROCK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "potato",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "explorer:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "pruner",
+          "rank": 2
+        },
+        {
+          "id": "taser",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_POTATO_THROWER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyGecko",
+          "rank": 1
+        },
+        {
+          "id": "sifdsRelic",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "explorer:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "pruner",
+          "rank": 2
+        },
+        {
+          "id": "taser",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_POTATO_THROWER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyGecko",
+          "rank": 1
+        },
+        {
+          "id": "sifdsRelic",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "doctor:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "fist",
+          "rank": 2
+        },
+        {
+          "id": "hand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "lemonade",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "doctor:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "fist",
+          "rank": 2
+        },
+        {
+          "id": "hand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "lemonade",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_LURE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "hunter:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "crossbow",
+          "rank": 1
+        },
+        {
+          "id": "revolver",
+          "rank": 2
+        },
+        {
+          "id": "sniperGun",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "scope",
+          "rank": 1
+        },
+        {
+          "id": "nightGoggles",
+          "rank": 2
+        },
+        {
+          "id": "glasses",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "UPGRADE_HARVESTING",
+      "HARVESTING"
+    ]
+  },
+  "hunter:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "crossbow",
+          "rank": 1
+        },
+        {
+          "id": "sniperGun",
+          "rank": 2
+        },
+        {
+          "id": "revolver",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "scope",
+          "rank": 1
+        },
+        {
+          "id": "ricochet",
+          "rank": 2
+        },
+        {
+          "id": "nightGoggles",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "UPGRADE_HARVESTING",
+      "HARVESTING"
+    ]
+  },
+  "artificer:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "screwdriver",
+          "rank": 1
+        },
+        {
+          "id": "wrench",
+          "rank": 2
+        },
+        {
+          "id": "torch",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_PLANK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_BRICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "turret",
+          "rank": 1
+        },
+        {
+          "id": "robotArm",
+          "rank": 2
+        },
+        {
+          "id": "coupon",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "artificer:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "screwdriver",
+          "rank": 1
+        },
+        {
+          "id": "wrench",
+          "rank": 2
+        },
+        {
+          "id": "torch",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_PLANK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DRILL",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "turret",
+          "rank": 1
+        },
+        {
+          "id": "robotArm",
+          "rank": 2
+        },
+        {
+          "id": "coupon",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "armsDealer:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "pistol",
+          "rank": 2
+        },
+        {
+          "id": "revolver",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "nightGoggles",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "armsDealer:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "pistol",
+          "rank": 2
+        },
+        {
+          "id": "revolver",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "nightGoggles",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "streamer:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "wrench",
+          "rank": 1
+        },
+        {
+          "id": "screwdriver",
+          "rank": 2
+        },
+        {
+          "id": "smg",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_REVOLVER",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_CHAIN_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "turret",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "streamer:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "wrench",
+          "rank": 1
+        },
+        {
+          "id": "screwdriver",
+          "rank": 2
+        },
+        {
+          "id": "smg",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CHAIN_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "turret",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "cyborg:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "screwdriver",
+          "rank": 2
+        },
+        {
+          "id": "wrench",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "turret",
+          "rank": 1
+        },
+        {
+          "id": "robotArm",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_CHARCOAL",
+      "ITEM_GNOME",
+      "UPGRADE_MELEE_DAMAGE",
+      "UPGRADE_ELEMENTAL_DAMAGE",
+      "MELEE_DAMAGE",
+      "ELEMENTAL_DAMAGE"
+    ]
+  },
+  "cyborg:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "screwdriver",
+          "rank": 2
+        },
+        {
+          "id": "wrench",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CHAIN_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "turret",
+          "rank": 1
+        },
+        {
+          "id": "robotArm",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_CHARCOAL",
+      "ITEM_GNOME",
+      "UPGRADE_MELEE_DAMAGE",
+      "UPGRADE_ELEMENTAL_DAMAGE",
+      "MELEE_DAMAGE",
+      "ELEMENTAL_DAMAGE"
+    ]
+  },
+  "glutton:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "pruner",
+          "rank": 2
+        },
+        {
+          "id": "torch",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_POTATO_THROWER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyGecko",
+          "rank": 1
+        },
+        {
+          "id": "sifdsRelic",
+          "rank": 2
+        },
+        {
+          "id": "lemonade",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "glutton:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "pruner",
+          "rank": 2
+        },
+        {
+          "id": "torch",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_POTATO_THROWER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyGecko",
+          "rank": 1
+        },
+        {
+          "id": "sifdsRelic",
+          "rank": 2
+        },
+        {
+          "id": "lemonade",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BABY_ELEPHANT",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DANGEROUS_BUNNY",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "jack:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "revolver",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "pistol",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "nightGoggles",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "jack:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "revolver",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "pistol",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "nightGoggles",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "lich:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "wand",
+          "rank": 1
+        },
+        {
+          "id": "taser",
+          "rank": 2
+        },
+        {
+          "id": "smg",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "lemonade",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "lich:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "wand",
+          "rank": 1
+        },
+        {
+          "id": "taser",
+          "rank": 2
+        },
+        {
+          "id": "smg",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "lemonade",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_SNAKE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "apprentice:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "wand",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "spear",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_GENTLE_ALIEN",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "apprentice:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "wand",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "spear",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_SNAKE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "cryptid:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "pruner",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_POTATO_THROWER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyGecko",
+          "rank": 1
+        },
+        {
+          "id": "sifdsRelic",
+          "rank": 2
+        },
+        {
+          "id": "lemonade",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "LIFESTEAL"
+    ]
+  },
+  "cryptid:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "pruner",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_POTATO_THROWER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyGecko",
+          "rank": 1
+        },
+        {
+          "id": "sifdsRelic",
+          "rank": 2
+        },
+        {
+          "id": "lemonade",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DANGEROUS_BUNNY",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "LIFESTEAL"
+    ]
+  },
+  "fisherman:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "smg",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyWithABeard",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "fisherman:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "smg",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyWithABeard",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "golem:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "rock",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "wrench",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_SCREWDRIVER",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "wings",
+          "rank": 1
+        },
+        {
+          "id": "turret",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_TENTACLE",
+      "ITEM_GOBLET",
+      "ITEM_CUTE_MONKEY",
+      "ITEM_TURRET_HEALING",
+      "ITEM_GARDEN",
+      "ITEM_EXTRA_STOMACH",
+      "ITEM_ADRENALINE",
+      "ITEM_WEIRD_GHOST",
+      "ITEM_DOC_MOTH",
+      "UPGRADE_HP_REGENERATION",
+      "UPGRADE_LIFESTEAL",
+      "HP_REGENERATION",
+      "LIFESTEAL",
+      "LIFESTEAL_AND_HP_REGENERATION",
+      "CONSUMABLE_HEAL"
+    ]
+  },
+  "golem:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "rock",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "wrench",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_SCREWDRIVER",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "wings",
+          "rank": 1
+        },
+        {
+          "id": "turret",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_TENTACLE",
+      "ITEM_GOBLET",
+      "ITEM_CUTE_MONKEY",
+      "ITEM_TURRET_HEALING",
+      "ITEM_GARDEN",
+      "ITEM_EXTRA_STOMACH",
+      "ITEM_ADRENALINE",
+      "ITEM_WEIRD_GHOST",
+      "ITEM_DOC_MOTH",
+      "UPGRADE_HP_REGENERATION",
+      "UPGRADE_LIFESTEAL",
+      "HP_REGENERATION",
+      "LIFESTEAL",
+      "LIFESTEAL_AND_HP_REGENERATION",
+      "CONSUMABLE_HEAL"
+    ]
+  },
+  "king:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "revolver",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "potato",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "king:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "revolver",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "potato",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "renegade:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "pistol",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "bandana",
+          "rank": 1
+        },
+        {
+          "id": "ricochet",
+          "rank": 2
+        },
+        {
+          "id": "babyWithABeard",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "renegade:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "pistol",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "ricochet",
+          "rank": 1
+        },
+        {
+          "id": "bandana",
+          "rank": 2
+        },
+        {
+          "id": "sharpBullet",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "oneArmed:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "revolver",
+          "rank": 2
+        },
+        {
+          "id": "spear",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "nightGoggles",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "oneArmed:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "revolver",
+          "rank": 2
+        },
+        {
+          "id": "spear",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_CROSSBOW",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "nightGoggles",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "bull:normal20": {
+    "mustInclude": {
+      "weapons": [],
+      "items": [
+        {
+          "id": "wings",
+          "rank": 1
+        },
+        {
+          "id": "lemonade",
+          "rank": 2
+        },
+        {
+          "id": "potato",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_LURE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_JELLY",
+      "ITEM_NAIL",
+      "ITEM_CRYSTAL",
+      "ITEM_COFFEE",
+      "ITEM_SEASHELL",
+      "ITEM_GLASSES",
+      "ITEM_COMMUNITY_SUPPORT",
+      "ITEM_TARDIGRADE",
+      "LIFESTEAL"
+    ]
+  },
+  "bull:endless": {
+    "mustInclude": {
+      "weapons": [],
+      "items": [
+        {
+          "id": "lemonade",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "potato",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_JELLY",
+      "ITEM_NAIL",
+      "ITEM_CRYSTAL",
+      "ITEM_COFFEE",
+      "ITEM_SEASHELL",
+      "ITEM_GLASSES",
+      "ITEM_COMMUNITY_SUPPORT",
+      "ITEM_TARDIGRADE",
+      "LIFESTEAL"
+    ]
+  },
+  "soldier:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "pistol",
+          "rank": 2
+        },
+        {
+          "id": "revolver",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "nightGoggles",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "soldier:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "pistol",
+          "rank": 2
+        },
+        {
+          "id": "revolver",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "nightGoggles",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "masochist:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "rock",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "fist",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "whetstone",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "potato",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "masochist:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "rock",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "fist",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_STICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "whetstone",
+          "rank": 1
+        },
+        {
+          "id": "potato",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "knight:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "sword",
+          "rank": 1
+        },
+        {
+          "id": "spikyShield",
+          "rank": 2
+        },
+        {
+          "id": "spear",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_CHOPPER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "whetstone",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_SEASHELL",
+      "HARVESTING",
+      "RANGED_DAMAGE"
+    ]
+  },
+  "knight:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "sword",
+          "rank": 1
+        },
+        {
+          "id": "spikyShield",
+          "rank": 2
+        },
+        {
+          "id": "spear",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_ROCK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "whetstone",
+          "rank": 1
+        },
+        {
+          "id": "wings",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_SEASHELL",
+      "HARVESTING",
+      "RANGED_DAMAGE"
+    ]
+  },
+  "demon:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "potato",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "demon:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "potato",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_SNAKE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "sailor:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "anchor",
+          "rank": 1
+        },
+        {
+          "id": "trident",
+          "rank": 2
+        },
+        {
+          "id": "brick",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HAMMER",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coral",
+          "rank": 1
+        },
+        {
+          "id": "pearl",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_PEACEFUL_BEE",
+      "ITEM_GHOST_OUTFIT",
+      "UPGRADE_HARVESTING",
+      "HARVESTING",
+      "DODGE"
+    ]
+  },
+  "sailor:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "anchor",
+          "rank": 1
+        },
+        {
+          "id": "trident",
+          "rank": 2
+        },
+        {
+          "id": "brick",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CACTI_CLUB",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HAMMER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "pearl",
+          "rank": 1
+        },
+        {
+          "id": "coral",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_PEACEFUL_BEE",
+      "ITEM_GHOST_OUTFIT",
+      "UPGRADE_HARVESTING",
+      "HARVESTING",
+      "DODGE"
+    ]
+  },
+  "captain:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "captainsSword",
+          "rank": 1
+        },
+        {
+          "id": "sword",
+          "rank": 2
+        },
+        {
+          "id": "trident",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CHOPPER",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_VORPAL_SWORD",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coral",
+          "rank": 1
+        },
+        {
+          "id": "fishHook",
+          "rank": 2
+        },
+        {
+          "id": "blackFlag",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "captain:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "captainsSword",
+          "rank": 1
+        },
+        {
+          "id": "sword",
+          "rank": 2
+        },
+        {
+          "id": "trident",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_CHOPPER",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_JOUSTING_LANCE",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "fishHook",
+          "rank": 1
+        },
+        {
+          "id": "coral",
+          "rank": 2
+        },
+        {
+          "id": "blackFlag",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "builder:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "revolver",
+          "rank": 2
+        },
+        {
+          "id": "grenadeLauncher",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_SHREDDER",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "robotArm",
+          "rank": 1
+        },
+        {
+          "id": "scope",
+          "rank": 2
+        },
+        {
+          "id": "turret",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_HONEY",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_IMPROVED_TOOLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "builder:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "revolver",
+          "rank": 2
+        },
+        {
+          "id": "grenadeLauncher",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_SHREDDER",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_CHAIN_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "robotArm",
+          "rank": 1
+        },
+        {
+          "id": "scope",
+          "rank": 2
+        },
+        {
+          "id": "turret",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "chef:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "torch",
+          "rank": 1
+        },
+        {
+          "id": "spoon",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TASER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "cauldron",
+          "rank": 1
+        },
+        {
+          "id": "snake",
+          "rank": 2
+        },
+        {
+          "id": "scaredSausage",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ELEMENTAL_DAMAGE"
+    ]
+  },
+  "chef:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "spoon",
+          "rank": 1
+        },
+        {
+          "id": "torch",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TASER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "cauldron",
+          "rank": 1
+        },
+        {
+          "id": "snake",
+          "rank": 2
+        },
+        {
+          "id": "scaredSausage",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ELEMENTAL_DAMAGE"
+    ]
+  },
+  "diver:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "blunderbuss",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "trident",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "pearl",
+          "rank": 1
+        },
+        {
+          "id": "bandana",
+          "rank": 2
+        },
+        {
+          "id": "scope",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_HONEY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "RANGED_DAMAGE"
+    ]
+  },
+  "diver:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "blunderbuss",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "trident",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "pearl",
+          "rank": 1
+        },
+        {
+          "id": "bandana",
+          "rank": 2
+        },
+        {
+          "id": "scope",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "RANGED_DAMAGE"
+    ]
+  },
+  "curious:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "stick",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "pearl",
+          "rank": 2
+        },
+        {
+          "id": "blackFlag",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_GENTLE_ALIEN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_BAG",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "curious:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "stick",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_ROCK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "pearl",
+          "rank": 2
+        },
+        {
+          "id": "blackFlag",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "beastMaster:normal20": {
+    "mustInclude": {
+      "weapons": [],
+      "items": [
+        {
+          "id": "catlingGun",
+          "rank": 1
+        },
+        {
+          "id": "bonkDog",
+          "rank": 2
+        },
+        {
+          "id": "botOMine",
+          "rank": 3
+        },
+        {
+          "id": "blazemander",
+          "rank": 4
+        },
+        {
+          "id": "wings",
+          "rank": 5
+        },
+        {
+          "id": "lootworm",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "beastMaster:endless": {
+    "mustInclude": {
+      "weapons": [],
+      "items": [
+        {
+          "id": "botOMine",
+          "rank": 1
+        },
+        {
+          "id": "catlingGun",
+          "rank": 2
+        },
+        {
+          "id": "bonkDog",
+          "rank": 3
+        },
+        {
+          "id": "wings",
+          "rank": 4
+        },
+        {
+          "id": "blazemander",
+          "rank": 5
+        },
+        {
+          "id": "lootworm",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "wounded:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "slingshot",
+          "rank": 2
+        },
+        {
+          "id": "taser",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "tardigrade",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "scope",
+          "rank": 4
+        },
+        {
+          "id": "coffee",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POWER_GENERATOR",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_ACID",
+      "ITEM_ALIEN_BABY",
+      "ITEM_ALIEN_MAGIC",
+      "ITEM_ALIEN_WORM",
+      "ITEM_BABY_SQUID",
+      "ITEM_BAT",
+      "ITEM_BLOOD_DONATION",
+      "ITEM_BLOOD_LEECH",
+      "ITEM_BLOODY_HAND",
+      "ITEM_BROKEN_MOUTH",
+      "ITEM_BUTTERFLY",
+      "ITEM_CAKE",
+      "ITEM_CORAL",
+      "ITEM_CUTE_MONKEY",
+      "ITEM_DECOMPOSING_FLESH",
+      "ITEM_ESTYS_COUCH",
+      "ITEM_EXTRA_STOMACH",
+      "ITEM_FAIRY",
+      "ITEM_FRESH_MEAT",
+      "ITEM_FRIED_RICE",
+      "ITEM_GOBLET",
+      "ITEM_GRINDS_MAGICAL_LEAF",
+      "ITEM_HELMET",
+      "ITEM_JELLY",
+      "ITEM_JERKY",
+      "ITEM_KRAKENS_EYE",
+      "ITEM_LEMONADE",
+      "ITEM_MEDIKIT",
+      "ITEM_METAL_PLATE",
+      "ITEM_MUSHROOM",
+      "ITEM_OCTOPUS",
+      "ITEM_PADDING",
+      "ITEM_PENGUIN",
+      "ITEM_PLANT",
+      "ITEM_POTION",
+      "ITEM_SAD_TOMATO",
+      "ITEM_SHMOOP",
+      "ITEM_SPICY_SAUCE",
+      "ITEM_STONE_SKIN",
+      "ITEM_SUNKEN_BELL",
+      "ITEM_TORTURE",
+      "ITEM_WARRIOR_HELMET",
+      "ITEM_WEIRD_FOOD",
+      "ITEM_WEIRD_GHOST",
+      "ITEM_WHETSTONE",
+      "ITEM_ALIEN_EYES",
+      "ITEM_GARDEN",
+      "ITEM_DOC_MOTH",
+      "ITEM_FRUIT_BASKET",
+      "ITEM_TURRET_HEALING",
+      "UPGRADE_ARMOR",
+      "UPGRADE_MAX_HP",
+      "UPGRADE_HP_REGENERATION",
+      "UPGRADE_LIFESTEAL"
+    ]
+  },
+  "wounded:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "taser",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "babyGecko",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "tardigrade",
+          "rank": 3
+        },
+        {
+          "id": "wings",
+          "rank": 4
+        },
+        {
+          "id": "scope",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_ACID",
+      "ITEM_ALIEN_BABY",
+      "ITEM_ALIEN_MAGIC",
+      "ITEM_ALIEN_WORM",
+      "ITEM_BABY_SQUID",
+      "ITEM_BAT",
+      "ITEM_BLOOD_DONATION",
+      "ITEM_BLOOD_LEECH",
+      "ITEM_BLOODY_HAND",
+      "ITEM_BROKEN_MOUTH",
+      "ITEM_BUTTERFLY",
+      "ITEM_CAKE",
+      "ITEM_CORAL",
+      "ITEM_CUTE_MONKEY",
+      "ITEM_DECOMPOSING_FLESH",
+      "ITEM_ESTYS_COUCH",
+      "ITEM_EXTRA_STOMACH",
+      "ITEM_FAIRY",
+      "ITEM_FRESH_MEAT",
+      "ITEM_FRIED_RICE",
+      "ITEM_GOBLET",
+      "ITEM_GRINDS_MAGICAL_LEAF",
+      "ITEM_HELMET",
+      "ITEM_JELLY",
+      "ITEM_JERKY",
+      "ITEM_KRAKENS_EYE",
+      "ITEM_LEMONADE",
+      "ITEM_MEDIKIT",
+      "ITEM_METAL_PLATE",
+      "ITEM_MUSHROOM",
+      "ITEM_OCTOPUS",
+      "ITEM_PADDING",
+      "ITEM_PENGUIN",
+      "ITEM_PLANT",
+      "ITEM_POTION",
+      "ITEM_SAD_TOMATO",
+      "ITEM_SHMOOP",
+      "ITEM_SPICY_SAUCE",
+      "ITEM_STONE_SKIN",
+      "ITEM_SUNKEN_BELL",
+      "ITEM_TORTURE",
+      "ITEM_WARRIOR_HELMET",
+      "ITEM_WEIRD_FOOD",
+      "ITEM_WEIRD_GHOST",
+      "ITEM_WHETSTONE",
+      "ITEM_ALIEN_EYES",
+      "ITEM_GARDEN",
+      "ITEM_DOC_MOTH",
+      "ITEM_FRUIT_BASKET",
+      "ITEM_TURRET_HEALING",
+      "UPGRADE_ARMOR",
+      "UPGRADE_MAX_HP",
+      "UPGRADE_HP_REGENERATION",
+      "UPGRADE_LIFESTEAL"
+    ]
+  },
+  "ogre:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "mace",
+          "rank": 1
+        },
+        {
+          "id": "warHammer",
+          "rank": 2
+        },
+        {
+          "id": "anchor",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HAMMER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "goblet",
+          "rank": 1
+        },
+        {
+          "id": "giantBelt",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_SEASHELL"
+    ]
+  },
+  "ogre:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "mace",
+          "rank": 1
+        },
+        {
+          "id": "warHammer",
+          "rank": 2
+        },
+        {
+          "id": "anchor",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HAMMER",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "goblet",
+          "rank": 1
+        },
+        {
+          "id": "giantBelt",
+          "rank": 2
+        },
+        {
+          "id": "whetstone",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_SEASHELL"
+    ]
+  },
+  "dwarf:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "warHammer",
+          "rank": 1
+        },
+        {
+          "id": "mace",
+          "rank": 2
+        },
+        {
+          "id": "brick",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HAMMER",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "crystal",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "dwarf:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "warHammer",
+          "rank": 1
+        },
+        {
+          "id": "brick",
+          "rank": 2
+        },
+        {
+          "id": "mace",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_HAMMER",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_ROCK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "crystal",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_ADRENALINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "creature:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "sharpTooth",
+          "rank": 1
+        },
+        {
+          "id": "claw",
+          "rank": 2
+        },
+        {
+          "id": "knife",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_ROCK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_STICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "fishHook",
+          "rank": 1
+        },
+        {
+          "id": "krakensEye",
+          "rank": 2
+        },
+        {
+          "id": "goblet",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_PILE_OF_BOOKS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_TENTACLE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "creature:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "sharpTooth",
+          "rank": 1
+        },
+        {
+          "id": "claw",
+          "rank": 2
+        },
+        {
+          "id": "knife",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_ROCK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_STICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "fishHook",
+          "rank": 1
+        },
+        {
+          "id": "krakensEye",
+          "rank": 2
+        },
+        {
+          "id": "goblet",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "gangster:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "blunderbuss",
+          "rank": 1
+        },
+        {
+          "id": "pistol",
+          "rank": 2
+        },
+        {
+          "id": "thiefDagger",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "blackFlag",
+          "rank": 1
+        },
+        {
+          "id": "eyepatch",
+          "rank": 2
+        },
+        {
+          "id": "goldfish",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_HONEY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "gangster:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "blunderbuss",
+          "rank": 1
+        },
+        {
+          "id": "pistol",
+          "rank": 2
+        },
+        {
+          "id": "thiefDagger",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "blackFlag",
+          "rank": 1
+        },
+        {
+          "id": "eyepatch",
+          "rank": 2
+        },
+        {
+          "id": "goldfish",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_BAG",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "romantic:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "flute",
+          "rank": 1
+        },
+        {
+          "id": "lute",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_ICICLE",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "goblet",
+          "rank": 1
+        },
+        {
+          "id": "fishHook",
+          "rank": 2
+        },
+        {
+          "id": "pearl",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_SNAKE",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_HONEY",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "romantic:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "flute",
+          "rank": 1
+        },
+        {
+          "id": "lute",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_ICICLE",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "goblet",
+          "rank": 1
+        },
+        {
+          "id": "pearl",
+          "rank": 2
+        },
+        {
+          "id": "fishHook",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_SNAKE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "druid:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "sickle",
+          "rank": 1
+        },
+        {
+          "id": "pruner",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "crystal",
+          "rank": 1
+        },
+        {
+          "id": "penguin",
+          "rank": 2
+        },
+        {
+          "id": "cauldron",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_SNAKE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_DOC_MOTH",
+      "LIFESTEAL",
+      "LIFESTEAL_AND_HP_REGENERATION",
+      "HP_REGENERATION"
+    ]
+  },
+  "druid:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "sickle",
+          "rank": 1
+        },
+        {
+          "id": "pruner",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TORCH",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "crystal",
+          "rank": 1
+        },
+        {
+          "id": "penguin",
+          "rank": 2
+        },
+        {
+          "id": "cauldron",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_SNAKE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_DOC_MOTH",
+      "LIFESTEAL",
+      "LIFESTEAL_AND_HP_REGENERATION",
+      "HP_REGENERATION"
+    ]
+  },
+  "hiker:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "hikingStick",
+          "rank": 1
+        },
+        {
+          "id": "javelin",
+          "rank": 2
+        },
+        {
+          "id": "stick",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HAND",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "pearl",
+          "rank": 1
+        },
+        {
+          "id": "sunkenBell",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_HONEY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_POWER_GENERATOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "hiker:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "hikingStick",
+          "rank": 1
+        },
+        {
+          "id": "javelin",
+          "rank": 2
+        },
+        {
+          "id": "stick",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HAND",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "pearl",
+          "rank": 1
+        },
+        {
+          "id": "sunkenBell",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "buccaneer:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "blunderbuss",
+          "rank": 1
+        },
+        {
+          "id": "harpoonGun",
+          "rank": 2
+        },
+        {
+          "id": "anchor",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_RAIL_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "blackFlag",
+          "rank": 1
+        },
+        {
+          "id": "spyglass",
+          "rank": 2
+        },
+        {
+          "id": "eyepatch",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_HONEY",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "buccaneer:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "blunderbuss",
+          "rank": 1
+        },
+        {
+          "id": "harpoonGun",
+          "rank": 2
+        },
+        {
+          "id": "anchor",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_RAIL_GUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_MINIGUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "blackFlag",
+          "rank": 1
+        },
+        {
+          "id": "eyepatch",
+          "rank": 2
+        },
+        {
+          "id": "spyglass",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "baby:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "pruner",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "babyGecko",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_GENTLE_ALIEN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_BAG",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_BARNACLE"
+    ]
+  },
+  "baby:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "smg",
+          "rank": 2
+        },
+        {
+          "id": "pruner",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LASER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coupon",
+          "rank": 1
+        },
+        {
+          "id": "babyGecko",
+          "rank": 2
+        },
+        {
+          "id": "coffee",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_CROWN",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_RECYCLING_MACHINE",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_SPYGLASS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "ITEM_BARNACLE"
+    ]
+  },
+  "technomage:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "taser",
+          "rank": 1
+        },
+        {
+          "id": "screwdriver",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_PLANK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "turret",
+          "rank": 1
+        },
+        {
+          "id": "robotArm",
+          "rank": 2
+        },
+        {
+          "id": "scaredSausage",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_BUILDER_TURRET",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_SNAKE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_STRANGE_BOOK",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "UPGRADE_MELEE_DAMAGE",
+      "UPGRADE_RANGED_DAMAGE",
+      "MELEE_DAMAGE",
+      "RANGED_DAMAGE",
+      "MELEE_AND_RANGED_DAMAGE"
+    ]
+  },
+  "technomage:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "taser",
+          "rank": 1
+        },
+        {
+          "id": "screwdriver",
+          "rank": 2
+        },
+        {
+          "id": "wand",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_LUTE",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_PLANK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "turret",
+          "rank": 1
+        },
+        {
+          "id": "robotArm",
+          "rank": 2
+        },
+        {
+          "id": "scaredSausage",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_EYES_SURGERY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PEARL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_SNAKE",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_METAL_DETECTOR",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "UPGRADE_MELEE_DAMAGE",
+      "UPGRADE_RANGED_DAMAGE",
+      "MELEE_DAMAGE",
+      "RANGED_DAMAGE",
+      "MELEE_AND_RANGED_DAMAGE"
+    ]
+  },
+  "vagabond:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "smg",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_TRIDENT",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_JERKY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_GRINDS_MAGICAL_LEAF",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_HONEY",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_RIPOSTE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "vagabond:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "slingshot",
+          "rank": 1
+        },
+        {
+          "id": "spear",
+          "rank": 2
+        },
+        {
+          "id": "smg",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_FIGHTING_STICK",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_STICK",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "coffee",
+          "rank": 1
+        },
+        {
+          "id": "coupon",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_POTATO",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": []
+  },
+  "vampire:normal20": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "knife",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_DOUBLE_BARREL_SHOTGUN",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_HARPOON_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "whetstone",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_HONEY",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_MEDAL",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_VIGILANTE_RING",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_DYNAMITE",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "HP_REGENERATION",
+      "CONSUMABLE_HEAL"
+    ]
+  },
+  "vampire:endless": {
+    "mustInclude": {
+      "weapons": [
+        {
+          "id": "smg",
+          "rank": 1
+        },
+        {
+          "id": "knife",
+          "rank": 2
+        },
+        {
+          "id": "slingshot",
+          "rank": 3
+        },
+        {
+          "id": "WEAPON_SHARP_TOOTH",
+          "rank": 4
+        },
+        {
+          "id": "WEAPON_SNIPER_GUN",
+          "rank": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "whetstone",
+          "rank": 1
+        },
+        {
+          "id": "coffee",
+          "rank": 2
+        },
+        {
+          "id": "wings",
+          "rank": 3
+        },
+        {
+          "id": "ITEM_LUCKY_COIN",
+          "rank": 4
+        },
+        {
+          "id": "ITEM_PIGGY_BANK",
+          "rank": 5
+        },
+        {
+          "id": "ITEM_BABY_GECKO",
+          "rank": 6
+        },
+        {
+          "id": "ITEM_BLOODY_HAND",
+          "rank": 7
+        },
+        {
+          "id": "ITEM_EXPLOSIVE_SHELLS",
+          "rank": 8
+        }
+      ]
+    },
+    "mustExclude": [
+      "HP_REGENERATION",
+      "CONSUMABLE_HEAL"
+    ]
+  }
+}

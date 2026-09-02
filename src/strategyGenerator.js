@@ -16,6 +16,7 @@ import {
   calculatePickupTriggerInteraction,
   calculateScenarioDps,
 } from "./scenarioCalculator.js";
+import { framesToSeconds } from "./calculator.js";
 
 const WEAPON_SET_LABELS = {
   blade: "剑类",
@@ -1189,7 +1190,8 @@ function calculatorWeaponFromRecord(record) {
   return {
     name: record.nameKey,
     baseDamage: stats.damage,
-    cooldown: stats.cooldown / 60,
+    // R1：冷却单位统一用 framesToSeconds（帧 → 秒），与图鉴显示和模拟器带入同源。
+    cooldown: framesToSeconds(stats.cooldown),
     hitsPerAttack: Math.max(1, stats.nb_projectiles ?? 1),
     piercing: stats.piercing ?? 0,
     piercingDamageMultiplier:
@@ -2489,19 +2491,15 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
   // P1-9：从效果解码 manifest 构建 nameKey -> 最差解码状态 映射，
   // 让待解码/部分解码的候选被标注不确定性，而非展示为精确收益。
   const decodeMap = buildDecodeStatusMap(options.effectDecoding);
+  const sortedWeaponPool = filterAndSort(weaponPool, resolvedOptions, scoringPlan, mode);
+  const sortedItemPool = filterAndSort(itemPool, resolvedOptions, scoringPlan, mode);
   const recommendedWeapons = annotateCandidates(
-    filterAndSort(weaponPool, resolvedOptions, scoringPlan, mode).slice(
-      0,
-      visibleRecommendationLimit(weaponPool, manualWeapons.length, 5),
-    ),
+    sortedWeaponPool.slice(0, visibleRecommendationLimit(weaponPool, manualWeapons.length, 5)),
     "weapon",
     decodeMap,
   );
   const keyItems = annotateCandidates(
-    filterAndSort(itemPool, resolvedOptions, scoringPlan, mode).slice(
-      0,
-      visibleRecommendationLimit(itemPool, manualItems.length, 24),
-    ),
+    sortedItemPool.slice(0, visibleRecommendationLimit(itemPool, manualItems.length, 24)),
     "item",
     decodeMap,
   );
@@ -2518,11 +2516,14 @@ export function generateStrategyGuide(characterId, modeId = "normal20", options 
     ],
     stance: plan.stance,
     recommendedWeapons,
+    // R4：暴露完整候选池（截断前），供权重变化报告覆盖全池而非仅 Top-N。
+    allWeaponCandidates: sortedWeaponPool,
     weaponRouteNote:
       plan.weaponRouteNote ??
       "按官方目录中的角色限制选择武器；如果候选为空，说明该角色的核心路线不依赖武器栏。",
     avoid: plan.avoid,
     keyItems,
+    allItemCandidates: sortedItemPool,
     statPriority: formatStatPriorities(plan.statPriority),
     wave20Targets: adjustWave20Targets(plan.wave20Targets, resolvedOptions.danger),
     rhythm: plan.rhythm,
@@ -2606,23 +2607,35 @@ export function reportWeightChange(overrides, options = {}) {
   for (const character of characters) {
     for (const modeId of modes) {
       const guide = generateStrategyGuide(character.id, modeId, { officialCatalog });
-      const before = guide.recommendedWeapons.slice(0, 5).map(candidateKeyOf);
-      const resorted = [...guide.recommendedWeapons]
-        .map((candidate) => ({ candidate, newScore: recomputeScore(candidate.scoreBreakdown, overrides) }))
-        .sort((a, b) => b.newScore - a.newScore);
-      const after = resorted.slice(0, 5).map(({ candidate }) => candidateKeyOf(candidate));
-      if (JSON.stringify(before) !== JSON.stringify(after)) {
+      // R4：覆盖武器 + 道具，且用完整候选池（截断前）而非仅 Top-N。
+      const pools = [
+        { kind: "weapon", pool: guide.allWeaponCandidates, topN: 5 },
+        { kind: "item", pool: guide.allItemCandidates, topN: 8 },
+      ];
+      const before = {};
+      const after = {};
+      const reasons = {};
+      let changed = false;
+      for (const { kind, pool, topN } of pools) {
+        const resorted = [...pool]
+          .map((candidate) => ({ candidate, newScore: recomputeScore(candidate.scoreBreakdown, overrides) }))
+          .sort((a, b) => b.newScore - a.newScore);
+        before[kind] = pool.slice(0, topN).map(candidateKeyOf);
+        after[kind] = resorted.slice(0, topN).map(({ candidate }) => candidateKeyOf(candidate));
+        reasons[kind] = resorted.slice(0, topN).map(({ candidate, newScore }) => ({
+          key: candidateKeyOf(candidate),
+          score: Math.round(newScore * 100) / 100,
+          topComponents: topComponents(candidate.scoreBreakdown, overrides),
+        }));
+        if (JSON.stringify(before[kind]) !== JSON.stringify(after[kind])) changed = true;
+      }
+      if (changed) {
         affected.push({
           character: character.id,
           mode: modeId,
           before,
           after,
-          // 排序原因：Top-N 中各候选的关键评分分量（已应用覆盖）
-          reasons: resorted.slice(0, 5).map(({ candidate, newScore }) => ({
-            key: candidateKeyOf(candidate),
-            score: Math.round(newScore * 100) / 100,
-            topComponents: topComponents(candidate.scoreBreakdown, overrides),
-          })),
+          reasons,
         });
       }
     }

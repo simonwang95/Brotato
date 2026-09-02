@@ -419,40 +419,52 @@ for (const character of getAvailableCharacters()) {
   }
 }
 
-// P1-9：全部 64 个官方角色的最小专家基准。
-// 正向：手写核心候选（作者推荐的核心武器/道具）必须出现在输出中；
-// 负向：官方目录中该角色的禁用项（bannedItems/bannedUpgrades/bannedItemGroups）不得出现。
+// P1-9 / R4：全部 64 个官方角色的独立专家基准（fixture 与输出解耦，非循环论证）。
+// 正向（mustInclude）：fixture 中记录的核心候选（含排名）必须出现在输出中，且排名不越界；
+// 负向（mustExclude）：官方目录中该角色的禁用项不得出现（大小写统一后再比较）。
+// fixture 存于 tests/fixtures/recommendationBaseline.json（独立于运行时输出）。
 {
-  const catalogChars = officialCatalog.records.filter((record) => record.kind === "character");
-  const bannedByChar = Object.fromEntries(
-    catalogChars.map((ch) => [
-      ch.nameKey,
-      [...(ch.bannedItems ?? []), ...(ch.bannedUpgrades ?? []), ...(ch.bannedItemGroups ?? [])].map((id) =>
-        id.toUpperCase(),
-      ),
-    ]),
-  );
+  const fixture = JSON.parse(readFileSync("tests/fixtures/recommendationBaseline.json", "utf8"));
+  // 大小写统一：手写 id 与官方 nameKey 都归一到大写后再比较（R4 要求）。
+  const norm = (id) => String(id).toUpperCase();
   let positiveChecked = 0;
   let negativeChecked = 0;
+  let rankChecked = 0;
   for (const character of getAvailableCharacters()) {
     for (const modeId of ["normal20", "endless"]) {
       const guide = generateStrategyGuide(character.id, modeId, { officialCatalog });
-      const all = [...guide.recommendedWeapons, ...guide.keyItems];
-      const keys = new Set(all.map(candidateKey));
-      for (const candidate of all.filter((c) => !c.officialCandidate)) {
-        const id = candidate.weaponId ?? candidate.itemId;
-        assert.ok(keys.has(id), `${character.id}:${modeId} 手写核心候选 ${id} 应出现在输出中`);
-        positiveChecked += 1;
+      // 输出候选：武器 + 道具，按出现顺序记录排名（1-based）。
+      const outputWeapons = guide.recommendedWeapons.map((c) => norm(c.weaponId ?? c.itemId ?? c.official?.nameKey));
+      const outputItems = guide.keyItems.map((c) => norm(c.weaponId ?? c.itemId ?? c.official?.nameKey));
+      const outputAll = new Set([...outputWeapons, ...outputItems]);
+      const entry = fixture[`${character.id}:${modeId}`];
+      if (!entry) {
+        assert.fail(`${character.id}:${modeId} 缺少 fixture 条目（应覆盖全部角色/模式）`);
       }
-      const banned = bannedByChar[`CHARACTER_${character.id.toUpperCase()}`] ?? [];
-      for (const bannedId of banned) {
-        assert.ok(!keys.has(bannedId), `${character.id}:${modeId} 不应推荐官方禁用项 ${bannedId}`);
+      // 正向：核心候选必须出现，且排名不越界。
+      for (const { id, rank } of entry.mustInclude.weapons ?? []) {
+        const idx = outputWeapons.indexOf(norm(id));
+        assert.ok(idx >= 0, `${character.id}:${modeId} 核心武器 ${id} 应出现在输出中（fixture 记录但输出缺失）`);
+        assert.ok(idx + 1 <= rank + 2, `${character.id}:${modeId} 核心武器 ${id} 排名越界（fixture 排名 ${rank}，实际 ${idx + 1}）`);
+        positiveChecked += 1;
+        rankChecked += 1;
+      }
+      for (const { id, rank } of entry.mustInclude.items ?? []) {
+        const idx = outputItems.indexOf(norm(id));
+        assert.ok(idx >= 0, `${character.id}:${modeId} 核心道具 ${id} 应出现在输出中（fixture 记录但输出缺失）`);
+        assert.ok(idx + 1 <= rank + 2, `${character.id}:${modeId} 核心道具 ${id} 排名越界（fixture 排名 ${rank}，实际 ${idx + 1}）`);
+        positiveChecked += 1;
+        rankChecked += 1;
+      }
+      // 负向：官方禁用项不得出现。
+      for (const bannedId of entry.mustExclude ?? []) {
+        assert.ok(!outputAll.has(norm(bannedId)), `${character.id}:${modeId} 不应推荐官方禁用项 ${bannedId}`);
         negativeChecked += 1;
       }
     }
   }
   assert.ok(positiveChecked > 0, "应检查到正向基准");
-  console.log(`[P1-9] 64 角色专家基准：正向 ${positiveChecked} 项、负向 ${negativeChecked} 项，全部通过`);
+  console.log(`[P1-9] 64 角色独立基准：正向 ${positiveChecked} 项（含排名 ${rankChecked}）、负向 ${negativeChecked} 项，全部通过`);
 }
 
 // P1-9：评分分解与权重变化影响报告。
@@ -477,19 +489,32 @@ for (const character of getAvailableCharacters()) {
   }
   assert.ok(breakdownChecked > 0, "应检查到评分分解");
 
-  // 权重变化影响报告：属性协同权重翻倍应影响部分角色的排序
+  // 权重变化影响报告（R4）：属性协同权重翻倍应影响部分角色的排序；
+  // 报告须覆盖武器 + 道具（before/after/reasons 均含 weapon 与 item 两类）。
   const affected = reportWeightChange({ statSynergy: 2 }, { officialCatalog });
   assert.ok(Array.isArray(affected), "reportWeightChange 应返回受影响列表");
   assert.ok(affected.length > 0, "属性协同权重翻倍应影响部分角色排序");
+  let weaponAffected = 0;
+  let itemAffected = 0;
   for (const entry of affected) {
     assert.ok(entry.character && entry.mode, "受影响条目应包含角色与模式");
-    assert.ok(Array.isArray(entry.before) && Array.isArray(entry.after), "应包含排序前后对比");
-    assert.ok(entry.reasons.length > 0, "应列出排序原因");
-    for (const reason of entry.reasons) {
-      assert.ok(reason.key && Array.isArray(reason.topComponents), "排序原因应包含关键评分分量");
+    assert.ok(entry.before && entry.after && entry.reasons, "应包含排序前后对比与原因");
+    // R4：报告须覆盖武器与道具两类。
+    for (const kind of ["weapon", "item"]) {
+      assert.ok(Array.isArray(entry.before[kind]) && Array.isArray(entry.after[kind]), `受影响条目应包含 ${kind} 排序前后对比`);
+      assert.ok(Array.isArray(entry.reasons[kind]), `受影响条目应包含 ${kind} 排序原因`);
+      for (const reason of entry.reasons[kind]) {
+        assert.ok(reason.key && Array.isArray(reason.topComponents), `${kind} 排序原因应包含关键评分分量`);
+      }
+      if (JSON.stringify(entry.before[kind]) !== JSON.stringify(entry.after[kind])) {
+        if (kind === "weapon") weaponAffected += 1;
+        else itemAffected += 1;
+      }
     }
   }
-  console.log(`[P1-9] 权重变化报告：statSynergy×2 影响 ${affected.length} 个角色场景（含排序原因）`);
+  assert.ok(weaponAffected > 0, "权重变化应影响部分角色的武器排序");
+  assert.ok(itemAffected > 0, "权重变化应影响部分角色的道具排序（R4 要求覆盖道具）");
+  console.log(`[P1-9] 权重变化报告：statSynergy×2 影响 ${affected.length} 个角色场景（武器 ${weaponAffected}、道具 ${itemAffected}，含排序原因）`);
 }
 
 console.log("Recommendation regression tests passed");

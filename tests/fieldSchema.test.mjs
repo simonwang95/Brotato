@@ -39,17 +39,27 @@ import { DEFAULT_COMBAT_CONTEXT } from "../src/scenarioData.js";
   assert.match(r.error, /100/);
 }
 
-// 5) 低于下界：报错。
+// 5) 低于下界：报错（R2 后概率/属性下界放宽到 -100，覆盖官方合法负值）。
 {
-  const r = validateNumberValue("-1", STAT_FIELD_SCHEMAS.critChance);
-  assert.equal(r.ok, false, "暴击率 <0 应报错");
+  const r = validateNumberValue("-101", STAT_FIELD_SCHEMAS.critChance);
+  assert.equal(r.ok, false, "暴击率 <-100 应报错");
+  assert.match(r.error, /-100/);
+  // R2：官方目录中的合法负值应被手动输入接受（Crazy 闪避 -30、Druid 生命再生 -100 等）。
+  assert.equal(validateNumberValue("-30", STAT_FIELD_SCHEMAS.dodge).ok, true, "闪避 -30 应通过");
+  assert.equal(validateNumberValue("-100", STAT_FIELD_SCHEMAS.hpRegen).ok, true, "生命再生 -100 应通过");
+  assert.equal(validateNumberValue("-100", STAT_FIELD_SCHEMAS.critChance).ok, true, "暴击率 -100 应通过");
+  assert.equal(validateNumberValue("-100", STAT_FIELD_SCHEMAS.rangedDamage).ok, true, "远程伤害 -100 应通过");
+  assert.equal(validateNumberValue("-10", STAT_FIELD_SCHEMAS.speed).ok, true, "移速 -10 应通过");
+  assert.equal(validateNumberValue("-30", STAT_FIELD_SCHEMAS.luck).ok, true, "幸运 -30 应通过");
 }
 
 // 6) 边界值：min / max 本身应通过。
 {
-  assert.equal(validateNumberValue("0", STAT_FIELD_SCHEMAS.critChance).ok, true, "下界 0 应通过");
+  assert.equal(validateNumberValue("-100", STAT_FIELD_SCHEMAS.critChance).ok, true, "暴击率下界 -100 应通过");
   assert.equal(validateNumberValue("100", STAT_FIELD_SCHEMAS.critChance).ok, true, "上界 100 应通过");
-  assert.equal(validateNumberValue("0.05", WEAPON_FIELD_SCHEMAS.cooldown).ok, true, "冷却下界 0.05 应通过");
+  // R1：冷却下界 0.03 秒覆盖游戏内最快的 2 帧武器（0.0333 秒）。
+  assert.equal(validateNumberValue("0.03", WEAPON_FIELD_SCHEMAS.cooldown).ok, true, "冷却下界 0.03 应通过");
+  assert.equal(validateNumberValue("0.0333", WEAPON_FIELD_SCHEMAS.cooldown).ok, true, "2 帧武器 0.0333s 应通过");
   assert.equal(validateNumberValue("10", WEAPON_FIELD_SCHEMAS.cooldown).ok, true, "冷却上界 10 应通过");
 }
 

@@ -74,6 +74,16 @@ export function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
+// 官方目录中 stats.cooldown 的单位是帧（60 帧 = 1 秒）。
+// 图鉴显示、攻略生成和模拟器带入统一复用这一换算，避免各处各自维护单位转换（R1）。
+export const FRAMES_PER_SECOND = 60;
+
+export function framesToSeconds(frames) {
+  const value = Number(frames);
+  if (!Number.isFinite(value)) return 0;
+  return value / FRAMES_PER_SECOND;
+}
+
 // 防御性有限值保护：任何中间或最终计算结果若出现 NaN/Infinity，
 // 都回退到 fallback，避免非有限值静默流入展示层（P1-3）。
 export function finiteOr(value, fallback = 0) {
@@ -113,7 +123,8 @@ export function normalizeWeapon(weapon = {}) {
     ...merged,
     quantity: Math.max(0, toNumber(merged.quantity, 1)),
     baseDamage: toNumber(merged.baseDamage),
-    cooldown: Math.max(0.05, toNumber(merged.cooldown, 1)),
+    // 下限 0.03 秒覆盖游戏内最快的 2 帧武器（0.0333 秒），与 fieldSchema 的 cooldown.min 一致（R1）。
+    cooldown: Math.max(0.03, toNumber(merged.cooldown, 1)),
     hitsPerAttack: Math.max(0, toNumber(merged.hitsPerAttack, 1)),
     piercing: Math.max(0, toNumber(merged.piercing)),
     piercingDamageMultiplier: Math.max(

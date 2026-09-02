@@ -493,6 +493,11 @@
 - **64 角色专家基准**：`tests/recommendationRegression.test.mjs` 新增全量基准——正向（手写核心候选必须出现在输出，768 项）+ 负向（官方目录 `bannedItems/bannedUpgrades/bannedItemGroups` 不得出现，264 项，覆盖 26 个有禁用项的角色），全部 64 角色 × 普通/无尽通过。
 - **权重变化影响报告**：`scoreRecommendation` 返回结构化 `scoreBreakdown`（14 个评分分量），候选携带 `scoreBreakdown`（测试校验分量之和=总分）；新增 `reportWeightChange(overrides)` 重新计算排序并列出受影响角色、前后对比与关键评分分量（排序原因）。回归测试用 `statSynergy×2` 验证影响 57 个角色场景。
 
+复核修正（2026-09-02，R4，分支 fix/p1-remediation）：
+
+- **独立 fixture（消除循环论证）**：原 P1-9 正向基准把输出候选的 key 集合与同一输出比较，属循环论证（被剔除的候选从不检查）。现改为独立 fixture `tests/fixtures/recommendationBaseline.json`（128 个角色/模式，mustInclude 含排名 1642 项 + mustExclude 官方禁用项 264 项），fixture 与运行时输出解耦；大小写统一后再做禁用比较。删除任一核心候选、加入任一禁用项或排名越界都会让测试失败并指明角色 + 模式 + 候选（已做突变验证）。
+- **权重报告覆盖全池**：`reportWeightChange` 原只重排已截断的武器 Top-N。现 `generateStrategyGuide` 暴露完整候选池（`allWeaponCandidates`/`allItemCandidates`，截断前），报告同时覆盖武器 + 道具（`statSynergy×2` 影响武器 67、道具 128 个场景）。
+
 ## P2：中期优化
 
 ### [ ] P2-1 完善路由、数据加载和错误语义

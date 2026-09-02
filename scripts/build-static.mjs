@@ -34,6 +34,7 @@ const BROWSER_SRC_FILES = [
   "scenarioData.js",
   "strategyData.js",
   "strategyGenerator.js",
+  "weaponImport.js",
 ];
 // 体积预算（字节）：超过则告警，total 硬上限则失败
 const BUDGET = {
