@@ -825,7 +825,7 @@ function renderCatalogCompendiumCard(entry, kindLabel) {
         <div><dt>套装</dt><dd class="pill-list">${renderPills(entry.setLabels)}</dd></div>
         <div><dt>标签</dt><dd class="pill-list">${renderPills(tags)}</dd></div>
       </dl>
-      <details class="compendium-card-detail">
+      <details class="compendium-card-detail" open>
         <summary>展开详细属性与功能说明</summary>
         <dl class="compendium-meta compendium-meta-detail">
           <div><dt>详细属性</dt><dd>${entry.weaponTierRows?.length ? renderWeaponTierTable(entry) : renderList(entry.detailedAttributes, "compact-list")}</dd></div>
