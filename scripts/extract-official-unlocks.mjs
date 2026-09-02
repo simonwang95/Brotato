@@ -1,13 +1,16 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, join } from "node:path";
+import { homedir } from "node:os";
 import {
   getUncompressedOptimizedMessage,
   parseOptimizedTranslation,
 } from "./optimized-translation.mjs";
 import { buildSourceMetadata } from "./extraction-metadata.mjs";
 
-const defaultInstallDir =
-  "***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato";
+const defaultInstallDir = join(
+  homedir(),
+  "Library/Application Support/Steam/steamapps/common/Brotato",
+);
 
 const installDir = process.env.BROTATO_INSTALL_DIR || defaultInstallDir;
 const outputPath = process.env.BROTATO_UNLOCKS_OUTPUT || "data/official-unlocks.json";

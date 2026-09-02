@@ -1,11 +1,14 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { homedir } from "node:os";
 import { TextDecoder } from "node:util";
 import { CHARACTER_GUIDES, ITEMS, WEAPONS } from "../src/strategyData.js";
 import { ITEM_EFFECTS } from "../src/scenarioData.js";
 
-const defaultInstallDir =
-  "***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato";
+const defaultInstallDir = join(
+  homedir(),
+  "Library/Application Support/Steam/steamapps/common/Brotato",
+);
 
 const installDir = process.env.BROTATO_INSTALL_DIR || defaultInstallDir;
 const packagePaths = [

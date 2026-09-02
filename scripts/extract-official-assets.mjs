@@ -1,9 +1,12 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { homedir } from "node:os";
 import { TextDecoder } from "node:util";
 
-const defaultInstallDir =
-  "***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato";
+const defaultInstallDir = join(
+  homedir(),
+  "Library/Application Support/Steam/steamapps/common/Brotato",
+);
 
 const installDir = process.env.BROTATO_INSTALL_DIR || defaultInstallDir;
 const catalogPath = process.env.BROTATO_CATALOG_PATH || "data/official-catalog.json";

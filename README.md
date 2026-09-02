@@ -169,7 +169,7 @@ npm run build
 npm run verify:names
 ```
 
-默认读取 `***REMOVED***/Library/Application Support/Steam/steamapps/common/Brotato`。如果安装路径不同，可以设置 `BROTATO_INSTALL_DIR`。该命令是严格门禁：任一名称缺失即以退出码 2 失败；排查时可加 `--warn` 只告警不失败。
+默认读取当前用户主目录下的 `~/Library/Application Support/Steam/steamapps/common/Brotato`（macOS 默认 Steam 安装路径）。如果安装路径不同，可以设置 `BROTATO_INSTALL_DIR`。该命令是严格门禁：任一名称缺失即以退出码 2 失败；排查时可加 `--warn` 只告警不失败。
 
 从本机安装包提取官方武器/道具目录：
 
